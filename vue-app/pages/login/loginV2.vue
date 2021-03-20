@@ -10,15 +10,13 @@
 				<view class="t-a">
 					<image src="/static/shilu-login/3.png"></image>
 					<input name="code" v-model="pass" placeholder="请输入验证码" />
-					<!-- <view class="t-c">发送短信</view> -->
 				</view>
-				<view class="t-d">未注册的手机号验证后将自动注册</view>
+				<view class="t-d"></view>
 				<button @tap="hanleLogin">立即登录</button>
 			</form>
-			<view class="t-f">登录即同意<text>用户协议</text></view>
+			<view class="t-f">登录即同意<text>用户协议</text> 注册</view>
 			<view class="t-e cl">
 			</view>
-			<soure :url="url"></soure>
 		</view>
 	</view>
 </template>
@@ -30,8 +28,7 @@
 		components:{},
 		data() {
 			return {
-				title: '欢迎回来',
-				url:'https://ext.dcloud.net.cn/plugin?id=3335',
+				title: '易群',
 				pass:'123456',
 				phone:'admin',
 			};

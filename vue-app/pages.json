@@ -23,13 +23,6 @@
 			}
 		},
 		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#F6F7F8"
-			}
-		},
-		{
 			"path": "pages/addressBook/addressBook",
 			"style": {
 				"enablePullDownRefresh": true ,
@@ -346,14 +339,6 @@
             }
         },
 		{
-			"path": "pages/login/reg",
-			"style": {
-				"enablePullDownRefresh": true ,
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#F6F7F8"
-			}
-		},
-		{
 			"path": "pages/login/forget",
 			"style": {
 				"enablePullDownRefresh": true ,
@@ -393,6 +378,14 @@
                 "enablePullDownRefresh": false
             }
         }
+		,{
+		    "path" : "pages/login/regV2",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
     ],
 	"tabBar": {
 		"color": "#7B8AA0",
