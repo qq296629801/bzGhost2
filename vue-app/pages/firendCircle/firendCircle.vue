@@ -502,6 +502,7 @@ image {
 			height: 110rpx;
 			border-radius: 6rpx;
 			position: absolute;
+			z-index: 99;
 			right: 30rpx;
 			bottom: -20rpx;
 		}
@@ -510,6 +511,7 @@ image {
 			position: absolute;
 			right: 170rpx;
 			bottom: 20rpx;
+			z-index: 99;
 			font-size: 30rpx;
 			font-weight: bold;
 		}
