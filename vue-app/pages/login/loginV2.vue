@@ -12,9 +12,9 @@
 					<input name="code" v-model="pass" placeholder="请输入验证码" />
 				</view>
 				<view class="t-d"></view>
-				<button @tap="hanleLogin">立即登录</button>
+				<button @tap="linkLogin">立即登录</button>
 			</form>
-			<view class="t-f">登录即同意<text>用户协议</text> 注册</view>
+			<view class="t-f">登录即同意<text @tap="linkAgr">用户协议</text> <text @tap="linkReg" style="color: #000000;">注册</text></view>
 			<view class="t-e cl">
 			</view>
 		</view>
@@ -35,7 +35,19 @@
 		},
 
 		methods:{
-			hanleLogin(){
+			linkAgr(){
+				this.$u.route({
+					url: 'pages/agreement/agreement',
+					type: 'switchTab'
+				});
+			},
+			linkReg(){
+				this.$u.route({
+					url: 'pages/register/register',
+					type: 'switchTab'
+				});
+			},
+			linkLogin(){
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
 						// 缓存用户
