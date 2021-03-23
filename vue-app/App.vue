@@ -4,11 +4,12 @@
 			this.$socket.initWebIM(this.$ws, true, true)
 		},
 		onShow: function() {
-			if(this.userData.token==undefined){
-				this.$u.route({
-				    url: 'pages/login/loginV2'
-				});
+			if(this.userData.user){
+				return;
 			}
+			this.$u.route({
+			    url: 'pages/login/loginV2'
+			});
 		},
 		onHide: function() {
 		}

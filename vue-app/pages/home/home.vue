@@ -71,6 +71,9 @@ export default {
 			});
 		},
 		getChats(freshFlag){
+			if(this.userData.user==undefined){
+				return;
+			}
 			this.$socket.queryChats('', this.userData.user.operId,(res) => {
 				if (res.success) {
 				  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
