@@ -245,7 +245,7 @@
 				"navigationBarTitleText": "通用"
 			}
 		}, {
-			"path": "pages/my/accountSafe",
+			"path": "pages/my/account",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "账号与安全"

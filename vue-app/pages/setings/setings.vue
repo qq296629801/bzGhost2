@@ -55,7 +55,7 @@
 			},
 			linkToAccount(){
 				this.$u.route({
-					url: 'pages/my/accountSafe'
+					url: 'pages/my/account'
 				});
 			},
 			logout(){
