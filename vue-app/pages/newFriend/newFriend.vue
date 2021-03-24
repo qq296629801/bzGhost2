@@ -2,7 +2,7 @@
 	<view class="content">
 		<view v-for="(value, index) in list">
 			<view class="item u-border-bottom" hover-class="message-hover-class">
-				<img-cache :src="`${$url}/${value.avatar || value.imgUrl}`"></img-cache>
+				<img-cache :src="$url + value.avatar"></img-cache>
 				<view class="right title-wrap">
 					<view class="right_top">
 						<view class="right_top_name u-line-1">{{ value.nickName }}</view>
