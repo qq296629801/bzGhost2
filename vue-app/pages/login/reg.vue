@@ -19,7 +19,7 @@
 				<view class="t-d"></view>
 				<button @tap="reg">注册</button>
 			</form>
-			<view class="t-f">登录即同意<text>用户协议</text></view>
+			<view class="t-f">登录即同意<text @tap="linkAgree">用户协议</text></view>
 			<view class="t-e cl">
 			</view>
 		</view>
@@ -62,6 +62,11 @@
 		  this.second = 0;
 		},
 		methods:{
+			linkAgree () {
+				this.$u.route({
+					url: 'pages/agreement/agreement'
+				})
+			},
 			getcode() {
 			  if (this.phone.length != 11) {
 			    uni.showToast({

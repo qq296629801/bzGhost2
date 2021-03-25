@@ -37,19 +37,15 @@
 					}
 				} */
 			}
-		}, {
+		},
+		{
 			"path": "pages/find/find",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "发现"
 			}
-		},{
-			"path": "pages/register/register",
-			"style": {
-				"enablePullDownRefresh": true ,
-				"navigationBarTitleText": "注册"
-			}
-		},{
+		},
+		{
 			"path": "pages/agreement/agreement",
 			"style": {
 				"enablePullDownRefresh": true ,
@@ -371,7 +367,7 @@
             }
         }
         ,{
-            "path" : "pages/login/loginV2",
+            "path" : "pages/login/login",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -379,7 +375,7 @@
             }
         }
 		,{
-		    "path" : "pages/login/regV2",
+		    "path" : "pages/login/reg",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",

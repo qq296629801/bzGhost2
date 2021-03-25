@@ -8,7 +8,7 @@
 				return;
 			}
 			this.$u.route({
-			    url: 'pages/login/loginV2'
+			    url: 'pages/login/login'
 			});
 		},
 		onHide: function() {

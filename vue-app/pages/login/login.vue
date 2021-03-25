@@ -43,7 +43,7 @@
 			},
 			linkReg(){
 				this.$u.route({
-					url: 'pages/register/register',
+					url: 'pages/login/reg',
 					type: 'switchTab'
 				});
 			},
