@@ -51,7 +51,8 @@
 					})
 				}
 				this.$socket.updateAvatar(this.userData.user.operId, res.response.data, res => {
-				  })
+				  this.userData.user = res.response.data;
+				  });
 			},
 			linkToQrcode(){
 				this.$u.route({
