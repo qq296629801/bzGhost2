@@ -6,7 +6,7 @@
 		</u-navbar>
 		<!-- #endif -->
 		<view class="content-imgbox">
-			<image class="bgimg" :src="require('@/static/image/circleBanner/3.jpg')" mode="scaleToFill"></image>
+			<image class="bgimg" style="background-color: #4b4b4b;" :src="1" mode="scaleToFill"></image>
 			<image class="headimg" :src="`${$url}/${userData.user.avatar}`" @tap="linkToBusinessCard(userData.user.operId)"></image>
 			<text class="nickname">{{ userData.user.realname }}</text>
 			<view class="water">
