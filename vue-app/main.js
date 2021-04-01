@@ -18,7 +18,7 @@ Vue.prototype.$socket = webim;
 Vue.prototype.$url = 'http://120.27.95.106:8081/upload/'
 Vue.prototype.$uploadUrl = 'http://120.27.95.106:9998/file/upload'
 Vue.prototype.$ws = 'ws://120.27.95.106:9999/chat'
-Vue.prototype.$registerUrl = 'http://120.27.95.106:9998'
+Vue.prototype.$api = 'http://120.27.95.106:9998'
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {

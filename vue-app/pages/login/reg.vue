@@ -88,7 +88,7 @@
 			  }, 1000)
 			  
 					uni.request({
-						url:this.$registerUrl+'/register/sendSms', 
+						url:this.$api+'/register/sendSms', 
 						data: {phone:this.phone},
 						success: (res) => {
 							console.log(res.data);
@@ -97,7 +97,7 @@
 			},
 			reg() {
 				uni.request({
-					url:this.$registerUrl+'/register/register', 
+					url:this.$api+'/register/register', 
 					data: {
 						phone:this.phone,
 						pwd:this.pass,

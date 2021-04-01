@@ -86,7 +86,7 @@
         
 		// 获取验证码
 		uni.request({
-			url:this.$registerUrl+'/register/sendSms', 
+			url:this.$api+'/register/sendSms', 
 			data: {phone:this.phone},
 			success: (res) => {
 				console.log(res.data);
@@ -120,7 +120,7 @@
         }
 		
 		uni.request({
-			url:this.$registerUrl+'/register/updatePwd', 
+			url:this.$api+'/register/updatePwd', 
 			data: {
 				phone:this.phone,
 				updatePwd:this.password,

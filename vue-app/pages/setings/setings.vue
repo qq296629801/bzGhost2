@@ -61,46 +61,53 @@
 			logout(){
 				uni.clearStorageSync();
 				this.$u.route({
-					url: 'pages/login/loginV2'
+					url: 'pages/login/login'
 				});
 			},
 			upApp(){
                 // #ifdef APP-PLUS
                 plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
-					apiconfig.getCheckVersion({}).then(res=>{
-						if(widgetInfo.version == res.data.data.version){
-							uni.showToast({
-								icon:"none",
-								duration:2000,
-								title:'暂无版本更新'
-							})
-							return;
-						}
-						uni.showLoading({
-							title:'下载中....'
-						})
-						uni.downloadFile({
-						    url: res.data.data.android,
-						    success: (downloadResult) => {
-						        if (downloadResult.statusCode === 200) {
-						            plus.runtime.install(downloadResult.tempFilePath, {
-						                force: false
-						            }, function() {
-						                plus.runtime.restart();
-										uni.hideLoading()
-						            }, function(e) {
-										uni.hideLoading()
-						            });
-						        }
-						    },
-							fail: (res) =>{
+					// 获取验证码
+					uni.request({
+						url: this.$api + '/version/queryVersions', 
+						data: {keyword:''},
+						success: (res) => {
+							if(widgetInfo.version == res.data.data.version){
 								uni.showToast({
 									icon:"none",
 									duration:2000,
-									title:res
+									title:'暂无版本更新'
 								})
+								return;
 							}
-						});
+							uni.showLoading({
+								title:'下载中....'
+							})
+							uni.downloadFile({
+							    url: res.data.data.android,
+							    success: (downloadResult) => {
+							        if (downloadResult.statusCode === 200) {
+							            plus.runtime.install(downloadResult.tempFilePath, {
+							                force: false
+							            }, function() {
+							                plus.runtime.restart();
+											uni.hideLoading()
+							            }, function(e) {
+											uni.hideLoading()
+							            });
+							        }
+							    },
+								fail: (res) =>{
+									uni.showToast({
+										icon:"none",
+										duration:2000,
+										title:res
+									})
+								}
+							});
+						},fail() {
+						  this.clear()
+						}
 					});
                 });
                 // #endif
