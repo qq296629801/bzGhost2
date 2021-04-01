@@ -76,6 +76,13 @@
 							}
 						})
 						
+						this.$socket.queryChats('', this.userData.user.operId,(res) => {
+							if (res.success) {
+							  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
+							  this.$u.vuex('chatItem', res.chats);
+							}
+						});
+						
 						//	缓存链接
 						this.$socket.getLinks(this.userData.user.operId, res=>{
 							this.$u.vuex('linkItem',res.response.data)
