@@ -1,6 +1,6 @@
 {
     "name" : "易聊性能版",
-    "appid" : "__UNI__54ED11E",
+    "appid" : "__UNI__F0BC691",
     "description" : "打造跨平台即时通信软件，个人也能玩得转!",
     "versionName" : "1.0.3",
     "versionCode" : 103,
@@ -18,8 +18,7 @@
         },
         /* 模块配置 */
         "modules" : {
-            "SQLite" : {},
-            "Push" : {}
+            "SQLite" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
