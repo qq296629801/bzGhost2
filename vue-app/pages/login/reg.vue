@@ -19,7 +19,6 @@
 				<view class="t-d"></view>
 				<button @tap="reg">注册</button>
 			</form>
-			<view class="t-f">登录即同意<text @tap="linkAgree">用户协议</text></view>
 			<view class="t-e cl">
 			</view>
 		</view>
@@ -47,7 +46,7 @@
 		      return '获取验证码';
 		    } else {
 		      if (this.second < 10) {
-		        return '重新获取0' + this.second;
+		        return '重新获取' + this.second;
 		      } else {
 		        return '重新获取' + this.second;
 		      }

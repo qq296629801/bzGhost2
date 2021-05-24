@@ -14,7 +14,13 @@
 				<view class="t-d"></view>
 				<button @tap="linkLogin">立即登录</button>
 			</form>
-			<view class="t-f">登录即同意<text @tap="linkAgr">用户协议</text> <text @tap="linkReg" style="color: #000000;">注册</text></view>
+			<view class="t-f">
+				登录即同意 <text @tap="linkAgr">《用户协议》</text>
+				<text @tap="linkReg" style="color: #000000;">注册账号</text>
+			 </view>
+			 <view class="t-f">
+				
+			 </view>
 			<view class="t-e cl">
 			</view>
 		</view>
@@ -36,15 +42,15 @@
 
 		methods:{
 			linkAgr(){
+				// 跳转到消息列表
 				this.$u.route({
-					url: 'pages/agreement/agreement',
-					type: 'switchTab'
+					url: 'pages/login/agreement'
 				});
 			},
 			linkReg(){
+				// 跳转到消息列表
 				this.$u.route({
-					url: 'pages/login/reg',
-					type: 'switchTab'
+					url: 'pages/login/reg'
 				});
 			},
 			linkLogin(){
