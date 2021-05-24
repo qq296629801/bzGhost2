@@ -13,7 +13,7 @@
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
-				<view class="u-font-14 u-tips-color"><i>积分_{{userData.user.money}}</i></view>
+				<view class="u-font-14 u-tips-color"><i>{{userData.user.money}}</i></view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe" @tap="linkToPerson"></view>
