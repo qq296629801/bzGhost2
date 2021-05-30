@@ -3,7 +3,7 @@
 		<u-navbar :is-back="true" title="选择好友" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="saveGroupMember">保存</u-button>
+				<u-button size="mini" type="success" @click="joinGroup">保存</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
@@ -14,7 +14,7 @@
 				<u-index-anchor :index="item.name" />
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox @change="checkboxChange(user)" v-model="user.checked" :name="user.id">
+						<u-checkbox @change="checkMember(user)" v-model="user.checked" :name="user.id">
 							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
 						</u-checkbox>
 						{{ user.nickName }}
@@ -42,7 +42,7 @@
 			}
 		},
 		onShow() {
-			this.queryGuests();
+			this.queryMembers();
 		},
 		onLoad(option) {},
 		watch: {
@@ -66,8 +66,31 @@
 			}
 		},
 		methods: {
+			checkMember(user) {
+				console.log(JSON.stringify(user))
+				if (user.checked) {
+					this.ids.push(user.id);
+					this.userNames.push(user.nickName);
+				} else {
+					this.ids.splice(this.ids.indexOf(user.id), 1);
+					this.userNames.splice(this.userNames.indexOf(user.nickName), 1);
+				}
+			},
+			joinGroup(){
+				let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
+				console.log(JSON.stringify(this.userNames))
+				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
+					console.log(res);
+					if (res.success) {
+						this.$u.route({
+							url: 'pages/home/home'
+						});
+					}
+				});
+			},
 			saveGroupMember() {
 				let type = this.$route.query.type
+				console.log(type)
 				if (type === '1') {
 					let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
 					this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
@@ -88,16 +111,7 @@
 					});
 				}
 			},
-			checkboxChange(user) {
-				if (user.checked) {
-					this.ids.push(user.id);
-					this.userNames.push(user.chatName);
-				} else {
-					this.ids.splice(this.ids.indexOf(user.id), 1);
-					this.userNames.splice(this.userNames.indexOf(user.chatName), 1);
-				}
-			},
-			queryGuests() {
+			queryMembers() {
 				this.$socket.listGuests(this.userData.user.operId, res => {
 					this.$u.vuex('firendItem', res.response.data);
 					this.fList = res.response.data
@@ -108,17 +122,6 @@
 					this.indexList = indexList
 				});
 			},
-			linkToCard({
-				id
-			}) {
-				this.$u.route({
-					url: 'pages/businessCard/businessCard',
-					params: {
-						id: id,
-						source: 1
-					}
-				});
-			}
 		},
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
