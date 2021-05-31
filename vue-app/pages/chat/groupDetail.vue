@@ -10,33 +10,33 @@
 		></u-navbar>
 		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
 			<u-grid :col="6" :border="false">
-				<u-grid-item v-for="(item, index) in members" :index="index" :key="item.id" v-if="index<=10" @tap="linkToCard(item.id)">
+				<u-grid-item v-for="(item, index) in members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
 					<img-cache :src="$url + item.avatar"></img-cache>
-					<view class="grid-text">{{ item.groupNickName||item.nickName }}</view>
+					<view class="grid-text">{{ item.groupNickName || item.nickName }}</view>
 				</u-grid-item>
-				<u-grid-item @click="hanldleLinkMore">
-					<view style="padding-bottom: 40rpx;">
+				<u-grid-item @click="linkMore">
+					<view class="group-plus">
 						<u-icon name="plus" size="40"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
-			<view @tap="linkToMore" v-if="members.length>10" style="text-align: center;color: #404133;padding-bottom: 10rpx;">查看更多成员</view>
+			<view @tap="seeMore" v-if="members.length>10" style="text-align: center;color: #404133;padding-bottom: 10rpx;">查看更多成员</view>
 		</view>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
-			<u-cell-item title="群名称" @click="showUpdate(group.id, group.groupName, 1)" :value="group.groupName" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="群名称" @click="groupEdit(group.id, group.groupName, 1)" :value="group.groupName" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
 		<u-cell-group>
 			<u-cell-item title="群二维码" :title-style="{ marginLeft: '10rpx' }"><u-avatar :src="src1" size="50"></u-avatar></u-cell-item>
 		</u-cell-group>
 		<u-cell-group>
-			<u-cell-item title="群公告" @click="showUpdate(group.id, context, 2)" :value="context ? context : '暂无公告'" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="群公告" @click="groupEdit(group.id, context, 2)" :value="context ? context : '暂无公告'" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
 			<u-cell-item
 				title="群昵称"
-				@click="showUpdate(group.id, mine.groupNickName || userData.user.realname, 3)"
+				@click="groupEdit(group.id, mine.groupNickName || userData.user.realname, 3)"
 				:value="mine.groupNickName || userData.user.realname"
 				:title-style="{ marginLeft: '10rpx' }"
 			></u-cell-item>
@@ -52,7 +52,7 @@
 			</u-cell-item>
 		</u-cell-group>
 		<view style="height: 10rpx;"></view>
-		<u-cell-group><u-cell-item title="查看聊天内容" @click="showSearch" :title-style="{ marginLeft: '10rpx' }"></u-cell-item></u-cell-group>
+		<u-cell-group><u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="{ marginLeft: '10rpx' }"></u-cell-item></u-cell-group>
 		<u-cell-group><u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg"></u-cell-item></u-cell-group>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
@@ -61,7 +61,7 @@
 			</u-cell-item>
 		</u-cell-group>
 		<u-cell-group>
-			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="removeGroupUser" :arrow="false"><view style="text-align: center; color: red;">删除并退出</view></u-cell-item>
+			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="removeMem" :arrow="false"><view style="text-align: center; color: red;">删除并退出</view></u-cell-item>
 		</u-cell-group>
 	</view>
 </template>
@@ -88,24 +88,24 @@ export default {
 		};
 	},
 	methods: {
-		linkToMore(){
+		seeMore(){
 			this.$u.route({
 				url: 'pages/chat/moreMem'
 			})
 		},
-		linkToCard(id){
+		linkCard(id){
 			this.$u.route({
 				url: 'pages/businessCard/businessCard',
 				params:{ id: id, source: 1}
 			})
 		},
-		showSearch() {
+		linkSearch() {
 			this.$u.route({
 				url:"pages/search/search",
 				params: {searchType: 4, chatId: this.chatObj.chatId}
 			})
 		},
-		hanldleLinkMore(){
+		linkMore(){
 			if (this.userData.user.username != this.group.operUser) {
 				uni.showModal({
 					title: '无权限修改',
@@ -117,7 +117,7 @@ export default {
 				url: 'pages/chat/addGroupUser'
 			});
 		},
-		removeGroupUser() {
+		removeMem() {
 			this.$socket.removeGroupUser([this.userData.user.operId], this.chatObj.chatId, res => {
 				if (res.success) {
 					this.$u.route({
@@ -127,7 +127,7 @@ export default {
 				}
 			});
 		},
-		showUpdate(groupId, context, type) {
+		groupEdit(groupId, context, type) {
 			if (this.userData.user.username != this.group.operUser && 3 != type) {
 				uni.showModal({
 					title: '无权限修改',
@@ -213,6 +213,8 @@ export default {
 </script>
 
 <style>
+	.group-plus{
+	}
 	.grid-text {
 		width: 80rpx;
 		height: 40rpx;

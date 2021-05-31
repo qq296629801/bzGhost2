@@ -247,7 +247,7 @@
 				"navigationBarTitleText": "账号与安全"
 			}
 		}, {
-			"path": "pages/chat/updateGroupInfo",
+			"path": "pages/chat/groupEdit",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "",
@@ -257,7 +257,7 @@
 				}
 			}
 		}, {
-			"path": "pages/chat/addGroupUser",
+			"path": "pages/chat/groupMem",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "",
