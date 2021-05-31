@@ -257,7 +257,29 @@
 				}
 			}
 		}, {
-			"path": "pages/chat/groupMem",
+			"path": "pages/chat/memAdd",
+			"style": {
+				"enablePullDownRefresh": true ,
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleView": false
+				}
+			}
+		},
+		{
+			"path": "pages/chat/groupCreate",
+			"style": {
+				"enablePullDownRefresh": true ,
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleView": false
+				}
+			}
+		},
+		{
+			"path": "pages/chat/memDel",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "",
@@ -320,7 +342,7 @@
 				"navigationBarTitleText": "表情商店"
 			}
 		}, {
-			"path": "pages/chat/moreMem",
+			"path": "pages/chat/memMore",
 			"style": {
 				"enablePullDownRefresh": true ,
 				"navigationBarTitleText": "所有成员"

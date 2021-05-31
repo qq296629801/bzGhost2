@@ -14,9 +14,14 @@
 					<img-cache :src="$url + item.avatar"></img-cache>
 					<view class="grid-text">{{ item.groupNickName || item.nickName }}</view>
 				</u-grid-item>
-				<u-grid-item @click="linkMore">
+				<u-grid-item @click="linkAdd">
 					<view class="group-plus">
 						<u-icon name="plus" size="40"></u-icon>
+					</view>
+				</u-grid-item>
+				<u-grid-item @click="linkDel">
+					<view class="group-plus">
+						<u-icon name="minus" size="40"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -105,16 +110,28 @@ export default {
 				params: {searchType: 4, chatId: this.chatObj.chatId}
 			})
 		},
-		linkMore(){
-			if (this.userData.user.username != this.group.operUser) {
-				uni.showModal({
-					title: '无权限修改',
-					showCancel: false
-				});
-				return;
-			}
+		linkAdd(){
+			// if (this.userData.user.username != this.group.operUser) {
+			// 	uni.showModal({
+			// 		title: '无权限修改',
+			// 		showCancel: false
+			// 	});
+			// 	return;
+			// }
 			this.$u.route({
-				url: 'pages/chat/addGroupUser'
+				url: 'pages/chat/memAdd'
+			});
+		},
+		linkDel(){
+			// if (this.userData.user.username != this.group.operUser) {
+			// 	uni.showModal({
+			// 		title: '无权限修改',
+			// 		showCancel: false
+			// 	});
+			// 	return;
+			// }
+			this.$u.route({
+				url: 'pages/chat/memDel'
 			});
 		},
 		removeMem() {
