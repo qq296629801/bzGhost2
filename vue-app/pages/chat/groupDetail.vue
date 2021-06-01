@@ -137,9 +137,12 @@ export default {
 		removeMem() {
 			this.$socket.removeGroupUser([this.userData.user.operId], this.chatObj.chatId, res => {
 				if (res.success) {
+					uni.showToast({
+						title:'移除成功',
+						icon:'success'
+					});
 					this.$u.route({
-						url: 'pages/home/home',
-						type: 'switchTab'
+						url: 'pages/groupItem/groupItem'
 					});
 				}
 			});

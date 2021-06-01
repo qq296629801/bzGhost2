@@ -1,9 +1,9 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="选择好友" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="发起群聊" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="joinGroup">创建群聊</u-button>
+				<u-button size="mini" type="success" @click="createGroup">完成</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
@@ -14,10 +14,14 @@
 				<u-index-anchor :index="item.name" />
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
+						<u-checkbox v-if="userData.user.operId!=user.id" @change="chechMem(user)" v-model="user.checked" :name="user.id">
 							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
+							{{ user.nickName }}
 						</u-checkbox>
-						{{ user.nickName }}
+						<template v-else>
+							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
+							{{ user.nickName }}
+						</template>
 					</view>
 				</u-checkbox-group>
 			</view>
@@ -83,7 +87,7 @@
 					this.userNames.splice(this.userNames.indexOf(user.nickName), 1);
 				}
 			},
-			joinGroup(){
+			createGroup(){
 				if(this.userNames.length==0){
 					uni.showToast({
 						title:'至少选中一个',
@@ -93,34 +97,17 @@
 				}
 				let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
 				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
+					console.log(JSON.stringify(res))
 					if (res.success) {
+						uni.showToast({
+							title:'创建成功',
+							icon:'success'
+						});
 						this.$u.route({
-							url: 'pages/home/home'
+							url: 'pages/groupItem/groupItem'
 						});
 					}
 				});
-			},
-			saveGroupMember() {
-				let type = this.$route.query.type
-				if (type === '1') {
-					let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
-					this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
-						if (res.success) {
-							this.$u.route({
-								url: 'pages/home/home'
-							});
-						}
-					});
-				}
-				if (type === '2') {
-					this.$socket.joinGroup(this.chatObj.chatId, this.ids, this.userData.user.username, res => {
-						if (res.success) {
-							this.$u.route({
-								url: 'pages/chat/groupDetail'
-							});
-						}
-					});
-				}
 			},
 		},
 		onPageScroll(e) {

@@ -16,7 +16,7 @@
 			</form>
 			<view class="t-f">
 				登录即同意 <text @tap="linkAgr">《用户协议》</text>
-				<text @tap="linkReg" style="color: #000000;">注册账号</text>
+				<text @tap="linkReg" style="color: #000000;">注册</text>
 			 </view>
 			 <view class="t-f">
 				

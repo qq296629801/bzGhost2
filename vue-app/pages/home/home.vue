@@ -41,9 +41,9 @@ export default {
 				}
 			],
 			selectList: [
-				{ id: '1', name: '添加朋友', icon: 'man-add-fill' },
+				{ id: '1', name: '添加朋友', icon: 'man-add' },
 				{ id: '2', name: '扫一扫', icon: 'scan' },
-				{ id: '3', name: '收付款', icon: 'fingerprint' }
+				{ id: '3', name: '发起群聊', icon: 'chat' }
 				]
 		};
 	},
@@ -131,7 +131,6 @@ export default {
 				uni.scanCode({
 					success: function(res) {
 						uni.vibrateLong();
-						// console.log('条码内容：' + res.result);
 						let uId = res.result
 						if (uId==t.userData.user.operId){
 							uni.showToast({
@@ -146,6 +145,10 @@ export default {
 						}
 					}
 				});
+			}else {
+				this.$u.route({
+					url: 'pages/chat/groupCreate'
+				})
 			}
 		},
 	},

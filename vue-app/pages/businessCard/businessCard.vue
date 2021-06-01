@@ -3,8 +3,8 @@
 		<view class="userinfo">
 			<u-avatar :src="$url + userInfo.avatar" mode="square" size="110" @tap="previewImg(url)"></u-avatar>
 			<view class="userinfo-desc">
-				<view class="userinfo-desc-name">{{userInfo.nickName||userInfo.realname }}</view>
-				<view class="userinfo-desc-gray">积分：{{userInfo.money}}</view>
+				<view class="userinfo-desc-name">{{userInfo.nickName || userInfo.realname }}</view>
+				<view class="userinfo-desc-gray">{{userInfo.money}}</view>
 			</view>
 		</view>
 		<view  class="perch"></view>
@@ -21,7 +21,7 @@
 			</u-cell-group>
 			<u-cell-group v-else-if="1 == source">
 				<u-cell-item title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="linkToChat">
-					<u-icon slot="icon" name="chat" color="#36648B" size="34"></u-icon>
+					<u-icon slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
