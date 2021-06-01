@@ -40,6 +40,9 @@
 				],
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			onUploaded(lists) {
 				this.filesArr = lists;

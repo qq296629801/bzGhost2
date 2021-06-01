@@ -42,6 +42,9 @@
 				url: require('@/static/image/huge.jpg')
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			showSearch() {
 				this.$u.route({

@@ -46,6 +46,9 @@ export default {
 		},
 		
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	onShow() {
 		this.bgList = JSON.parse(JSON.stringify(this.circleBgList))
 	}

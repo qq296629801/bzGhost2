@@ -64,6 +64,9 @@
 		onLoad() {
 			
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			linkToMoment(){
 				this.$u.route({

@@ -36,6 +36,9 @@
 				orderId: 0
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			updateSuccess: function() {
 				let that = this

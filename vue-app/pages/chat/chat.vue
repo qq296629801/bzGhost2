@@ -162,6 +162,9 @@
 				}
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods:{
 			textMsgFunc(t){
 				this.textMsg = t;

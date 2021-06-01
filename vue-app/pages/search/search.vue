@@ -70,6 +70,9 @@ export default {
 			scrollTop:0
 		};
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	watch:{
 		searchWord:function(v){
 			this.toSearch(v)

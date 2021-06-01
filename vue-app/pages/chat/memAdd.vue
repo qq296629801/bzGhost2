@@ -41,6 +41,9 @@
 				keyword: ''
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		onShow() {
 			this.$socket.listGuests(this.userData.user.operId, res => {
 				this.$u.vuex('firendItem', res.response.data);

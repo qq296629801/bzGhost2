@@ -34,6 +34,9 @@
 				],
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			
 		}

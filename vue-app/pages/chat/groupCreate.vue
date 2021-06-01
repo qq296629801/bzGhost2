@@ -77,6 +77,9 @@
 				}
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			chechMem(user) {
 				if (user.checked==undefined || user.checked==false) {

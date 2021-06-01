@@ -48,6 +48,9 @@ export default {
 	},
 	onLoad() {},
 	onShow() {},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	methods: {
 		handleAction (i) {
 			if (i === 1) {

@@ -30,6 +30,9 @@
 				faces:[]
 			};
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		watch:{},
 		methods:{
 			addFaceUser(faceId){

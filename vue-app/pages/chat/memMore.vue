@@ -23,6 +23,9 @@
 		onShow() {
 			this.queryMems();
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods:{
 			showAddGroupUser(){
 				this.$u.route({

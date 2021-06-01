@@ -26,6 +26,9 @@
 			return {
 			};
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods:{
 			  createQRCode: function (text, size) {
 			    //调用插件中的draw方法，绘制二维码图片

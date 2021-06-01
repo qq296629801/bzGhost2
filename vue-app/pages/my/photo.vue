@@ -29,6 +29,9 @@
 				loadTxt:""
 			};
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods:{
 			/* 获取照片 */
 			getPhoto(){

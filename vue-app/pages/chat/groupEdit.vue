@@ -32,6 +32,9 @@ export default {
 			this.isInput = v==undefined ? true : false;
 		}
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	onLoad({groupId, context, type}) {
 		this.groupId = groupId
 		this.context = context

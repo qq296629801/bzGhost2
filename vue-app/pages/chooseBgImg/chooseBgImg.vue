@@ -16,6 +16,9 @@ export default {
 	data() {
 		return {};
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	methods: {
 		chooseImg() {
 			this.$u.route({

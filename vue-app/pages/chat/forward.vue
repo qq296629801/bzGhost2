@@ -24,6 +24,9 @@
 				}
 			});
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		onLoad({msgContext,msgType}) {
 			this.msgContext = msgContext
 			this.msgType = msgType

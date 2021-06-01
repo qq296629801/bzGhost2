@@ -11,6 +11,9 @@
 				url:'http://baidu.com'
 			};
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		onLoad({url,name}) {
 			this.url = url
 			uni.setNavigationBarTitle({

@@ -39,7 +39,9 @@
 				phone:'admin',
 			};
 		},
-
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods:{
 			linkAgr(){
 				// 跳转到消息列表

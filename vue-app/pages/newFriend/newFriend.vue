@@ -41,8 +41,11 @@ export default {
 			this.$socket.AcceptFriendRequest(fid,this.userData.user.operId,res=>{
 				uni.showToast({
 				title: '添加好友',
-				duration: 2000
+				icon: 'success'
 				});
+				this.$u.route({
+					url: 'pages/addressBook/addressBook'
+				})
 			})
 		},
 		getNewFriend(freshFlag) {

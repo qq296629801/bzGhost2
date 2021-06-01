@@ -53,6 +53,9 @@
 			});
 		},
 		onLoad(option) {},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		watch: {
 			keyword: function(val) {
 				let arr = this.firendList;

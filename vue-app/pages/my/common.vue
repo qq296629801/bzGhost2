@@ -37,6 +37,9 @@
 				],
 			}
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		methods: {
 			linkToBgImg(){
 				this.$u.route({

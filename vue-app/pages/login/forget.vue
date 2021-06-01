@@ -40,6 +40,9 @@
     onLoad() {
       _this = this;
     },
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
     computed: {
       yanzhengma() {
         if (this.second == 0) {

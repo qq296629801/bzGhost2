@@ -92,6 +92,9 @@ export default {
 			anyDisnable:false,
 		};
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	methods: {
 		seeMore(){
 			this.$u.route({

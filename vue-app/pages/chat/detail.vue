@@ -58,6 +58,9 @@
 		},
 		onShow() {
 		},
+		onPullDownRefresh() {
+			uni.stopPullDownRefresh();
+		},
 		onPageScroll(e) {
 			//e.scrollTop;
 			if(e.scrollTop>100){return;}

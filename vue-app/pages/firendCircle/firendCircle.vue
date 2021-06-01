@@ -144,6 +144,9 @@ export default {
 			postIndex:'',
 		};
 	},
+	onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	},
 	filters: {
 	   format: function (e) {
 		  // 获取js 时间戳
