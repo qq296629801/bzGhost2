@@ -1,15 +1,12 @@
 <template>
 	<view class="content">
-		<u-navbar :is-back="true" title="好友聊天详情" :background="{ background: '#F6F7F8'  }" title-color="#404133" :border-bottom="false" z-index="1001">
+		<u-navbar :is-back="true" title="聊天信息" :background="{ background: '#F6F7F8'  }" title-color="#404133" :border-bottom="false" z-index="1001">
 		</u-navbar>
 		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
 					<u-avatar :src="url" mode="square"></u-avatar>
 					<view class="grid-text">{{userInfo.nickName}}</view>
-				</u-grid-item>
-				<u-grid-item @click="showAddGroupUser">
-					<u-icon name="plus" size="40"></u-icon>
 				</u-grid-item>
 			</u-grid>
 		</view>
@@ -25,7 +22,7 @@
 		</u-cell-group>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
-			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="deleteFriendMsg" :arrow="false">
+			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>
 		</u-cell-group>
@@ -52,18 +49,6 @@
 					params: {searchType: 3, chatId:this.chatId}
 				})
 			},
-			getUserInfo(){
-				this.$socket.getUserById(this.chatObj.chatId, res=> {
-					this.userInfo = res.user
-					this.url = this.$url + res.user.avatar
-				})
-			},
-			showAddGroupUser(){
-				this.$u.route({
-					url: 'pages/chat/addGroupUser',
-					params: { chatId: this.chatId, chatName: this.chatName, type: 1 }
-				});
-			},
 			chooseImg() {
 				this.$u.route({
 					url: 'components/u-avatar-cropper/u-avatar-cropper',
@@ -74,28 +59,24 @@
 					}
 				});
 			},
-			deleteFriendMsg(){
+			delFriendMsg(){
 				this.$socket.deleteFriendMsg(this.userData.user.operId, this.chatId, res=> {
-					if (res.success) {
-						uni.showModal({
-							title: '成功',
-							showCancel: false
-						});
-					} else {
-						uni.showModal({
-							title: '失败',
-							showCancel: false
-						});
-					}
+					uni.showModal({
+						title: res.success?'成功':'失败',
+						showCancel: false
+					});
 				})
 			},
 		},
 		onLoad(option) {
 		},
 		onShow() {
+			this.$socket.getUserById(this.chatObj.chatId, res=> {
+				this.userInfo = res.user
+				this.url = this.$url + res.user.avatar
+			})
 		},
 		onReady() {
-			this.getUserInfo()
 		}
 	}
 </script>

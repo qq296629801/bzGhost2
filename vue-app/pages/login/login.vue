@@ -34,7 +34,7 @@
 		components:{},
 		data() {
 			return {
-				title: '易群',
+				title: 'yiqun',
 				pass:'123456',
 				phone:'admin',
 			};

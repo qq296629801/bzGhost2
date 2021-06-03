@@ -1,7 +1,7 @@
 <template>
 	<view class="item u-border-bottom" :class="value.isTop? 'bg_view' : ''" hover-class="message-hover-class" @tap="linkTo(value)">
 		<img-cache :src="$url + (value.avatar|| value.imgUrl)"></img-cache>
-		<u-badge :count="value.unreadNumber"  type="error" class="badge" :offset="offset"></u-badge>
+		<u-badge v-show="badgeIcon" :count="value.unreadNumber"  type="error" class="badge" :offset="offset"></u-badge>
 		<view class="right title-wrap">
 			<view class="right_top">
 				<view class="right_top_name u-line-1">{{ value.chatName || value.nickName}}</view>
@@ -39,6 +39,12 @@
 				type: Boolean,
 				default () {
 					return false;
+				}
+			},
+			badgeIcon:{
+				type: Boolean,
+				default () {
+					return true;
 				}
 			}
 		},

@@ -23,7 +23,7 @@
 				:focus="true"
 				@custom="clickCancel"
 				@search="toSearch"
-				placeholder="h5能否自动获取焦点取决于浏览器的实现"
+				:placeholder="p"
 				shape="square"
 				:action-style="{ color: '#007aff' }"
 				action-text="取消"
@@ -34,7 +34,7 @@
 		<!-- #endif -->
 		<view class="content1" v-if="'0' == searchType">
 			<view v-for="(item, index) in list" :key="index">
-				<chatItem @linkTo="toUserInfo" :value="item" :index="index"></chatItem>
+				<chatItem @linkTo="toUserInfo" :badgeIcon="false" :value="item" :index="index"></chatItem>
 			</view>
 		</view>
 		<view class="content" v-else-if="'1' == searchType">
@@ -65,7 +65,9 @@ export default {
 			chatId: '',
 			pageNum: -1,
 			searchType: '0',
+			placeholder:['查找好友','查找通讯录','查找好友消息','查找群消息'],
 			searchWord: '',
+			p:'',
 			list: [],
 			scrollTop:0
 		};
@@ -160,6 +162,8 @@ export default {
 	onLoad({ searchType, chatId }) {
 		this.searchType = searchType;
 		this.chatId = chatId;
+		this.p= this.placeholder[searchType];
+		
 	}
 };
 </script>
@@ -226,6 +230,7 @@ export default {
 
 .content1 {
 	height: 100%;
+	background-color: white;
 	.list-cell {
 		display: flex;
 		box-sizing: border-box;
