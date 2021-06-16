@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="faces">
-            <li v-for="item in faceList">
+            <li v-for="(item, index) in faceList" :key="index">
                 <img :src="faceMap[item]" :alt="item" :title="item" @click="insertFace(item)"/>
             </li>
         </ul>

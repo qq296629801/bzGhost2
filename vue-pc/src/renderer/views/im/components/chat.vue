@@ -121,7 +121,7 @@
                         </Upload>
                         <Icon type="ios-text-outline" @click="showWordBox()"></Icon>
                         <Faces v-show="showFace" @click="showFace = true" class="faces-box" @insertFace="insertFace"></Faces>
-                        <Word v-show="showWord" @click="showWord = true" class="faces-box"></Word>
+                        <Word v-show="showWord" @click="showWord = true" class="faces-box" @insertWord="insertWord"></Word>
                         <Button size="small" class="history-message-btn" @click="getHistoryMessage()">聊天记录</Button>
                     </div>
                     <textarea v-on:paste="handlePaste" v-model="messageContent" class="textarea" @keyup.enter="mineSend()"></textarea>
@@ -684,9 +684,17 @@ export default {
             this.showWord = !this.showWord;
             this.showFace = false;
         },
+        insertWord:function(item){
+            this.messageContent = this.messageContent + item;
+             this.showWord = false;
+        },
         insertFace: function (item) {
             this.messageContent = this.messageContent + item;
             this.showFace = false;
+        },
+        delBox:function(){
+            this.showFace = false;
+             this.showWord = false;
         },
         handleStart() {
             this.$Loading.start();
