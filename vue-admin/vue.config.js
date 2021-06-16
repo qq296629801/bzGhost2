@@ -10,7 +10,7 @@ module.exports = {
         open: true,
         proxy: {
             '/': {
-                target: 'http://120.27.95.106:9998/',
+                target: 'http://127.0.0.1:9998/',
                 ws: false,
                 changeOrigin: true,
                 xfwd: false

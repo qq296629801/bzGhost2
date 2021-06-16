@@ -12,8 +12,8 @@
             </el-input>
         </el-form-item>
         <el-form-item>
-            <el-button v-hasPermission="'version:add'" type="primary" @click="resetForm(false)">新增</el-button>
-            <el-button v-hasPermission="'version:delete'" @click="handleDel">删除</el-button>
+            <el-button v-hasPermission="'word:add'" type="primary" @click="resetForm(false)">新增</el-button>
+            <el-button v-hasPermission="'word:del'" @click="handleDel">删除</el-button>
         </el-form-item>
     </el-form>
     <table-list :tableData="tableData" @flash="handleSearch" @select="handleSelect" @update="resetForm"></table-list>
@@ -45,7 +45,7 @@ export default {
             },
             addForm: {
                 show: false,
-                title: '新增版本',
+                title: '新增',
                 form: {
                     ios: '',
                     android: '',
@@ -74,7 +74,7 @@ export default {
             this.select = val.map(v => v.id)
         },
         handleDel () {
-            this.$confirm('确定要删除该版本吗？', '提示', {
+            this.$confirm('确定要删除吗？', '提示', {
                 confirmButtonText: '确 定',
                 cancelButtonText: '取 消',
                 type: 'warning'
@@ -95,10 +95,10 @@ export default {
             })
         },
         handleSave () {
-            let url = this.addForm.title === '新增版本' ? '/word/add' : '/word/update'
+            let url = this.addForm.title === '新增' ? '/word/add' : '/word/update'
             this.$post(url, this.addForm.form).then(res => {
-                if (res || this.addForm.title === '修改版本') {
-                    this.$message.success(this.addForm.title === '新增版本'?'新增成功':'修改成功')
+                if (res || this.addForm.title === '修改') {
+                    this.$message.success(this.addForm.title === '新增'?'新增成功':'修改成功')
                     this.addForm.show = false
                     this.init()
                 }
@@ -135,13 +135,13 @@ export default {
             if (item) {
                 this.addForm = {
                     show: true,
-                    title: '修改版本',
+                    title: '修改',
                     form: item
                 }
             } else {
                 this.addForm = {
                     show: true,
-                    title: '新增版本',
+                    title: '新增',
                     form: {
                         ios: '',
                         android: '',

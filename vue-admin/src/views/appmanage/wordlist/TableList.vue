@@ -9,16 +9,13 @@
             </template>
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="id" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="pc" label="pc" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="ios" label="ios" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="android" label="android" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="remark" label="remark" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="version" label="version" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="operUser" label="创建人" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="operTime" label="创建时间" show-overflow-tooltip sortable></el-table-column>
+            <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="word" label="内容" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="cOperUser" label="创建人" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="cTime" label="创建时间" show-overflow-tooltip sortable></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button v-hasPermission="'version:update'" @click="$emit('update', scope.row)" type="text">修改</el-button>
+                    <el-button v-hasPermission="'word:update'" @click="$emit('update', scope.row)" type="text">修改</el-button>
                 </template>
             </el-table-column>
         </el-table>
