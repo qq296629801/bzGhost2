@@ -119,7 +119,9 @@
                         <Upload :action="action" name="file" :format="fileFormat" :data="tokenFile" :show-upload-list="false" :headers="headers" :max-size="102400" :with-credentials="true" :before-upload="beforeUpload" :on-progress="handleStart" :on-format-error="handleFormatError" :on-exceeded-size="handleFileMaxSize" :on-success="fileHandleSuccess" :on-error="handleError">
                             <Icon type="ios-folder-open-outline"></Icon>
                         </Upload>
+                        <Icon type="ios-text-outline" @click="showWordBox()"></Icon>
                         <Faces v-show="showFace" @click="showFace = true" class="faces-box" @insertFace="insertFace"></Faces>
+                        <Word v-show="showWord" @click="showWord = true" class="faces-box"></Word>
                         <Button size="small" class="history-message-btn" @click="getHistoryMessage()">聊天记录</Button>
                     </div>
                     <textarea v-on:paste="handlePaste" v-model="messageContent" class="textarea" @keyup.enter="mineSend()"></textarea>
@@ -285,6 +287,7 @@
 <script>
 import Button from 'iview/src/components/button/button';
 import Faces from './faces.vue';
+import Word from './word.vue'
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 const {
@@ -298,7 +301,8 @@ import { queryData, upData, initData } from '../../../utils/dbUtil';
 export default {
     components: {
         Faces,
-        Button
+        Button,
+        Word
     },
     name: 'chat',
     computed: {
@@ -378,6 +382,7 @@ export default {
             messageListMap: new Map(),
             messageContent: '',
             showFace: false,
+            showWord:false,
             userList: [],
             imgFormat: ['jpg', 'jpeg', 'png', 'gif'],
             fileFormat: ['doc', 'docx', 'jpg', 'jpeg', 'png', 'gif', 'xls', 'xlsx', 'pdf', 'gif', 'exe', 'msi', 'swf', 'sql', 'apk', 'psd'],
@@ -673,6 +678,11 @@ export default {
         },
         showFaceBox: function () {
             this.showFace = !this.showFace;
+            this.showWord = false;
+        },
+        showWordBox:function(){
+            this.showWord = !this.showWord;
+            this.showFace = false;
         },
         insertFace: function (item) {
             this.messageContent = this.messageContent + item;
@@ -1424,7 +1434,7 @@ export default {
             position: absolute;
             bottom: 3.8rem;
         }
-
+  
         .ivu-upload {
             display: inline-block;
         }
