@@ -28,6 +28,7 @@ export default {
     ServerInfo: () => import(/* webpackChunkName: "monitor" */ '@/views/monitor/sysInfo/serverInfo'),
     AddressList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/addresslist'),
     VersionList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/versionlist'),
+    WordList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/wordlist'),
     LinkList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/linklist'),
     AppRoom: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/approom'),
     ChannelList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/channellist'),
