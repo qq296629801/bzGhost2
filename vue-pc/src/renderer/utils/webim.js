@@ -718,6 +718,14 @@ const WEBIM = {
         send(p)
         eventDispatcher.addListener('-6', func)
     },
+    listWord:function(func){
+      let p={
+        version: 1,
+        command: -15
+    }
+    send(p)
+    eventDispatcher.addListener('-16', func)
+    }
 }
 
 function toJSON(packet) {
