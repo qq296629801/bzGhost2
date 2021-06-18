@@ -89,7 +89,6 @@ export default {
   methods: {
     showChat: function(item) {
         this.chat = item
-        console.log(item,'----chat------');
         this.chatType = item.chatType
         this.findChatList()
     },

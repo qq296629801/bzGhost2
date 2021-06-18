@@ -13,6 +13,10 @@
                 <label>积分：</label>
                 <span>{{user.money}}</span>
             </p>
+             <p class="user-model-item">
+                <label>分享码：</label>
+                <span>{{user.invitationCode}}</span>
+            </p>
             <p class="user-model-item">
                 <Button style="margin-top:10px;" @click="modalPassEdit = true; $store.state.modalMine = false" long>修改密码</Button>
                 <Button style="margin-top:10px;" type="error" long @click="myLogout">退出</Button>

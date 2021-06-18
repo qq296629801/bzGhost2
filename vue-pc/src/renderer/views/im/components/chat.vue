@@ -1,6 +1,6 @@
 <template>
-<div class="im-chat" v-if="chat.chatName">
-    <div class="im-chat-top" v-if="chat">
+<div class="im-chat">
+    <div class="im-chat-top">
         <span>{{ chat.chatName }}</span>
         <a href="javascript:;" @click="groupModal = true" class="pull-right menu" v-if="1 == chatType">
             <Icon type="ios-more"></Icon>

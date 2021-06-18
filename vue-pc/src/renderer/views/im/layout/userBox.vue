@@ -23,7 +23,7 @@
     </div>
     <div class="chat-box">
         <Top></Top>
-        <UserInfo class="user-box-view" v-if="member" :user="member"></UserInfo>
+        <UserInfo class="user-box-view" v-if="member" :u="member"></UserInfo>
         <Welcome v-else></Welcome>
     </div>
 </div>
@@ -92,7 +92,7 @@ export default {
             return moment(val).calendar();
         }
     },
-    created() {
+    mounted() {
         this.$socket.listGuests(this.user.operId, res => {
             console.log(res.response)
             if (res.response.success) {
