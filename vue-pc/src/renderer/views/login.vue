@@ -29,19 +29,22 @@
 
     <Modal :transfer="false" closable class="user-model" v-model="showRegister" footer-hide title="注册新用户" width="400">
         <Form ref="formValidate" :model="registerForm" :rules="ruleValidate" :label-width="80">
-            <FormItem label="手机" prop="registerPhone">
-                <Input clearable class="my-ipt" v-model="registerForm.registerPhone" placeholder="请输入手机号" @on-blur="verifyTelephone"></Input>
+            <FormItem label="手机" prop="phone">
+                <Input clearable class="my-ipt" v-model="registerForm.phone" placeholder="请输入手机号" @on-blur="verifyTelephone"></Input>
             </FormItem>
-            <FormItem label="昵称" prop="registerUsername">
-                <Input clearable class="my-ipt" v-model="registerForm.registerUsername" placeholder="请输入昵称"></Input>
+            <FormItem label="昵称" prop="nickName">
+                <Input clearable class="my-ipt" v-model="registerForm.nickName" placeholder="请输入昵称"></Input>
             </FormItem>
-            <FormItem label="密码" prop="registerPassword">
-                <Input clearable class="my-ipt" type="password" v-model="registerForm.registerPassword" placeholder="请输入密码"></Input>
+             <FormItem label="邀请码" prop="invitationPerson">
+                <Input clearable class="my-ipt" v-model="registerForm.invitationPerson" placeholder="请输入邀请码"></Input>
+            </FormItem>
+            <FormItem label="密码" prop="pwd">
+                <Input clearable class="my-ipt" type="password" v-model="registerForm.pwd" placeholder="请输入密码"></Input>
             </FormItem>
             <FormItem label="确认密码" prop="qurePassWord">
                 <Input clearable class="my-ipt" type="password" v-model="registerForm.qurePassWord" placeholder="请输入密码"></Input>
             </FormItem>
-            <FormItem label="性别" prop="sex">
+            <!-- <FormItem label="性别" prop="sex">
                 <RadioGroup v-model="registerForm.sex">
                     <Radio label="male">男</Radio>
                     <Radio label="female">女</Radio>
@@ -49,7 +52,7 @@
             </FormItem>
             <FormItem label="出生日期" prop="birthday">
                 <DatePicker class="my-ipt" type="date" v-model="registerForm.birthday" placeholder="出生日期"></DatePicker>
-            </FormItem>
+            </FormItem> -->
             <Button type="primary" long @click="saveRegister">保存</Button>
         </Form>
     </Modal>
@@ -60,22 +63,23 @@
 <script>
     import Top from './im/components/top.vue';
     import { initData } from '../utils/dbUtil'
+    import axios from '../utils/axios'
     export default {
     name: 'login',
     data() {
         return {
             ruleValidate: {
-                registerPhone: [{
+                phone: [{
                     required: true,
                     message: '请填写手机号',
                     trigger: 'blur'
                 }],
-                registerUsername: [{
+                nickName: [{
                     required: true,
-                    message: '请填写用户名',
+                    message: '请填写昵称',
                     trigger: 'blur'
                 }],
-                registerPassword: [{
+                pwd: [{
                     required: true,
                     message: '请填写密码',
                     trigger: 'blur'
@@ -85,29 +89,30 @@
                     message: '请再次填写密码',
                     trigger: 'blur'
                 }],
-                sex: [{
-                    required: true,
-                    message: '请选择性别',
-                    trigger: 'change'
-                }],
-                birthday: [{
-                    required: true,
-                    type: 'date',
-                    message: '请选择出生日期',
-                    trigger: 'change'
-                }]
+                // sex: [{
+                //     required: true,
+                //     message: '请选择性别',
+                //     trigger: 'change'
+                // }],
+                // birthday: [{
+                //     required: true,
+                //     type: 'date',
+                //     message: '请选择出生日期',
+                //     trigger: 'change'
+                // }]
             },
             checkCode: null,
             app_name: '',
             telephone: '',
             password: '',
             registerForm: {
-                registerPhone: '',
-                registerUsername: '',
-                registerPassword: '',
-                qurePassWord: '',
+                devId: 1,
+                phone: '',
+                pwd: '',
+                nickName: '',
+                invitationPerson:'QhQf',
                 sex: '',
-                birthday: ''
+                birthday: '',
             },
             err: '',
             showErr: false,
@@ -161,7 +166,14 @@
         saveRegister() {
             this.$refs.formValidate.validate((valid) => {
                 if (valid) {
-                    this.$Message.success('Success!');
+                    let _this = this
+                    axios.post('http://127.0.0.1:9998/register/register', this.registerForm)
+                    .then(function (response) {
+                        _this.$Message.success(response.data.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
                 }
             })
         },

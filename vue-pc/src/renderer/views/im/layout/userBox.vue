@@ -94,6 +94,7 @@ export default {
     },
     created() {
         this.$socket.listGuests(this.user.operId, res => {
+            console.log(res.response)
             if (res.response.success) {
                 this.friends = res.response.data
             }
