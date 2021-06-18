@@ -5,17 +5,25 @@
 			<form class="cl">
 				<view class="t-a">
 					<image src="/static/shilu-login/1.png"></image>
-					<input name="phone" type="number" maxlength="11" v-model="phone" placeholder="请输入手机号" />
+					<input name="phone" type="text" maxlength="11" v-model="regForm.phone" placeholder="用户名" />
 				</view>
 				<view class="t-a">
 					<image src="/static/shilu-login/2.png"></image>
-					<input name="pass" type="text" maxlength="32" v-model="pass" placeholder="密码" />
+					<input name="pwd" type="password" maxlength="32" v-model="regForm.pwd" placeholder="密码" />
+				</view>
+				<view class="t-a">
+					<image src="/static/shilu-login/4.png"></image>
+					<input name="nickName" type="text" maxlength="32" v-model="regForm.nickName" placeholder="昵称" />
 				</view>
 				<view class="t-a">
 					<image src="/static/shilu-login/3.png"></image>
+					<input name="invitationPerson" type="text" maxlength="6" v-model="regForm.invitationPerson" placeholder="邀请码" />
+				</view>
+				<!-- <view class="t-a">
+					<image src="/static/shilu-login/3.png"></image>
 					<input name="code" type="number" maxlength="6" v-model="code" placeholder="请输入验证码" />
 					<view class="t-c" @tap="getcode">{{yanzhengma}}</view>
-				</view>
+				</view> -->
 				<view class="t-d"></view>
 				<button @tap="reg">注册</button>
 			</form>
@@ -28,23 +36,27 @@
 <script>
 	import { openFSqlite, createFSQL, selectFSQL, addFSQL } from '../../util/f.js'
 	import { queryData, upData, initData } from '../../util/dbUtil.js'
+	import apiconfig from '../../apiconfig.js'
 	var _this, js;
 	export default {
 		components:{},
 		data() {
 			return {
 				title: '注册',
-				pass:'123456',
-				phone: 18767176707,
-				code:'',
-				second: 0
+				regForm:{
+					phone:'',
+					pwd:'',
+					invitationPerson:'QhQf',
+					nickName:'',
+					devId: 0,
+				}
 			};
 		},
 		onPullDownRefresh() {
 			uni.stopPullDownRefresh();
 		},
 		computed: {
-		  yanzhengma() {
+		 /* yanzhengma() {
 		    if (this.second == 0) {
 		      return '获取验证码';
 		    } else {
@@ -54,7 +66,7 @@
 		        return '重新获取' + this.second;
 		      }
 		    }
-		  }
+		  } */
 		},
 		mounted() {
 			_this = this;
@@ -98,27 +110,12 @@
 					});
 			},
 			reg() {
-				uni.request({
-					url:this.$api+'/register/register', 
-					data: {
-						phone:this.phone,
-						pwd:this.pass,
-						code:this.code
-					},
-					success: (res) => {
-						if(res.data.data === '注册失败') {
-							uni.showToast({
-								title: res.data.data,
-								icon:'none'
-							})
-						} else {
-							uni.showToast({
-								title: res.data.data,
-								icon:'none'
-							});
-							
-						}	
-					}
+				let _this = this
+				apiconfig.register({data:_this.regForm}).then(res=>{
+					uni.showToast({
+						title:res.data.data,
+						icon:'success'
+					})
 				});
 			}
 		}

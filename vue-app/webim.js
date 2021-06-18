@@ -73,6 +73,7 @@ const WEBIM = {
 			username,
 			password,
 			code: null,
+			devId: 0,
 			version: 1,
 			command: 1
 		}

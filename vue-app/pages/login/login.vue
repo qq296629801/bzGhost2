@@ -8,8 +8,8 @@
 					<input name="phone" v-model="phone" placeholder="请输入手机号" />
 				</view>
 				<view class="t-a">
-					<image src="/static/shilu-login/3.png"></image>
-					<input name="code" v-model="pass" placeholder="请输入验证码" />
+					<image src="/static/shilu-login/2.png"></image>
+					<input name="code" type="password" v-model="pass" placeholder="请输入密码" />
 				</view>
 				<view class="t-d"></view>
 				<button @tap="linkLogin">立即登录</button>

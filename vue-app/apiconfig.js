@@ -4,13 +4,13 @@
 import request from 'request.js'
 class apiconfig {
   constructor(config = {}) {
-        this.baseurl= 'http://120.27.95.106:9999/';
+        this.baseurl= 'http://127.0.0.1:9998/';
 		this.pathconfig={
-			checkUpdate: this.baseurl +'/checkVersion'
+			reg: this.baseurl +'/register/register'
 		}
   }
-  getCheckVersion(config){
-  	   return request.get(this.pathconfig.checkUpdate,config);
+  register(config){
+  	   return request.post(this.pathconfig.reg,config);
   }
 }
 
