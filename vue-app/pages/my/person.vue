@@ -18,6 +18,10 @@
 			</u-cell-item>
 			<u-cell-item title="用户名" :arrow="false" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
+			<u-cell-item title="分享码" :arrow="false" :value="userData.user.invitationCode" :title-style="{ marginLeft: '10rpx' }">
+			</u-cell-item>
+			<u-cell-item title="邀请码" :arrow="false" :value="userData.user.invitationPerson" :title-style="{ marginLeft: '10rpx' }">
+			</u-cell-item>
 			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
 				<u-icon :name="src1" size="40" :color="$u.color['lightColor']"></u-icon>
 			</u-cell-item>
