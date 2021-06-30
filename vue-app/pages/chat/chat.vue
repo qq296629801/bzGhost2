@@ -4,7 +4,10 @@
 			<scroll-view id="scrollview" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
 			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 			 upper-threshold="50">
+				
+				<view v-if="!loading"><u-loading mode="flower"></u-loading></view>
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+					
 					<!-- 系统通知的消息 -->
 					<system-bubble :row="row"></system-bubble>
 					
@@ -64,7 +67,7 @@
 		},
 		data() {
 			return {
-                isHistoryLoading:false,
+				loading: true, //标识是否正在获取数据
 				textMsg: '',
 				redFlag: false,
 				calls:[],
@@ -161,9 +164,6 @@
 					}
 				}
 			}
-		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
 		},
 		methods:{
 			textMsgFunc(t){
@@ -288,6 +288,7 @@
 			hideDrawer(){
 				this.popupLayerClass = '';
 				setTimeout(()=>{
+					uni.hideKeyboard();
 					this.hideMore = true;
 					this.hideEmoji = true;
 					this.rClickId = 0;
@@ -359,11 +360,13 @@
 										windowHeight = system.windowHeight;
 									}
 								});
-								const inputKeyBoardHeight = uni.upx2px(100) + this.inputOffsetBottom; //input输入框和键盘的高度
-								const contentHeight = windowHeight - inputKeyBoardHeight; //可视内容的高度（除去input输入框和键盘）
+								const inputKeyBoardHeight = uni.upx2px(100) + this.inputOffsetBottom; 
+								//input输入框和键盘的高度
+								const contentHeight = windowHeight - inputKeyBoardHeight; 
+								//可视内容的高度（除去input输入框和键盘）
 								let scrollTop = 0;
-								scrollTop = res.top - data.top - contentHeight + res.height; //滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离再减去可视内容的高度然后再加上此元素的高度
-								console.log(scrollTop)
+								scrollTop = res.top - data.top - contentHeight + res.height; 
+								//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离再减去可视内容的高度然后再加上此元素的高度
 								uni.pageScrollTo({ duration, scrollTop });
 							})
 							.exec();
@@ -456,11 +459,12 @@
 			},
 			//触发滑动到顶部(加载历史信息记录)
 			loadHistory(e){
-			uni.showLoading({
-				title:"加载中..."
-			})
-			//参数作为进入请求标识，防止重复请求
-			this.scrollAnimation = false;
+			if (!this.loading) {
+				//如果没有获取数据 即loading为false时，return 避免用户重复上拉触发加载
+				return;
+			}
+			this.loading = false;
+			//this.scrollAnimation = false;
 			//关闭滑动动画
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
@@ -474,13 +478,11 @@
 					  })
 					this.msgList.sort((a, b) => { return a.id - b.id })
 					this.$nextTick(() => {
-						//this.scrollToView = 'msg' + this.msgList[0].id
-						this.scrollAnimation = true;
+						//this.scrollAnimation = true;
+						this.loading = true;
 						this.pageNum++
 					});
 				  }
-				  uni.hideLoading();
-				  //this.scrollAnimation = true;
 				});
 			},
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪

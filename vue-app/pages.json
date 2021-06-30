@@ -67,7 +67,6 @@
 		}, {
 			"path": "pages/chat/chat",
 			"style": {
-				"enablePullDownRefresh": true ,
 				"app-plus": {
 					"softinputNavBar": "none",
 					"scrollIndicator":"none",
