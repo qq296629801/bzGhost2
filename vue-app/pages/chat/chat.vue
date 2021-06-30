@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="content" id="content" @touchstart="hideDrawer">
-			<scroll-view id="scrollview" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
+		<view class="content" id="content">
+			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
 			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 			 upper-threshold="50">
 				
@@ -81,6 +81,9 @@
 				pageNum:1,
 				disabledSay:0,
 				rightClickFlag: false,
+				old: {
+					scrollTop: 0
+				},
 				scrollAnimation:false,
 				scrollTop:0,
 				scrollToView:'',
@@ -127,8 +130,11 @@
 			this.disabledSay = 0
 			this.scrollTop = 9999999;
 			this.sendMsg(0,'');
+			
 			this.getMsgItem();
+			
 			this.openConver();
+			
 			this.hideDrawer();
 		},
 		onReady() {
@@ -166,6 +172,21 @@
 			}
 		},
 		methods:{
+			scroll: function(e) {
+				//console.log(e)
+				this.old.scrollTop = e.detail.scrollTop;
+				this.hideDrawer();
+			},
+			goTop: function(e) {
+				this.scrollTop = this.old.scrollTop
+				this.$nextTick(function() {
+					this.scrollTop = 0
+				});
+				uni.showToast({
+					icon:"none",
+					title:"纵向滚动 scrollTop 值已被修改为 0"
+				})
+			},
 			textMsgFunc(t){
 				this.textMsg = t;
 			},
@@ -351,7 +372,6 @@
 						uni.createSelectorQuery()
 							.select(sel)
 							.boundingClientRect(res => {
-								console.log(res)
 								if (!res) return;
 								//选中的节点
 								let windowHeight = 0;
@@ -460,11 +480,11 @@
 			//触发滑动到顶部(加载历史信息记录)
 			loadHistory(e){
 			if (!this.loading) {
-				//如果没有获取数据 即loading为false时，return 避免用户重复上拉触发加载
 				return;
 			}
 			this.loading = false;
-			//this.scrollAnimation = false;
+			this.scrollAnimation = false;
+			
 			//关闭滑动动画
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
@@ -478,7 +498,7 @@
 					  })
 					this.msgList.sort((a, b) => { return a.id - b.id })
 					this.$nextTick(() => {
-						//this.scrollAnimation = true;
+						this.scrollAnimation = true;
 						this.loading = true;
 						this.pageNum++
 					});
