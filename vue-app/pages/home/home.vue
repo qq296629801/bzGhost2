@@ -19,6 +19,7 @@
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
+import manageDb from '../../util/manageDb.js'
 export default {
 	components: { searchInput, selectInput,chatItem },
 	data() {
@@ -49,18 +50,29 @@ export default {
 	},
 	watch:{
         pushRes: function(value){
-			this.getChats(false)
+			this.getChatList()
 		}
 	},
 	mounted() {
-		this.getChats(false)
 	},
 	onShow() {
+		this.getChatList()
 	},
 	onLoad(){
 	},
 	onPullDownRefresh() {
-		this.getChats(true)
+		// 群消息
+		let uid = this.userData.user.operId
+		manageDb.upCacheMsg(uid);
+		// 通讯录
+		manageDb.upCacheAddr(uid).then(res=>{
+			this.$u.vuex('firendItem', res)
+		});
+		// 消息列表
+		manageDb.upCacheChat(uid).then(res=>{
+			this.$u.vuex('chatItem', res);
+			uni.stopPullDownRefresh();
+		});
 	},
 	methods: {
 		linkTo(item){
@@ -70,7 +82,7 @@ export default {
 				params: {}
 			});
 		},
-		getChats(freshFlag){
+		getChatList(){
 			if(this.userData.user==undefined){
 				return;
 			}
@@ -78,9 +90,6 @@ export default {
 				if (res.success) {
 				  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
 				  this.$u.vuex('chatItem', res.chats);
-				}
-				if(freshFlag){
-					uni.stopPullDownRefresh();
 				}
 			});
 		},

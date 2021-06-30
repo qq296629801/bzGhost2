@@ -28,10 +28,10 @@ const saveLifeData = function(key, value) {
 }
 const store = new Vuex.Store({
 	state: {
-		// 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
 		pushRes:lifeData.pushRes?lifeData.pushRes: {},
 		// 链接
 		linkItem:lifeData.linkItem?lifeData.linkItem: [],
+		// 用户数据
 		userData: lifeData.userData?lifeData.userData: {},
 		//群成员 有索引A~Z
 		memberItem:lifeData.memberItem?lifeData.memberItem:[],
@@ -47,7 +47,7 @@ const store = new Vuex.Store({
 		chatObj:{
 		  chatId:'',
 		  chatType:0,
-		  chatName:'测试'
+		  chatName:''
 		},
 		// 版本
 		vuex_version: '1.0.1',
@@ -55,10 +55,6 @@ const store = new Vuex.Store({
 		circleData: [],
 		//内置朋友圈相册banner图
 		circleBgList:[
-			{ src:require('@/static/image/circleBanner/1.jpg'), isCheck:false },
-			{ src:require('@/static/image/circleBanner/2.jpg'), isCheck:false },
-			{ src:require('@/static/image/circleBanner/3.jpg'), isCheck:false },
-			{ src:require('@/static/image/circleBanner/4.jpg'), isCheck:false },
 		],
 	},
 	mutations: {

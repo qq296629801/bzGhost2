@@ -28,8 +28,7 @@
 </template>
 
 <script>
-	import { openFSqlite, createFSQL, selectFSQL, addFSQL } from '../../util/f.js'
-	import { queryData, upData, initData } from '../../util/dbUtil.js'
+	import manageDb from '../../util/manageDb.js'
 	export default {
 		components:{},
 		data() {
@@ -58,46 +57,19 @@
 			linkLogin(){
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
-						// 缓存用户
-						this.$u.vuex("userData", res.response.data);
+						let userData = res.response.data;
 						
-						// 	缓存通讯录
-						this.$socket.listGuests(this.userData.user.operId, res => {
-							// #ifdef APP-PLUS
-							createFSQL(this.userData.user.operId).then();
-							let contact = res.response.data;
-							contact.forEach(c=>{
-								c.members.forEach(m=>{
-									m.name = c.name;
-									addFSQL(m, this.userData.user.operId).then();
-								})
-							})
-							// #endif
-							this.$u.vuex('firendItem', res.response.data)
+						this.$u.vuex("userData", userData);
+						
+						manageDb.upCacheMsg(userData.user.operId);
+						
+						manageDb.upCacheAddr(userData.user.operId).then(res=>{
+							this.$u.vuex('firendItem', res)
+						});
+						manageDb.upCacheChat(userData.user.operId).then(res=>{
+							this.$u.vuex('chatItem', res);
 						});
 						
-						// 缓存消息列表
-						this.$socket.queryOnlineMessage(this.userData.user.operId,q =>{
-							let data = q.response.data;
-							for(var i in data){
-								initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
-							}
-						})
-						
-						this.$socket.queryChats('', this.userData.user.operId,(res) => {
-							if (res.success) {
-							  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
-							  this.$u.vuex('chatItem', res.chats);
-							}
-						});
-						
-						//	缓存链接
-						this.$socket.getLinks(this.userData.user.operId, res=>{
-							this.$u.vuex('linkItem',res.response.data)
-						});
-						
-						
-						// 跳转到消息列表
 						this.$u.route({
 							url: 'pages/home/home',
 							type: 'switchTab'
