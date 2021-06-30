@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="content" id="content">
+		<view class="content" id="content" @touchstart="hideDrawer">
 			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
 			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 			 upper-threshold="50">
@@ -175,7 +175,6 @@
 			scroll: function(e) {
 				//console.log(e)
 				this.old.scrollTop = e.detail.scrollTop;
-				this.hideDrawer();
 			},
 			goTop: function(e) {
 				this.scrollTop = this.old.scrollTop
@@ -309,11 +308,11 @@
 			hideDrawer(){
 				this.popupLayerClass = '';
 				setTimeout(()=>{
-					uni.hideKeyboard();
 					this.hideMore = true;
 					this.hideEmoji = true;
 					this.rClickId = 0;
 					this.lClickId = 0;
+					uni.hideKeyboard();
 				},150);
 			},
 			// 置底
