@@ -1,5 +1,5 @@
 import {  initData } from './dbUtil.js'
-import { createFSQL, addFSQL } from './f.js'
+import { createFSQL, addFSQL, selectFSQL } from './f.js'
 import webim from '../webim.js';
 const manageDb = {
 	upCacheMsg(uid){
@@ -9,6 +9,36 @@ const manageDb = {
 				initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
 			}
 		})
+	},
+	selectAddr(uid){
+		return new Promise((resolve, reject) => {
+			// #ifndef H5
+			var list = [];
+			var indexList =  ['#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+			selectFSQL(uid).then(res=> {
+				indexList.forEach(name=>{
+					var members = [];
+					res.forEach(f=> {
+						if(f.name == name){
+							members.push(f);
+						}
+					});
+					let obj = {
+						name: name,
+						members: members
+					};
+					list.push(obj);
+				});
+				resolve(list)
+			});
+			// #endif	
+			
+			// #ifndef APP-PLUS
+			webim.listGuests(uid, res => {
+				resolve(res.response.data)
+			})
+			// #endif
+		});
 	},
 	upCacheAddr(uid){
 		return new Promise((resolve, reject) => {
@@ -24,7 +54,6 @@ const manageDb = {
 				})
 				// #endif
 				resolve(data.response.data)
-				//this.$u.vuex('firendItem', data.response.data)
 			});
 		});
 	},
@@ -34,7 +63,6 @@ const manageDb = {
 				if (res.success) {
 				  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
 				  resolve(res.chats)
-				 // this.$u.vuex('chatItem', res.chats);
 				}
 			});
 		});
