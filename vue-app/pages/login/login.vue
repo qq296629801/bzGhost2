@@ -33,7 +33,7 @@
 		components:{},
 		data() {
 			return {
-				title: 'yiqun',
+				title: 'Yiqun',
 				pass:'123456',
 				phone:'admin',
 			};
@@ -107,8 +107,9 @@
 	padding: 0 20rpx 0 120rpx;
 	height: 90rpx;
 	line-height: 90rpx;
+	border: 1px solid #dfdfdf;
 	margin-bottom: 50rpx;
-	background: #f4f4f4;
+	background: #fff;
 	font-size: 28rpx;
 	border-radius: 50rpx
 }

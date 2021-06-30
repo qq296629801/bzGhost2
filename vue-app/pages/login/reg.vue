@@ -144,7 +144,8 @@
 	height: 90rpx;
 	line-height: 90rpx;
 	margin-bottom: 50rpx;
-	background: #f4f4f4;
+	background: #fff;
+	border: 1px solid #dfdfdf;
 	font-size: 28rpx;
 	border-radius: 50rpx
 }
