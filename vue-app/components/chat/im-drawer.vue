@@ -38,7 +38,6 @@
 </template>
 
 <script>
-	import emojiData from "../../static/emoji/emojiData.js"
 	import emotion from '@/components/emotion/index.vue'
 	export default {
 		name:'im-drawer',

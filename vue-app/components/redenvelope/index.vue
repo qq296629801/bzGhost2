@@ -1,7 +1,8 @@
 <template>
 	<view>
 		<view class="tabr">
-			<view :class="{on:typeClass=='luck'}" @tap="switchType('luck')">拼手气红包</view><view :class="{on:typeClass=='normal'}"  @tap="switchType('normal')">普通红包</view>
+			<view :class="{on:typeClass=='luck'}" @tap="switchType('luck')">拼手气红包</view>
+			<view :class="{on:typeClass=='normal'}"  @tap="switchType('normal')">普通红包</view>
 			<view class="border" :class="typeClass"></view>
 		</view>
 		<view class="content" :class="typeClass">

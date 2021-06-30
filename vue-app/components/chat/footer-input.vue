@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 底部输入栏 -->
-		<view :style="{ bottom: inputOffsetBottom > 0 ?  '8rpx' : '0rpx' }" class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+		<view :style="{ bottom: inputOffsetBottom > 0 ?  '10rpx' : '0rpx' }" class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
 			<!-- H5下不能录音，输入栏布局改动一下 -->
 			<!-- #ifndef H5 -->
 			<view class="voice">
@@ -33,11 +33,9 @@
 				<view class="iconfont icontianjia"></view>
 			</view>
 			<!-- #endif -->
-			<!-- #ifdef H5 -->
 			<view class="send" @tap="sendMsg(0, textMsg)" :class="isVoice?'hidden':''">
 				<view class="iconfont icontuiguang-weixuan"></view>
 			</view>
-			<!-- #endif -->
 		</view>
 		
 		<!-- 录音UI效果 -->

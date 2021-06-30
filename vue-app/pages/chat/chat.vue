@@ -16,7 +16,7 @@
 					 @openRedPacket="openRedPacket"></left-bubble>
 					
 					<!-- 自己发出的消息 -->
-					<right-bubble @sendMsg="sendMsg" @oRt="oRt" :rClickId="rClickId"
+					<right-bubble @sendMsg="sendMsg" oRt="oRt" :rClickId="rClickId"
 					  :index="index" @openRedPacket="openRedPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
 				</view>
 			</scroll-view>
@@ -28,7 +28,7 @@
 		
 		<!-- 底部输入框 -->
 		<footer-input @textMsgFunc="textMsgFunc" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
-					  @showMore="showMore" @textareaFocus="textareaFocus" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
+					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
 		 :disabledSay="disabledSay" :textMsg2="textMsg" :popupLayerClass="popupLayerClass"
 					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
 		
@@ -46,13 +46,13 @@
 	import ImDrawer from '@/components/chat/im-drawer.vue'
 	import RedCard from '@/components/chat/red-card.vue'
 	import RedEnvelope from "@/components/redenvelope"
-	import emojiData from "../../static/emoji/emojiData.js"
 	import ImgCache from '@/components/img-cache/img-cache.vue'
 	import RightBubble from '@/components/chat/right-bubble.vue'
 	import LeftBubble from '@/components/chat/left-bubble.vue'
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
 	import { queryData, upData, initData, upRedData, upCanceData } from '../../util/dbStorage.js'
+	import { emojiList } from "@/static/emoji/emoji.js"
 	export default {
 		components: {
 			ImDrawer,
@@ -93,7 +93,6 @@
 				popupLayerClass:'',
 				hideMore:true,
 				hideEmoji:true,
-				emojiList:[{}],
 				emojiPath:'',
 				winState:'',
 				message:{},
@@ -123,7 +122,6 @@
 		onHide(){
 		},
 		onLoad(option) {
-			this.emojiList =emojiData.imgArr[1].emojiList;
 		},
 		onShow(){
 			this.disabledSay = 0
@@ -195,36 +193,25 @@
 			},
 			//添加表情
 			addEmoji(em, del){
-				if (em.emoticonFlag){
-					this.sendMsg(1,em.avatar);
-				} else {
-					//判断删除按钮
-					if(del){
-					  var str;
-					  var msglen = this.textMsg.length - 1;
-					  let start = this.textMsg.lastIndexOf("[");
-					  let end = this.textMsg.lastIndexOf("]");
-					  let len = end - start;
-					  if(end != -1 && end === msglen && len >= 2 && len <= 4){
-						    // 表情字符
-							str = this.textMsg.slice(0, start);
-						}else{
-							// 普通键盘输入汉字 或者字符
-							str = this.textMsg.slice(0, msglen);
-						}
-						
-						this.textMsg = str
-						return;
-					}
-					this.emojiList =emojiData.imgArr[em.groupIndex].emojiList
-					this.emojiPath =emojiData.imgArr[em.groupIndex].emojiPath
-					if(!em.minEmoji){
-						this.sendBigEmoji(em.emojiItem.url)
+				//判断删除按钮
+				if(del){
+				  var str;
+				  var msglen = this.textMsg.length - 1;
+				  let start = this.textMsg.lastIndexOf("[");
+				  let end = this.textMsg.lastIndexOf("]");
+				  let len = end - start;
+				  if(end != -1 && end === msglen && len >= 2 && len <= 4){
+					    // 表情字符
+						str = this.textMsg.slice(0, start);
 					}else{
-						console.log(em.emojiItem.alt)
-					  this.textMsg+=em.emojiItem.alt;
+						// 普通键盘输入汉字 或者字符
+						str = this.textMsg.slice(0, msglen);
 					}
+					
+					this.textMsg = str
+					return;
 				}
+			    this.textMsg += em.emojiItem.alt;
 			},
 			// 发送大表情
 			sendBigEmoji(url){
@@ -238,7 +225,6 @@
 				             + '</div>';    
 				let msg = {text:content}
 				this.sendMsg(1, msg);
-				//清空输入框
 				this.textMsg = '';
 			},
 			oLf(row){
@@ -571,12 +557,6 @@
 					this.hideDrawer();
 				}
 			},
-			//获取焦点，如果不是选表情ing,则关闭抽屉
-			textareaFocus(){
-				if(this.popupLayerClass=='showLayer' && this.hideMore == false){
-					this.hideDrawer();
-				}
-			},
 			//发送消息
 			sendMsg (msgType, text) {
 			 
@@ -673,27 +653,11 @@
 					upRedData(res.msgId,this.chatObj.chatId,res.message);
 				}
 			},
-			//@功能处理
-			process(msg) {
-				// let groupNickName = this.myGroupInfo.groupUser.groupNickName || ''
-				// let msgContext = msg.msgContext || ''
-				// //包含自己
-				// if(msgContext.indexOf('@')!=-1){
-				// 	if(msgContext.includes('@'+groupNickName)||
-				// 		msgContext.includes('@all')||
-				// 		msgContext.includes('@All')){
-				// 		this.calls.push(msg.id);
-				// 	} else if (msgContext.includes('@'+this._user_info.nickName)){
-				// 		this.calls.push(msg.id);
-				// 	}
-				// 	this.$u.vuex('_call_s',this.calls)
-				// }
-			},
+	
 			//替换表情符号为图片
 			replaceEmoji(str){
 				// 正则表达式匹配内容
 				let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
-					// console.log("item: " + item);
 					for(let i=0;i<this.emojiList.length;i++){
 						let row = this.emojiList[i];
 						for(let j=0;j<row.length;j++){
