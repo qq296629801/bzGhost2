@@ -12,11 +12,11 @@
 					<system-bubble :row="row"></system-bubble>
 					
 					<!-- 别人发出的消息 -->
-					<left-bubble @openLeft="openLeft" :lClickId="lClickId" :row="row" :playMsgId="playMsgid" :index="index"
+					<left-bubble @oLf="oLf" :lClickId="lClickId" :row="row" :playMsgId="playMsgid" :index="index"
 					 @openRedPacket="openRedPacket"></left-bubble>
 					
 					<!-- 自己发出的消息 -->
-					<right-bubble @sendMsg="sendMsg" @openRight="openRight" :rClickId="rClickId"
+					<right-bubble @sendMsg="sendMsg" @oRt="oRt" :rClickId="rClickId"
 					  :index="index" @openRedPacket="openRedPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
 				</view>
 			</scroll-view>
@@ -52,8 +52,7 @@
 	import LeftBubble from '@/components/chat/left-bubble.vue'
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
-	import { openMsgSqlite, createMsgSQL, selectMsgSQL, addMsgSQL } from '../../util/msg.js'
-	import { queryData, upData, initData, upRedData, upCanceData } from '../../util/dbUtil.js'
+	import { queryData, upData, initData, upRedData, upCanceData } from '../../util/dbStorage.js'
 	export default {
 		components: {
 			ImDrawer,
@@ -242,10 +241,10 @@
 				//清空输入框
 				this.textMsg = '';
 			},
-			openLeft(row){
+			oLf(row){
 				this.lClickId = row.id;
 			},
-			openRight(row){
+			oRt(row){
 				this.rClickId = row.id;
 			},
 			// 关闭红包弹窗

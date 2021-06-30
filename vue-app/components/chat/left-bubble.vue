@@ -21,16 +21,16 @@
 					<view class="time">{{row.operTime|formatDate}}</view>
 				</view>
 				<!-- 文字消息 -->
-				<view @longtap="openLeft(row)" v-if="row.msgType==0" class="bubble">
-					<rich-text :nodes="row.msgContext"></rich-text>
+				<view @longtap="oLf(row)" v-if="row.msgType==0" class="bubble">
+					<rich-text :nodes="transformFace(row.msgContext)"></rich-text>
 				</view>
 				<!-- 语音消息 -->
-				<view @longtap="openLeft(row)" v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
+				<view @longtap="oLf(row)" v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
 					<view class="icon other-voice"></view>
 					<view class="length">{{recordToJson(row.msgContext).length}}</view>
 				</view>
 				<!-- 图片消息 -->
-				<view @longtap="openLeft(row)" v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
+				<view @longtap="oLf(row)" v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
 					<image :src="`${$url}/scale_${row.msgContext}`" style="width:100px;height:100px"></image>
 				</view>
 				<!-- 红包 -->
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+	import { transform } from "../../static/emoji/ChatUtils.js";
+	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'left-bubble',
 		components:{
@@ -122,8 +124,8 @@
 			}
 		},
 		methods:{
-			openLeft(row){
-				this.$emit('openLeft', row);
+			oLf(row){
+				this.$emit('oLf', row);
 			},
 			deleteFunc(id,index){
 				this.$emit('deleteF', id, index);

@@ -19,7 +19,7 @@
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
-import manageDb from '../../util/manageDb.js'
+import dbUtil from '../../util/dbUtil.js'
 export default {
 	components: { searchInput, selectInput,chatItem },
 	data() {
@@ -63,13 +63,13 @@ export default {
 	onPullDownRefresh() {
 		// 群消息
 		let uid = this.userData.user.operId
-		manageDb.upCacheMsg(uid);
+		dbUtil.upCacheMsg(uid);
 		// 通讯录
-		manageDb.upCacheAddr(uid).then(res=>{
+		dbUtil.upCacheAddr(uid).then(res=>{
 			this.$u.vuex('firendItem', res)
 		});
 		// 消息列表
-		manageDb.upCacheChat(uid).then(res=>{
+		dbUtil.upCacheChat(uid).then(res=>{
 			this.$u.vuex('chatItem', res);
 			uni.stopPullDownRefresh();
 		});

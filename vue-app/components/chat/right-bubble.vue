@@ -14,15 +14,15 @@
 			<!-- 左-消息 -->
 			<view class="left">
 				<!-- 文字消息 -->
-				<view @longtap="openRight(row)" v-if="row.msgType==0" class="bubble text">
+				<view @longtap="oRt(row)" v-if="row.msgType==0" class="bubble text">
 					<rich-text :nodes="transformFace(row.msgContext)"></rich-text>
 				</view>
 				<!-- 图片消息 -->
-				<view @longtap="openRight(row)" v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
+				<view @longtap="oRt(row)" v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
 					<image :src="$url+'/scale_'+ row.msgContext" style="width:100px;height:100px"></image>
 				</view>
 				<!-- 语言消息 -->
-				<view @longtap="openRight(row)" v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgId == row.id?'play':''">
+				<view @longtap="oRt(row)" v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgId == row.id?'play':''">
 					<view class="length">{{recordToJson(row.msgContext).length}}</view>
 					<view class="icon my-voice"></view>
 				</view>
@@ -124,8 +124,8 @@
 			}
 		},
 		methods:{
-			openRight(row){
-				this.$emit('openRight', row);
+			oRt(row){
+				this.$emit('oRt', row);
 			},
 			deleteFunc(id,index){
 				this.$emit('deleteF', id, index);

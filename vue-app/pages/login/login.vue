@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import manageDb from '../../util/manageDb.js'
+	import dbUtil from '../../util/dbUtil.js'
 	export default {
 		components:{},
 		data() {
@@ -61,12 +61,12 @@
 						
 						this.$u.vuex("userData", userData);
 						
-						manageDb.upCacheMsg(userData.user.operId);
+						dbUtil.upCacheMsg(userData.user.operId);
 						
-						manageDb.upCacheAddr(userData.user.operId).then(res=>{
+						dbUtil.upCacheAddr(userData.user.operId).then(res=>{
 							this.$u.vuex('firendItem', res)
 						});
-						manageDb.upCacheChat(userData.user.operId).then(res=>{
+						dbUtil.upCacheChat(userData.user.operId).then(res=>{
 							this.$u.vuex('chatItem', res);
 						});
 						

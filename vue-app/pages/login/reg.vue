@@ -34,8 +34,6 @@
 </template>
 
 <script>
-	import { openFSqlite, createFSQL, selectFSQL, addFSQL } from '../../util/f.js'
-	import { queryData, upData, initData } from '../../util/dbUtil.js'
 	import apiconfig from '../../apiconfig.js'
 	var _this, js;
 	export default {

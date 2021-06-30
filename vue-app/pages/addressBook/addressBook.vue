@@ -7,7 +7,7 @@
 <script>
 import searchInput from '@/components/searchInput/index.vue'
 import addressBook from '@/components/addressBook.vue'
-import manageDb from '../../util/manageDb.js' 
+import dbUtil from '../../util/dbUtil.js' 
 export default {
 	components:{ searchInput, addressBook },
 	data() {
@@ -27,7 +27,7 @@ export default {
 	},
 	methods: {
 		getAddr(){
-			manageDb.selectAddr(this.userData.user.operId).then(res=>{
+			dbUtil.selectAddr(this.userData.user.operId).then(res=>{
 				this.$u.vuex('firendItem', res);
 			});
 		},
