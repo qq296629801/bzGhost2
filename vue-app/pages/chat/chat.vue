@@ -532,7 +532,11 @@
 								}
 							}else {
 								if(data!==undefined){
-									if(data.receiveUid==this.userData.user.operId){
+								    // console.log('当前聊天用户:',this.chatObj.chatId);
+									// console.log('当前登录用户',this.userData.user.operId)
+									// console.log('接受人',data.receiveUid)
+									// console.log('发送人',data.sendUid)
+									if(data.sendUid==this.chatObj.chatId){
 										_this.addMsg(data);
 									}
 								}
