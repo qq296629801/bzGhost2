@@ -86,7 +86,7 @@ function createWindow() {
         }
     ]);
 
-    appIcon.setToolTip('易群');
+    appIcon.setToolTip('yiqun');
     appIcon.setContextMenu(contextMenu);
     appIcon.on('click', function () {
         showMain();

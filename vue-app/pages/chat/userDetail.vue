@@ -36,7 +36,7 @@
 				chatId:'',
 				chatName:'',
 				userInfo:{},
-				url: require('@/static/image/huge.jpg')
+				url: ''
 			}
 		},
 		onPullDownRefresh() {
