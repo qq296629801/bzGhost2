@@ -7,15 +7,15 @@
             </p>
             <p class="user-model-item">
                 <label>姓名</label>
-                <span>{{user.realname}}</span>
+                <span>[{{user.realname}}]</span>
             </p>
             <p class="user-model-item">
-                <label>积分：</label>
-                <span>{{user.money}}</span>
+                <label>积分</label>
+                <span>[{{user.money}}]</span>
             </p>
              <p class="user-model-item">
-                <label>分享码：</label>
-                <span>{{user.invitationCode}}</span>
+                <label>分享码</label>
+                <span>[{{user.invitationCode}}]</span>
             </p>
             <p class="user-model-item">
                 <Button style="margin-top:10px;" @click="modalPassEdit = true; $store.state.modalMine = false" long>修改密码</Button>

@@ -1,10 +1,10 @@
 <template>
   <div class="chat-panel">
     <div class="chat-box-list">
-      <Input clearable prefix="ios-search" clearable v-model="search" placeholder="搜索" size="small" class="search"/>
+      <Input clearable prefix="ios-search" v-model="search" placeholder="搜索" size="small" class="search"/>
       <div class="group-box">
         <ul class="user-list">
-          <li class="user" v-for="(item, index) in items">
+          <li class="user" v-for="(item, index) in items" :key="index">
             <a href="javascript:" @click="showChat(item)" :class="chat&&chat.chatId===item.chatId?'active':''">
               <i v-if="item.unreadNumber !== 0">{{ getNum(item.unreadNumber) }}</i>
               <img :src="`${$url}/${item.imgUrl}`" alt="" />
@@ -54,7 +54,6 @@ export default {
       this.items = val ? list.filter(item => item.chatName.includes(val)) : list
     },
     pushRes:function (val) {
-      console.log(val)
       this.findChatList();
     }
   },

@@ -1,10 +1,10 @@
 <template>
   <div class="chat-panel">
     <div class="chat-box-list">
-      <Input clearable prefix="ios-search" clearable v-model="search" placeholder="搜索" size="small" class="search"/>
+      <Input clearable prefix="ios-search" v-model="search" placeholder="搜索" size="small" class="search"/>
       <div class="group-box">
         <ul class="user-list">
-          <li class="user" v-for="group in items">
+          <li class="user" v-for="(group,index) in items" :key="index">
             <a href="javascript:" @click="showChat(group)">
               <img :src="`${$url}/${ group.avatar || group.imgUrl }`" />
               <b>{{ group.remarkName || group.groupNickName || group.chatName }}</b>

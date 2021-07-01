@@ -1,7 +1,7 @@
 <template>
 <div class="user-box-wrap">
     <div class="user-box-list">
-        <Input clearable prefix="ios-search" clearable v-model="search" placeholder="搜索" size="small" class="search" />
+        <Input clearable prefix="ios-search" v-model="search" placeholder="搜索" size="small" class="search" />
         <div class="group-box">
             <Collapse simple>
                 <template v-for="(item, index) in items">
@@ -11,9 +11,9 @@
                             <span class="my-num">{{item.members.length}}</span>
                         </span>
                         <div slot="content" class="group-wrap">
-                            <div class="con-item" v-for="(m, n) in item.members" :key="n" @click="showUser(m)">
+                            <div :class="m.id==chat.chatId?'con-item active':'con-item'" v-for="(m, n) in item.members" :key="n" @click="showUser(m)">
                                 <img class="member-img" :src="`${$url}/${m.avatar}`" />
-                                <span>{{ m.groupNickName }}</span>
+                                <span>{{ m.nickName }}</span>
                             </div>
                         </div>
                     </Panel>
@@ -58,7 +58,15 @@ export default {
             set: function (mem) {
                 this.$store.commit('setMember', mem);
             }
-        }
+        },
+         chat: {
+          get: function() {
+              return this.$store.state.chat;
+          },
+          set: function(chat) {
+              this.$store.commit('setChat', chat);
+          }
+      },
     },
     data() {
         return {
@@ -94,7 +102,6 @@ export default {
     },
     mounted() {
         this.$socket.listGuests(this.user.operId, res => {
-            console.log(res.response)
             if (res.response.success) {
                 this.friends = res.response.data
             }
@@ -103,7 +110,13 @@ export default {
     methods: {
         showUser: function (m) {
             this.member = m
-            this.$store.commit('setChat', m);
+            let chat = {
+                chatName: m.nickName,
+                chatId: m.id,
+                money: m.money,
+                userName: m.userName
+            }
+            this.chat = chat;
             this.$store.commit('setChatType', 0);
         }
     }
@@ -182,10 +195,13 @@ export default {
         align-items: center;
         margin-bottom: 10px;
         cursor: pointer;
-
         span {
             margin-left: 10px;
         }
+         
+    }
+    .active{
+        background: #eee;
     }
 
     .ivu-collapse-simple {
@@ -211,6 +227,7 @@ export default {
         border-bottom: none !important;
     }
 
+   
     .group-wrap {
         .con-item {
             padding: 8px 16px;
