@@ -536,7 +536,7 @@
 									// console.log('当前登录用户',this.userData.user.operId)
 									// console.log('接受人',data.receiveUid)
 									// console.log('发送人',data.sendUid)
-									if(data.sendUid==this.chatObj.chatId){
+									if(data.sendUid==this.chatObj.chatId||data.sendUid==this.userData.user.operId){
 										_this.addMsg(data);
 									}
 								}
