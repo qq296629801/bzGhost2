@@ -10,7 +10,7 @@
 			<view class="right_btm ">
 				<view class="u-line-1">{{value.msgType==0?value.content:message[value.msgType]}}</view>
 				<view class="" v-show="voiceIcon">
-					<u-icon color="#c4c7cf" v-if="index%2==0" name="bell" size="22"></u-icon>
+					<u-icon color="#c4c7cf" v-if="value.unreadNumber>0" name="bell" size="30"></u-icon>
 				</view>
 			</view>
 		</view>
@@ -52,7 +52,7 @@
 			return {
 				offset:[10, 620],
 				message:['文字', '图片', '表情', '语音', '视频',
-				 '签到', '撤销', '发红包', '抢红包']
+				 '签到', '撤销', '发红包', '抢红包','其它']
 			};
 		},
 		filters: {
