@@ -527,6 +527,7 @@
 								if(data!==undefined){
 									if (data.groupId === this.chatObj.chatId) {
 										_this.addMsg(data);
+										uni.vibrateLong();
 									}
 									upData(data, _this.chatObj.chatId);
 								}
@@ -538,6 +539,7 @@
 									// console.log('发送人',data.sendUid)
 									if(data.sendUid==this.chatObj.chatId||data.sendUid==this.userData.user.operId){
 										_this.addMsg(data);
+										uni.vibrateLong();
 									}
 								}
 								
@@ -572,10 +574,6 @@
 					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
 					this.scrollAnimation = true;
 				});
-				//非自己的消息震动
-				if(msg.sendUid!==this.userData.user.operId){
-					uni.vibrateLong();
-				}
 			},
 			//增加撤销
 			addRevoke(res){
