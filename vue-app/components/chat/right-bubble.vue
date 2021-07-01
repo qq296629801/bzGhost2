@@ -4,11 +4,11 @@
 		<view class="my" v-if="row.sendUid==userData.user.operId">
 			<!-- 右键 -->
 			<view class="right-click" v-show="row.id==rClickId">
-				<view @tap="copyFunc(row.msgContext)">复制</view>
-				<view @tap="deleteFunc(row.id,index)" v-if="row.msgType!=1">删除</view>
-				<view @tap="forwardFunc(row)" v-if="row.msgType!=7">转发</view>
-				<view @tap="collectFunc(row)" v-if="row.msgType==1">收藏</view>
-				<text @tap="rollBackFunc(row)">撤销</text>
+				<view @tap="copyMethod(row.msgContext)">复制</view>
+				<view @tap="deleteMethod(row.id,index)" v-if="row.msgType!=1">删除</view>
+				<view @tap="forwardMethod(row)" v-if="row.msgType!=7">转发</view>
+				<view @tap="collectMethod(row)" v-if="row.msgType==1">收藏</view>
+				<text @tap="rollBackMethod(row)">撤销</text>
 			</view>
 			
 			<!-- 左-消息 -->
@@ -27,7 +27,7 @@
 					<view class="icon my-voice"></view>
 				</view>
 				<!-- 红包 -->
-				<view v-if="row.msgType==7" @tap="openRedPacket(row)">
+				<view v-if="row.msgType==7" @tap="openPacket(row)">
 					<div class="message-red-packet-right" :style="redProcess(row.msgContext).surplusMoney===0?'background:#F7DFC3':'background:#F09D47'">
 						<div class="text">
 						  <image :src="redProcess(row.msgContext).surplusMoney===0?'../../static/img/red-chai.png':'../../static/img/red.png'"></image>
@@ -127,11 +127,11 @@
 			oRt(row){
 				this.$emit('oRt', row);
 			},
-			deleteFunc(id,index){
-				this.$emit('deleteF', id, index);
+			deleteMethod(id,index){
+				this.$emit('deleteMethod', id, index);
 			},
 			//收藏表情
-			collectFunc({msgContext}){
+			collectMethod({msgContext}){
 				this.$socket.addEmoticon(this.userData.user.operId, msgContext, res => {
 					if(res.success){
 						uni.showToast({
@@ -142,8 +142,8 @@
 				  });
 			},
 			// 打开红包
-			openRedPacket(msg){
-				this.$emit('openRedPacket',msg);
+			openPacket(msg){
+				this.$emit('openPacket',msg);
 			},
 			//处理红包数据
 			redProcess(msgContext){
@@ -199,7 +199,7 @@
 				return s
 			},
 			//复制
-			copyFunc(content){
+			copyMethod(content){
 				uni.setClipboardData({
 				data:content,
 				success:()=>{
@@ -210,14 +210,14 @@
 			  });
 			},
 			//转发
-			forwardFunc({msgType,msgContext}){
+			forwardMethod({msgType,msgContext}){
 				this.$u.route({
 					url:'pages/chat/forward',
 					params:{msgType,msgContext}
 				});	
 			},
 			//撤销
-			rollBackFunc({id,operTime}){
+			rollBackMethod({id,operTime}){
 				let _this = this
 				uni.showActionSheet({
 				    itemList: ['确认'],

@@ -12,12 +12,12 @@
 					<system-bubble :row="row"></system-bubble>
 					
 					<!-- 别人发出的消息 -->
-					<left-bubble @oLf="oLf" :lClickId="lClickId" :row="row" :playMsgId="playMsgid" :index="index"
-					 @openRedPacket="openRedPacket"></left-bubble>
+					<left-bubble @oLf="oLf" @sendMsg="sendMsg" :lClickId="lClickId" :row="row" :playMsgId="playMsgid" :index="index"
+					 @openPacket="openPacket" @deleteMethod="deleteMethod"></left-bubble>
 					
 					<!-- 自己发出的消息 -->
-					<right-bubble @sendMsg="sendMsg" oRt="oRt" :rClickId="rClickId"
-					  :index="index" @openRedPacket="openRedPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
+					<right-bubble @deleteMethod="deleteMethod" @sendMsg="sendMsg" @oRt="oRt" :rClickId="rClickId"
+					  :index="index" @openPacket="openPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
 				</view>
 			</scroll-view>
 		</view>
@@ -69,36 +69,26 @@
 				loading: true, //标识是否正在获取数据
 				textMsg: '',
 				redFlag: false,
-				calls:[],
-				myGroupInfo:{},
-				memberFlag: false,
-				memberData:{},
-				forwardData:{},
-				forwardFlag: false,
 				rClickId:0,
 				lClickId:0,
 				pageNum:1,
 				disabledSay:0,
-				rightClickFlag: false,
 				old: {
 					scrollTop: 0
 				},
-				scrollAnimation:false,
 				scrollTop:0,
 				scrollToView:'',
+				scrollAnimation:false,
+				inputOffsetBottom: 0,
+				viewOffsetBottom: 0, 
 				msgList:[],
 				isVoice:false,
-                groupInfo:{},
 				playMsgid:null,
 				popupLayerClass:'',
 				hideMore:true,
 				hideEmoji:true,
-				emojiPath:'',
 				winState:'',
 				message:{},
-				sel: '' ,
-				inputOffsetBottom: 0, 
-				viewOffsetBottom: 0, 
 			};
 		},
 		//头部按钮监听
@@ -117,21 +107,12 @@
 				});
 			}
 		},
-		onUnload(){
-		},
-		onHide(){
-		},
-		onLoad(option) {
-		},
 		onShow(){
 			this.disabledSay = 0
 			this.scrollTop = 9999999;
 			this.sendMsg(0,'');
-			
 			this.getMsgItem();
-			
 			this.openConver();
-			
 			this.hideDrawer();
 		},
 		onReady() {
@@ -158,10 +139,7 @@
 				handler(val) {
 					if (val != 0) {
 						this.$nextTick(() => {
-							//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
-							//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
 							// #ifndef MP-WEIXIN || H5
-							//this.bindScroll(this.sel, 100);
 							// #endif
 						});
 					}
@@ -170,7 +148,6 @@
 		},
 		methods:{
 			scroll: function(e) {
-				//console.log(e)
 				this.old.scrollTop = e.detail.scrollTop;
 			},
 			goTop: function(e) {
@@ -213,20 +190,6 @@
 				}
 			    this.textMsg += em.emojiItem.alt;
 			},
-			// 发送大表情
-			sendBigEmoji(url){
-				this.hideDrawer();//隐藏抽屉
-				if(!url){
-				    return;
-				}
-				let imgstr = '<img style="width:48px;height:48px;" src="'+ this.emojiPath + url +'">';
-				let content = '<div style="align-items: center;word-wrap:break-word;">'
-				             + imgstr
-				             + '</div>';    
-				let msg = {text:content}
-				this.sendMsg(1, msg);
-				this.textMsg = '';
-			},
 			oLf(row){
 				this.lClickId = row.id;
 			},
@@ -241,7 +204,7 @@
 				},200)
 			},
 			// 打开红包
-			openRedPacket(msg){
+			openPacket(msg){
 				this.winState = 'show'
 				this.message = msg
 				this.$u.vuex('packet',this.red_process(msg.msgContext));
@@ -313,7 +276,7 @@
 					})
 			},
 			//删除
-			deleteFunc(id,index){
+			deleteMethod(id,index){
 				this.msgList.splice(index,1);
 			},
 			//处理红包数据
@@ -377,19 +340,7 @@
 					})
 					.exec();
 			},
-			//@共功能
-			processFunc(){
-				this.scrollAnimation = false;
-				if(this.calls.length>0){
-					this.scrollToView = 'msg'+this.calls[0];
-					this.$nextTick(function() {
-						this.bindScroll(this.scrollToView)
-						this.scrollAnimation = true;
-					});
-					this.calls.splice(0, 1)
-					this.$u.vuex('_call_s',this.calls)
-				}
-			},
+
 			//监听输入框
 			Input(e){
 				if(this.textMsg.indexOf('@')!=-1){
@@ -401,18 +352,6 @@
 				  }
 				}
 			},
-			//获取群成员
-            queryMembers () {
-                if (this.chatObj.chatType == 1) {
-                 this.$socket.queryMembers(this.chatObj.chatId, this.userData.user.operId, (res) => {
-					 this.$u.vuex('memberItem', res.memberResponse);
-					 this.myGroupInfo = {
-					 	groupUser: res.groupUser,
-					 	group: res.group
-					 }
-				 })
-                }
-            },
 			//消费消息
 			openConver () {
 			  let _this = this
@@ -652,25 +591,6 @@
 					}
 					upRedData(res.msgId,this.chatObj.chatId,res.message);
 				}
-			},
-	
-			//替换表情符号为图片
-			replaceEmoji(str){
-				// 正则表达式匹配内容
-				let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
-					for(let i=0;i<this.emojiList.length;i++){
-						let row = this.emojiList[i];
-						for(let j=0;j<row.length;j++){
-							let EM = row[j];
-							if(EM.alt==item){
-								let onlinePath=this.emojiPath
-								let imgstr = '<img style="width:24px;height:24px;" src="'+onlinePath+EM.url+'">';
-								return imgstr;
-							}
-						}
-					}
-				});
-				return '<div style="align-items: center;word-wrap:break-word;">'+replacedStr+'</div>';
 			},
 			// 添加文字消息到列表
             addTextMsg(msg){
