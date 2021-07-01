@@ -1,7 +1,7 @@
 <template>
 <div class="nav-menu">
     <div class="logo-box" @click="goHome">
-        <img src="../../assets/img/ic_launcher.png"/>
+        <img src="../../assets/img/logo.png"/>
     </div>
     <el-menu :collapse-transition="false" :collapse="menuMode" router :default-active="$route.path" background-color="#001A2E" text-color="#fff" active-text-color="#fff">
         <template v-for="(item, i) in menuList">
