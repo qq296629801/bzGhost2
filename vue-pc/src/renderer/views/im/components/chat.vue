@@ -1122,7 +1122,6 @@ export default {
             let _this = this
             let arr = ['send2Friend','send2Group']
             this.$socket[arr[this.chatType]](this.chat.chatId, _this.user.operId, text, msgType, res => {
-                console.log(res)
                 if (res.success) {
                     if (res.response != undefined) {
                         let data = res.response.data
@@ -1132,7 +1131,7 @@ export default {
 							}
                             upData(data, _this.chat.chatId);
 						}else if(this.chatType===0){
-						   if(data.sendUid==this.chat.chatId){
+						   if(data.sendUid==this.chat.chatId||data.sendUid==this.user.operId){
 						   _this.screenMsg(data, res);
 						   }
 						}
