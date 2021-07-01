@@ -24,7 +24,7 @@
 					</view>
 				</view>
 				<view class="tis">
-					小伙伴领取的金额随机
+					金额随机
 				</view>
 				<view class="blessing">
 					<input type="text" maxlength="12" placeholder="恭喜发财" v-model="redPacket.title"  />
@@ -34,31 +34,6 @@
 				</view>
 			</view>
 			<view class="normal">
-				<view class="row">
-					<view class="term">
-						红包个数
-					</view>
-					<view class="input">
-						<input type="number" v-model="redPacket.number" placeholder="输入红包个数" /> 个
-					</view>
-				</view>
-				<view class="row">
-					<view class="term">
-						单个金额
-					</view>
-					<view class="input">
-						<input type="number" v-model="redPacket.money" placeholder="输入金额" /> 元
-					</view>
-				</view>
-				<view class="tis">
-					小伙伴领取的金额相同
-				</view>
-				<view class="blessing">
-					<input type="text" maxlength="12" placeholder="恭喜发财" v-model="redPacket.title"  />
-				</view>
-				<view class="hand" @tap="hand('normal')">
-					发红包
-				</view>
 			</view>
 		</view>
 	</view>
@@ -71,7 +46,7 @@
 		},
 		data() {
 			return {
-				typeClass:'luck',//normal
+				typeClass:'luck',
 				redPacket: {
 					title: '恭喜发财,大吉大利',
 					money: 0.00,
@@ -110,7 +85,7 @@
 	}
 	.tabr{
 		width: 94%;
-		height: 105upx;
+		height: 100upx;
 		padding: 0 5%;
 		border-bottom: solid 1upx #dedede;
 		view{
@@ -142,7 +117,7 @@
 	}
 	.content{
 		width: 100%;
-		height: 80vh;
+		height: 550rpx;
 		overflow: hidden;
 		&.normal{
 			.luck{
@@ -163,7 +138,7 @@
 			transform: translate3d(100%,-100%,0);
 		}
 		.row,.tis,.blessing,.hand{
-			width: 94%;
+			width: 90%;
 		}
 		.row,.tis,.blessing{
 			border-bottom: #eeeeee solid 3upx;
@@ -179,7 +154,7 @@
 		.row{
 			font-size: 25rpx;
 			font-weight: 600;
-			color: #171717;
+			color: #000000;
 			justify-content: space-between;
 			flex-wrap: nowrap;
 			.term,.input{
@@ -196,7 +171,7 @@
 					justify-content: flex-end;
 					align-items: center;
 					text-align: right;
-					margin-right: 20upx;
+					margin-right: 100upx;
 					font-size: 30upx;
 				}
 			}
