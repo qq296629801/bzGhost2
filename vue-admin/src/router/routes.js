@@ -33,5 +33,7 @@ export default {
     AppRoom: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/approom'),
     ChannelList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/channellist'),
     AppManage: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage'),
+    FriendMsgLit: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/friendmsglist'),
+    GroupMsgLit: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/groupmsglist'),
     FriendList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/friendlist')
 }
