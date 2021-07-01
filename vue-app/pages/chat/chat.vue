@@ -531,7 +531,12 @@
 									upData(data, _this.chatObj.chatId);
 								}
 							}else {
-								_this.addMsg(data);
+								if(data!==undefined){
+									if(data.receiveUid==this.userData.user.operId){
+										_this.addMsg(data);
+									}
+								}
+								
 							}
 						}
 					}

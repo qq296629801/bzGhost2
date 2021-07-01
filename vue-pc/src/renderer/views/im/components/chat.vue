@@ -1132,7 +1132,9 @@ export default {
 							}
                             upData(data, _this.chat.chatId);
 						}else if(this.chatType===0){
-					      _this.screenMsg(data, res);
+						   if(data.receiveUid==_this.user.operId,){
+						   _this.screenMsg(data, res);
+						   }
 						}
                     }
                 }
