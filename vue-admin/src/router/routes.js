@@ -35,5 +35,7 @@ export default {
     AppManage: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage'),
     FriendMsgLit: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/friendmsglist'),
     GroupMsgLit: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/groupmsglist'),
+    PostList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/postlist'),
+    CommentList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/commentlist'),
     FriendList: () => import(/* webpackChunkName: "appmanage" */ '@/views/appmanage/friendlist')
 }

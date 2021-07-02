@@ -9,13 +9,14 @@
             </template>
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="id" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="receiveUid" label="接收人" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="msgType" label="消息类型" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="sendUid" label="发送人" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="msgContext" label="内容" show-overflow-tooltip sortable></el-table-column>
+            <el-table-column prop="name" label="标题" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="userId" label="用户id" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="fabulousNum" label="点赞数" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="urls" label="图片" show-overflow-tooltip sortable></el-table-column>
+             <el-table-column prop="context" label="内容" show-overflow-tooltip sortable></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button v-hasPermission="'friend:update'" @click="$emit('update', scope.row)" type="text">修改</el-button>
+                    <el-button v-hasPermission="'post:update'" @click="$emit('update', scope.row)" type="text">修改</el-button>
                 </template>
             </el-table-column>
         </el-table>
