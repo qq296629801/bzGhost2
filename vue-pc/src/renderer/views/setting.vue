@@ -11,7 +11,7 @@
         <TabPane label="关于">
             <Form :label-width="80">
                 <FormItem label="版本信息">
-                    <Input clearable v-model="formItem.input" placeholder="易群" style="width: 85%" disabled />
+                    <Input clearable v-model="formItem.input" placeholder="yiqun" style="width: 85%" disabled />
                     <Button style="margin-top: 5px;" @click="detectionOfUpdate">检测更新</Button>
                 </FormItem>
             </Form>
