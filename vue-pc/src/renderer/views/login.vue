@@ -8,7 +8,7 @@
                 <img class="my-logo" src="../assets/ll.png" alt="">
             </div>
             <div class="login-form-right">
-                <div class="title">账号秘密登录</div>
+                <div class="title">账号密码登录</div>
                 <div class="item">
                     <Input clearable prefix="ios-contact-outline" v-model="telephone" placeholder="手机" class="item-input" />
                 </div>
