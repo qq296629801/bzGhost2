@@ -113,6 +113,7 @@ export default {
                     for (let i = 0; i < arr.length; i++) {
                         total = total + arr[i].unreadNumber
                     }
+                    arr.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
                     self.chatList = arr
                 }
                 this.listLength = total
