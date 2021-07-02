@@ -1032,15 +1032,6 @@ export default {
                     this.addRobEnvelope(msg);
                     break;
             }
-            //非自己的消息震动
-            if (msg.sendUid != this.user.operId) {
-                this.vibrateLong()
-            } else {
-                this.openChat();
-            }
-            this.$nextTick(function () {
-                // this.scrollToView = 'msg'+msg.id
-            });
         },
         addRobEnvelope(res) {
             if (res.msgId != undefined && res.message != undefined) {
@@ -1095,8 +1086,9 @@ export default {
             this.msgList.push(msg);
         },
         vibrateLong() {
+           // import path from 'path'
             this.audio = new Audio();
-            this.audio.src = '../../../../../static/assets/mp3/msg.mp3';
+            this.audio.src = 'http://bzghost.com/up/msg.mp3' ;
             let playPromise;
             playPromise = this.audio.play();
             let second = length;
@@ -1128,11 +1120,17 @@ export default {
                         if(_this.chatType===1){
 							if (data.groupId === _this.chat.chatId) {
 								_this.screenMsg(data, res);
+                                this.$nextTick(function () {
+                                    this.vibrateLong()
+                                });
 							}
                             upData(data, _this.chat.chatId);
 						}else if(this.chatType===0){
 						   if(data.sendUid==this.chat.chatId||data.sendUid==this.user.operId){
 						   _this.screenMsg(data, res);
+                                this.$nextTick(function () {
+                                    this.vibrateLong()
+                                });
 						   }
 						}
                     }
