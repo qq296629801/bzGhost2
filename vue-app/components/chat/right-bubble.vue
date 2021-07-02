@@ -227,7 +227,7 @@
 							let arr = ['deleteFriendMsg','deleteGroupMsg']
 							_this.$socket[arr[type]](_this.userData.user.operId, id, _this.chatObj.chatId, res => {
 								if (res.success) {
-								  _this.sendMsg(6, id)
+								  _this.sendMsg(6, id);
 								}
 							})
 						}

@@ -519,9 +519,9 @@
 					if (res.response!==undefined) {
 						const data = res.response.data
 						if(res.msgType===8){
-							_this.addRobEnvelope(res);
+							_this.envelope(res);
 						}else if(res.msgType===6){
-							_this.addRevoke(res);
+							_this.rollBack(res);
 						}else {
 							if(_this.chatObj.chatType===1){
 								if(data!==undefined){
@@ -533,10 +533,6 @@
 								}
 							}else {
 								if(data!==undefined){
-								    // console.log('当前聊天用户:',this.chatObj.chatId);
-									// console.log('当前登录用户',this.userData.user.operId)
-									// console.log('接受人',data.receiveUid)
-									// console.log('发送人',data.sendUid)
 									if(data.sendUid==this.chatObj.chatId||data.sendUid==this.userData.user.operId){
 										_this.addMsg(data);
 										uni.vibrateLong();
@@ -564,7 +560,7 @@
 						this.addVoiceMsg(msg);
 						break;
 					case 7:
-						this.addRedEnvelopeMsg(msg);
+						this.addEnvelopeMsg(msg);
 						break;
 					default:
 				}
@@ -575,20 +571,31 @@
 					this.scrollAnimation = true;
 				});
 			},
-			//增加撤销
-			addRevoke(res){
-				if (res.msgId != undefined && res.message == undefined) {
-				  for(var index in this.msgList){
-					if(this.msgList[index].id==res.msgId){
-						this.msgList.splice(index,1);
-						upCanceData(res.msgId,this.chatObj.chatId,this.msgList[index]);
+			//撤销
+			rollBack(res){
+				if(this.chatObj.chatType==0){
+					if (res.chatId != undefined && res.message == undefined) {
+					  for(var index in this.msgList){
+						if(this.msgList[index].id==res.chatId){
+							this.msgList.splice(index,1);
+							upCanceData(res.chatId,this.chatObj.chatId,this.msgList[index]);
+						}
+					  }
 					}
-				  }
-				  
+				}else {
+					if (res.msgId != undefined && res.message == undefined) {
+					  for(var index in this.msgList){
+						if(this.msgList[index].id==res.msgId){
+							this.msgList.splice(index,1);
+							upCanceData(res.msgId,this.chatObj.chatId,this.msgList[index]);
+						}
+					  }
+					}
 				}
+				
 			},
-			// 增加红包
-			addRobEnvelope(res){
+			// 红包
+			envelope(res){
 				if (res.msgId != undefined && res.message != undefined) {
 					this.$u.vuex('packet',this.red_process(res.message));
 					for(var index in this.msgList){
@@ -611,7 +618,7 @@
             addImgMsg(msg){
                 this.msgList.push(msg);
             },
-            addRedEnvelopeMsg(msg){
+            addEnvelopeMsg(msg){
                 this.msgList.push(msg);
             },
             // 添加系统文字消息到列表
