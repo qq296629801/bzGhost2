@@ -129,8 +129,9 @@ export default {
             this.dialogVisible = true;
             ipcRenderer.send("checkForUpdate");
             ipcRenderer.on("message", (event, text) => {
+                console.log(text,'----------------------');
                 this.tips = text;
-                alert(text)
+                alert(text);
             });
             ipcRenderer.on("downloadProgress", (event, progressObj) => {
                 this.percentage = progressObj.percent || 0;

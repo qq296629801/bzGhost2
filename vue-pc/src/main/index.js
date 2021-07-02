@@ -230,7 +230,7 @@ import { autoUpdater } from 'electron-updater'
         updateAva: '检测到新版本，正在下载……',
         updateNotAva: '现在使用的就是最新版本，不用更新',
     };
-    const uploadUrl = "http://120.27.95.106:8081/up"; // 下载地址，不加后面的**.exe
+    const uploadUrl = "http://bzghost.com/up"; // 下载地址，不加后面的**.exe
     autoUpdater.setFeedURL(uploadUrl);
     autoUpdater.on('error', function (error) {
         sendUpdateMessage(message.error)
@@ -261,6 +261,7 @@ import { autoUpdater } from 'electron-updater'
             // 调试环境必须主动设置当前版本，electron-update有bug会去取electron的版本,而不是app的版本
             autoUpdater.currentVersion = '1.0.0'
         }
+       
         //执行自动更新检查
         autoUpdater.checkForUpdates();
     })
