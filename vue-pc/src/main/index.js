@@ -230,7 +230,7 @@ import { autoUpdater } from 'electron-updater'
         updateAva: '检测到新版本，正在下载……',
         updateNotAva: '现在使用的就是最新版本，不用更新',
     };
-    const uploadUrl = "http://120.27.95.106:8081/up"; // 下载地址，不加后面的**.exe
+    const uploadUrl = "http://120.27.95.106:8081/update"; // 下载地址，不加后面的**.exe
     autoUpdater.setFeedURL(uploadUrl);
     autoUpdater.on('error', function (error) {
         sendUpdateMessage(message.error)
