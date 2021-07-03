@@ -58,6 +58,9 @@ const WEBIM = {
 					value
 				});
 			}
+			if(command === -5){
+				uni.clearStorageSync();
+			}
 		});
 		WEBIM.server.onNetworkChange(WEBIM.options);
 		WEBIM.server.onSocketClosed(WEBIM.options)
