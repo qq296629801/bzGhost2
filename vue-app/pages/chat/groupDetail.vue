@@ -4,53 +4,48 @@
 			:is-back="true"
 			:title="'群聊天信息(' + members.length + ')'"
 			:background="{ background: '#F6F7F8' }"
-			title-color="#404133"
 			:border-bottom="false"
 			z-index="1001"
 		></u-navbar>
-		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
+		<view class="group-box">
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
 					<img-cache :src="$url + item.avatar"></img-cache>
-					<view class="grid-text">{{ item.groupNickName || item.nickName }}</view>
+					<view class="group-text">{{ item.groupNickName || item.nickName }}</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="group-plus">
-						<u-icon name="plus" size="40"></u-icon>
+						<u-icon name="plus" size="50" color="#e0e0e1"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="group-plus">
-						<u-icon name="minus" size="40"></u-icon>
+						<u-icon name="minus" size="50" color="#e0e0e1"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
-			<view @tap="seeMore" v-if="members.length>10" style="text-align: center;color: #404133;padding-bottom: 10rpx;">查看更多成员</view>
+			<view class="more-btn" @tap="seeMore" v-if="members.length>10">查看更多</view>
 		</view>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
-			<u-cell-item title="群名称" @click="groupEdit(group.id, group.groupName, 1)" :value="group.groupName" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="群名称" @click="upGroup(group.id, group.groupName, 1)" :value="group.groupName" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
 		<u-cell-group>
-			<u-cell-item title="群二维码" :title-style="{ marginLeft: '10rpx' }"><u-avatar :src="src1" size="50"></u-avatar></u-cell-item>
+			<u-cell-item title="二维码" :title-style="{ marginLeft: '10rpx' }"><u-avatar :src="src1" size="50"></u-avatar></u-cell-item>
 		</u-cell-group>
 		<u-cell-group>
-			<u-cell-item title="群公告" @click="groupEdit(group.id, context, 2)" :value="context ? context : '暂无公告'" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="群公告" @click="upGroup(group.id, context, 2)" :value="context ? context : '暂无公告'" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
 		<view style="height: 10rpx;"></view>
 		<u-cell-group>
 			<u-cell-item
 				title="群昵称"
-				@click="groupEdit(group.id, mine.groupNickName || userData.user.realname, 3)"
+				@click="upGroup(group.id, mine.groupNickName || userData.user.realname, 3)"
 				:value="mine.groupNickName || userData.user.realname"
 				:title-style="{ marginLeft: '10rpx' }"
 			></u-cell-item>
 		</u-cell-group>
-		<u-cell-group>
-			<u-cell-item title="显示昵称" :title-style="{ marginLeft: '10rpx' }" :arrow="false">
-				<u-switch active-color="rgb(25, 190, 107)" v-model="isShowNickName" v-on:change="swichShowNickName"></u-switch>
-			</u-cell-item>
-		</u-cell-group>
+		
 		<u-cell-group>
 			<u-cell-item title="全体禁言" :title-style="{ marginLeft: '10rpx' }" :arrow="false">
 				<u-switch active-color="rgb(25, 190, 107)" v-model="anyDisnable"></u-switch>
@@ -88,7 +83,6 @@ export default {
 			},
 			context: '',
 			mine: '',
-			isShowNickName: false,
 			anyDisnable:false,
 		};
 	},
@@ -150,7 +144,7 @@ export default {
 				}
 			});
 		},
-		groupEdit(groupId, context, type) {
+		upGroup(groupId, context, type) {
 			if (this.userData.user.username != this.group.operUser && 3 != type) {
 				uni.showModal({
 					title: '无权限修改',
@@ -159,7 +153,7 @@ export default {
 				return;
 			}
 			this.$u.route({
-				url: 'pages/chat/updateGroupInfo',
+				url: 'pages/chat/groupEdit',
 				params: {  groupId,  context,  type }
 			});
 		},
@@ -189,23 +183,14 @@ export default {
 				}
 			});
 		},
-		swichShowNickName(status) {
-			this.isShowNickName = status;
-			let storeKey = 'isShowNickName' + this.userData.user.operId + '_' + this.chatObj.chatId;
-			uni.setStorageSync(storeKey, this.isShowNickName);
-		},
-		getShowNickName() {
-			let storeKey = 'isShowNickName' + this.userData.user.operId + '_' + this.chatObj.chatId;
-			this.isShowNickName = uni.getStorageSync(storeKey)? uni.getStorageSync(storeKey): false;
-		},
-		queryGroupUser() {
+
+		loadMem() {
 			this.$socket.queryMembers(this.chatObj.chatId, this.userData.user.operId, res => {
 				if (res.success) {
 					this.members = res.members;
-					this.$u.vuex('_membersNoneIndex',res.members)
 					this.mine = res.groupUser;
 					this.group = res.group;
-					this.getShowNickName();
+					this.$u.vuex('_membersNoneIndex',res.members)
 				} else {
 					uni.showModal({
 						title: '获取数据失败',
@@ -213,7 +198,7 @@ export default {
 					});
 				}
 			});
-			this.$socket.queryNotice(this.userData.user.operId, this.chatObj.chatId, res => {
+			/* this.$socket.queryNotice(this.userData.user.operId, this.chatObj.chatId, res => {
 				if (res.success) {
 					this.context = res.context;
 				} else {
@@ -222,31 +207,39 @@ export default {
 						showCancel: false
 					});
 				}
-			});
+			}); */
 		}
 	},
 	onLoad(option) {
 	},
 	onShow() {
-	},
-	onReady() {
-		this.queryGroupUser();
+		this.loadMem();
 	}
 };
 </script>
 
-<style>
-	.group-plus{
-	}
-	.grid-text {
-		width: 80rpx;
-		height: 40rpx;
-		overflow: hidden;
-		text-align: center;
-		color: #000000;
-	}
-	.img-cache{
-		width: 80rpx;
-		height: 80rpx;
+<style lang="scss">
+	.content{
+		.group-box{
+			background-color: #FFFFFF;
+			padding-left: 30rpx;
+		}
+		.more-btn{
+			text-align: center;color: #404133;
+			padding-bottom: 10rpx;
+		}
+		.group-plus{
+		}
+		.group-text {
+			width: 80rpx;
+			height: 40rpx;
+			overflow: hidden;
+			text-align: center;
+			color: #000000;
+		}
+		.img-cache{
+			width: 80rpx;
+			height: 80rpx;
+		}
 	}
 </style>
