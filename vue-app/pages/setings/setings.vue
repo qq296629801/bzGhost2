@@ -19,12 +19,12 @@
 			<u-cell-item @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
-		<!--<view  style="height: 10rpx;"></view>
+		<view  style="height: 10rpx;"></view>
 		<u-cell-group>
 			<u-cell-item :arrow="false">
 				<view style="text-align: center;">切换账号</view>
 			</u-cell-item>
-		</u-cell-group>-->
+		</u-cell-group>
 		<view  style="height: 10rpx;"></view>
 		<u-cell-group>
 			<u-cell-item :arrow="false" @click="logout">
@@ -40,10 +40,10 @@
 		data() {
 			return {
 				groupList: [
-					/* { title: '新消息通知', color: '#409eff', icon: 'star' }, */
-					/* { title: '隐私', color: '#409eff', icon: 'photo' }, */
+					{ title: '新消息通知', color: '#409eff', icon: 'star' },
+					{ title: '隐私', color: '#409eff', icon: 'photo' },
 					{ title: '通用', color: '#409eff', icon: 'coupon' },
-					/* { title: '帮助与反馈', color: '#ff9900', icon: 'heart' } */
+					{ title: '帮助与反馈', color: '#ff9900', icon: 'heart' }
 				],
 			}
 		},

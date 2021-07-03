@@ -34,7 +34,7 @@
 		<view class="u-m-t-20">
 			<u-cell-group>
 				<u-cell-item @click="linkToSetting" title="设置" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
-					<u-icon slot="icon" name="setting" color="#409eff" size="40"></u-icon>
+					<u-icon slot="icon" name="setting" color="#ff9900" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
@@ -50,14 +50,20 @@
 				groupList: [
 					{
 						title: '相册',
-						color: '#50E3C2',
+						color: '#409eff',
 						icon: 'photo'
 					},
 					{
 						title: '表情',
-						color: '#ff9900',
-						icon: 'star'
+						color: '#409eff',
+						icon: 'eye'
 					}
+					/* ,
+					{
+						title: '积分',
+						color: '#55aa7f',
+						icon: 'rmb-circle'
+					} */
 				],
 			}
 		},

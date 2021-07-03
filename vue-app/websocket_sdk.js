@@ -37,7 +37,6 @@ export default class Websocket {
     // 监听websocket连接关闭
     onSocketClosed(options) {
 		uni.onSocketError(err => {
-			console.log('当前websocket连接已关闭,错误信息为:' + JSON.stringify(err));
 			// 停止心跳连接
 			if (this._heartCheck) {
 			    this._reset();
@@ -45,7 +44,6 @@ export default class Websocket {
 			// 关闭已登录开关
 			this._isLogin = false;
 			// 检测是否是用户自己退出小程序
-			console.log('------------------开启重连--------------------------------')
 			if (!this._isClosed) {
 			    // 进行重连
 			    if (this._isReconnection) {
@@ -60,7 +58,6 @@ export default class Websocket {
     // 检测网络变化
     onNetworkChange(options) {
         uni.onNetworkStatusChange(res => {
-            console.log('当前网络状态:' + res.isConnected);
             if (!this._netWork) {
                 this._isLogin = false;
                 // 进行重连
@@ -72,7 +69,6 @@ export default class Websocket {
     }
     _onSocketOpened() {
         uni.onSocketOpen(res => {
-            console.log('【websocket】已打开');
             // 打开已登录开关
             this._isLogin = true;
             // 发送心跳
@@ -99,51 +95,38 @@ export default class Websocket {
     // 建立websocket连接
     initWebSocket(options) {
         let _this = this;
-        if (this._isLogin) {
-            console.log("您已经登录了");
-        } else {
-            // 检查网络
-            uni.getNetworkType({
-                success(result) {
-                    if (result.networkType != 'none') {
-                        // 开始建立连接
-                        console.log('建立websocket连接' + options.url);
-                        uni.connectSocket({
-                            url: options.url,
-                            success(res) {
-                                if (typeof options.success == "function") {
-                                    options.success(res)
-                                    _this._onSocketOpened();
-                                } else {
-                                    console.log('参数的类型必须为函数')
-                                }
-                            },
-                            fail(err) {
-                                if (typeof options.fail == "function") {
-                                    options.fail(err)
-                                } else {
-                                    console.log('参数的类型必须为函数')
-                                }
-                            }
-                        })
-                    } else {
-                        console.log('网络已断开');
-                        _this._netWork = false;
-                        // 网络断开后显示model
-                        uni.showModal({
-                            title: '网络错误',
-                            content: '请重新打开网络',
-                            showCancel: false,
-                            success: function(res) {
-                                if (res.confirm) {
-                                    console.log('用户点击确定')
-                                }
-                            }
-                        })
-                    }
-                }
-            })
-        }
+        if (!_this._isLogin) {
+			// 检查网络
+			uni.getNetworkType({
+			    success(result) {
+			        if (result.networkType != 'none') {
+			            // 开始建立连接
+			            console.log('建立websocket连接' + options.url);
+			            uni.connectSocket({
+			                url: options.url,
+			                success(res) {
+			                    if (typeof options.success == "function") {
+			                        options.success(res)
+			                        _this._onSocketOpened();
+			                    } else {
+			                        console.log('参数的类型必须为函数')
+			                    }
+			                },
+			                fail(err) {
+			                    if (typeof options.fail == "function") {
+			                        options.fail(err)
+			                    } else {
+			                        console.log('参数的类型必须为函数')
+			                    }
+			                }
+			            })
+			        } else {
+			            _this._netWork = false;
+			            uni.clearStorageSync();
+			        }
+			    }
+			})
+        } 
     }
     // 发送websocket消息
     sendWebSocketMsg(options) {
@@ -176,10 +159,10 @@ export default class Websocket {
         this.sendBinary(99, {
             data: {},
             success(res) {
-                console.log('【websocket】第一次连接成功')
+                console.log('【websocket】发送第一次连接数据成功')
             },
             fail(err) {
-                console.log('【websocket】第一次连接失败')
+                console.log('【websocket】发送第一次连接数据失败')
                 console.log(err)
             }
         });
