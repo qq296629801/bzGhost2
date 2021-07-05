@@ -8,8 +8,8 @@
 			</view>
 		</u-navbar>
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
-			<view class="u-m-r-10">
-				<u-avatar mode="square" :src="`${$url}/${userData.user.avatar}`" size="140"></u-avatar>
+			<view class="u-m-r-10 u-p-r-30">
+				<u-avatar mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar>
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>

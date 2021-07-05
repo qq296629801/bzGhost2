@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "jy-request": "^1.0.2",
     "uview-ui": "^1.7.6"
   },
   "devDependencies": {},
