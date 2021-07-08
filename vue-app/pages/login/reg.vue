@@ -100,7 +100,7 @@
 			  }, 1000)
 			  
 					uni.request({
-						url:this.$api+'/register/sendSms', 
+						url:this.$url + '/register/sendSms', 
 						data: {phone:this.phone},
 						success: (res) => {
 							console.log(res.data);

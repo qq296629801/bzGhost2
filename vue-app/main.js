@@ -15,10 +15,9 @@ Object.keys(filters).forEach(name=>{
 
 Vue.config.productionTip = false
 Vue.prototype.$socket = webim;
-Vue.prototype.$url = 'http://120.27.95.106:8081/upload/'
-Vue.prototype.$uploadUrl = 'http://120.27.95.106:9998/file/upload'
-Vue.prototype.$ws = 'ws://120.27.95.106:9999/chat'
-Vue.prototype.$api = 'http://120.27.95.106:9998'
+Vue.prototype.$url = 'http://42.193.146.14/'
+Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload'
+Vue.prototype.$ws = 'ws://42.193.146.14:9999/chat'
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {

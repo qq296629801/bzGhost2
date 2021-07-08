@@ -20,9 +20,9 @@ Vue.use(VueParticles);
 Vue.use(iView);
 Vue.prototype.$socket = webim;
 Vue.prototype.$axios = axios
-Vue.prototype.$uploadUrl = 'http://120.27.95.106:9998/file/upload'
-Vue.prototype.$url = "http://120.27.95.106:8081/upload/"
-Vue.prototype.$ws = 'ws://120.27.95.106:9999/chat'
+Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload'
+Vue.prototype.$url = "http://42.193.146.14/"
+Vue.prototype.$ws = 'ws://42.193.146.14:9999/chat'
 
 if (process.env.IS_WEB) {
     Vue.prototype.winControl = require('../main/webControl').default;

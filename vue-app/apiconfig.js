@@ -4,7 +4,7 @@
 import request from 'request.js'
 class apiconfig {
   constructor(config = {}) {
-        this.baseurl= 'http://120.27.95.106:9998/';
+        this.baseurl= 'http://42.193.146.14/'
 		this.pathconfig={
 			reg: this.baseurl +'/register/register'
 		}

@@ -119,7 +119,6 @@
             showSetting: false,
             showRegister: false,
             dialCode: '86',
-            host: 'http://120.27.95.106:9998',
             isCanRegister: false,
             ifshow: false,
             isdefultImg: true,
@@ -167,7 +166,7 @@
             this.$refs.formValidate.validate((valid) => {
                 if (valid) {
                     let _this = this
-                    axios.post(this.host + '/register/register', this.registerForm)
+                    axios.post(this.$url + '/register/register', this.registerForm)
                     .then(function (response) {
                         _this.$Message.success(response.data.data);
                     })
