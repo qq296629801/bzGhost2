@@ -24,46 +24,50 @@ const WEBIM = {
 	sendTimeOut: 15,
 	/*等待消息回执的 消息Id 数组*/
 	waitReceiptMessageIds: {},
-	heartCheck: false,
-	isReconnection: false,
+	heartCheck: true,
+	isReconnection: true,
 	options: null,
 	/*初始化*/
-	initWebIM: function(serverUrl, heartCheck, isReconnection) {
-		WEBIM.heartCheck = heartCheck;
-		WEBIM.isReconnection = isReconnection;
-		WEBIM.serverUrl = serverUrl;
-		WEBIM.options = {
-			url: serverUrl,
-			success(res) {},
-			fail() {}
-		}
-		eventDispatcher = new EventDispatcher();
-
-		WEBIM.server = new SKIMSDK({
-			heartCheck: heartCheck,
-			isReconnection: isReconnection,
-		});
-		WEBIM.server.initWebSocket(WEBIM.options);
-
-		WEBIM.server.onReceivedMsg(event => {
-			let packet = packetCode.decode(event.data);
-			let command = packet.command;
-			eventDispatcher.dispatchEvent(command, toJSON(packet))
-			eventDispatcher.removeListener(command, toJSON(packet))
-			let name = 'pushRes';
-			let value = packet;
-			if (command === -10) {
-				store.commit('$uStore', {
-					name,
-					value
-				});
-			}
-			if(command === -5){
-				uni.clearStorageSync();
-			}
-		});
-		WEBIM.server.onNetworkChange(WEBIM.options);
-		WEBIM.server.onSocketClosed(WEBIM.options)
+	initWebIM: function(serverUrl) {
+		 return new Promise((resolve, reject) => {
+			 WEBIM.serverUrl = serverUrl;
+			 WEBIM.options = {
+			 	url: serverUrl,
+			 	success(res) {
+					resolve(res);
+				},
+			 	fail(e) {
+					reject(e);
+				}
+			 }
+			 eventDispatcher = new EventDispatcher();
+			 
+			 WEBIM.server = new SKIMSDK({
+			 	heartCheck: true,
+			 	isReconnection: true,
+			 });
+			 WEBIM.server.initWebSocket(WEBIM.options);
+			 
+			 WEBIM.server.onReceivedMsg(event => {
+			 	let packet = packetCode.decode(event.data);
+			 	let command = packet.command;
+			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
+			 	eventDispatcher.removeListener(command, toJSON(packet))
+			 	let name = 'pushRes';
+			 	let value = packet;
+			 	if (command === -10) {
+			 		store.commit('$uStore', {
+			 			name,
+			 			value
+			 		});
+			 	}
+			 	if(command === -5){
+			 		uni.clearStorageSync();
+			 	}
+			 });
+			 WEBIM.server.onNetworkChange(WEBIM.options);
+			 WEBIM.server.onSocketClosed(WEBIM.options)
+		 });
 	},
 	disconnect: function(e) {
 		WEBIM.server.closeWebSocket()
@@ -80,8 +84,9 @@ const WEBIM = {
 			version: 1,
 			command: 1
 		}
-		send(requestPacket)
-		eventDispatcher.addListener('2', func)
+		send(requestPacket).then(e => {
+			eventDispatcher.addListener('2', func);
+		});
 	},
 	register: (phone, password, nickname, func) => {
 		let p = {
@@ -844,17 +849,19 @@ EventDispatcher.prototype.dispatchEvent = function(eventKey, event) {
 }
 
 let send = (p) => {
-	p.token = store.state.userData.token;
-	WEBIM.server.sendWebSocketMsg({
-		data: p,
-		success(res) {
-			//console.log('【websocket】发送成功')
-		},
-		fail(err) {
-			console.log('【websocket】发送失败')
-			console.log(err)
-		}
-	});
+	 return new Promise((resolve, reject) => {
+		 p.token = store.state.userData.token;
+		 WEBIM.server.sendWebSocketMsg({
+		 	data: p,
+		 	success(res) {
+				resolve(res)
+		 	},
+		 	fail(err) {
+				reject(err)
+		 		console.log('【websocket】发送失败')
+		 	}
+		 });
+	 });
 }
 
 export default WEBIM

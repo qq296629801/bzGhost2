@@ -41,6 +41,11 @@
 		onPullDownRefresh() {
 			uni.stopPullDownRefresh();
 		},
+		mounted: function () {
+		  this.$nextTick(function () {
+			  
+		  })
+		},
 		methods:{
 			linkAgr(){
 				// 跳转到消息列表

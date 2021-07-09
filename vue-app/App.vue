@@ -1,7 +1,9 @@
 <script>
 	export default {
 		onLaunch: function() {
-			this.$socket.initWebIM(this.$ws, true, true)
+			this.$socket.initWebIM(this.$ws).then(e=>{
+				console.log(e);
+			});
 		},
 		onShow: function() {
 			if(this.userData.user){

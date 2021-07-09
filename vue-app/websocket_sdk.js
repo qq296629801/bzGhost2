@@ -19,7 +19,6 @@ export default class Websocket {
         // 心跳检测和断线重连开关，true为启用，false为关闭
         this._heartCheck = heartCheck;
         this._isReconnection = isReconnection;
-        // this._onSocketOpened();
     }
     // 心跳重置
     _reset() {
@@ -53,6 +52,7 @@ export default class Websocket {
 			
 		})
         uni.onSocketClose(err => {
+			options.fail(err)
         })
     }
     // 检测网络变化
@@ -74,6 +74,7 @@ export default class Websocket {
             // 发送心跳
             if (this._heartCheck) {
                 this._reset()._start();
+				console.log('发送心跳');
             }
             // 发送登录信息
             this.sendLoginData();
@@ -100,13 +101,13 @@ export default class Websocket {
 			uni.getNetworkType({
 			    success(result) {
 			        if (result.networkType != 'none') {
-			            // 开始建立连接
-			            console.log('建立websocket连接' + options.url);
 			            uni.connectSocket({
 			                url: options.url,
 			                success(res) {
 			                    if (typeof options.success == "function") {
-			                        options.success(res)
+									// 开始建立连接
+									console.log('建立websocket连接' + options.url);
+			                        options.success(res);
 			                        _this._onSocketOpened();
 			                    } else {
 			                        console.log('参数的类型必须为函数')
@@ -122,7 +123,6 @@ export default class Websocket {
 			            })
 			        } else {
 			            _this._netWork = false;
-			            uni.clearStorageSync();
 			        }
 			    }
 			})
@@ -143,13 +143,8 @@ export default class Websocket {
         this.sendBinary(99, {
             data: packet,
             success(res) {
-              // console.log('【websocket】心跳连接成功');
             },
             fail(err) {
-                console.log('【websocket】心跳连接失败');
-                console.log(err)
-				//开启重连
-				
             }
         });
     }
@@ -159,20 +154,13 @@ export default class Websocket {
         this.sendBinary(99, {
             data: {},
             success(res) {
-                console.log('【websocket】发送第一次连接数据成功')
+                console.log('【websocket】发送第一次数据成功')
             },
             fail(err) {
-                console.log('【websocket】发送第一次连接数据失败')
+                console.log('【websocket】发送第一次数据失败')
                 console.log(err)
             }
         });
-        // this.sendBinary(99, {});
-        // socket.sendSocketMessage({
-        //  // 这里是第一次建立连接所发送的信息，应由前后端商量后决定
-        //  data: JSON.stringify({
-        //      "key": 'value'
-        //  })
-        // })
     }
 
     // 重连方法，会根据时间频率越来越慢
@@ -180,16 +168,19 @@ export default class Websocket {
         let timer, _this = this;
         if (this._connectNum < 20) {
             timer = setTimeout(() => {
+				console.log('500非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 500)
             this._connectNum += 1;
         } else if (this._connectNum < 50) {
             timer = setTimeout(() => {
+				console.log('1000非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 1000)
             this._connectNum += 1;
         } else {
             timer = setTimeout(() => {
+				console.log('3000非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 3000)
             this._connectNum += 1;

@@ -63,6 +63,7 @@
 			},
 			logout(){
 				uni.clearStorageSync();
+				//this.$socket.disconnect();
 				this.$u.route({
 					url: 'pages/login/login'
 				});
