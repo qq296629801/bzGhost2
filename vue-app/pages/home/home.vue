@@ -53,7 +53,7 @@ export default {
 			this.getChatList()
 		}
 	},
-	mounted() {
+	onShow() {
 		this.getAll();
 	},
 	onLoad(){
