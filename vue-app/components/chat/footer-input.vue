@@ -23,9 +23,9 @@
 				 @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode" :class="isVoice?'hidden':''">
 					<view class="box">
-						 <textarea :confirm-type="'send'" :confirm-hold="true" @confirm="sendMsg(0, textMsg)"
+						 <textarea ref="tt" :confirm-type="'send'" :confirm-hold="true" @confirm="sendMsg(0, textMsg)"
 						  auto-height="true" :disabled="disabledSay===1"
-						   v-model="textMsg" @focus="textareaFocus" />
+						   v-model="textMsg" />
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="iconfont iconbiaoqing"></view>
@@ -138,10 +138,7 @@
 			},
 			sendMsg(index, msg){
 				this.$emit('sendMsg', index,msg);
-				this.textMsg = ''
-			},
-			textareaFocus(){
-				this.$emit('textareaFocus', true);
+				this.textMsg = '';
 			},
 			// 选择表情
 			chooseEmoji(){
