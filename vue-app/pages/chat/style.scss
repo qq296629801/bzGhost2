@@ -123,11 +123,11 @@ src:url(
 	}
 	.textbox{
 		width: 100%;
-		min-height: 70upx;
+		min-height: 80upx;
 		margin-top: 15upx;
 		.voice-mode{
 			width: calc(100% - 2upx);
-			height: 68upx;
+			min-height: 80upx;
 			border-radius: 10upx;
 			display: flex;
 			justify-content: center;
@@ -142,7 +142,7 @@ src:url(
 		}
 		.text-mode{
 			width: 100%;
-			min-height: 70upx;
+			min-height: 80upx;
 			display: flex;
 			background-color: #F5F6F8;
 			border-radius: 10upx;
@@ -159,8 +159,8 @@ src:url(
 			.em{
 				flex-shrink: 0;
 				width: 80upx;
-				padding-left: 10upx;
 				height: 60upx;
+				padding-left: 10upx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
