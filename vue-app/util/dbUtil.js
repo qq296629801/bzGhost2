@@ -3,16 +3,24 @@ import { createFSQL, addFSQL, selectFSQL } from './dbSqlite.js'
 import webim from '../webim.js';
 const dbUtil = {
 	upCacheMsg(uid){
-		webim.queryOnlineMessage(uid,q =>{
-			let data = q.response.data;
-			for(var i in data){
-				initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
-			}
-		})
+		return new Promise((resolve, reject) => {
+			webim.queryOnlineMessage(uid,q =>{
+				if(q.response.success){
+					let data = q.response.data;
+					for(var i in data){
+						initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
+					}
+					resolve(data);
+				}else {
+					reject(q.response.errorMessage);
+				}
+			})
+		});
+		
 	},
 	selectAddr(uid){
 		return new Promise((resolve, reject) => {
-			// #ifndef H5
+			// #ifdef APP-PLUS
 			var list = [];
 			var indexList =  ['#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 			selectFSQL(uid).then(res=> {
@@ -33,9 +41,14 @@ const dbUtil = {
 			});
 			// #endif	
 			
-			// #ifndef APP-PLUS
+			// #ifdef H5
 			webim.listGuests(uid, res => {
-				resolve(res.response.data)
+				if(res.response.success){
+					resolve(res.response.data)
+				}else {
+					reject(res.response.errorMessage)
+				}
+				
 			})
 			// #endif
 		});
@@ -63,6 +76,8 @@ const dbUtil = {
 				if (res.success) {
 				  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
 				  resolve(res.chats)
+				}else {
+					reject(res)
 				}
 			});
 		});

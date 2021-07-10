@@ -96,13 +96,13 @@
 			if (index == 0) {
 				let url = this.chatObj.chatType==1?'groupDetail':'userDetail'
 				this.$u.route({
-					url: 'pages/chat/' + url
+					url: 'pages/chat/' + url,
 				});
 				//用户详情 设置
 			} else if (index == 1) {
 				//返回按钮
 				this.$u.route({
-					type: 'switchTab',
+					type: 'navigateBack',
 					url: 'pages/home/home'
 				});
 			}
@@ -112,7 +112,7 @@
 			this.scrollTop = 9999999;
 			this.sendMsg(0,'');
 			this.getMsgItem();
-			this.openConver();
+			this.readMe();
 			this.hideDrawer();
 		},
 		onReady() {
@@ -353,7 +353,7 @@
 				}
 			},
 			//消费消息
-			openConver () {
+			readMe() {
 			  let _this = this
 			  this.$socket.openChat(this.chatObj.chatId, this.userData.user.operId, this.chatObj.chatType, res => {
 				if (res.success) {
@@ -364,6 +364,11 @@
 					  _this.disabledSay = res.groupUser.status
 					}
 				  }
+				}else {
+					uni.showToast({
+						icon:'none',
+						title: res.response.errorMessage
+					})
 				}
 			  })
 			},
@@ -506,7 +511,7 @@
 				 return;
 			 }
 			 
-			 if(text!=''){
+			 if(text!='' && this.chatObj.chatType==1){
 				 this.$socket.createChatList(this.userData.user.operId, this.chatObj.chatId, text, msgType, res => {});
 			 }
 			 

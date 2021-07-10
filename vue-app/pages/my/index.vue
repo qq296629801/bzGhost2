@@ -68,7 +68,6 @@
 			}
 		},
 		onLoad() {
-			
 		},
 		onPullDownRefresh() {
 			uni.stopPullDownRefresh();

@@ -31,10 +31,10 @@ export default {
 	onLoad() {
 	},
 	onShow() {
-		this.query(false);
+		this.getGroups();
 	},
 	onPullDownRefresh() {
-		this.query(true)
+		this.getGroups()
 	},
 	methods: {
 		link(item,index) {
@@ -42,12 +42,17 @@ export default {
 			this.$u.vuex('chatObj', item);
 			this.$u.route({url: 'pages/chat/chat'});
 		},
-		query(freshFlag) {
-			this.$socket.getGroups('', this.userData.user.operId, res => {
-				this.list = res.response.data;
-				if(freshFlag){
-					uni.stopPullDownRefresh();
+		getGroups() {
+			this.$socket.getGroups('', this.userData.user.operId, result => {
+				if(result.response.success){
+					this.list = result.response.data;
+				}else{
+					uni.showToast({
+						icon:'none',
+						title:result.response.errorMessage
+					})
 				}
+				uni.stopPullDownRefresh();
 			});
 		}
 	},

@@ -7,18 +7,13 @@ const EventDispatcher = function() {
 let eventDispatcher
 const WEBIM = {
 	resource: "web",
-	/*单聊标识*/
 	CHAT: "chat",
-	/*群聊标识*/
 	GROUPCHAT: "groupchat",
 	token: null,
 	userId: null,
-	nickName: "",
 	isReadDel: 0,
-	/*用户 jid 10004541/web */
 	userIdStr: null,
-	/*服务器连接地址 ws://localhost:5260 */
-	serverUrl: null,
+	serverUrl: 'ws://42.193.146.14:9999/chat',
 	server: null,
 	/*消息超时 时间 默认 15 秒*/
 	sendTimeOut: 15,
@@ -28,11 +23,10 @@ const WEBIM = {
 	isReconnection: true,
 	options: null,
 	/*初始化*/
-	initWebIM: function(serverUrl) {
+	initWebIM: function() {
 		 return new Promise((resolve, reject) => {
-			 WEBIM.serverUrl = serverUrl;
 			 WEBIM.options = {
-			 	url: serverUrl,
+			 	url: WEBIM.serverUrl,
 			 	success(res) {
 					resolve(res);
 				},
@@ -55,14 +49,12 @@ const WEBIM = {
 			 	eventDispatcher.removeListener(command, toJSON(packet))
 			 	let name = 'pushRes';
 			 	let value = packet;
+				// 在线推送
 			 	if (command === -10) {
 			 		store.commit('$uStore', {
 			 			name,
 			 			value
 			 		});
-			 	}
-			 	if(command === -5){
-			 		uni.clearStorageSync();
 			 	}
 			 });
 			 WEBIM.server.onNetworkChange(WEBIM.options);
@@ -96,8 +88,9 @@ const WEBIM = {
 			version:1,
 			command:49
 		}
-		send(p)
+		send(p).then(e => {
 		eventDispatcher.addListener('50', func)
+		});
 	},
 
 	heartTest: (userId, func) => {
@@ -106,8 +99,9 @@ const WEBIM = {
 			version: 1,
 			command: 17
 		}
-		send(packet)
+		send(packet).then(e => {
 		eventDispatcher.addListener('18', func)
+		});
 	},
 
 	send2Group: (toGroupId, userId, message, msgType, func) => {
@@ -119,8 +113,9 @@ const WEBIM = {
 			version: 1,
 			command: 15
 		}
-		send(requestPacket)
+		send(requestPacket).then(e => {
 		eventDispatcher.addListener('16', func)
+		});
 	},
 	send2Friend: (toUserId, userId, message, msgType, func) => {
 		let requestPacket = {
@@ -131,8 +126,9 @@ const WEBIM = {
 			version: 1,
 			command: 3
 		}
-		send(requestPacket)
+		send(requestPacket).then(e => {
 		eventDispatcher.addListener('4', func)
+		});
 	},
 	logout: (userId, func) => {
 		let requestPacket = {
@@ -140,8 +136,9 @@ const WEBIM = {
 			version: 1,
 			command: 5
 		}
-		send(requestPacket)
+		send(requestPacket).then(e => {
 		eventDispatcher.addListener('6', func)
+		});
 	},
 
 	createGroup: (userIdList, defaultGroupName, userId, func) => {
@@ -853,12 +850,21 @@ let send = (p) => {
 		 p.token = store.state.userData.token;
 		 WEBIM.server.sendWebSocketMsg({
 		 	data: p,
-		 	success(res) {
-				resolve(res)
-		 	},
+		 	success(res) {resolve(res)},
 		 	fail(err) {
+				// 进行重连
 				reject(err)
-		 		console.log('【websocket】发送失败')
+				WEBIM.server._isLogin = false;
+				if (WEBIM.server._isReconnection) {
+					console.log('网络中断，尝试重连')
+					WEBIM.options = {
+						url: WEBIM.serverUrl,
+						success(res) {resolve(res)},
+						fail(err) {reject(err)}
+					}
+				    WEBIM.server._reConnect(WEBIM.options)
+				}
+		 		console.log('【websocket】发送失败,尝试手动重连')
 		 	}
 		 });
 	 });

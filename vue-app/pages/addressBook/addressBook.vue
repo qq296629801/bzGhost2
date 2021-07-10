@@ -27,8 +27,13 @@ export default {
 	},
 	methods: {
 		getAddr(){
-			dbUtil.selectAddr(this.userData.user.operId).then(res=>{
-				this.$u.vuex('firendItem', res);
+			dbUtil.selectAddr(this.userData.user.operId).then(data =>{
+				this.$u.vuex('firendItem', data);
+			}).catch(e=>{
+				uni.showToast({
+					icon:'none',
+					title:e
+				})
 			});
 		},
 		linkToCard({id}){

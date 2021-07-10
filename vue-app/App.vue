@@ -1,17 +1,20 @@
 <script>
+	// #ifdef APP-PLUS
+	import APPUpdate from "@/plugins/APPUpdate";
+	// #endif
 	export default {
 		onLaunch: function() {
-			this.$socket.initWebIM(this.$ws).then(e=>{
-				console.log(e);
-			});
+			this.$socket.initWebIM().then(e=>{});
+			// #ifdef APP-PLUS
+			APPUpdate();
+			// #endif
 		},
 		onShow: function() {
-			if(this.userData.user){
-				return;
+			if(this.userData.user==undefined){
+				uni.navigateTo({
+					url: "pages/login/login"
+				});
 			}
-			this.$u.route({
-			    url: 'pages/login/login'
-			});
 		},
 		onHide: function() {
 		}

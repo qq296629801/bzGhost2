@@ -36,6 +36,7 @@ export default class Websocket {
     // 监听websocket连接关闭
     onSocketClosed(options) {
 		uni.onSocketError(err => {
+			console.log('服务器异常断开');
 			// 停止心跳连接
 			if (this._heartCheck) {
 			    this._reset();
@@ -52,6 +53,7 @@ export default class Websocket {
 			
 		})
         uni.onSocketClose(err => {
+			console.log('服务器断开');
 			options.fail(err)
         })
     }
@@ -62,6 +64,7 @@ export default class Websocket {
                 this._isLogin = false;
                 // 进行重连
                 if (this._isReconnection) {
+					console.log('网络中断，尝试重连')
                     this._reConnect(options)
                 }
             }
@@ -168,19 +171,16 @@ export default class Websocket {
         let timer, _this = this;
         if (this._connectNum < 20) {
             timer = setTimeout(() => {
-				console.log('500非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 500)
             this._connectNum += 1;
         } else if (this._connectNum < 50) {
             timer = setTimeout(() => {
-				console.log('1000非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 1000)
             this._connectNum += 1;
         } else {
             timer = setTimeout(() => {
-				console.log('3000非用户手动关闭尝试重连...');
                 this.initWebSocket(options)
             }, 3000)
             this._connectNum += 1;
@@ -189,6 +189,7 @@ export default class Websocket {
     // 关闭websocket连接
     closeWebSocket() {
         uni.closeSocket();
+		// 不进行自动连接,人为关闭!
         this._isClosed = true;
     }
 

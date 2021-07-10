@@ -8,11 +8,15 @@
 				<view class="iconfont iconshuru" :class="isVoice?'iconshuru':'iconyuyin1'" @tap="switchVoice"></view>
 			</view>
 			<!-- #endif -->
+			
+			
 			<!-- #ifdef H5 -->
 			<view class="more" @tap="showMore">
 				<view class="iconfont icontianjia"></view>
 			</view>
 			<!-- #endif -->
+			
+			
 			<!-- 录音 -->
 			<view class="textbox">
 				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin"
@@ -28,11 +32,13 @@
 					</view>
 				</view>
 			</view>
+			
 			<!-- #ifndef H5 -->
 			<view class="more" @tap="showMore">
 				<view class="iconfont icontianjia"></view>
 			</view>
 			<!-- #endif -->
+			
 			<view class="send" @tap="sendMsg(0, textMsg)" :class="isVoice?'hidden':''">
 				<view class="iconfont icontuiguang-weixuan"></view>
 			</view>
@@ -88,9 +94,7 @@
 			return {
 				placeholder: '',
 				initPoint:{identifier:0,Y:0},
-				//录音相关参数
 				// #ifndef H5
-				//H5不能录音
 				RECORDER:uni.getRecorderManager(),
 				// #endif
 				recordTis:"手指上滑 取消发送",
@@ -123,7 +127,6 @@
 			this.RECORDER.onStart((e)=>{
 				this.recordBegin(e);
 			})
-			//录音结束事件
 			this.RECORDER.onStop((e)=>{
 				this.recordEnd(e);
 			})
@@ -202,13 +205,13 @@
 			},
 			//录音结束(回调文件)
 			recordEnd(e){
-				console.log('--------到此一游------1-')
 				clearInterval(this.recordTimer);
 				if(!this.willStop){
 			      let tempFilePaths =e.tempFilePath;
 				  let that=this;
 					uni.uploadFile({
-						url: this.$uploadUrl, //仅为示例，非真实的接口地址
+						//仅为示例，非真实的接口地址
+						url: this.$uploadUrl, 
 						filePath: tempFilePaths,
 						header: {
 						'merchcode':'md5'
@@ -228,7 +231,6 @@
 							min = min<10?'0'+min:min;
 							sec = sec<10?'0'+sec:sec;
 							msg.length = min+':'+sec;
-							console.log('--------到此一游------2-')
 							this.$emit('sendMsg', 3,JSON.stringify(msg));
 						}
 					});
@@ -236,7 +238,6 @@
 					// console.log('取消发送录音');
 				}
 				this.willStop = false;
-				console.log('--------到此一游------3-')
 			},
 			//更多功能(点击+弹出)
 			showMore(){

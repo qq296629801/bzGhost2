@@ -54,43 +54,48 @@ export default {
 		}
 	},
 	mounted() {
-	},
-	onShow() {
-		this.getChatList()
+		this.getAll();
 	},
 	onLoad(){
 	},
 	onPullDownRefresh() {
-		// 群消息
-		let uid = this.userData.user.operId
-		dbUtil.upCacheMsg(uid);
-		// 通讯录
-		dbUtil.upCacheAddr(uid).then(res=>{
-			this.$u.vuex('firendItem', res)
-		});
-		// 消息列表
-		dbUtil.upCacheChat(uid).then(res=>{
-			this.$u.vuex('chatItem', res);
-			uni.stopPullDownRefresh();
-		});
+		uni.stopPullDownRefresh();
+		this.getAll();
 	},
 	methods: {
 		linkTo(item){
-			this.$u.vuex('chatObj', item)
+			this.$u.vuex('chatObj', item);
 			this.$u.route({
 				url: 'pages/chat/chat',
 				params: {}
 			});
 		},
-		getChatList(){
+		getAll(){
 			if(this.userData.user==undefined){
-				return;
+				return
 			}
-			this.$socket.queryChats('', this.userData.user.operId,(res) => {
-				if (res.success) {
-				  res.chats.sort((a, b) => { return b.lastOpenTime - a.lastOpenTime });
-				  this.$u.vuex('chatItem', res.chats);
-				}
+			dbUtil.upCacheMsg(this.userData.user.operId).catch(e=>{
+			});
+			dbUtil.upCacheAddr(this.userData.user.operId).then(res=>{
+				this.$u.vuex('firendItem', res)
+			});
+			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
+				this.$u.vuex('chatItem', res);
+			}).catch(e=>{
+				uni.showToast({
+					icon:'none',
+					title: res.response.errorMessage
+				})
+			});
+		},
+		getChatList(){
+			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
+				this.$u.vuex('chatItem', res);
+			}).catch(e=>{
+				uni.showToast({
+					icon:'none',
+					title: res.response.errorMessage
+				})
 			});
 		},
 		//打开或者关闭弹窗

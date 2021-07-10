@@ -17,7 +17,6 @@ Vue.config.productionTip = false
 Vue.prototype.$socket = webim;
 Vue.prototype.$url = 'http://42.193.146.14/'
 Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload'
-Vue.prototype.$ws = 'ws://42.193.146.14:9999/chat'
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {

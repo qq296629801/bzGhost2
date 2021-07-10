@@ -29,18 +29,23 @@ export default {
 		};
 	},
 	onShow() {
-		this.querylinkItem(false)
+		this.querylinkItem()
 	},
 	onPullDownRefresh() {
-		this.querylinkItem(true)
+		this.querylinkItem()
 	},
 	methods: {
-		querylinkItem(freshFlag){
+		querylinkItem(){
 			this.$socket.getLinks(this.userData.user.operId, res=>{
-				this.$u.vuex('linkItem',res.response.data)
-				if(freshFlag){
-					uni.stopPullDownRefresh();
+				if(res.response.success){
+					this.$u.vuex('linkItem',res.response.data);
+				}else {
+					uni.showToast({
+						icon:'none',
+						title: res.response.errorMessage
+					})
 				}
+				uni.stopPullDownRefresh();
 			});
 		},
 		linkToMoment(){

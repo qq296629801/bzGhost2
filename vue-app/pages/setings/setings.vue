@@ -62,8 +62,12 @@
 				});
 			},
 			logout(){
+				this.$socket.logout(this.userData.user.operId, e =>{
+					console.log(e)
+				}).catch(e=>{
+					console.log(e)
+				});
 				uni.clearStorageSync();
-				//this.$socket.disconnect();
 				this.$u.route({
 					url: 'pages/login/login'
 				});
