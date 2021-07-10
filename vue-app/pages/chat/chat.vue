@@ -109,12 +109,12 @@
 		},
 		onShow(){
 			this.$nextTick(() => {
-				this.disabledSay = 0
-				this.scrollTop = 9999999;
 				this.sendMsg(0,'');
 				this.getMsgItem();
 				this.readMe();
 				this.hideDrawer();
+				this.disabledSay = 0
+				this.scrollTop = 9999;
 			});
 		},
 		onReady() {
@@ -256,14 +256,14 @@
 			},
 			// 隐藏抽屉
 			hideDrawer(){
-				this.popupLayerClass = '';
 				setTimeout(()=>{
+					this.popupLayerClass = '';
+					this.hideMore = true;
+					this.hideEmoji = true;
+					this.rClickId = 0;
+					this.lClickId = 0;
 					uni.hideKeyboard();
 				},150);
-				this.hideMore = true;
-				this.hideEmoji = true;
-				this.rClickId = 0;
-				this.lClickId = 0;
 			},
 			// 置底
 			scrollToBottom(t) {
