@@ -19,7 +19,7 @@
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
-import dbUtil from '../../util/dbUtil.js'
+import { upCacheMsg, upCacheAddr, upCacheChat } from '@/util/tool.js';
 export default {
 	components: { searchInput, selectInput, chatItem },
 	data() {
@@ -35,7 +35,7 @@ export default {
 	},
 	watch:{
         pushRes: function(value){
-			this.getChatList()
+			this.getChatList();
 		}
 	},
 	onShow() {
@@ -59,30 +59,19 @@ export default {
 			if(this.userData.user==undefined){
 				return
 			}
-			dbUtil.upCacheMsg(this.userData.user.operId).catch(e=>{
+			upCacheMsg(this.userData.user.operId).catch(e=>{
 			});
-			dbUtil.upCacheAddr(this.userData.user.operId).then(res=>{
+			upCacheAddr(this.userData.user.operId).then(res=>{
 				this.$u.vuex('firendItem', res)
 			});
-			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
-				this.$u.vuex('chatItem', res);
-			}).catch(e=>{
-				uni.clearStorageSync();
-				uni.showToast({
-					icon:'none',
-					title: res.response.errorMessage
-				})
-			});
+			this.getChatList();
 		},
+		// 获取列表
 		getChatList(){
-			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
+			upCacheChat(this.userData.user.operId).then(res =>{
 				this.$u.vuex('chatItem', res);
-			}).catch(e=>{
-				uni.clearStorageSync();
-				uni.showToast({
-					icon:'none',
-					title: res.response.errorMessage
-				})
+			}).catch(e =>{
+				this.message.info(e.response.errorMessage);
 			});
 		},
 		//打开或者关闭弹窗
@@ -116,10 +105,7 @@ export default {
 						uni.vibrateLong();
 						let uId = res.result
 						if (uId==t.userData.user.operId){
-							uni.showToast({
-								icon:'none',
-								title:'不能添加自己为好友'
-							})
+							t.message.info('不能添加自己为好友');
 						} else {
 							t.$u.route({
 								url: 'pages/businessCard/businessCard',

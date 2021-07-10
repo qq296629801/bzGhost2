@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 底部输入栏 -->
-		<view :style="{ bottom: inputOffsetBottom > 0 ?  '10rpx' : '0rpx' }" class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
 			<!-- H5下不能录音，输入栏布局改动一下 -->
 			<!-- #ifndef H5 -->
 			<view class="voice">
@@ -34,13 +34,13 @@
 			</view>
 			
 			<!-- #ifndef H5 -->
-			<view class="more" @tap="showMore">
+			<view class="more" @tap="showMore" :class="isBtn?'hidden':''">
 				<view class="iconfont icontianjia"></view>
 			</view>
 			<!-- #endif -->
 			
-			<view class="send" @tap="sendMsg(0, textMsg)" :class="isVoice?'hidden':''">
-				<view class="iconfont icontuiguang-weixuan"></view>
+			<view class="send" :class="isBtn?'':'hidden'">
+				<u-button @tap="sendMsg(0, textMsg)" type="success" size="mini">发送</u-button>
 			</view>
 		</view>
 		
@@ -106,14 +106,19 @@
 				textMsg:'',
 			};
 		},
+		computed:{
+			isBtn:function(){
+				return this.textMsg!="";
+			}
+		},
 		watch:{
 			textMsg:function(v){
-				this.$emit('textMsgFunc',v)
-				if(this.textMsg.indexOf('@')!=-1){
+				this.$emit('textMsgTap',v);
+				if(v.indexOf('@')!=-1){
 				  if (this.chatObj.chatType==1){
 					  this.$u.route({
 					  	url:'pages/chat/remind',
-					  	params:{ msg :this.textMsg }
+					  	params:{ msg :v }
 					  });	
 				  }
 				}

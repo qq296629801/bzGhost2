@@ -8,7 +8,7 @@
 
 <script>
 	import chatItem from '@/components/chatItem.vue'
-	import dbUtil from '../../util/dbUtil.js'
+	import { upCacheMsg, upCacheChat } from '@/util/tool.js'
 	export default {
 		name:'forward',
 		components:{chatItem},
@@ -43,9 +43,9 @@
 						})
 						// 群消息
 						let uid = this.userData.user.operId
-						dbUtil.upCacheMsg(uid);
+						upCacheMsg(uid);
 						// 消息列表
-						dbUtil.upCacheChat(uid).then(res=>{
+						upCacheChat(uid).then(res=>{
 							this.$u.vuex('chatItem', res);
 						});
 						this.$socket.createChatList(this.userData.user.operId, chatId, this.msgContext, this.msgType, res => {})

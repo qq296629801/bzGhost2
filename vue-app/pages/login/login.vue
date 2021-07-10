@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import dbUtil from '../../util/dbUtil.js'
+	import { upCacheMsg, upCacheAddr, upCacheChat } from '@/util/tool.js'
 	export default {
 		components:{},
 		data() {
@@ -62,16 +62,16 @@
 			linkLogin(){
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
-						let userData = res.response.data;
+						let d = res.response.data;
 						
 						this.$u.vuex("userData", userData);
 						
-						dbUtil.upCacheMsg(userData.user.operId);
+						upCacheMsg(d.user.operId);
 						
-						dbUtil.upCacheAddr(userData.user.operId).then(res=>{
+						upCacheAddr(d.user.operId).then(res=>{
 							this.$u.vuex('firendItem', res)
 						});
-						dbUtil.upCacheChat(userData.user.operId).then(res=>{
+						upCacheChat(d.user.operId).then(res=>{
 							this.$u.vuex('chatItem', res);
 						});
 						
@@ -80,10 +80,7 @@
 							type: 'switchTab'
 						});
 					} else {
-					  uni.showModal({
-					  	title:res.reason + "，请稍后再试",
-					  	showCancel:false
-					  })
+					  this.message.info(res.reason);
 					}
 				});
 			}

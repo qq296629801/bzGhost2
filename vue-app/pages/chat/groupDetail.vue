@@ -2,7 +2,7 @@
 	<view class="content">
 		<u-navbar
 			:is-back="true"
-			:title="'群聊天信息(' + members.length + ')'"
+			:title="'群聊(' + members.length + ')'"
 			:background="{ background: '#F6F7F8' }"
 			:border-bottom="false"
 			z-index="1001"

@@ -27,7 +27,7 @@
 				   @redShow="redFlag = true" :hideMore="hideMore" :hideEmoji="hideEmoji" :popupLayerClass="popupLayerClass"></im-drawer>
 		
 		<!-- 底部输入框 -->
-		<footer-input @textMsgFunc="textMsgFunc" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
+		<footer-input @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
 					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
 		 :disabledSay="disabledSay" :textMsg2="textMsg" :popupLayerClass="popupLayerClass"
 					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
@@ -51,7 +51,7 @@
 	import LeftBubble from '@/components/chat/left-bubble.vue'
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
-	import { queryData, upData, initData, upRedData, upCanceData } from '../../util/dbStorage.js'
+	import { queryData, upData, initData, upRedData, upCanceData } from '@/util/dbStorage.js'
 	import { emojiList } from "@/static/emoji/emoji.js"
 	export default {
 		components: {
@@ -162,7 +162,7 @@
 					title:"纵向滚动 scrollTop 值已被修改为 0"
 				})
 			},
-			textMsgFunc(t){
+			textMsgTap(t){
 				this.textMsg = t;
 			},
 			// 切换语音/文字输入

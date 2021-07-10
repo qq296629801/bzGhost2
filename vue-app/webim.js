@@ -49,7 +49,6 @@ const WEBIM = {
 			 	eventDispatcher.removeListener(command, toJSON(packet))
 			 	let name = 'pushRes';
 			 	let value = packet;
-				// 在线推送
 			 	if (command === -10) {
 			 		store.commit('$uStore', {
 			 			name,

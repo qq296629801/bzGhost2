@@ -7,7 +7,7 @@
 <script>
 import searchInput from '@/components/searchInput/index.vue'
 import addressBook from '@/components/addressBook.vue'
-import dbUtil from '../../util/dbUtil.js' 
+import { selectAddr } from '@/util/tool.js' 
 export default {
 	components:{ searchInput, addressBook },
 	data() {
@@ -27,13 +27,10 @@ export default {
 	},
 	methods: {
 		getAddr(){
-			dbUtil.selectAddr(this.userData.user.operId).then(data =>{
+			selectAddr(this.userData.user.operId).then(data =>{
 				this.$u.vuex('firendItem', data);
 			}).catch(e=>{
-				uni.showToast({
-					icon:'none',
-					title:e
-				})
+				this.message.info(e);
 			});
 		},
 		linkToCard({id}){
