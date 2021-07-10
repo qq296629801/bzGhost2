@@ -1,7 +1,7 @@
 <template>
 	<view class="emotion-wrap">
 		<view class="emotion-btn">
-			<image src="../../static/img/clear.png" 
+			<image src="/static/img/clear.png" 
 			style="width: 64rpx;height: 64rpx;" @tap="handleRemoveEmoji"></image>
 		</view>
 		<swiper class="swiper-wrap" indicator-dots="true" duration="150">

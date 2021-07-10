@@ -1,13 +1,13 @@
 <template>
-	<view class="item u-border-bottom" :class="value.isTop? 'bg_view' : ''" hover-class="message-hover-class" @tap="linkTo(value)">
+	<view class="item" hover-class="message-hover-class" @tap="linkTo(value)">
 		<img-cache :src="$url + (value.avatar|| value.imgUrl)"></img-cache>
 		<u-badge v-show="badgeIcon" :count="value.unreadNumber"  type="error" class="badge" :offset="offset"></u-badge>
-		<view class="right title-wrap">
+		<view class="right title-wrap u-border-bottom">
 			<view class="right_top">
 				<view class="right_top_name u-line-1">{{ value.chatName || value.nickName}}</view>
 				<view class="right_top_time ">{{value.lastOperTime || value.lastOpenTime | format}}</view>
 			</view>
-			<view class="right_btm ">
+			<view class="right_btm">
 				<view class="u-line-1">{{value.msgType==0?value.content:message[value.msgType]}}</view>
 				<view class="" v-show="voiceIcon">
 					<u-icon color="#c4c7cf" v-if="value.unreadNumber>0" name="bell" size="30"></u-icon>
@@ -101,6 +101,7 @@
 
 <style lang="scss">
 .item {
+		background-color: #fff;
 		width: 750rpx;
 		height: 140rpx;
 		display: flex;
