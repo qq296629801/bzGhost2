@@ -139,7 +139,8 @@ export default {
 						icon:'success'
 					});
 					this.$u.route({
-						url: 'pages/groupItem/groupItem'
+						type: 'navigateBack',
+						url: 'pages/home/home'
 					});
 				}
 			});
