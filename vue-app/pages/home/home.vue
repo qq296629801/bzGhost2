@@ -24,6 +24,7 @@ export default {
 	components: { searchInput, selectInput, chatItem },
 	data() {
 		return {
+			show: false,
 			selectShow: false,
 			selectList: [
 				{ id: '1', name: '添加朋友', icon: 'man-add' },

@@ -59,35 +59,15 @@ src:url(
 }
 .popup-layer{
 	&.showLayer{transform: translate3d(0,-64vw,0);}
-	transition: all .15s linear;
+	transition: all 0s linear 0s;
 	width: 100%;
 	height: 64vw;
-	// padding: 20upx 2%;
 	padding-bottom: 30upx;
 	background-color: #F6F7F8;
 	border-top: solid 1upx #ddd;
 	position: fixed;
 	z-index: 20;
 	top: 100%;
-	// .emoji-swiper{
-	// 	height: 40vw;
-	// 	swiper-item{
-	// 		display: flex;
-	// 		align-content: flex-start;
-	// 		flex-wrap: wrap;
-	// 		view{
-	// 			width: 12vw;
-	// 			height: 12vw;
-	// 			display: flex;
-	// 			justify-content: center;
-	// 			align-items: center;
-	// 			image{
-	// 				width: 8.4vw;
-	// 				height: 8.4vw;
-	// 			}
-	// 		}
-	// 	}
-	// }
 	.more-layer{
 		width: 100%;
 		height: 64vw;
@@ -104,7 +84,6 @@ src:url(
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				// margin: 0 3vw 2vw 3vw;
 				margin: 5vw 3vw 5vw 5vw;
 				.icon{
 					font-size: 70upx;
@@ -118,14 +97,13 @@ src:url(
 	width: 100%;
 	min-height: 110upx;
 	background-color: #fff;
-	//box-shadow:1px -4px 4px 1px #e5e6e6;
 	display: flex;
 	position: fixed;
 	z-index: 999;
 	box-sizing: content-box;
 	bottom:-2upx;
 	&.showLayer{transform: translate3d(0,-64vw,0);}
-	transition: all .15s linear;
+	transition: all 0s linear 0s;
 	.voice,.more{
 		flex-shrink: 0;
 		width: 90rpx;
