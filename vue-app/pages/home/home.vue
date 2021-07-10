@@ -82,6 +82,7 @@ export default {
 			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
 				this.$u.vuex('chatItem', res);
 			}).catch(e=>{
+				uni.clearStorageSync();
 				uni.showToast({
 					icon:'none',
 					title: res.response.errorMessage
@@ -92,6 +93,7 @@ export default {
 			dbUtil.upCacheChat(this.userData.user.operId).then(res=>{
 				this.$u.vuex('chatItem', res);
 			}).catch(e=>{
+				uni.clearStorageSync();
 				uni.showToast({
 					icon:'none',
 					title: res.response.errorMessage
