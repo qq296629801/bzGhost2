@@ -1,14 +1,13 @@
 <template>
 	<view class="emotion-wrap">
-		<view class="emotion-btn">
-			<image src="/static/img/clear.png" 
-			style="width: 64rpx;height: 64rpx;" @tap="handleRemoveEmoji"></image>
+		<view class="emotion-btn" @tap="handleRemoveEmoji">
+			<image src="/static/img/clear.png"></image>
 		</view>
 		<swiper class="swiper-wrap" indicator-dots="true" duration="150">
 			<swiper-item v-for="(page,pid) in list" :key="pid">
 				<view class="emotion-box">
 					<view v-for="(em,eid) in page" :key="eid" @tap="handleClikEmoji(em)">
-						<u-image class="emotion" width="75rpx" height="75rpx" :src="`/static/img/face/${em.url}`"></u-image>
+						<u-image class="emotion" width="80rpx" height="80rpx" :src="`/static/img/face/${em.url}`"></u-image>
 					</view>
 				</view>
 			</swiper-item>
@@ -55,7 +54,7 @@
 		overflow: auto;
 		
 		.emotion-box {
-			padding-top: 30px;
+			padding-top: 20px;
 		}
 		
 		.swiper-wrap {
@@ -65,8 +64,15 @@
 		.emotion-btn {
 			z-index: 1;
 			position: fixed;
+			padding: 20rpx;
+			border-radius: 10rpx;
 			right: 20rpx;
-			bottom: 30rpx;
+			bottom: 0;
+			background-color: #fff;
+			image{
+				width: 64rpx;
+				height: 64rpx;
+			}
 		}
 
 		.emotion-del {

@@ -1,21 +1,21 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="选择好友" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="增加好友" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="joinGroup">增加</u-button>
+				<u-button size="mini" type="success" @click="joinGroup">保存</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
 			<u-search v-model="keyword" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
 		</view>
 		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
-			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in fList" :key="index">
+			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" />
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
-							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
+						<u-checkbox v-model="user.checked" :name="user.id" @change="chechMem(user)">
+							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square"></u-avatar>
 						</u-checkbox>
 						{{ user.nickName }}
 					</view>
@@ -37,7 +37,7 @@
 				indexList: [],
 				ids: [],
 				userNames: [],
-				fList: [],
+				list: [],
 				keyword: ''
 			}
 		},
@@ -47,20 +47,21 @@
 		onShow() {
 			this.$socket.listGuests(this.userData.user.operId, res => {
 				this.$u.vuex('firendItem', res.response.data);
-				this.fList = res.response.data
+				this.list = res.response.data
 				let indexList = []
-				this.fList.forEach(item => {
+				this.list.forEach(item => {
 					indexList.push(item.name)
 				})
 				this.indexList = indexList
+				
 			});
 		},
 		onLoad(option) {},
 		watch: {
 			keyword: function(val) {
-				let arr = this.firendList;
+				let arr = this.firendItem;
 				if (val != '') {
-					this.fList = arr.filter(v => {
+					this.list = arr.filter(v => {
 						let flag = false
 						if (v.members.length > 0) {
 							v.members.forEach(m => {
@@ -72,7 +73,7 @@
 						return flag
 					})
 				} else {
-					this.fList = this.firendList
+					this.list = this.firendItem
 				}
 			}
 		},

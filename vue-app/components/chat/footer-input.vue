@@ -9,13 +9,11 @@
 			</view>
 			<!-- #endif -->
 			
-			
 			<!-- #ifdef H5 -->
 			<view class="more" @tap="showMore">
 				<view class="iconfont icontianjia"></view>
 			</view>
 			<!-- #endif -->
-			
 			
 			<!-- 录音 -->
 			<view class="textbox">

@@ -1,16 +1,16 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="发起群聊" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="创建群组" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="createGroup">完成</u-button>
+				<u-button size="mini" type="success" @click="createGroup">保存</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
 			<u-search v-model="keyword" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
 		</view>
 		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
-			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in fList" :key="index">
+			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" />
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
@@ -42,16 +42,16 @@
 				indexList: [],
 				ids: [],
 				userNames: [],
-				fList: [],
+				list: [],
 				keyword: ''
 			}
 		},
 		onShow() {
 			this.$socket.listGuests(this.userData.user.operId, res => {
 				this.$u.vuex('firendItem', res.response.data);
-				this.fList = res.response.data
+				this.list = res.response.data
 				let indexList = []
-				this.fList.forEach(item => {
+				this.list.forEach(item => {
 					indexList.push(item.name)
 				})
 				this.indexList = indexList
@@ -60,9 +60,9 @@
 		onLoad(option) {},
 		watch: {
 			keyword: function(val) {
-				let arr = this.firendList;
+				let arr = this.firendItem;
 				if (val != '') {
-					this.fList = arr.filter(v => {
+					this.list = arr.filter(v => {
 						let flag = false
 						if (v.members.length > 0) {
 							v.members.forEach(m => {
@@ -74,7 +74,7 @@
 						return flag
 					})
 				} else {
-					this.fList = this.firendList
+					this.list = this.firendItem
 				}
 			}
 		},
@@ -99,7 +99,7 @@
 					})
 					return;
 				}
-				let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
+				let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
 				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
 					if (res.success) {
 						// 缓存消息列表
@@ -109,10 +109,7 @@
 								initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
 							}
 						})
-						uni.showToast({
-							title:'创建成功',
-							icon:'success'
-						});
+						this.message.info('创建成功');
 						this.$u.route({
 							url: 'pages/groupItem/groupItem'
 						});

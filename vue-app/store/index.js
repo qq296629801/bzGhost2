@@ -54,8 +54,7 @@ const store = new Vuex.Store({
 		//朋友圈展示信息
 		circleData: [],
 		//内置朋友圈相册banner图
-		circleBgList:[
-		],
+		circleBgList:[],
 	},
 	mutations: {
 		$uStore(state, payload) {
