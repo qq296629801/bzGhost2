@@ -1,15 +1,15 @@
 <template>
-	<view>
+	<view class="content">
 		<u-navbar :is-back="true" :title="titles[type]" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false" z-index="1001">
 			<view class="slot-wrap" slot="right">
 				<u-button :disabled="isInput" size="mini" type="success" @click="save">保存</u-button>
 			</view>
 		</u-navbar>
 		<u-cell-group>
-			<u-input v-if="type=='0'" v-model="context" :auto-height="true" />
-			<u-input v-if="type=='1'"  v-model="context" :auto-height="true" />
-			<u-input v-if="type=='2'"  v-model="context" :auto-height="true" />
-			<u-input v-if="type=='3'"  v-model="context"  :auto-height="true" />
+			<u-input class="text" v-if="type=='0'" v-model="context" :auto-height="true" />
+			<u-input class="text" v-if="type=='1'"  v-model="context" :auto-height="true" />
+			<u-input class="text" v-if="type=='2'"  v-model="context" :auto-height="true" />
+			<u-input class="text" v-if="type=='3'"  v-model="context"  :auto-height="true" />
 		</u-cell-group>
 	</view>
 </template>
@@ -120,4 +120,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+	.content{
+		background-color: #fff;
+		.text{
+			background-color: #fff;
+			text-indent: 2em;
+			font-size: 16rpx;
+			height: 500rpx;
+			padding: 15rpx;
+		}
+	}
+</style>
