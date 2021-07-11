@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 底部输入栏 -->
-		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+		<view class="input-box" :class="popupLayerClass" :style="{ bottom: inputOffsetBottom > 0 ? '50rpx' : '0' }" @touchmove.stop.prevent="discard">
 			<!-- H5下不能录音，输入栏布局改动一下 -->
 			<!-- #ifndef H5 -->
 			<view class="voice">
@@ -25,7 +25,7 @@
 					<view class="box">
 						 <textarea ref="tt" :confirm-type="'send'" :confirm-hold="true" @confirm="sendMsg(0, textMsg)"
 						  auto-height="true" :disabled="disabledSay===1"
-						   v-model="textMsg" />
+						   v-model="textMsg" @focus="enterInput" />
 					</view>
 					<view class="em" @tap="chooseEmoji">
 						<view class="iconfont iconbiaoqing"></view>
@@ -138,6 +138,9 @@
 			// #endif
 		},
 		methods:{
+			enterInput(){
+				this.$emit('enterInput');
+			},
 			discard(){
 				return;
 			},

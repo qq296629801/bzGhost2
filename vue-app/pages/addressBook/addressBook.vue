@@ -16,7 +16,9 @@ export default {
 		};
 	},
 	onShow() {
-	    this.getAddr();
+	},
+	onLoad() {
+		this.getAddr();
 	},
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop;

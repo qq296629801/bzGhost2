@@ -30,7 +30,7 @@
 		<footer-input @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
 					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
 		 :disabledSay="disabledSay" :textMsg2="textMsg" :popupLayerClass="popupLayerClass"
-					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
+					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice" @enterInput="enterInput"></footer-input>
 		
 		<!-- 红包卡片弹窗 -->
 		<red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card>
@@ -66,7 +66,7 @@
 		},
 		data() {
 			return {
-				loading: true, //标识是否正在获取数据
+				loading: true,
 				textMsg: '',
 				redFlag: false,
 				rClickId:0,
@@ -107,11 +107,13 @@
 				});
 			}
 		},
+		onLoad() {
+			this.sendMsg(0,'');
+			this.getMsgItem();
+			this.readMe();
+		},
 		onShow(){
 			this.$nextTick(() => {
-				this.sendMsg(0,'');
-				this.getMsgItem();
-				this.readMe();
 				this.hideDrawer();
 				this.disabledSay = 0
 				this.scrollTop = 9999;
@@ -136,12 +138,15 @@
 				}
 			});
 		},
-		watch: {
+		watch:{
 			inputOffsetBottom: {
 				handler(val) {
 					if (val != 0) {
 						this.$nextTick(() => {
+							//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
+							//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
 							// #ifndef MP-WEIXIN || H5
+							this.bindScroll(this.sel, 100);
 							// #endif
 						});
 					}
@@ -149,6 +154,8 @@
 			}
 		},
 		methods:{
+			enterInput:function(){
+			},
 			scroll: function(e) {
 				this.old.scrollTop = e.detail.scrollTop;
 			},
@@ -213,7 +220,6 @@
 			},
 			// 开始抢红包
 			robRed(){
-				console.log(1);
 				this.sendMsg(8, this.message.id);
 			},
 			//处理红包数据
@@ -341,18 +347,6 @@
 							.exec();
 					})
 					.exec();
-			},
-
-			//监听输入框
-			Input(e){
-				if(this.textMsg.indexOf('@')!=-1){
-				  if (this.chatObj.chatType==1){
-					  this.$u.route({
-					  	url:'pages/chat/remind',
-					  	params:{ msg :this.textMsg }
-					  });	
-				  }
-				}
 			},
 			//消费消息
 			readMe() {

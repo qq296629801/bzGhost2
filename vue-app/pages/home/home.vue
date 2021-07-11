@@ -39,9 +39,9 @@ export default {
 		}
 	},
 	onShow() {
-		this.getAll();
 	},
 	onLoad(){
+		this.getAll();
 	},
 	onPullDownRefresh() {
 		uni.stopPullDownRefresh();
