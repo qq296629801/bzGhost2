@@ -22,13 +22,15 @@
 		<!-- 朋友圈列表 -->
 		<view class="content-circle">
 			<view class="content-circle-box" v-for="(item, index) in circleData" :key="item.circleMegId">
-				<view class="headimg"><image class="img" :src="`${$url}/${item.avatar}`" @tap="linkToBusinessCard(item.userId)"></image></view>
+				<view class="headimg"><image class="img" :src="$url + item.avatar" @tap="linkToBusinessCard(item.userId)"></image></view>
 				<view class="content">
 					<view class="content-name" @tap="linkToBusinessCard(item.id)">{{ item.nickName }}</view>
 					<view class="content-desc">{{ item.context }}</view>
 					<view class="content-img" v-if="item.urls">
 						<!-- //只有一张图时候 -->
-						<view v-if="item.urls.split(',').length == 1"><image class="img-1" :src="`${$url}/${item.urls.split(',')[0]}`" mode="widthFix" @tap="previewImg(0, item.urls.split(','))"></image></view>
+						<view v-if="item.urls.split(',').length == 1">
+							<image class="img-1" :src="$url + item.urls.split(',')[0]" mode="widthFix" @tap="previewImg(0, item.urls.split(','))"></image>
+						</view>
 						<!-- 有多张图的时候 -->
 						<view v-else-if="item.urls.split(',').length > 1">
 							<view class="content-img-more">
@@ -37,7 +39,7 @@
 									v-for="(src, index) in item.urls.split(',')"
 									:key="index"
 									:class="index % 3 == 0 && 'img-3'"
-									:src="`${$url}/${src}`"
+									:src="$url + src"
 									mode="aspectFill"
 									@tap="previewImg(index, item.urls.split(','))"
 								></image>
