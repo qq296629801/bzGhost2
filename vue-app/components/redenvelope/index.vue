@@ -23,11 +23,8 @@
 						<input type="number" v-model="redPacket.money" placeholder="输入金额" /> 元
 					</view>
 				</view>
-				<view class="tis">
-					金额随机
-				</view>
 				<view class="blessing">
-					<input type="text" maxlength="12" placeholder="恭喜发财" v-model="redPacket.title"  />
+					<input type="text" maxlength="12" placeholder="" v-model="redPacket.title"  />
 				</view>
 				<view class="hand" @tap="hand('luck')">
 					发红包
@@ -48,9 +45,9 @@
 			return {
 				typeClass:'luck',
 				redPacket: {
-					title: '恭喜发财,大吉大利',
-					money: 0.00,
-					number: 0,
+					title: '恭喜发财,大吉大利！',
+					money: 100.00,
+					number: 5,
 					status: 0
 				}
 			};

@@ -36,7 +36,7 @@
 		<red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card>
 		
 		<!-- 发红包弹窗 -->
-		<u-popup v-model="redFlag" mode="bottom" length="50%">
+		<u-popup v-model="redFlag" mode="top" length="50%">
 			<red-envelope @sendRedPacket="sendRedPacket">
 			</red-envelope>
 		</u-popup>
