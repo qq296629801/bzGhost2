@@ -322,7 +322,6 @@
 				uni.createSelectorQuery()
 					.select('#content')
 					.boundingClientRect(data => {
-						console.log(data)
 						//最外层盒子节点
 						uni.createSelectorQuery()
 							.select(sel)

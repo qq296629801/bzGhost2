@@ -2,8 +2,8 @@
     "name" : "聊天",
     "appid" : "__UNI__F0BC691",
     "description" : "打造跨平台即时通信软件，个人也能玩得转!",
-    "versionName" : "1.0.6",
-    "versionCode" : 106,
+    "versionName" : "1.0.7",
+    "versionCode" : 107,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {

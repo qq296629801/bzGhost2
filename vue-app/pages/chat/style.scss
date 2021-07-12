@@ -314,7 +314,7 @@ src:url(
 					padding: 15upx 20upx;
 					display: flex;
 					align-items: center;
-					font-size: 14px;
+					font-size: $uni-font-size-lg;
 					word-break: break-word;
 					&.img{
 						background-color: transparent;
@@ -396,7 +396,7 @@ src:url(
 					.bubble{
 						background-color: $uni-color-success;
 						color: #000;
-						font-size: $uni-font-size-base;
+						font-size: $uni-font-size-lg;
 						&.voice{
 							.icon{
 								color: #fff;
@@ -471,7 +471,7 @@ src:url(
 					.bubble{
 						background-color: #fff;
 						color: #333;
-						font-size: 14px;
+						font-size: $uni-font-size-lg;
 						
 						&.voice{
 							.icon{
