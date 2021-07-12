@@ -23,10 +23,6 @@ export default {
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop;
 	},
-	onPullDownRefresh() {
-		this.getAddr();
-		uni.stopPullDownRefresh();
-	},
 	methods: {
 		getAddr(){
 			selectAddr(this.userData.user.operId).then(data =>{

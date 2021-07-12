@@ -57,9 +57,6 @@
 		},
 		onShow() {
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		onPageScroll(e) {
 			if(e.scrollTop>100){return;}
 			let radiusTmp = 100 - e.scrollTop;

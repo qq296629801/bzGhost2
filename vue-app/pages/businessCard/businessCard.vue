@@ -38,9 +38,6 @@
 				source:''
 			}
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		methods: {
 			linkToChat(){
 				let chat = {

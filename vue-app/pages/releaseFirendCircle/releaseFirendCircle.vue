@@ -47,9 +47,6 @@ export default {
 		};
 	},
 	onShow() {},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
-	},
 	methods: {
 		filterFileType(index, lists) {
 			if (lists[index].fileType != 'jpg' && lists[index].fileType != 'png' && lists[index].fileType != 'gif') {

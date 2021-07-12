@@ -47,9 +47,6 @@
 				],
 			}
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		methods: {
 			linkToCommon(index){
 				this.$u.route({

@@ -23,7 +23,7 @@
 			<u-cell-item title="邀请码" :arrow="false" :value="userData.user.invitationPerson" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
-				<u-icon :name="src1" size="40" :color="$u.color['lightColor']"></u-icon>
+				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
 			</u-cell-item>
 		</u-cell-group>
 	</view>
@@ -33,19 +33,9 @@
 	export default {
 		data() {
 			return {
-				src1:require('@/static/qrcode.png'),
 				action:this.$uploadUrl,
 				filesArr: [],
-				groupList: [
-					/*{ title: '新消息通知', color: '#409eff', icon: 'star' },*/
-					/*{ title: '隐私', color: '#409eff', icon: 'photo' },*/
-					/*{ title: '帮助与反馈', color: '#ff9900', icon: 'heart' }*/
-                    { title: '通用', color: '#409eff', icon: 'coupon' }
-				],
 			}
-		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
 		},
 		methods: {
 			onUploaded(lists) {
@@ -68,7 +58,7 @@
 			},
 			linkTo( context, type){
 				this.$u.route({
-					url: 'pages/chat/updateGroupInfo',
+					url: 'pages/chat/groupEdit',
 					params: { context, type }
 				});
 			}

@@ -31,9 +31,6 @@ export default {
 	onShow() {
 		this.querylinkItem()
 	},
-	onPullDownRefresh() {
-		this.querylinkItem()
-	},
 	methods: {
 		querylinkItem(){
 			this.$socket.getLinks(this.userData.user.operId, res=>{

@@ -4,8 +4,8 @@
 			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
 			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 			 upper-threshold="50">
-				
-				<view v-if="!loading"><u-loading mode="flower"></u-loading></view>
+			 
+				<u-loading :show="!loading" mode="circle" color="green" size="50"></u-loading>
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
 					
 					<!-- 系统通知的消息 -->
@@ -406,9 +406,8 @@
 				return;
 			}
 			this.loading = false;
-			this.scrollAnimation = false;
-			
 			//关闭滑动动画
+			this.scrollAnimation = false;
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
 			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
@@ -418,14 +417,14 @@
 						  if (!this.msgList.map(v => v.id).includes(m.id)) {
 							this.msgList.push(m)
 						  }  
-					  })
+					  });
 					this.msgList.sort((a, b) => { return a.id - b.id })
-					this.$nextTick(() => {
-						this.scrollAnimation = true;
-						this.loading = true;
-						this.pageNum++
-					});
+					this.pageNum++
 				  }
+				  this.$nextTick(() => {
+				  	this.scrollAnimation = true;
+				  	this.loading = true;
+				  });
 				});
 			},
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪

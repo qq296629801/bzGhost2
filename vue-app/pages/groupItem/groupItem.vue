@@ -33,9 +33,6 @@ export default {
 	onShow() {
 		this.getGroups();
 	},
-	onPullDownRefresh() {
-		this.getGroups()
-	},
 	methods: {
 		link(item,index) {
 			this.currIndex = index;

@@ -39,9 +39,7 @@
 				url: ''
 			}
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
+		
 		methods: {
 			showSearch() {
 				this.$u.route({

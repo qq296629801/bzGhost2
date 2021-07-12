@@ -24,16 +24,13 @@ export default {
 			isInput:true,
 			show: false,
 			border: false,
-			titles: ['设置名字','群名称','群公告','群昵称']
+			titles: ['昵称','群名称','群公告','群昵称']
 		}
 	},
 	watch:{
 		context:function(v){
 			this.isInput = v==undefined ? true : false;
 		}
-	},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
 	},
 	onLoad({groupId, context, type}) {
 		this.groupId = groupId
@@ -44,7 +41,6 @@ export default {
 	},
 	methods: {
 		save(){
-			
 			switch(this.type){
 				case '0':
 					this.updateNickName();
@@ -63,57 +59,22 @@ export default {
 		},
 		updateNickName () {
 			this.$socket.updateNickName(this.userData.user.operId, this.context, (res) => {
-			  if (res.success) {
-				 uni.showToast({
-				 	title: '成功',
-				 	duration: 2000,
-				 });
-			  }
+			  this.message.info(res.success?'成功':'失败');
 			})
 		},
 		updateGroupName(){
 			this.$socket.updateGroupName(this.userData.user.operId, this.groupId, this.context, res => {
-				if(res.success){
-					uni.showToast({
-						title: '成功',
-						duration: 2000,
-					});
-				}else{
-					uni.showToast({
-						title: '失败',
-						duration: 2000,
-					});
-				}
+				this.message.info(res.success?'成功':'失败');
 			})
 		},
 		updateNotice(){
 			this.$socket.updateNotice(this.userData.user.operId, this.groupId, this.context, res => {
-				if(res.success){
-					uni.showToast({
-						title: '成功',
-						duration: 2000,
-					});
-				}else{
-					uni.showToast({
-						title: '失败',
-						duration: 2000,
-					});
-				}
+				this.message.info(res.success?'成功':'失败');
 			})
 		},
 		updateGroupNick(){
 			this.$socket.updateGroupNick(this.userData.user.operId, this.groupId, this.context, res => {
-				if(res.success){
-					uni.showToast({
-						title: '成功',
-						duration: 2000,
-					});
-				}else{
-					uni.showToast({
-						title: '失败',
-						duration: 2000,
-					});
-				}
+				this.message.info(res.success?'成功':'失败');
 			})
 		}
 	}

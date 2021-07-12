@@ -78,9 +78,6 @@
 				}
 			}
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		methods: {
 			chechMem(user) {
 				if (user.checked==undefined || user.checked==false) {
@@ -102,16 +99,14 @@
 				let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
 				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
 					if (res.success) {
-						// 缓存消息列表
 						this.$socket.queryOnlineMessage(this.userData.user.operId,q =>{
 							let data = q.response.data;
 							for(var i in data){
 								initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
 							}
 						})
-						this.message.info('创建成功');
 						this.$u.route({
-							url: 'pages/groupItem/groupItem'
+							type: 'navigateBack'
 						});
 					}
 				});

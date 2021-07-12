@@ -17,9 +17,6 @@
 		onLoad({msg}) {
 			this.textMsg = msg
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		methods:{
 			memberLink(e){
 				// const msg = this.textMsg + e.groupNickName + ' '

@@ -39,8 +39,6 @@ export default {
 		}
 	},
 	onShow() {
-	},
-	onLoad(){
 		this.getAll();
 	},
 	onPullDownRefresh() {

@@ -38,9 +38,6 @@
 				phone:'admin',
 			};
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		mounted: function () {
 		  this.$nextTick(function () {
 			  

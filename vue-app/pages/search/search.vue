@@ -72,9 +72,6 @@ export default {
 			scrollTop:0
 		};
 	},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
-	},
 	watch:{
 		searchWord:function(v){
 			this.toSearch(v)
@@ -116,6 +113,7 @@ export default {
 					that.$socket.queryChats(keyword, that.userData.user.operId, res => {
 						if (res.success) {
 							that.list = res.chats;
+							this.list = res.chats.filter(v => v.chatName.includes(keyword));
 						}
 					});
 					break;

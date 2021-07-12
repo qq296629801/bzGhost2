@@ -58,19 +58,10 @@
 						color: '#409eff',
 						icon: 'eye'
 					}
-					/* ,
-					{
-						title: '积分',
-						color: '#55aa7f',
-						icon: 'rmb-circle'
-					} */
 				],
 			}
 		},
 		onLoad() {
-		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
 		},
 		methods: {
 			linkToMoment(){

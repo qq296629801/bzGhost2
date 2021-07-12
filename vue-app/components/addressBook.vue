@@ -60,7 +60,7 @@
 		},
 		watch:{
 			keyword:function(val){
-				let arr = this.tList;
+				let arr = this.oldList;
 				if(val!=''){
 					this.list = arr.filter(v => {
 						let flag = false
@@ -74,13 +74,13 @@
 						return flag
 					})
 				}else {
-					this.list = this.tList
+					this.list = this.oldList
 				}
 			}
 		},
 		data() {
 			return {
-				tList: this.list,
+				oldList: this.list,
 				keyword:'',
 				url1:require('@/static/image/friend_1.png'),
 				url2:require('@/static/image/group_1.png'),

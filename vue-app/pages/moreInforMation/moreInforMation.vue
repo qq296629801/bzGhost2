@@ -17,9 +17,6 @@
 		methods: {
 			
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
-		},
 		onLoad({signature}) {
 			this.signature = signature
 		}

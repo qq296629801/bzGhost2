@@ -12,7 +12,7 @@
 			</view>
 			<view class="u-flex">
 				<view class="u-m-r-10">
-					<image :src="createQRCode(userData.user.operId, 100)"></image>
+					<canvas canvas-id="qrcode" style="width: 300px;height: 300px;" />
 				</view>
 			</view>
 		</view>
@@ -20,35 +20,46 @@
 </template>
 
 <script>
-	import QR from '@/components/wxqrcode.js'
+	import uQRCode  from '@/util/uqrcode.js'
 	export default {
 		data() {
 			return {
 			};
 		},
-		onPullDownRefresh() {
-			uni.stopPullDownRefresh();
+		onShow() {
+			this.make();
 		},
 		methods:{
-			  createQRCode: function (text, size) {
-			    //调用插件中的draw方法，绘制二维码图片
-			    let that = this
-			    try {
-			      let _img = QR.createQrCodeImg(text, {
-			        size: parseInt(size)
-			      })
-				  return _img;
-			    } catch (e) {
-			      console.warn(e)
-			    }
-			  }
+			 async make() {
+			   // Promise
+			   uQRCode.make({
+				 canvasId: 'qrcode',
+				 componentInstance: this,
+				 text: this.userData.user.operId,
+				 size: 300,
+				 margin: 10,
+				 backgroundColor: '#ffffff',
+				 foregroundColor: '#000000',
+				 fileType: 'jpg',
+				 correctLevel: uQRCode.errorCorrectLevel.H
+			   }).then(res => {
+				   //console.log(res)
+			   })
+			  
+			 }
 		}
 	}
 </script>
 
 <style lang="scss">
-.content{
-	padding: 50rpx;
-	background-color: #fff;
-}
+ .canvas-hide {
+        /* 1 */
+        position: fixed;
+        right: 100vw;
+        bottom: 100vh;
+        /* 2 */
+        z-index: -9999;
+        /* 3 */
+        opacity: 0;
+    }
 </style>

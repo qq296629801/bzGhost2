@@ -33,9 +33,6 @@ export default {
 	onShow() {
 		this.getNewFriend(false)
 	},
-	onPullDownRefresh() {
-		this.getNewFriend(true)
-	},
 	methods: {
 		handleOn(fid){
 			this.$socket.AcceptFriendRequest(fid,this.userData.user.operId,res=>{
