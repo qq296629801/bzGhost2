@@ -12,7 +12,7 @@
 			</view>
 			<!-- 左-头像 -->
 			<view :class="row.msgType==0?'left text':'left'" @tap="linkToCard(row.sendUid)">
-				<jy-image :src="`${$url}/${row.avatar}`"></jy-image>
+				<img-cache :src="$url + row.avatar"></img-cache>
 			</view>
 			<!-- 右-用户名称-时间-消息 -->
 			<view class="right">
@@ -51,11 +51,11 @@
 
 <script>
 	import { transform } from "../../static/emoji/ChatUtils.js";
-	import JyImage from '@/components/jy-image/jy-image.vue';
+	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'left-bubble',
 		components:{
-			JyImage
+			ImgCache
 		},
 		props: {
 			row: {

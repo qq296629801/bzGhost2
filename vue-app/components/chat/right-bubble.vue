@@ -41,20 +41,19 @@
 			
 			<!-- 右-头像 -->
 			<view :class="row.msgType==0?'right text':'right'" @tap="linkToCard(row.sendUid)">
-				<jy-image :src="`${$url}/${row.avatar}`"></jy-image>
+				<img-cache :src="$url + userData.user.avatar"></img-cache>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import JyImage from '@/components/jy-image/jy-image.vue';
 	import { transform } from "../../static/emoji/ChatUtils.js";
-	
+	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'right-bubble',
 		components:{
-			JyImage
+			ImgCache
 		},
 		props: {
 			row: {

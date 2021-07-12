@@ -7,8 +7,7 @@
 			<view class="layer" @touchmove.stop.prevent="discard">
 				<view class="open-redenvelope">
 					<view class="from">
-						<image :src="this.$url + packet.userAvatar"></image>  
-						{{ packet.userName }}的红包
+						<image :src="$url + packet.userAvatar"></image>  
 					</view>
 					<template v-if="packet.Records">
 						<template v-for="(r,index) in packet.Records">
@@ -17,13 +16,13 @@
 							</view>
 						</template>
 					</template>
-					<view class="blessing">恭喜发财，大吉大利</view>
+					<view class="blessing">{{ packet.nickName || packet.userName }} 的红包</view>
 					<view class="top">
 						<view class="close-btn">
 							<view class="icon close" @tap="closeRed"></view>
 						</view>
 						<template v-if="packet.Records">
-							<view v-if="!xxx()" class="img" @tap="robRed">开</view>
+							<view v-if="!isRob()" class="img" @tap="robRed">开</view>
 							<view v-else-if="packet.Records.length===0" class="img" @tap="robRed">开</view>
 						</template>
 					</view>
@@ -50,7 +49,7 @@
 			},
 		},
 		methods:{
-			xxx(){
+			isRob(){
 				let isRob = false;
 				for(var i in this.packet.Records){
 					if(this.packet.Records[i].robUid === this.userData.user.operId){
