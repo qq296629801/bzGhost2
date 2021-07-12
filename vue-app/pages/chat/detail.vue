@@ -14,7 +14,7 @@
 				{{ packet.userName}} 的红包
 			</view>
 			<view class="desc">
-				{{ packet.title }}
+				{{ packet.description }}
 			</view>
 		</view>
 		<view class="info">
