@@ -11,14 +11,14 @@
 				<image :src="$url + packet.userAvatar"></image>
 			</view>
 			<view class="desc">
-				{{packet.userName}}的红包
+				{{ packet.userName}} 的红包
 			</view>
-			<view class="username">
-				恭喜发财，大吉大利
+			<view class="desc">
+				{{ packet.title }}
 			</view>
 		</view>
 		<view class="info">
-			已领 {{packet.number-packet.surplusNumber}}个，共{{packet.number}} 个
+			剩余 {{ packet.surplusNumber }}个，共{{ packet.number }} 个
 		</view>
 		<view class="list">
 			<view class="row" v-for="(row,index) in packet.Records" :key="index">
@@ -52,7 +52,6 @@
 	export default {
 		data() {
 			return {
-				//动画效果
 				radius:'100% 100% 0 0'
 			};
 		},
@@ -62,7 +61,6 @@
 			uni.stopPullDownRefresh();
 		},
 		onPageScroll(e) {
-			//e.scrollTop;
 			if(e.scrollTop>100){return;}
 			let radiusTmp = 100 - e.scrollTop;
 			this.radius = radiusTmp+'% '+radiusTmp+'% 0 0';
