@@ -4,7 +4,7 @@
 		<u-navbar :is-back="false" title="消息" :background="{ background: '#F6F7F8'  }" title-color="#404133" :border-bottom="false" z-index="1001">
 			<view class="slot-wrap" slot="right">
 				<u-icon name="plus-circle" size="34" @click="showSelect"></u-icon>
-			</view>		
+			</view>	
 		</u-navbar>
 		<!-- #endif -->
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />

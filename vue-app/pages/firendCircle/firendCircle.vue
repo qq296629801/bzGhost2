@@ -18,7 +18,7 @@
 			<view class="content-circle-box" v-for="(item, index) in circleData" :key="item.circleMegId">
 				<view class="headimg"><image class="img" :src="$url + item.avatar" @tap="linkToBusinessCard(item.userId)"></image></view>
 				<view class="content">
-					<view class="content-name" @tap="linkToBusinessCard(item.id)">{{ item.nickName }}</view>
+					<view class="content-name" @tap="linkToBusinessCard(item.userId)">{{ item.nickName }}</view>
 					<view class="content-desc">{{ item.context }}</view>
 					<view class="content-img" v-if="item.urls">
 						<!-- //只有一张图时候 -->
@@ -229,6 +229,7 @@ export default {
 		},
 		//跳转到名片
 		linkToBusinessCard(userId) {
+			console.log(userId,'userId')
 			this.$u.route({
 				url: 'pages/businessCard/businessCard',
 				params:{ id: userId, source: 1}
