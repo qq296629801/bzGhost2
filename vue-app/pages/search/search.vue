@@ -45,10 +45,31 @@
 		<view class="content1" v-else-if="'2' == searchType">
 			<addressBook :list="list" :scrollTop="scrollTop" @linkTo="linkToCard"></addressBook>
 		</view>
-		<view class="content" v-else-if="'3' == searchType || '4' == searchType">
-			<template v-for="(item, index) in list">
-				<chatItem :value="item" :index="index"></chatItem>
-			</template>
+		<view class="content" v-else-if="'3' == searchType">
+			<view class="msg-list" v-for="(item, index) in list" style="top: 100rpx;">
+				<view class="row">
+					<view class="my">
+						<view class="left">
+							<view class="bubble text">
+								{{item.msgContext}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="content" v-else-if="'4' == searchType">
+			<view class="msg-list" v-for="(item, index) in list" style="top: 100rpx;">
+				<view class="row">
+					<view class="my">
+						<view class="left">
+							<view class="bubble text">
+								{{item.msgContext}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -65,7 +86,7 @@ export default {
 			chatId: '',
 			pageNum: -1,
 			searchType: '0',
-			placeholder:['查找好友','查找通讯录','查找好友消息','查找群消息'],
+			placeholder:['好友','消息列表','通讯录','好友消息','群消息'],
 			searchWord: '',
 			p:'',
 			list: [],
@@ -167,6 +188,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/pages/chat/style.scss";
+.u-card-wrap { 
+	background-color: $u-bg-color;
+	padding: 1px;
+}
+
+.u-body-item {
+	font-size: 32rpx;
+	color: #333;
+	padding: 20rpx 10rpx;
+}
+	
+.u-body-item image {
+	width: 120rpx;
+	flex: 0 0 120rpx;
+	height: 120rpx;
+	border-radius: 8rpx;
+	margin-left: 12rpx;
+}
 .status_bar {
 	height: var(--status-bar-height);
 	width: 100%;

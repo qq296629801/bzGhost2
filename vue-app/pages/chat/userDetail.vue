@@ -5,22 +5,22 @@
 		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
-					<u-avatar :src="url" mode="square"></u-avatar>
+					<u-avatar :src="$url + userInfo.avatar" mode="square"></u-avatar>
 					<view class="grid-text">{{userInfo.nickName}}</view>
 				</u-grid-item>
 			</u-grid>
 		</view>
-		<view style="height: 10rpx;"></view>
+		<view style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item title="查看聊天内容" @click="showSearch" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
-		<view style="height: 10rpx;"></view>
+		<view style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg">
 			</u-cell-item>
 		</u-cell-group>
-		<view style="height: 10rpx;"></view>
+		<view style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
@@ -33,10 +33,7 @@
 	export default {
 		data() {
 			return {
-				chatId:'',
-				chatName:'',
-				userInfo:{},
-				url: ''
+				userInfo:{}
 			}
 		},
 		
@@ -44,7 +41,7 @@
 			showSearch() {
 				this.$u.route({
 					url:"pages/search/search",
-					params: {searchType: 3, chatId:this.chatId}
+					params: {searchType: 3, chatId:this.chatObj.chatId}
 				})
 			},
 			chooseImg() {
@@ -58,7 +55,7 @@
 				});
 			},
 			delFriendMsg(){
-				this.$socket.deleteFriendMsg(this.userData.user.operId, this.chatId, res=> {
+				this.$socket.deleteFriendMsg(this.userData.user.operId, this.chatObj.chatId, res=> {
 					uni.showModal({
 						title: res.success?'成功':'失败',
 						showCancel: false
@@ -71,7 +68,6 @@
 		onShow() {
 			this.$socket.getUserById(this.chatObj.chatId, res=> {
 				this.userInfo = res.user
-				this.url = this.$url + res.user.avatar
 			})
 		},
 		onReady() {
