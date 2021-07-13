@@ -6,15 +6,9 @@
 		</u-navbar>
 		<!-- #endif -->
 		<view class="content-imgbox">
-			<image class="bgimg" style="background-color: #2b2b2b;" :src="$url + userData.user.avatar" mode="scaleToFill"></image>
+			<image class="bgimg" :src="$url + userData.user.avatar" mode="scaleToFill"></image>
 			<image class="headimg" :src="$url + userData.user.avatar" @tap="linkToBusinessCard(userData.user.operId)"></image>
 			<text class="nickname">{{ userData.user.realname }}</text>
-			<view class="water">
-				<view class="water-c">
-					<view class="water-1"> </view>
-					<view class="water-2"> </view>
-				</view>
-			</view>
 		</view>
 		<view class="signature">
 			<view class="">{{ userData.user.description }}</view>
