@@ -146,9 +146,6 @@ export default {
 			postIndex:'',
 		};
 	},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
-	},
 	filters: {
 	   format: function (e) {
 		  // 获取js 时间戳
@@ -190,8 +187,6 @@ export default {
 			handler(val) {
 				if (val != 0) {
 					this.$nextTick(() => {
-						//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
-						//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
 						// #ifndef MP-WEIXIN || H5
 						this.bindScroll(this.sel, 100);
 						// #endif
@@ -242,7 +237,6 @@ export default {
 		linkToBusinessCard(userId) {
 			this.$u.route({
 				url: 'pages/businessCard/businessCard',
-				// params: { userId },
 				params:{ id: userId, source: 1}
 			});
 		},
@@ -357,7 +351,7 @@ export default {
 		keyboardheightchange(res) {
 		},
 		//模拟数据 可通过接口获取
-		getData(freshFlag) {
+		getData() {
 			this.$socket.queryPostsReq(this.userData.user.operId, this.pageNum, res => {
 				if (res.response.success) {
 					const circleData3 = this.circleData;
@@ -370,16 +364,10 @@ export default {
 					}
 					circleData3.sort((a,b)=>{return b.id-a.id});
 					this.$u.vuex('circleData', circleData3);
-					
-					//不影响操作
 					this.pageNum++;
-					//我是有底线的
 					if (circleData2.length==0){
 						this.showNoMore = true
 					}
-				}
-				if(freshFlag){
-					uni.stopPullDownRefresh();
 				}
 			});
 		},
@@ -395,15 +383,10 @@ export default {
 		}
 	},
 	onReady() {
-		//兼容h5在pages.json中设置 autoBackButton：false无效  其实只是想修改下默认返回按钮的样式，发现不生效...
 		// #ifdef H5
 		const icon = document.getElementsByClassName('uni-page-head-btn')[0];
 		icon.style.display = 'none';
 		// #endif
-
-		//设置input输入框距离键盘的高度 --也就是键盘的高度
-		//设置view距离键盘和输入框的高度
-		//h5暂不支持键盘的高度监听
 		uni.onKeyboardHeightChange(res => {
 			this.inputOffsetBottom = res.height;
 			this.viewOffsetBottom = res.height + uni.upx2px(100);
@@ -415,15 +398,14 @@ export default {
 		});
 	},
 	onShow() {
-		this.getData(false)
+		this.getData()
 	},
-	//下拉刷新
 	async onPullDownRefresh() {
-	   await this.getData(true);
+	   await this.getData();
 		uni.stopPullDownRefresh();
 	},
 	async onReachBottom(){
-		await this.getData(false);
+		await this.getData();
 	}
 };
 </script>
