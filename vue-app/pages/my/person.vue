@@ -18,6 +18,9 @@
 			</u-cell-item>
 			<u-cell-item title="用户名" :arrow="false" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
+		</u-cell-group>
+		<view style="height: 20rpx;"></view>
+		<u-cell-group>
 			<u-cell-item title="分享码" :arrow="false" :value="userData.user.invitationCode" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			<u-cell-item title="邀请码" :arrow="false" :value="userData.user.invitationPerson" :title-style="{ marginLeft: '10rpx' }">

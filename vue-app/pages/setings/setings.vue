@@ -9,23 +9,23 @@
 		<u-cell-group>
 			<u-cell-item title="账号与安全" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
-		<view  style="height: 10rpx;"></view>
+		<view  style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item @click="linkToCommon(index)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
-		<view  style="height: 10rpx;"></view>
+		<view  style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
-		<view  style="height: 10rpx;"></view>
+		<view  style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item :arrow="false">
 				<view style="text-align: center;">切换账号</view>
 			</u-cell-item>
 		</u-cell-group>
-		<view  style="height: 10rpx;"></view>
+		<view  style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item :arrow="false" @click="logout">
 				<view style="text-align: center;">退出登录</view>

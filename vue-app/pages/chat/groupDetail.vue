@@ -29,11 +29,11 @@
 		<view style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item title="群名称" @click="link(group.mine.id, group.mine.groupName, 1)" :value="group.mine.groupName" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-			<u-cell-item title="二维码" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item title="群名称" @click="link(group.mine.id, group.mine.groupName, 1)" :value="group.mine.groupName" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="二维码" :title-style="titleStyle">
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
 			</u-cell-item>
-			<u-cell-item title="群公告" @click="link(group.mine.id, group.gContext, 2)" :value="group.gContext ? group.gContext : '暂无公告'" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="群公告" @click="link(group.mine.id, group.gContext, 2)" :value="group.gContext ? group.gContext : '暂无公告'" :title-style="titleStyle"></u-cell-item>
 		</u-cell-group>
 			<view style="height: 20rpx;"></view>
 		<u-cell-group>
@@ -41,24 +41,24 @@
 				title="群昵称"
 				@click="link(3)"
 				:value="group.user.groupNickName || userData.user.realname"
-				:title-style="{ marginLeft: '10rpx' }"
+				:title-style="titleStyle"
 			></u-cell-item>
-			<u-cell-item title="全体禁言" :title-style="{ marginLeft: '10rpx' }" :arrow="false">
+			<u-cell-item title="全体禁言" :title-style="titleStyle" :arrow="false">
 				<u-switch active-color="rgb(25, 190, 107)" v-model="allSpeak"></u-switch>
 			</u-cell-item>
 		</u-cell-group>
 		<view style="height: 20rpx;"></view>
 		<u-cell-group>
-			<u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg"></u-cell-item>
-			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="clearGroupMsg" :arrow="false">
+			<u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="设置聊天背景" :title-style="titleStyle" @click="chooseImg"></u-cell-item>
+			<u-cell-item :title-style="titleStyle" @click="clearGroupMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>
 		</u-cell-group>
 		
 		<view style="height: 20rpx;"></view>
 		<u-cell-group>
-			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="removeMem" :arrow="false">
+			<u-cell-item :title-style="titleStyle" @click="removeMem" :arrow="false">
 				<view style="text-align: center; color: red;">删除并退出</view>
 			</u-cell-item>
 		</u-cell-group>
@@ -75,6 +75,7 @@ export default {
 		return {
 			src1: require('@/static/qrcode.png'),
 			allSpeak: false,
+			titleStyle:{ marginLeft: '10rpx' },
 			group:{
 				mine:{},
 				user:{},
@@ -175,16 +176,19 @@ export default {
 			padding-bottom: 10rpx;
 		}
 		.group-plus{
-			border: 4rpx dashed #d9d9da;
-			border-radius: 20rpx;
-			padding: 20rpx;
+			border: 4rpx dashed #e7e7e8;
+			border-radius: 10rpx;
+			text-align: center;
+			line-height: 80rpx;
+			width: 80rpx;
+			height: 80rpx;
 		}
 		.group-text {
 			width: 80rpx;
 			height: 40rpx;
 			overflow: hidden;
 			text-align: center;
-			color: #242424;
+			color: #343434;
 		}
 		.img-cache{
 			width: 80rpx;

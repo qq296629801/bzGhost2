@@ -1,24 +1,24 @@
 <template>
 	<view class="content">
 		<u-cell-group>
-			<u-cell-item  title="朋友圈" :title-style="{marginLeft:'30rpx',fontWeight:'800'}" @tap="linkToMoment">
+			<u-cell-item  title="朋友圈" :title-style="titleStyle" @tap="linkToMoment">
 				<u-icon slot="icon" name="moments" color="#409eff" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
-		<view style="height: 10rpx;"></view>
+		<view style="height: 20rpx;"></view>
 		<u-cell-group>
-			<u-cell-item  title="扫一扫" :title-style="{marginLeft:'30rpx',fontWeight:'800'}" @tap="linkToScan">
+			<u-cell-item  title="扫一扫" :title-style="titleStyle" @tap="linkToScan">
 				<u-icon slot="icon" name="scan" color="#409eff" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
-		<view style="height: 10rpx;"></view>
+		<view style="height: 20rpx;"></view>
 		<view class="" v-for="(item,index) in linkItem" :key="index">
 			<u-cell-group>
-				<u-cell-item  :title="item.title" :title-style="{marginLeft:'30rpx',fontWeight:'800'}"  @tap="linkTo(item,index)">
+				<u-cell-item  :title="item.title" :title-style="titleStyle"  @tap="linkTo(item,index)">
 					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon> 
 				</u-cell-item>
 			</u-cell-group>
-			<view v-if="index!=linkItem.length" class="" style="height: 10rpx;"></view>
+			<view v-if="index!=linkItem.length" class="" style="height: 20rpx;"></view>
 		</view>
 	</view>
 </template>
@@ -26,6 +26,7 @@
 export default {
 	data() {
 		return {
+			titleStyle: {marginLeft:'20rpx',fontWeight:'800'}
 		};
 	},
 	onShow() {

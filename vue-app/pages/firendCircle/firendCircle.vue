@@ -6,7 +6,7 @@
 		</u-navbar>
 		<!-- #endif -->
 		<view class="content-imgbox">
-			<image class="bgimg" style="background-color: #4b4b4b;" :src="userData.user.avatar" mode="scaleToFill"></image>
+			<image class="bgimg" style="background-color: #2b2b2b;" :src="$url + userData.user.avatar" mode="scaleToFill"></image>
 			<image class="headimg" :src="$url + userData.user.avatar" @tap="linkToBusinessCard(userData.user.operId)"></image>
 			<text class="nickname">{{ userData.user.realname }}</text>
 			<view class="water">
@@ -54,7 +54,7 @@
 								<image class="img icon-box-item thumb" :src="isFabulous(item) ? require('@/static/like-fill.png') : require('@/static/like.png')" mode=""></image>
 							</view>
 							<view @tap="handleComment(index)">
-								<image class="img icon-box-item" :src="require('@/static/comment.png')" mode=""></image>
+								<image class="img icon-box-item thumb" :src="require('@/static/comment.png')" mode=""></image>
 							</view>
 						</view>
 					</view>
@@ -116,7 +116,7 @@
 						@confirm="sendMsg"
 					/>
 				</view>
-				<u-button class="btn" type="primary" size="mini" @click="sendMsg">发送</u-button>
+				<u-button @tap="sendMsg" class="input-box-flex-btn" type="primary" size="mini">发送</u-button>
 			</view>
 		</view>
 		<u-action-sheet :list="list" v-model="show" border-radius="25" safe-area-inset-bottom @click="clickAction"></u-action-sheet>
@@ -273,12 +273,15 @@ export default {
 		},
 		//发送消息
 		sendMsg() {
-			if (!this.$u.trim(this.content)) {
-				return;
-			}
+			// if (!this.$u.trim(this.content)) {
+			// 	return;
+			// }
+			console.log('111111111111111111');
 			const post = this.circleData[this.postIndex];
+			console.log(post,'post---')
 			const {id, realname} = this.userData.user
 			this.$socket.toCommentReqPacket('',id, post.id, this.content, res => {
+				console.log(res,'--')
 				if (res.response.success) {
 					const commentId = res.response.data;
 					if(res.response.data){
@@ -575,11 +578,9 @@ image {
 				}
 				.msg-box {
 					width: 100%;
-					background-color: #f5f5f5;
 					margin-top: 15rpx;
 					border-radius: 4rpx;
 					.thumbinfo {
-						// border-bottom: 1rpx solid gray;
 						padding: 6rpx;
 						display: flex;
 						align-items: center;
@@ -629,7 +630,6 @@ image {
 					display: flex;
 					align-items: center;
 					&-item {
-						background-color: #f5f5f5;
 						padding: 4rpx 12rpx;
 						border-radius: 6rpx;
 						&.thumb {
@@ -682,8 +682,9 @@ image {
 					caret-color: $uni-color-success;
 				}
 			}
-			.btn {
+			&-btn {
 				margin-left: 20rpx;
+				z-index: 9999;
 				background-color: $u-type-success;
 				border: none;
 			}
