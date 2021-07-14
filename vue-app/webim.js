@@ -13,7 +13,7 @@ const WEBIM = {
 	userId: null,
 	isReadDel: 0,
 	userIdStr: null,
-	serverUrl: 'ws://42.193.146.14:9999/chat',
+	serverUrl: 'ws://127.0.0.1:9999/chat',
 	server: null,
 	/*消息超时 时间 默认 15 秒*/
 	sendTimeOut: 15,
@@ -795,6 +795,15 @@ const WEBIM = {
 		}
 		send(p)
 		eventDispatcher.addListener('-6', func)
+	},
+	getPhotos(userId, func){
+		let packet = {
+			userId,
+			version:1,
+			command: -17
+		}
+		send(packet);
+		eventDispatcher.addListener('-18', func)
 	}
 }
 
