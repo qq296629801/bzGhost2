@@ -7,9 +7,9 @@
 			</view>	
 		</u-navbar>
 		<!-- #endif -->
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 			<view v-for="(item,index) in chatItem">
 				<chatItem @linkTo="linkToChat" :value="item" :index="index" :voiceIcon="true"></chatItem>
 			</view>
