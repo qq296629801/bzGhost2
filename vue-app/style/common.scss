@@ -1,0 +1,33 @@
+@import '@/style/mixin.scss';
+/* #ifndef APP-NVUE */
+view,
+page,
+text,
+button,
+image,
+textarea,
+scroll-view,input {
+	box-sizing: border-box;
+}
+image {
+	display: block;
+}
+button {
+	margin: 0;
+	padding: 0;
+	background-color: #FFFF;
+}
+button::after {
+	border: none;
+}
+/* #endif */
+// 主题
+.themeBgColor {
+	@include theme("gradient_bg");
+}
+.nvueThemeBgColor {
+	background-color: $themeColor !important;
+}
+.themeFontColor {
+	color: $themeColor !important;
+}

@@ -9,9 +9,11 @@
 		<!-- #endif -->
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
-		<div v-for="(item,index) in chatItem">
-			<chatItem @linkTo="linkToChat" :value="item" :index="index" :voiceIcon="true"></chatItem>
-		</div>
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+			<view v-for="(item,index) in chatItem">
+				<chatItem @linkTo="linkToChat" :value="item" :index="index" :voiceIcon="true"></chatItem>
+			</view>
+		</mescroll-body>
 	</view>
 </template>
 
@@ -20,8 +22,10 @@ import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
 import { upCacheMsg, upCacheAddr, upCacheChat } from '@/util/tool.js';
+import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 export default {
 	components: { searchInput, selectInput, chatItem },
+	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 	data() {
 		return {
 			show: false,
@@ -30,7 +34,13 @@ export default {
 				{ id: '2', name: '扫一扫', icon: 'scan' },
 				{ id: '1', name: '添加朋友', icon: 'man-add' },
 				{ id: '3', name: '发起群聊', icon: 'chat' }
-				]
+				],
+				upOption: {
+					auto: false 
+				},
+				downOption:{
+					auto: false
+				}
 		};
 	},
 	watch:{
@@ -39,10 +49,6 @@ export default {
 		}
 	},
 	onShow() {
-		this.getAll();
-	},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
 		this.getAll();
 	},
 	methods: {

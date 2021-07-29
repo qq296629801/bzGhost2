@@ -4,8 +4,9 @@
 			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
 			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 			 upper-threshold="50">
-			 
-				<u-loading :show="!loading" mode="circle" color="green" size="50"></u-loading>
+				
+				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+				<!-- <u-loading :show="!loading" mode="circle" color="green" size="50"></u-loading> -->
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
 					
 					<!-- 系统通知的消息 -->
@@ -19,6 +20,8 @@
 					<right-bubble @deleteMethod="deleteMethod" @sendMsg="sendMsg" @oRt="oRt" :rClickId="rClickId"
 					  :index="index" @openPacket="openPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
 				</view>
+				
+				</mescroll-body>
 			</scroll-view>
 		</view>
 		
@@ -52,8 +55,10 @@
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
 	import { queryData, upData, initData, upRedData, upCanceData } from '@/util/dbStorage.js'
+	import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 	import { emojiList } from "@/static/emoji/emoji.js"
 	export default {
+		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 		components: {
 			ImDrawer,
 			RedCard,
@@ -66,6 +71,12 @@
 		},
 		data() {
 			return {
+				upOption: {
+					auto: false 
+				},
+				downOption:{
+					auto: false
+				},
 				loading: true,
 				textMsg: '',
 				redFlag: false,

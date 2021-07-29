@@ -6,7 +6,10 @@ import webim from 'webim.js';
 import message from '@/util/message.js'
 import * as filters from '@/filter/index.js'
 const vuexStore = require("@/store/$u.mixin.js");
-
+import publicModule from "@/components/common/public_module.vue";
+Vue.component("public-module", publicModule);
+import MescrollBody from "@/components/common/mescroll-uni/mescroll-body.vue";
+Vue.component("mescroll-body", MescrollBody);
 Vue.mixin(vuexStore);
 Vue.use(uView);
 
