@@ -17,10 +17,10 @@
 				<button @tap="linkLogin">立即登录</button>
 			</form>
 			<view class="t-f">
-				登录即同意 <text @tap="linkAgr">《用户协议》</text>
+				登录即同意 <text @tap="jump('pages/login/agreement')">《用户协议》</text>
 			 </view>
 			<view class="t-e cl">
-				<text @tap="linkReg">没有账号</text>
+				<text @tap="jump('pages/login/reg')">没有账号</text>
 			</view>
 		</view>
 	</view>
@@ -42,16 +42,9 @@
 		  })
 		},
 		methods:{
-			linkAgr(){
-				// 跳转到消息列表
+			jump(url){
 				this.$u.route({
-					url: 'pages/login/agreement'
-				});
-			},
-			linkReg(){
-				// 跳转到消息列表
-				this.$u.route({
-					url: 'pages/login/reg'
+					url: url
 				});
 			},
 			linkLogin(){
