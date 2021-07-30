@@ -15,12 +15,12 @@
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="group-plus">
-						<u-icon name="plus" size="35" color="#a9a9aa"></u-icon>
+						<u-icon name="plus" size="35" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="group-plus">
-						<u-icon name="minus" size="35" color="#a9a9aa"></u-icon>
+						<u-icon name="minus" size="35" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -176,12 +176,12 @@ export default {
 			padding-bottom: 10rpx;
 		}
 		.group-plus{
-			border: 4rpx dashed #e7e7e8;
+			border: 4rpx dashed #f3f3f4;
 			border-radius: 10rpx;
 			text-align: center;
 			line-height: 80rpx;
-			width: 80rpx;
-			height: 80rpx;
+			width: 70rpx;
+			height: 70rpx;
 		}
 		.group-text {
 			width: 80rpx;

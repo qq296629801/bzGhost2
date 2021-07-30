@@ -18,12 +18,9 @@
 			</form>
 			<view class="t-f">
 				登录即同意 <text @tap="linkAgr">《用户协议》</text>
-				<text @tap="linkReg" style="color: #000000;">注册</text>
-			 </view>
-			 <view class="t-f">
-				
 			 </view>
 			<view class="t-e cl">
+				<text @tap="linkReg">没有账号</text>
 			</view>
 		</view>
 	</view>
@@ -35,7 +32,6 @@
 		components:{},
 		data() {
 			return {
-				title: 'Yiqun',
 				pass:'123456',
 				phone:'admin',
 			};
@@ -104,7 +100,7 @@
 	padding: 0 20rpx 0 120rpx;
 	height: 90rpx;
 	line-height: 90rpx;
-	border: 1px solid #dfdfdf;
+	border: 1px solid #efefef;
 	margin-bottom: 50rpx;
 	background: #fff;
 	font-size: 28rpx;
@@ -112,7 +108,7 @@
 }
 
 .t-login .t-a {
-	position: relative
+	position: relative;
 }
 
 .t-login .t-a image {
@@ -121,7 +117,7 @@
 	position: absolute;
 	left: 40rpx;
 	top: 28rpx;
-	border-right: 2rpx solid #dedede;
+	border-right: 2rpx solid #efefef;
 	padding-right: 20rpx
 }
 

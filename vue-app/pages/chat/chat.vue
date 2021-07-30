@@ -2,11 +2,9 @@
 	<view>
 		<view class="content" id="content" @touchstart="hideDrawer">
 			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
-			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
-			 upper-threshold="50">
+			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
 				
-				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
-				<!-- <u-loading :show="!loading" mode="circle" color="green" size="50"></u-loading> -->
+				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="loadHistory" @up="upCallback">
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
 					
 					<!-- 系统通知的消息 -->
@@ -424,6 +422,8 @@
 			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
 				  let message = res.response.data;
 				  if(message.length>0){
+					  uni.stopPullDownRefresh();
+					  this.mescroll.endByPage(this.msgList.length, this.pageNum); 
 					  message.forEach(m=>{
 						  if (!this.msgList.map(v => v.id).includes(m.id)) {
 							this.msgList.push(m)
@@ -431,6 +431,9 @@
 					  });
 					this.msgList.sort((a, b) => { return a.id - b.id })
 					this.pageNum++
+				  }else{
+					  //联网失败, 结束加载
+					  this.mescroll.endErr();
 				  }
 				  this.$nextTick(() => {
 				  	this.scrollAnimation = true;
@@ -553,8 +556,13 @@
 						}
 					}
 				}
+				this.textMsg = ''
+				this.$nextTick(() => {
+					this.scrollTop = 9999;
+					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
+					this.scrollAnimation = true;
+				});
 			  });
-			  this.textMsg = ''
 			},
 			// 接受消息(筛选处理)
 			addMsg(msg){
@@ -574,12 +582,6 @@
 						break;
 					default:
 				}
-				
-				this.$nextTick(() => {
-					this.scrollTop = 9999;
-					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
-					this.scrollAnimation = true;
-				});
 			},
 			//撤销
 			rollBack(res){

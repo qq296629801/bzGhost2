@@ -7,7 +7,7 @@
 			</view>	
 		</u-navbar>
 		<!-- #endif -->
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="upChatList" @up="upCallback">
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
 			<view v-for="(item,index) in chatItem">
@@ -45,11 +45,11 @@ export default {
 	},
 	watch:{
         pushRes: function(value){
-			this.getChatList();
+			this.upChatList();
 		}
 	},
 	onShow() {
-		this.getAll();
+		this.loadData();
 	},
 	methods: {
 		linkToChat(item){
@@ -59,7 +59,7 @@ export default {
 				params: {}
 			});
 		},
-		getAll(){
+		loadData(){
 			if(this.userData.user==undefined){
 				return
 			}
@@ -68,13 +68,16 @@ export default {
 			upCacheAddr(this.userData.user.operId).then(res=>{
 				this.$u.vuex('firendItem', res)
 			});
-			this.getChatList();
+			this.upChatList();
 		},
 		// 获取列表
-		getChatList(){
+		upChatList(){
 			upCacheChat(this.userData.user.operId).then(res =>{
 				this.$u.vuex('chatItem', res);
+				uni.stopPullDownRefresh();
+				this.mescroll.endByPage(res.length, res.length);
 			}).catch(e =>{
+				this.mescroll.endErr();
 				this.message.info(e.response.errorMessage);
 			});
 		},
