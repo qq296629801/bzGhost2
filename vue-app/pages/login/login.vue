@@ -1,7 +1,9 @@
 <template>
 	<view>
 		<view class="t-login">
-			<view class="t-b">{{title}}</view>
+			<view class="t-b">
+				<image src="/static/logo.png"></image>
+			</view>
 			<form class="cl">
 				<view class="t-a">
 					<image src="/static/shilu-login/1.png"></image>
@@ -128,6 +130,11 @@
 	font-size: 46rpx;
 	color: #000;
 	padding: 150rpx 0
+}
+
+.t-login .t-b image{
+	width: 200rpx;
+	height: 200rpx;
 }
 
 .t-login .t-c {
