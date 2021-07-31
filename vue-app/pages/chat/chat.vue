@@ -415,24 +415,22 @@
 				return;
 			}
 			this.loading = false;
-			//关闭滑动动画
 			this.scrollAnimation = false;
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
 			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
 				  let message = res.response.data;
 				  if(message.length>0){
-					  uni.stopPullDownRefresh();
-					  this.mescroll.endByPage(this.msgList.length, this.pageNum); 
 					  message.forEach(m=>{
 						  if (!this.msgList.map(v => v.id).includes(m.id)) {
 							this.msgList.push(m)
 						  }  
 					  });
-					this.msgList.sort((a, b) => { return a.id - b.id })
-					this.pageNum++
+					  uni.stopPullDownRefresh();
+					  this.mescroll.endByPage(message.length, this.msgList); 
+					  this.msgList.sort((a, b) => { return a.id - b.id })
+					  this.pageNum++
 				  }else{
-					  //联网失败, 结束加载
 					  this.mescroll.endErr();
 				  }
 				  this.$nextTick(() => {
@@ -557,11 +555,6 @@
 					}
 				}
 				this.textMsg = ''
-				this.$nextTick(() => {
-					this.scrollTop = 9999;
-					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
-					this.scrollAnimation = true;
-				});
 			  });
 			},
 			// 接受消息(筛选处理)
@@ -582,6 +575,10 @@
 						break;
 					default:
 				}
+				this.$nextTick(() => {
+					this.scrollTop = 9999;
+					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
+				});
 			},
 			//撤销
 			rollBack(res){
