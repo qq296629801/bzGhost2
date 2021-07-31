@@ -3,7 +3,7 @@ import App from './App'
 import uView from "uview-ui";
 import store from '@/store';
 import webim from 'webim.js';
-import message from '@/util/message.js'
+import util from '@/util/util.js'
 import * as filters from '@/filter/index.js'
 const vuexStore = require("@/store/$u.mixin.js");
 import publicModule from "@/components/common/public_module.vue";
@@ -21,7 +21,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$socket = webim;
 Vue.prototype.$url = 'http://42.193.146.14/';
 Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload';
-Vue.prototype.message = message
+Vue.prototype.util = util
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {

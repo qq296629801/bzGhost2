@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import { upCacheMsg, upCacheAddr, upCacheChat } from '@/util/tool.js'
+	import {  cacheAll } from '@/util/yiqun.js'
 	export default {
 		components:{},
 		data() {
@@ -38,7 +38,6 @@
 		},
 		mounted: function () {
 		  this.$nextTick(function () {
-			  
 		  })
 		},
 		methods:{
@@ -50,21 +49,14 @@
 			linkLogin(){
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
-						let d = res.response.data;
-						this.$u.vuex("userData", d);
-						upCacheMsg(d.user.operId);
-						upCacheAddr(d.user.operId).then(res=>{
-							this.$u.vuex('firendItem', res)
-						});
-						upCacheChat(d.user.operId).then(res=>{
-							this.$u.vuex('chatItem', res);
-						});
+						this.$u.vuex("userData", res.response.data);
+						cacheAll(res.response.data.user.operId);
 						this.$u.route({
 							url: 'pages/home/home',
 							type: 'switchTab'
 						});
 					} else {
-					  this.message.info(res.reason);
+						this.util.modal(res.reason);
 					}
 				});
 			}

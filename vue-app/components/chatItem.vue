@@ -1,5 +1,4 @@
 <template>
-	
 	<view class="item" hover-class="message-hover-class" @tap="linkTo(value)">
 		<img-cache :src="$url + (value.avatar|| value.imgUrl)"></img-cache>
 		<view class="right title-wrap u-border-bottom">

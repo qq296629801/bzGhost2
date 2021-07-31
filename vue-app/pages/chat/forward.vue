@@ -8,7 +8,6 @@
 
 <script>
 	import chatItem from '@/components/chatItem.vue'
-	import { upCacheMsg, upCacheChat } from '@/util/tool.js'
 	export default {
 		name:'forward',
 		components:{chatItem},

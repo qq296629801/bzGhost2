@@ -9,8 +9,7 @@ try {
 } catch (e) {
 }
 
-let saveStateKeys = ['firendItem','userData','chatItem'];
-
+let saveStateKeys = ['userData','chatObj','packet','push'];
 const saveLifeData = function(key, value) {
 	if (saveStateKeys.indexOf(key) != -1) {
 		let tmp = uni.getStorageSync('lifeData');
@@ -21,20 +20,21 @@ const saveLifeData = function(key, value) {
 }
 const store = new Vuex.Store({
 	state: {
-		pushRes:lifeData.pushRes?lifeData.pushRes: {},
-		linkItem:lifeData.linkItem?lifeData.linkItem: [],
-		userData: lifeData.userData?lifeData.userData: {},
-		memberItem:lifeData.memberItem?lifeData.memberItem:[],
-		memberItemIndex: lifeData.memberItemIndex?lifeData.memberItemIndex:[],
-		chatItem:lifeData.chatItem?lifeData.chatItem:[],
-		firendItem: lifeData.firendItem?lifeData.firendItem: {},
-		packet: lifeData.packet?lifeData.packet:{},
-		chatObj:{
+		userData: lifeData.userData?lifeData.userData:{},
+		push:lifeData.push?lifeData.push:{},
+		chatObj:lifeData.chatObj?lifeData.chatObj:{
 		  chatId:'',
 		  chatType:0,
 		  chatName:''
 		},
-		vuex_version: '1.0.1',
+		packet: lifeData.packet?lifeData.packet:{
+			description:'红包异常',
+			money:0,
+			number:0,
+			userAvatar:'defalut.jpg',
+		},
+		linkItem:[],
+		memberItem:[]
 	},
 	mutations: {
 		$uStore(state, payload) {

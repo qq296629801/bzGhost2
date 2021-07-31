@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="content" id="content" @touchstart="hideDrawer">
-			<scroll-view id="scrollview" @scroll="scroll" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
-			 :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
+			<scroll-view id="scrollview" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
+			 :scroll-top="scrollTop" :scroll-into-view="scrollToView">
 				
 				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="loadHistory" @up="upCallback">
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
@@ -52,7 +52,7 @@
 	import LeftBubble from '@/components/chat/left-bubble.vue'
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
-	import { queryData, upData, initData, upRedData, upCanceData } from '@/util/dbStorage.js'
+	import { queryData, upData, upRedData, upCanceData } from '@/util/groupStorage.js'
 	import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 	import { emojiList } from "@/static/emoji/emoji.js"
 	export default {
@@ -75,19 +75,14 @@
 				downOption:{
 					auto: false
 				},
-				loading: true,
 				textMsg: '',
 				redFlag: false,
 				rClickId:0,
 				lClickId:0,
 				pageNum:1,
 				disabledSay:0,
-				old: {
-					scrollTop: 0
-				},
 				scrollTop:0,
 				scrollToView:'',
-				scrollAnimation:false,
 				inputOffsetBottom: 0,
 				viewOffsetBottom: 0, 
 				msgList:[],
@@ -125,7 +120,8 @@
 			this.$nextTick(() => {
 				this.hideDrawer();
 				this.disabledSay = 0
-				this.scrollTop = 9999;
+				//this.scrollToBottom()
+				//this.scrollTop = 9999;
 			});
 		},
 		onReady() {
@@ -164,19 +160,6 @@
 		},
 		methods:{
 			enterInput:function(){
-			},
-			scroll: function(e) {
-				this.old.scrollTop = e.detail.scrollTop;
-			},
-			goTop: function(e) {
-				this.scrollTop = this.old.scrollTop
-				this.$nextTick(function() {
-					this.scrollTop = 0
-				});
-				uni.showToast({
-					icon:"none",
-					title:"纵向滚动 scrollTop 值已被修改为 0"
-				})
 			},
 			textMsgTap(t){
 				this.textMsg = t;
@@ -261,36 +244,18 @@
 			// 打开抽屉
 			openDrawer(){
 				this.popupLayerClass = 'showLayer';
-				this.scrollAnimation = false
-				this.$nextTick(() => {
-					if(this.msgList.length>0){
-						this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
-						this.scrollAnimation = true;
-					}
-				});
+				this.scrollBottom()
 			},
 			// 隐藏抽屉
 			hideDrawer(){
+				this.popupLayerClass = '';
+				this.hideMore = true;
+				this.hideEmoji = true;
+				this.rClickId = 0;
+				this.lClickId = 0;
 				setTimeout(()=>{
-					this.popupLayerClass = '';
-					this.hideMore = true;
-					this.hideEmoji = true;
-					this.rClickId = 0;
-					this.lClickId = 0;
 					uni.hideKeyboard();
 				},150);
-			},
-			// 置底
-			scrollToBottom(t) {
-					let that = this
-					let query = uni.createSelectorQuery()
-					query.select('#scrollview').boundingClientRect()
-					query.select('#msglistview').boundingClientRect()
-					query.exec((res) => {
-						if(res[1].height > res[0].height){
-							that.scrollTop = res[1].height - res[0].height
-						}
-					})
 			},
 			//删除
 			deleteMethod(id,index){
@@ -376,46 +341,31 @@
 				}
 			  })
 			},
+			scrollBottom(){
+				this.$nextTick(() => {
+					if(this.msgList.length>0){
+						this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
+					}
+				});
+			},
 			// localStorage版本获取消息列表
 			getMsgItem(){
 				if(this.chatObj.chatType==0){
-					this.scrollAnimation = false;
 					 this.$socket.queryFriendMessages(this.chatObj.chatId, this.userData.user.operId,1, (res) => {
 						 this.msgList = res.response.data;
-						 this.scrollTop = 9999;
-						 this.scrollAnimation = true;
+						 this.scrollBottom()
 					 });
 				}else {
-                    this.scrollAnimation = false;
                     queryData(this.chatObj.chatId).then(res=>{
                         this.msgList = res;
-                        this.$nextTick(function() {
-                            this.scrollTop = 9999;
-                            this.scrollAnimation = true;
-                        });
+						this.scrollBottom()
                     });
 				}
-			},
-			// sqlite版本获取消息列表
-			getMsgList2(){
-				this.scrollAnimation = false;
-				selectMsgSQL(this.chatObj.chatId).then(res=>{
-					this.msgList = res
-					this.$nextTick(function() {
-						this.scrollTop = 9999;
-						this.$nextTick(function() {
-							this.scrollAnimation = true;
-						});
-					});
-				});
+				
 			},
 			//触发滑动到顶部(加载历史信息记录)
 			loadHistory(e){
-			if (!this.loading) {
-				return;
-			}
-			this.loading = false;
-			this.scrollAnimation = false;
+		
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
 			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
@@ -427,16 +377,12 @@
 						  }  
 					  });
 					  uni.stopPullDownRefresh();
-					  this.mescroll.endByPage(message.length, this.msgList); 
+					  this.mescroll.endByPage(1, 1);
 					  this.msgList.sort((a, b) => { return a.id - b.id })
 					  this.pageNum++
 				  }else{
 					  this.mescroll.endErr();
 				  }
-				  this.$nextTick(() => {
-				  	this.scrollAnimation = true;
-				  	this.loading = true;
-				  });
 				});
 			},
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
@@ -523,7 +469,6 @@
 			 
 			  let arr = ['send2Friend','send2Group'];
 			  let _this = this;
-			  this.scrollAnimation = false;
 			  
 			  this.$socket[arr[this.chatObj.chatType]](this.chatObj.chatId, this.userData.user.operId, text, msgType, res => {
 				if (res.success) {
@@ -575,10 +520,7 @@
 						break;
 					default:
 				}
-				this.$nextTick(() => {
-					this.scrollTop = 9999;
-					this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
-				});
+				this.scrollBottom()
 			},
 			//撤销
 			rollBack(res){

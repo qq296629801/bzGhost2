@@ -132,7 +132,7 @@ export default {
 		},
 		clearGroupMsg() {
 			this.$socket.clearGroupMsg(this.userData.user.operId, this.chatObj.chatId, res => {
-				this.message.info(res.success?'成功':'失败');
+				this.util.modal('不能添加自己为好友');
 			});
 		},
 		chooseImg() {
@@ -151,9 +151,9 @@ export default {
 					this.group.members = res.members;
 					this.group.user = res.groupUser;
 					this.group.mine = res.group;
-					this.$u.vuex('memberItemIndex',res.members);
+					this.$u.vuex('memberItem',res.members);
 				} else {
-					this.message.info('获取数据失败');
+					this.util.modal(res.rease);
 				}
 			});
 		}

@@ -59,22 +59,22 @@ export default {
 		},
 		updateNickName () {
 			this.$socket.updateNickName(this.userData.user.operId, this.context, (res) => {
-			  this.message.info(res.success?'成功':'失败');
+			  this.util.modal(res.success?'成功':'失败');
 			})
 		},
 		updateGroupName(){
 			this.$socket.updateGroupName(this.userData.user.operId, this.groupId, this.context, res => {
-				this.message.info(res.success?'成功':'失败');
+				 this.util.modal(res.success?'成功':'失败');
 			})
 		},
 		updateNotice(){
 			this.$socket.updateNotice(this.userData.user.operId, this.groupId, this.context, res => {
-				this.message.info(res.success?'成功':'失败');
+				 this.util.modal(res.success?'成功':'失败');
 			})
 		},
 		updateGroupNick(){
 			this.$socket.updateGroupNick(this.userData.user.operId, this.groupId, this.context, res => {
-				this.message.info(res.success?'成功':'失败');
+				 this.util.modal(res.success?'成功':'失败');
 			})
 		}
 	}

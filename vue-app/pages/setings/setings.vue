@@ -30,9 +30,13 @@
 
 <script>
 	import apiconfig from '../../apiconfig.js'
+	// #ifdef APP-PLUS
+	import APPUpdate, { getCurrentNo } from "@/plugins/APPUpdate";
+	// #endif
 	export default {
 		data() {
 			return {
+				version: "", // 版本号
 				groupList: [
 					{ title: '新消息通知', color: '#409eff', icon: 'star' },
 					{ title: '隐私', color: '#409eff', icon: 'photo' },
@@ -41,7 +45,20 @@
 				],
 			}
 		},
+		onLoad(e) {
+			// #ifdef APP-PLUS
+			getCurrentNo(res => {
+				// 进页面获取当前APP版本号（用于页面显示）
+				this.version = res.version;
+			});
+			// #endif
+		},
 		methods: {
+			// 检查APP是否有新版本
+			onAPPUpdate() {
+				// true 没有新版本的时候有提示，默认：false
+				APPUpdate(true);
+			},
 			linkToCommon(index){
 				this.$u.route({
 					url: 'pages/my/common'

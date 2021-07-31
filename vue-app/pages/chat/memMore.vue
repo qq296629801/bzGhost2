@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<u-grid :col="6" :border="false">
-			<u-grid-item v-for="(item, index) in memberItemIndex" :index="index" :key="item.id" @tap="linkTo(item.id)">
+			<u-grid-item v-for="(item, index) in memberItem" :index="index" :key="item.id" @tap="linkTo(item.id)">
 				<img-cache :src="$url + item.avatar"></img-cache>
 				<view class="grid-text">{{ item.groupNickName||item.nickName }}</view>
 			</u-grid-item>
@@ -38,9 +38,9 @@
 			queryMems(){
 				this.$socket.queryMembers(this.chatObj.chatId, this.userData.user.operId, res => {
 					if (res.success) {
-						this.$u.vuex('memberItemIndex',res.members)
+						this.$u.vuex('memberItem',res.members)
 						uni.setNavigationBarTitle({
-							title: '群成员(' + this.memberItemIndex.length +')'
+							title: '群成员(' + this.memberItem.length +')'
 						});
 					} else {
 						uni.showModal({

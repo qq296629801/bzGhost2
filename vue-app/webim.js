@@ -47,7 +47,7 @@ const WEBIM = {
 			 	let command = packet.command;
 			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
 			 	eventDispatcher.removeListener(command, toJSON(packet))
-			 	let name = 'pushRes';
+			 	let name = 'push';
 			 	let value = packet;
 			 	if (command === -10) {
 			 		store.commit('$uStore', {

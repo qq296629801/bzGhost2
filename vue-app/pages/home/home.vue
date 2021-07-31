@@ -7,11 +7,11 @@
 			</view>	
 		</u-navbar>
 		<!-- #endif -->
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="upChatList" @up="upCallback">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
-			<view v-for="(item,index) in chatItem">
-				<chatItem @linkTo="linkToChat" :value="item" :index="index" :voiceIcon="true"></chatItem>
+			<view v-for="(item,index) in list">
+				<chatItem @linkTo="jump" :value="item" :index="index" :voiceIcon="true"></chatItem>
 			</view>
 		</mescroll-body>
 	</view>
@@ -21,8 +21,9 @@
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
-import { upCacheMsg, upCacheAddr, upCacheChat } from '@/util/tool.js';
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
+import { queryChat } from '@/util/chatStorage.js'
+import { cacheChats } from '@/util/yiqun.js'
 export default {
 	components: { searchInput, selectInput, chatItem },
 	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
@@ -31,54 +32,46 @@ export default {
 			show: false,
 			selectShow: false,
 			selectList: [
-				{ id: '2', name: '扫一扫', icon: 'scan' },
-				{ id: '1', name: '添加朋友', icon: 'man-add' },
-				{ id: '3', name: '发起群聊', icon: 'chat' }
-				],
-				upOption: {
-					auto: false 
-				},
-				downOption:{
-					auto: false
-				}
+			{ id: '2', name: '扫一扫', icon: 'scan' },
+			{ id: '1', name: '添加朋友', icon: 'man-add' },
+			{ id: '3', name: '发起群聊', icon: 'chat' }
+			],
+			upOption: {
+				auto: false 
+			},
+			downOption:{
+				auto: true
+			},
+			list:{}
 		};
 	},
 	watch:{
-        pushRes: function(value){
-			this.upChatList();
+        push: function(value){
 		}
 	},
-	onShow() {
-		this.loadData();
+	computed:{
+	},
+	onLoad() {
 	},
 	methods: {
-		linkToChat(item){
+		downCallback(){
+			queryChat(this.userData.user.operId).then(data=>{
+				this.list = data
+				uni.stopPullDownRefresh()
+				this.mescroll.endByPage(1, 1)
+			}).catch(e=>{
+				cacheChats(this.userData.user.operId).then(data=>{
+					this.list = data
+				});
+				 this.mescroll.endErr();
+			});
+		},
+		// 跳转
+		jump(item){
 			this.$u.vuex('chatObj', item);
 			this.$u.route({
 				url: 'pages/chat/chat',
 				params: {}
-			});
-		},
-		loadData(){
-			if(this.userData.user==undefined){
-				return
-			}
-			upCacheMsg(this.userData.user.operId).catch(e=>{
-			});
-			upCacheAddr(this.userData.user.operId).then(res=>{
-				this.$u.vuex('firendItem', res)
-			});
-			this.upChatList();
-		},
-		// 获取列表
-		upChatList(){
-			upCacheChat(this.userData.user.operId).then(res =>{
-				this.$u.vuex('chatItem', res);
-				uni.stopPullDownRefresh();
-				this.mescroll.endByPage(res.length, res.length);
-			}).catch(e =>{
-				this.mescroll.endErr();
-				this.message.info(e.response.errorMessage);
 			});
 		},
 		//打开或者关闭弹窗
@@ -112,7 +105,7 @@ export default {
 						uni.vibrateLong();
 						let uId = res.result
 						if (uId==t.userData.user.operId){
-							t.message.info('不能添加自己为好友');
+							 t.util.modal('不能添加自己为好友');
 						} else {
 							t.$u.route({
 								url: 'pages/businessCard/businessCard',
