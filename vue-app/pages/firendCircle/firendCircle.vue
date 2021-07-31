@@ -1,77 +1,82 @@
 <template>
 	<view class="content" id="content">
 		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar title=" " :background="{ background: '#F6F7F8' }" :border-bottom="false">
-			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="34" @click="linkToRelease"></u-icon></view>
+		<u-navbar title=" " :background="{ background: '#f8f8f8' }" :border-bottom="false">
+			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="36" @click="linkToRelease"></u-icon></view>
 		</u-navbar>
 		<!-- #endif -->
 		<view class="content-imgbox">
-			<image class="bgimg" :src="$url + userData.user.avatar" mode="scaleToFill"></image>
-			<image class="headimg" :src="$url + userData.user.avatar" @tap="linkToBusinessCard(userData.user.operId)"></image>
-			<text class="nickname">{{ userData.user.realname }}</text>
+			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>
+			<image class="headimg" :src="userInfo.headImg" @tap="jump(userInfo.id)"></image>
+			<text class="nickname">{{ userInfo.userName }}</text>
 		</view>
 		<view class="signature">
-			<view class="">{{ userData.user.description }}</view>
+			<view class="">{{ userInfo.signature }}</view>
 		</view>
+
 		<!-- 朋友圈列表 -->
 		<view class="content-circle">
 			<view class="content-circle-box" v-for="(item, index) in circleData" :key="item.circleMegId">
-				<view class="headimg"><image class="img" :src="$url + item.avatar" @tap="linkToBusinessCard(item.userId)"></image></view>
+				<view class="headimg"><image class="img" :src="item.userHeadImg" @tap="jump(item.userId)"></image></view>
 				<view class="content">
-					<view class="content-name" @tap="linkToBusinessCard(item.userId)">{{ item.nickName }}</view>
-					<view class="content-desc">{{ item.context }}</view>
-					<view class="content-img" v-if="item.urls">
+					<view class="content-name" @tap="jump(item.userId)">{{ item.userName }}</view>
+					<view class="content-desc">{{ item.content }}</view>
+					<view class="content-img" v-if="item.imageList.length">
 						<!-- //只有一张图时候 -->
-						<view v-if="item.urls.split(',').length == 1">
-							<image class="img-1" :src="$url + item.urls.split(',')[0]" mode="widthFix" @tap="previewImg(0, item.urls.split(','))"></image>
-						</view>
+						<view v-if="item.imageList.length == 1"><image class="img-1" :src="item.imageList[0]" mode="widthFix" @tap="previewImg(0, item.imageList)"></image></view>
 						<!-- 有多张图的时候 -->
-						<view v-else-if="item.urls.split(',').length > 1">
+						<view v-else-if="item.imageList.length > 1">
 							<view class="content-img-more">
 								<image
 									class="img-more"
-									v-for="(src, index) in item.urls.split(',')"
+									v-for="(src, index) in item.imageList"
 									:key="index"
 									:class="index % 3 == 0 && 'img-3'"
-									:src="$url + src"
+									:src="src"
 									mode="aspectFill"
-									@tap="previewImg(index, item.urls.split(','))"
+									@tap="previewImg(index, item.imageList)"
 								></image>
 							</view>
 						</view>
 					</view>
 					<!-- 相对时间 点赞按钮等 -->
 					<view class="relavivetime" :id="`comment-${'null'}-${index}`">
-						<view class="time">{{ item.operTime | format }}</view>
+						<view class="time">{{ item.createTime }}</view>
 						<view class="icon-box">
 							<view @tap="clickThumb(item)">
-								<image class="img icon-box-item thumb" :src="isFabulous(item) ? require('@/static/like-fill.png') : require('@/static/like.png')" mode=""></image>
+								<image class="img icon-box-item thumb" :src="item.isPraise ? require('@/static/like-fill.png') : require('@/static/like.png')" mode=""></image>
 							</view>
-							<view @tap="handleComment(index)">
-								<image class="img icon-box-item thumb" :src="require('@/static/comment.png')" mode=""></image>
+							<view @tap="handleComment(item.circleMegId, null, index)">
+								<image class="img icon-box-item" :src="require('@/static/comment.png')" mode=""></image>
 							</view>
 						</view>
 					</view>
 					<!-- 点赞人 评论 -->
 					<view class="msg-box">
-						<view class="thumbinfo" v-if="item.fabulousList.length">
+						<view class="thumbinfo" v-if="item.praise.length">
 							<image class="thumbinfo-icon" :src="require('@/static/like.png')"></image>
-							<text class="thumbinfo-name" v-for="(userInfo, fabulousIndex) in item.fabulousList" :key="userInfo.id" @tap="linkToBusinessCard(userInfo.id)">
-								{{ userInfo.nickName }}{{ fabulousIndex != item.fabulousList.length - 1 ? '，' : '' }}
+							<text class="thumbinfo-name" v-for="(userInfo, index) in item.praise" :key="userInfo.id" @tap="jump(userInfo.id)">
+								{{ userInfo.userName }}{{ index != item.praise.length - 1 ? '，' : '' }}
 							</text>
 						</view>
-						<view class="comment" v-if="item.commentList.length">
+						<view class="comment" v-if="item.comment.length">
 							<view
 								class="comment-box"
-								v-for="(comment, commenIndex) in item.commentList"
-								:key="commenIndex"
+								v-for="(comment, index) in item.comment"
+								:key="index"
 								hover-class="comment-hover-class"
-								:id="`comment-${item.circleMegId}-${commenIndex}`"
+								:id="`comment-${item.circleMegId}-${index}`"
+								@tap="handleComment(item.circleMegId, comment, index)"
 							>
-								<text class="comment-box-name">{{ comment.nickName }}：{{ comment.comment }}</text>
-								<u-icon  name="trash-fill" color="#9a9a9a" style="position: absolute;right: 50rpx;padding-top: 9rpx;" size="35" @click="deleteComment(index, commenIndex)" v-if="comment.userId == userData.user.operId"></u-icon>
-							</view> 
-						 </view>
+								<text class="comment-box-name" v-if="!comment.replyUserId" @tap.stop="jump(comment.userId)">{{ comment.userName }}：</text>
+								<text class="comment-box-name" v-if="comment.replyUserId" @tap.stop="jump(comment.userId)">
+									{{ comment.userName }}
+									<text class="callback">回复</text>
+								</text>
+								<text v-if="comment.replyUserId" class="comment-box-name" @tap.stop="jump(comment.replyUserId)">{{ comment.replyUserName }}：</text>
+								<text class="comment-box-content">{{ comment.content }}</text>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -82,9 +87,7 @@
 			<view v-show="showInput" :style="{ height: viewOffsetBottom + 'px' }"></view>
 			<!-- #endif -->
 		</view>
-		
-		<u-divider style="margin-top: 50rpx;margin-bottom: 50rpx;" color="#c8c7c8" v-show="showNoMore">我是有底线的</u-divider>
-		
+
 		<!-- 底部聊天输入框 其实可以封装成组件的...-->
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="input-box" v-if="showInput" id="input-box" :style="{ bottom: inputOffsetBottom > 0 ? inputOffsetBottom + 'px' : '0' }">
@@ -110,9 +113,10 @@
 						@confirm="sendMsg"
 					/>
 				</view>
-				<u-button @tap="sendMsg" class="input-box-flex-btn" type="primary" size="mini">发送</u-button>
+				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg">发送</button>
 			</view>
 		</view>
+
 		<u-action-sheet :list="list" v-model="show" border-radius="25" safe-area-inset-bottom @click="clickAction"></u-action-sheet>
 	</view>
 </template>
@@ -123,7 +127,6 @@ export default {
 	name: 'firendCircle',
 	data() {
 		return {
-			showNoMore: false,
 			show: false, //u-action-sheet  show
 			list: [{ text: '更换相册封面', fontSize: '28' }],
 			content: '',
@@ -134,53 +137,99 @@ export default {
 			commentInfo: {},
 			inputOffsetBottom: 0, //键盘的高度
 			viewOffsetBottom: 0, //视窗距离页面的距离
-			sel: '' ,//选中的节点
-			pageNum: 1,
-			postList:[],
-			postIndex:'',
+			sel: '', //选中的节点
+			userInfo:  {
+				headImg: require('@/static/image/huge.jpg'), //头像
+				id: 1, //id
+				userName: 'DR', //昵称
+				wechatNumber: 'October', //微信号
+				signature: 'who do you want to meet.', //个性签名
+				phone: '13535351112', //手机号
+				pictureBanner: require('@/static/image/circleBanner/3.jpg'), //相册背景图
+				chatBgImg: require('@/static/image/Ran.jpg'), //聊天背景图
+				address: "河南郑州"
+			},
+			//朋友圈展示信息
+			circleData: [{
+					circleMegId: 1,
+					userId: 2,
+					userName: "陈冠希",
+					createTime: "2分钟前",
+					userHeadImg: require('@/static/image/guanxi.jpg'),
+					content: "今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。",
+					imageList: [
+						require('@/static/image/circle/1.jpg')
+					],
+					isPraise: false,
+					praise: [{
+							id: 2,
+							userName: '陈冠希'
+						},
+						{
+							id: 3,
+							userName: "迪丽热巴"
+						}
+					],
+					comment:[
+						{ userId:"2",userName:"陈冠希",content:"也太好吃了8" },
+						{ userId:"3",userName:"迪丽热巴",content:"？？所以烧烤照片呢" },
+						{ userId:"1",userName:"DR",content:"他就在这得瑟呢" ,replyUserId:"3",replyUserName:"迪丽热巴"}
+					]
+				},
+				{
+					circleMegId: 2,
+					userId: 3,
+					userName: "迪丽热巴",
+					createTime: "1小时前",
+					userHeadImg: require('@/static/image/girl.jpg'),
+					content: "我拍的！",
+					imageList: [
+						require('@/static/image/circle/2.jpg'),
+						require('@/static/image/circle/3.jpg'),
+						require('@/static/image/circle/4.jpg'),
+						require('@/static/image/circle/5.jpg'),
+					],
+					isPraise: true,
+					praise: [{
+						id: 1,
+						userName: 'DR'
+					}, {
+						id: 3,
+						userName: "迪丽热巴"
+					}],
+					comment:[]
+				},
+				{
+					circleMegId: 3,
+					userId: 4,
+					userName: "小贱贱",
+					createTime: "昨天",
+					userHeadImg: require('@/static/image/boy.jpg'),
+					content: "。。。我tm直接痴呆",
+					imageList: [],
+					isPraise: false,
+					praise: [],
+					comment:[
+						{ userId:"4",userName:"小贱贱",content:"出门发现钥匙锁家里了" },
+					]
+				},
+			],
+			//内置朋友圈相册banner图
+			circleBgList:[
+				{ src:require('@/static/image/circleBanner/1.jpg'),isCheck:false },
+				{ src:require('@/static/image/circleBanner/2.jpg'),isCheck:false },
+				{ src:require('@/static/image/circleBanner/3.jpg'),isCheck:false },
+				{ src:require('@/static/image/circleBanner/4.jpg'),isCheck:false },
+			]
 		};
-	},
-	filters: {
-	   format: function (e) {
-		  // 获取js 时间戳
-		  let time = new Date().getTime();
-		  // 去掉 js 时间戳后三位
-		  time = parseInt((time - e) / 1000);
-		  // 存储转换值
-		  let s;
-		  if (time < 60 * 10) {
-		    // 十分钟内
-		    return '刚刚';
-		  } else if (time < 60 * 60 && time >= 60 * 10) {
-		    // 超过十分钟少于1小时
-		    s = Math.floor(time / 60);
-		    return s + '分钟前';
-		  } else if (time < 60 * 60 * 24 && time >= 60 * 60) {
-		    // 超过1小时少于24小时
-		    s = Math.floor(time / 60 / 60);
-		    return s + '小时前';
-		  } else if (time < 60 * 60 * 24 * 3 && time >= 60 * 60 * 24) {
-		    // 超过1天少于3天内
-		    s = Math.floor(time / 60 / 60 / 24);
-		    return s + '天前';
-		  } else {
-		    // 超过3天
-		   var date = new Date(e);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-		   var Y = date.getFullYear() + '-';
-		   var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-		   var D = date.getDate()>10?date.getDate(): '0'+date.getDate() + ' ';
-		   var h = date.getHours() + ':';
-		   var m = date.getMinutes()>10?date.getMinutes():'0'+ date.getMinutes() + ':';
-		   var ss = date.getSeconds();
-		   return Y+M+D+h+m+ss;
-		  }  
-	   }
 	},
 	watch: {
 		inputOffsetBottom: {
 			handler(val) {
 				if (val != 0) {
 					this.$nextTick(() => {
+						//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
+						//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
 						// #ifndef MP-WEIXIN || H5
 						this.bindScroll(this.sel, 100);
 						// #endif
@@ -190,10 +239,6 @@ export default {
 		}
 	},
 	methods: {
-		isFabulous(item){
-			let fabulous = item.fabulousList.filter(l=>l.userId==this.userData.user.operId)[0];
-			return fabulous?true:false
-		},
 		//自定义标题栏按钮
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
@@ -210,82 +255,84 @@ export default {
 		},
 		//点赞
 		clickThumb(item) {
-			let fabulous = item.fabulousList.filter(l=>l.userId==this.userData.user.operId)[0];
-			this.$socket.toFabulousRes(fabulous?fabulous.id:'',this.userData.user.operId, item.id, res => {
-				if (res.response.success) {
-					// jiazai
-					if(res.response.data){
-						item.fabulousList.push({
-							id: res.response.data,
-							nickName: this.userData.user.realname,
-							userId: this.userData.user.operId
-						})
-					}else{
-						let index = item.fabulousList.findIndex((m)=>m.userId==this.userData.user.operId);
-						item.fabulousList.splice(index, 1)
-					}
-				}
-			});
+			item.isPraise = !item.isPraise;
+			if (item.isPraise) {
+				item.praise.push({ id: this.userInfo.id, userName: this.userInfo.userName });
+			} else {
+				const index = item.praise.findIndex(i => i.id == this.userInfo.id);
+				item.praise.splice(index, 1);
+			}
 		},
 		//跳转到名片
-		linkToBusinessCard(userId) {
-			console.log(userId,'userId')
+		jump(userId) {
 			this.$u.route({
 				url: 'pages/businessCard/businessCard',
-				params:{ id: userId, source: 1}
+				params: { userId }
 			});
 		},
 		//点击评论 唤出输入框和键盘
-		handleComment(postIndex) {
-			this.postIndex = postIndex;
+		handleComment(circleMegId, comment, index) {
 			this.content = '';
-			this.showInput = true;
+			this.circleMegId = circleMegId;
+			this.commentInfo = comment || {};
 			this.placeholder = '评论：';
-		},
-		deleteComment(postIndex, commentIndex){
-			let _this = this
-			uni.showActionSheet({
-			    itemList: ['确认'],
-			    success: function (res) {
-			        if(res.tapIndex==0){
-						this.$socket.toCommentReqPacket(this.circleData[postIndex].commentList[commentIndex].id,this.userData.user.operId, this.circleData[postIndex].id, '', res => {
-							if (res.response.success) {
-								this.circleData[postIndex].commentList.splice(commentIndex, 1)
-							}
-						});
+			if (comment) {
+				this.sel = `#comment-${circleMegId}-${index}`;
+				if (comment.replyUserId) {
+					//xxx回复xxx ...
+					this.placeholder = `回复${comment.replyUserName}:`;
+				} else {
+					if (comment.userId == this.userInfo.id) {
+						//如果是回复自己
+						this.placeholder = `评论：`;
+					} else {
+						// xxx评论...
+						this.placeholder = `回复${comment.userName}:`;
 					}
-			    },
-			    fail: function (res) {
-			    }
-			});
-			
+				}
+			} else {
+				this.sel = `#comment-${'null'}-${index}`;
+			}
+			this.showInput = true;
 		},
 		//发送消息
 		sendMsg() {
-			// if (!this.$u.trim(this.content)) {
-			// 	return;
-			// }
-			console.log('111111111111111111');
-			const post = this.circleData[this.postIndex];
-			console.log(post,'post---')
-			const {id, realname} = this.userData.user
-			this.$socket.toCommentReqPacket('',id, post.id, this.content, res => {
-				console.log(res,'--')
-				if (res.response.success) {
-					const commentId = res.response.data;
-					if(res.response.data){
-						post.commentList.push({
-							id: commentId,
-							nickName: realname,
-							userId: id,
-							comment: this.content
-						})
-						this.closeInputModel();
+			if (!this.$u.trim(this.content)) {
+				return;
+			}
+			this.circleData.forEach(item => {
+				if (item.circleMegId == this.circleMegId) {
+					const { id, userName } = this.userInfo;
+					const { replyUserId, replyUserName } = this.commentInfo;
+					const params = {
+						userId: id,
+						userName,
+						content: this.content
+					};
+					//如果是回复别人的话
+					if (Object.keys(this.commentInfo).length) {
+						if (this.commentInfo.replyUserId) {
+							//点击了xxx回复xxx ...
+							params.replyUserId = replyUserId;
+							params.replyUserName = replyUserName;
+						} else {
+							if (this.commentInfo.userId !== this.userInfo.id) {
+								//点击了 xxx评论...
+								params.replyUserId = this.commentInfo.userId;
+								params.replyUserName = this.commentInfo.userName;
+							} else {
+								//如果是回复自己
+								// -- 保持params原来的参数不变
+							}
+						}
 					}
+					item.comment.push(params);
 				}
 			});
+			this.closeInputModel();
 		},
-		//滑块
+		//将视图滚动到键盘的上方 微信小程序有些许bug 会把输入框的焦点和placeholder顶起... 、
+		//暂时不适配微信小程序，正在解决此bug
 		bindScroll(sel, duration = 0) {
 			uni.createSelectorQuery()
 				.select('#content')
@@ -314,13 +361,6 @@ export default {
 		},
 		//查看大图
 		previewImg(current, imgList) {
-			for(let index in imgList){
-				if(!imgList[index]){
-					imgList.splice(index, 1)
-				}else{
-					imgList[index] = this.$url + imgList[index]
-				}
-			}
 			uni.previewImage({
 				current,
 				urls: imgList,
@@ -331,12 +371,10 @@ export default {
 		},
 		//关闭键盘 关闭输入框
 		closeInputModel() {
-			this.postId = ''
-			this.postIndex = ''
 			this.showInput = false;
 			this.content = '';
-			// this.circleMegId = '';
-			// this.commentInfo = {};
+			this.circleMegId = '';
+			this.commentInfo = {};
 			uni.hideKeyboard();
 		},
 		//失去焦点触发
@@ -344,26 +382,23 @@ export default {
 			this.closeInputModel();
 		},
 		keyboardheightchange(res) {
+			console.log(res);
 		},
 		//模拟数据 可通过接口获取
 		getData() {
-			this.$socket.queryPostsReq(this.userData.user.operId, this.pageNum, res => {
-				if (res.response.success) {
-					const circleData3 = this.circleData;
-					const circleData2 = res.response.data;
-					for(var i in circleData2){
-						let id = circleData2[i].id;
-						if (!circleData3.map(v => v.id).includes(id)) {
-							circleData3.push(circleData2[i]);
-						}
-					}
-					circleData3.sort((a,b)=>{return b.id-a.id});
-					this.$u.vuex('circleData', circleData3);
-					this.pageNum++;
-					if (circleData2.length==0){
-						this.showNoMore = true
-					}
-				}
+			uni.showLoading({
+				title: '正在加载...',
+				mask: true
+			});
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					// do something
+					//由于模拟的数据是从vuex中获取的 所以他是响应式的
+					//在此可以做数据的获取 并且再生命周期中调用
+					//例如this.circleData = await xxx ...
+					uni.hideLoading();
+					resolve();
+				}, 500);
 			});
 		},
 		//点击相册封面弹窗选择项
@@ -378,10 +413,15 @@ export default {
 		}
 	},
 	onReady() {
+		//兼容h5在pages.json中设置 autoBackButton：false无效  其实只是想修改下默认返回按钮的样式，发现不生效...
 		// #ifdef H5
 		const icon = document.getElementsByClassName('uni-page-head-btn')[0];
 		icon.style.display = 'none';
 		// #endif
+
+		//设置input输入框距离键盘的高度 --也就是键盘的高度
+		//设置view距离键盘和输入框的高度
+		//h5暂不支持键盘的高度监听
 		uni.onKeyboardHeightChange(res => {
 			this.inputOffsetBottom = res.height;
 			this.viewOffsetBottom = res.height + uni.upx2px(100);
@@ -392,80 +432,15 @@ export default {
 			}
 		});
 	},
-	onShow() {
-		this.getData()
-	},
+	//下拉刷新
 	async onPullDownRefresh() {
-	   await this.getData();
-		uni.stopPullDownRefresh();
-	},
-	async onReachBottom(){
 		await this.getData();
+		uni.stopPullDownRefresh();
 	}
 };
 </script>
 
-<style lang="scss">
-	/*组件背景颜色*/
-.water {
-		position: absolute;
-		left: 0;
-		bottom: -10px;
-		height: 30px;
-		width: 100%;
-		z-index: 1
-	}
-
-	.water-c {
-		position: relative
-	}
-
-	.water-1 {
-		background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjYwMHB4IiBoZWlnaHQ9IjYwcHgiIHZpZXdCb3g9IjAgMCA2MDAgNjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCAzLjQgKDE1NTc1KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT53YXRlci0xPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IuaIkSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9Ii0iIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjEuMDAwMDAwLCAtMTMzLjAwMDAwMCkiIGZpbGwtb3BhY2l0eT0iMC4zIiBmaWxsPSIjRkZGRkZGIj4KICAgICAgICAgICAgPGcgaWQ9IndhdGVyLTEiIHNrZXRjaDp0eXBlPSJNU0xheWVyR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMS4wMDAwMDAsIDEzMy4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLDcuNjk4NTczOTUgTDQuNjcwNzE5NjJlLTE1LDYwIEw2MDAsNjAgTDYwMCw3LjM1MjMwNDYxIEM2MDAsNy4zNTIzMDQ2MSA0MzIuNzIxMDUyLDI0LjEwNjUxMzggMjkwLjQ4NDA0LDcuMzU2NzQxODcgQzE0OC4yNDcwMjcsLTkuMzkzMDMwMDggMCw3LjY5ODU3Mzk1IDAsNy42OTg1NzM5NSBaIiBpZD0iUGF0aC0xIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==") repeat-x;
-		background-size: 600rpx;
-		-webkit-animation: wave-animation-1 3.5s infinite linear;
-		animation: wave-animation-1 3.5s infinite linear
-	}
-
-	.water-2 {
-		top: 5px;
-		background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjYwMHB4IiBoZWlnaHQ9IjYwcHgiIHZpZXdCb3g9IjAgMCA2MDAgNjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCAzLjQgKDE1NTc1KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT53YXRlci0yPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IuaIkSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9Ii0iIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMjEuMDAwMDAwLCAtMjQ2LjAwMDAwMCkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyBpZD0id2F0ZXItMiIgc2tldGNoOnR5cGU9Ik1TTGF5ZXJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIxLjAwMDAwMCwgMjQ2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTAsNy42OTg1NzM5NSBMNC42NzA3MTk2MmUtMTUsNjAgTDYwMCw2MCBMNjAwLDcuMzUyMzA0NjEgQzYwMCw3LjM1MjMwNDYxIDQzMi43MjEwNTIsMjQuMTA2NTEzOCAyOTAuNDg0MDQsNy4zNTY3NDE4NyBDMTQ4LjI0NzAyNywtOS4zOTMwMzAwOCAwLDcuNjk4NTczOTUgMCw3LjY5ODU3Mzk1IFoiIGlkPSJQYXRoLTIiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwMC4wMDAwMDAsIDMwLjAwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtMzAwLjAwMDAwMCwgLTMwLjAwMDAwMCkgIj48L3BhdGg+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==") repeat-x;
-		background-size: 600rpx;
-		-webkit-animation: wave-animation-2 6s infinite linear;
-		animation: wave-animation-2 6s infinite linear
-	}
-
-	.water-1,
-	.water-2 {
-		position: absolute;
-		width: 100%;
-		height: 60rpx
-	}
-
-	.back-white {
-		background: #fff
-	}
-
-	@keyframes wave-animation-1 {
-		0% {
-			background-position: 0 top
-		}
-
-		100% {
-			background-position: 600rpx top
-		}
-	}
-
-	@keyframes wave-animation-2 {
-		0% {
-			background-position: 0 top
-		}
-
-		100% {
-			background-position: 600rpx top
-		}
-	}
-	
+<style lang="scss" scoped>
 page {
 	background-color: #ffffff;
 }
@@ -487,7 +462,6 @@ image {
 			height: 110rpx;
 			border-radius: 6rpx;
 			position: absolute;
-			z-index: 99;
 			right: 30rpx;
 			bottom: -20rpx;
 		}
@@ -496,7 +470,6 @@ image {
 			position: absolute;
 			right: 170rpx;
 			bottom: 20rpx;
-			z-index: 99;
 			font-size: 30rpx;
 			font-weight: bold;
 		}
@@ -555,9 +528,11 @@ image {
 				}
 				.msg-box {
 					width: 100%;
+					background-color: $u-type-error-light;
 					margin-top: 15rpx;
 					border-radius: 4rpx;
 					.thumbinfo {
+						// border-bottom: 1rpx solid gray;
 						padding: 6rpx;
 						display: flex;
 						align-items: center;
@@ -607,6 +582,7 @@ image {
 					display: flex;
 					align-items: center;
 					&-item {
+						background-color: $u-type-error-light;
 						padding: 4rpx 12rpx;
 						border-radius: 6rpx;
 						&.thumb {
@@ -629,7 +605,7 @@ image {
 		width: 100%;
 		box-sizing: content-box;
 		z-index: 999;
-		background-color: #F6F7F8;
+		background-color: #eaeaea;
 
 		/* #ifdef MP-WEIXIN */
 		padding-bottom: 0rpx; 
@@ -659,9 +635,8 @@ image {
 					caret-color: $uni-color-success;
 				}
 			}
-			&-btn {
+			.btn {
 				margin-left: 20rpx;
-				z-index: 9999;
 				background-color: $u-type-success;
 				border: none;
 			}
