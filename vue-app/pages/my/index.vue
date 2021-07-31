@@ -3,38 +3,36 @@
 		<u-navbar :is-back="false" title="　" :border-bottom="false">
 			<view class="u-flex u-row-right" style="width: 100%;">
 				<view class="camera u-flex u-row-center">
-					<u-icon @tap="linkToMoment" name="camera-fill" color="#000000" size="40"></u-icon>
+					<u-icon @tap="jump('pages/firendCircle/firendCircle')" name="camera-fill" color="#000000" size="40"></u-icon>
 				</view>
 			</view>
 		</u-navbar>
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
 			<view class="u-m-r-10 u-p-r-30">
-				<u-avatar @tap="linkToPerson" mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar>
+				<u-avatar @tap="previewImage" mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar>
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
-				<view class="u-font-14 u-tips-color"><i>{{userData.user.money}}</i></view>
+				<view class="u-font-14 u-tips-color">{{userData.user.money}}</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
-				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe" @tap="linkToPerson"></view>
+				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe" @tap="jump('pages/my/person')"></view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
-				<u-icon name="arrow-right" color="#969799" size="28" @tap="linkToPerson"></u-icon>
+				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/my/person')"></u-icon>
 			</view>
 		</view>
-		
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item @tap="linkTo(index)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
+				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
 					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
-		
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item @click="linkToSetting" title="设置" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
-					<u-icon slot="icon" name="setting" color="#ff9900" size="40"></u-icon>
+				<u-cell-item @click="jump('pages/setings/setings')" title="设置" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
+					<u-icon slot="icon" name="setting" color="#55aaff" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
@@ -51,12 +49,21 @@
 					{
 						title: '相册',
 						color: '#409eff',
-						icon: 'photo'
+						icon: 'photo',
+						url:'pages/my/photo'
 					},
 					{
 						title: '表情',
+						color: '#ff9900',
+						icon: 'eye',
+						url:'pages/my/face'
+					}
+					,
+					{
+						title: '朋友圈',
 						color: '#409eff',
-						icon: 'eye'
+						icon: 'moments',
+						url:'pages/firendCircle/firendCircle'
 					}
 				],
 			}
@@ -64,26 +71,10 @@
 		onLoad() {
 		},
 		methods: {
-			linkToMoment(){
+			jump(url){
 				this.$u.route({
-					url:'pages/firendCircle/firendCircle'
+					url:url
 				})
-			},
-			linkTo(index) {
-				const url = index == 1 ? 'pages/my/face' : 'pages/my/photo'
-				this.$u.route({
-					url: url
-				});
-			},
-			linkToSetting() {
-				this.$u.route({
-					url: 'pages/setings/setings'
-				});
-			},
-			linkToPerson() {
-				this.$u.route({
-					url: 'pages/my/person'
-				});
 			},
 			previewImage() {
 				let current = this.$url + this.userData.user.avatar

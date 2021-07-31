@@ -21,12 +21,6 @@
 		</u-cell-group>
 		<view  style="height: 20rpx;"></view>
 		<u-cell-group>
-			<u-cell-item :arrow="false">
-				<view style="text-align: center;">切换账号</view>
-			</u-cell-item>
-		</u-cell-group>
-		<view  style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item :arrow="false" @click="logout">
 				<view style="text-align: center;">退出登录</view>
 			</u-cell-item>

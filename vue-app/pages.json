@@ -362,15 +362,6 @@
 		        "navigationBarTitleText": ""
 		    }
 		}
-        ,{
-            "path" : "pages/my/friendCircle",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
 	"tabBar": {
 		"color": "#7B8AA0",
