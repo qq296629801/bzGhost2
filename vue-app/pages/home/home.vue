@@ -11,7 +11,7 @@
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
 			<view v-for="(item,index) in list">
-				<chatItem @linkTo="jump" :value="item" :index="index" :voiceIcon="true"></chatItem>
+				<chatItem @linkTo="jump" :value="item" :index="index"></chatItem>
 			</view>
 		</mescroll-body>
 	</view>

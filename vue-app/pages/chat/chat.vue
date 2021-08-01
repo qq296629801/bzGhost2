@@ -248,12 +248,12 @@
 			},
 			// 隐藏抽屉
 			hideDrawer(){
-				this.popupLayerClass = '';
-				this.hideMore = true;
-				this.hideEmoji = true;
-				this.rClickId = 0;
-				this.lClickId = 0;
 				setTimeout(()=>{
+					this.popupLayerClass = '';
+					this.hideMore = true;
+					this.hideEmoji = true;
+					this.rClickId = 0;
+					this.lClickId = 0;
 					uni.hideKeyboard();
 				},150);
 			},

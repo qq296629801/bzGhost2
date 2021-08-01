@@ -1,48 +1,54 @@
 <template>
 	<view>
-		<view v-for="(item,index) in chatItem">
-			<chatItem @linkTo="linkForward" :value="item" :index="index"></chatItem>
+		<view v-for="(item,index) in list">
+			<chatItem @linkTo="jump" :value="item" :index="index"></chatItem>
 		</view>
 	</view>
 </template>
 
 <script>
 	import chatItem from '@/components/chatItem.vue'
+	import { queryChat } from '@/util/chatStorage.js'
+	import {  cacheGroupMsg, cacheChats } from '@/util/yiqun.js'
 	export default {
 		name:'forward',
 		components:{chatItem},
 		data() {
 			return {
 				msgContext:'',
-				msgType:0
+				msgType:0,
+				list:[]
 			};
 		},
 		onShow(){
-			this.$socket.queryChats('', this.userData.user.operId,(res) => {
-				if (res.success) {
-					this.$u.vuex('chatItem', res.chats)
-				}
-			});
 		},
 		onLoad({msgContext,msgType}) {
 			this.msgContext = msgContext
 			this.msgType = msgType
+			this.a()
 		},
 		methods:{
-			linkForward({chatId,chatType}){
+			a(){
+				// 查询缓存
+				queryChat(this.userData.user.operId).then(data=>{
+					this.list = data
+				}).catch(e=>{
+					//刷新缓存
+					cacheChats(this.userData.user.operId).then(data=>{
+						this.list = data
+					});
+				});
+			},
+			jump({chatId,chatType}){
 				let action = chatType ==1 ? 'send2Group' : 'send2Friend'
 				this.$socket[action](chatId, this.userData.user.operId, this.msgContext, this.msgType, res => {
 					if (res.success) {
-						uni.showToast({
-							icon:'success',
-							title:'转发成功'
-						})
-						// 群消息
-						let uid = this.userData.user.operId
-						upCacheMsg(uid);
-						// 消息列表
-						upCacheChat(uid).then(res=>{
-							this.$u.vuex('chatItem', res);
+						cacheChats(this.userData.user.operId).then(data=>{
+							this.list = data
+							this.$u.vuex('push','转发成功');
+							this.util.modal('转发成功');
+						});
+						cacheGroupMsg(this.userData.user.operId).then(data=>{
 						});
 						this.$socket.createChatList(this.userData.user.operId, chatId, this.msgContext, this.msgType, res => {})
 					}

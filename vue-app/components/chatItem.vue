@@ -14,7 +14,7 @@
 				<view class="u-line-1">
 					{{value.msgType==0?value.content:message[value.msgType]}}
 				</view>
-				<view class="" v-show="voiceIcon">
+				<view class="" v-show="timeIcon">
 					{{value.lastOperTime || value.lastOpenTime | format}}
 				</view>
 			</view>
@@ -40,10 +40,10 @@
 				type: Number,
 				default: -1
 			},
-			voiceIcon:{
+			timeIcon:{
 				type: Boolean,
 				default () {
-					return false;
+					return true;
 				}
 			},
 			badgeIcon:{
