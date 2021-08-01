@@ -38,12 +38,8 @@ export default {
 				if(res.response.success){
 					this.$u.vuex('linkItem',res.response.data);
 				}else {
-					uni.showToast({
-						icon:'none',
-						title: res.response.errorMessage
-					})
+					this.util.modal(res.response.errorMessage)
 				}
-				uni.stopPullDownRefresh();
 			});
 		},
 		linkToMoment(){

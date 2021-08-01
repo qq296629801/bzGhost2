@@ -17,17 +17,17 @@
 				<button @tap="linkLogin">立即登录</button>
 			</form>
 			<view class="t-f">
-				登录即同意 <text @tap="jump('pages/login/agreement')">《用户协议》</text>
+				同意《<text @tap="jump('pages/login/agreement')">用户协议</text>》
 			 </view>
 			<view class="t-e cl">
-				<text @tap="jump('pages/login/reg')">没有账号</text>
+				<!-- <text @tap="jump('pages/login/reg')">没有账号</text> -->
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {  cacheAll } from '@/util/yiqun.js'
+	import {  cache } from '@/util/yiqun.js'
 	export default {
 		components:{},
 		data() {
@@ -50,7 +50,7 @@
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
 						this.$u.vuex("userData", res.response.data);
-						cacheAll(res.response.data.user.operId);
+						cache(res.response.data.user.operId);
 						this.$u.route({
 							url: 'pages/home/home',
 							type: 'switchTab'

@@ -7,7 +7,7 @@
 			</view>	
 		</u-navbar>
 		<!-- #endif -->
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
 			<view v-for="(item,index) in list">
@@ -47,19 +47,25 @@ export default {
 	},
 	watch:{
         push: function(value){
+			cacheChats(this.userData.user.operId).then(data=>{
+				this.list = data
+			});
 		}
 	},
 	computed:{
 	},
 	onLoad() {
+		this.a()
 	},
 	methods: {
-		downCallback(){
+		a(){
+			// 查询缓存
 			queryChat(this.userData.user.operId).then(data=>{
 				this.list = data
 				uni.stopPullDownRefresh()
 				this.mescroll.endByPage(1, 1)
 			}).catch(e=>{
+				//刷新缓存
 				cacheChats(this.userData.user.operId).then(data=>{
 					this.list = data
 				});
@@ -105,7 +111,7 @@ export default {
 						uni.vibrateLong();
 						let uId = res.result
 						if (uId==t.userData.user.operId){
-							 t.util.modal('不能添加自己为好友');
+							t.util.modal('不能添加自己为好友');
 						} else {
 							t.$u.route({
 								url: 'pages/businessCard/businessCard',
