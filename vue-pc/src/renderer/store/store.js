@@ -19,11 +19,11 @@ const store = new Vuex.Store({
         modalMine:false,
         user:{},
         userData:{},
-        pushRes:{},
+        push:{},
     },
     mutations:{
-        setPushRes(state,pushRes){
-            state.pushRes = pushRes
+        setPush(state,push){
+            state.push = push
         },
         setUser(state,user){
             state.user=user
@@ -72,8 +72,8 @@ const store = new Vuex.Store({
     actions:{
     },
     getters:{
-        getPushRes(state){
-          return state.pushRes;
+        getPush(state){
+          return state.push;
         },
         getUser(state){
             return state.user;

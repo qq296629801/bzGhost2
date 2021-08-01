@@ -44,7 +44,7 @@ export default {
     return {
       search: '',
       user: this.$store.state.user,
-      messageStr: ['文字', '图片', '表情', '语音', '视频', '签到', '撤销', '发红包', '抢红包'],
+      messageStr: ['文字', '图片', '表情', '语音', '视频', '签到', '撤销', '发红包', '抢红包','其他'],
       items: this.$store.state.chatList
     };
   },
@@ -53,12 +53,12 @@ export default {
       const list = this.$store.state.chatList
       this.items = val ? list.filter(item => item.chatName.includes(val)) : list
     },
-    pushRes:function (val) {
+    push:function (val) {
       this.findChatList();
     }
   },
   computed: {
-      ...mapState(['pushRes']),
+      ...mapState(['push']),
       chat: {
           get: function() {
               return this.$store.state.chat;

@@ -46,7 +46,7 @@ const WEBIM = {
             eventDispatcher.dispatchEvent(command, toJSON(packet))
             eventDispatcher.removeListener(command, toJSON(packet))
             if (command == -10){
-               store.state.pushRes = packet;
+               store.state.push = packet;
             }
         });
         WEBIM.server.onSocketClosed(WEBIM.options)

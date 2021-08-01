@@ -15,10 +15,10 @@
                             <img class="message-img" @click.stop="handleToRemarks(item)" :src="`${$url}/${item.userName === user.username?user.avatar:item.avatar}`" alt="">
                             <cite v-if="item.userName == user.username">
                                 <i>{{ item.operTime | dateFormat}}</i>
-                                <i v-if="isShowNickName">{{item.groupNickName || item.nickName || item.nickname || item.remarkName || item.groupNickName || item.userName}}</i>
+                                <i v-if="isShowNickName">{{item.groupNickName || item.nickName  || item.remarkName }}</i>
                             </cite>
                             <cite v-else>
-                                <i v-if="isShowNickName">{{item.groupNickName || item.nickName || item.nickname || item.remarkName || item.groupNickName || item.userName}}</i>
+                                <i v-if="isShowNickName">{{item.groupNickName || item.nickName  || item.remarkName }}</i>
                                 <i>{{ item.operTime | dateFormat}}</i>
                             </cite>
                         </div>
@@ -1086,9 +1086,8 @@ export default {
             this.msgList.push(msg);
         },
         vibrateLong() {
-           // import path from 'path'
             this.audio = new Audio();
-            this.audio.src = 'http://bzghost.com/up/msg.mp3' ;
+            this.audio.src = 'http://bzghost.com/msg.mp3' ;
             let playPromise;
             playPromise = this.audio.play();
             let second = length;
