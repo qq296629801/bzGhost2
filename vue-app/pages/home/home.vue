@@ -59,6 +59,9 @@ export default {
 	},
 	methods: {
 		a(){
+			if(this.userData.user==undefined){
+				return;
+			}
 			// 查询缓存
 			queryChat(this.userData.user.operId).then(data=>{
 				this.list = data

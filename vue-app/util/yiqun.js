@@ -1,12 +1,27 @@
-import {  initData } from '@/util/groupStorage.js'
+import { initData } from '@/util/groupStorage.js'
 import { saveChat } from '@/util/chatStorage.js'
-import friendDao from '@/util/friendStorage.js'
+import { saveFriend } from '@/util/friendStorage.js'
+import { saveCircle } from '@/util/circleStorage.js'
 import webim from '@/webim.js';
 const yiqun = {
 	cache:function(userId){
-		yiqun.cacheGroupMsg(userId)
-		yiqun.cacheFriends(userId)
-		yiqun.cacheChats(userId)
+		yiqun.cacheGroupMsg(userId);
+		yiqun.cacheFriends(userId);
+		yiqun.cacheChats(userId);
+		yiqun.cacheCircle(userId);
+	},
+	cacheCircle:function(userId){
+		return new Promise((resolve, reject) => {
+				webim.queryPostsReq(userId, 1 , res=>{
+					console.log(res)
+					if(res.response.success){
+						saveCircle(res.response.data, userId);
+						resolve(res.response.data)
+					}else {
+						reject(res.response.errorMessage)
+					}
+				});
+		});
 	},
 	cacheGroupMsg:function(uid){
 		return new Promise((resolve, reject) => {
@@ -27,7 +42,7 @@ const yiqun = {
 		return new Promise((resolve, reject) => {
 			webim.listGuests(uid, res => {
 				if(res.response.success){
-					friendDao.saveFriend(res.response.data,uid)
+					saveFriend(res.response.data,uid)
 					resolve(res.response.data)
 				}else {
 					reject(res.response.errorMessage)
@@ -54,5 +69,6 @@ module.exports = {
 	cacheGroupMsg:yiqun.cacheGroupMsg,
 	cacheFriends:yiqun.cacheFriends,
 	cacheChats:yiqun.cacheChats,
+	cacheCircle:yiqun.cacheCircle,
 	cache:yiqun.cache
 }

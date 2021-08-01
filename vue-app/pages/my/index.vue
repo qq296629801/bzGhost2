@@ -60,7 +60,7 @@
 					}
 					,
 					{
-						title: '朋友圈',
+						title: '友圈',
 						color: '#409eff',
 						icon: 'moments',
 						url:'pages/firendCircle/firendCircle'

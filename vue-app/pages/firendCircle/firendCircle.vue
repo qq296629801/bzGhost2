@@ -123,6 +123,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { queryCircle } from '@/util/circleStorage.js'
 export default {
 	name: 'firendCircle',
 	data() {
@@ -150,69 +151,7 @@ export default {
 				address: "河南郑州"
 			},
 			//朋友圈展示信息
-			circleData: [{
-					circleMegId: 1,
-					userId: 2,
-					userName: "陈冠希",
-					createTime: "2分钟前",
-					userHeadImg: require('@/static/image/guanxi.jpg'),
-					content: "今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。今天心情好，出去吃烧烤哈哈哈哈哈哈哈哈哈哈哈。",
-					imageList: [
-						require('@/static/image/circle/1.jpg')
-					],
-					isPraise: false,
-					praise: [{
-							id: 2,
-							userName: '陈冠希'
-						},
-						{
-							id: 3,
-							userName: "迪丽热巴"
-						}
-					],
-					comment:[
-						{ userId:"2",userName:"陈冠希",content:"也太好吃了8" },
-						{ userId:"3",userName:"迪丽热巴",content:"？？所以烧烤照片呢" },
-						{ userId:"1",userName:"DR",content:"他就在这得瑟呢" ,replyUserId:"3",replyUserName:"迪丽热巴"}
-					]
-				},
-				{
-					circleMegId: 2,
-					userId: 3,
-					userName: "迪丽热巴",
-					createTime: "1小时前",
-					userHeadImg: require('@/static/image/girl.jpg'),
-					content: "我拍的！",
-					imageList: [
-						require('@/static/image/circle/2.jpg'),
-						require('@/static/image/circle/3.jpg'),
-						require('@/static/image/circle/4.jpg'),
-						require('@/static/image/circle/5.jpg'),
-					],
-					isPraise: true,
-					praise: [{
-						id: 1,
-						userName: 'DR'
-					}, {
-						id: 3,
-						userName: "迪丽热巴"
-					}],
-					comment:[]
-				},
-				{
-					circleMegId: 3,
-					userId: 4,
-					userName: "小贱贱",
-					createTime: "昨天",
-					userHeadImg: require('@/static/image/boy.jpg'),
-					content: "。。。我tm直接痴呆",
-					imageList: [],
-					isPraise: false,
-					praise: [],
-					comment:[
-						{ userId:"4",userName:"小贱贱",content:"出门发现钥匙锁家里了" },
-					]
-				},
+			circleData: [
 			],
 			//内置朋友圈相册banner图
 			circleBgList:[
@@ -238,7 +177,15 @@ export default {
 			}
 		}
 	},
+	onLoad() {
+		this.a()
+	},
 	methods: {
+		a(){
+			queryCircle(this.userData.user.operId).then(data=>{
+				this.circleData = data
+			});
+		},
 		//自定义标题栏按钮
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {

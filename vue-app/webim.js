@@ -13,7 +13,7 @@ const WEBIM = {
 	userId: null,
 	isReadDel: 0,
 	userIdStr: null,
-	serverUrl: 'ws://42.193.146.14:9999/chat',
+	serverUrl: 'ws://127.0.0.1:9999/chat',
 	server: null,
 	/*消息超时 时间 默认 15 秒*/
 	sendTimeOut: 15,
