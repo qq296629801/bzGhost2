@@ -3,7 +3,7 @@ import { saveChat } from '@/util/chatStorage.js'
 import friendDao from '@/util/friendStorage.js'
 import webim from '@/webim.js';
 const yiqun = {
-	cacheAll:function(userId){
+	cache:function(userId){
 		yiqun.cacheGroupMsg(userId)
 		yiqun.cacheFriends(userId)
 		yiqun.cacheChats(userId)
@@ -27,7 +27,7 @@ const yiqun = {
 		return new Promise((resolve, reject) => {
 			webim.listGuests(uid, res => {
 				if(res.response.success){
-					friendDao.saveFriend(res.response.data)
+					friendDao.saveFriend(res.response.data,uid)
 					resolve(res.response.data)
 				}else {
 					reject(res.response.errorMessage)
@@ -54,5 +54,5 @@ module.exports = {
 	cacheGroupMsg:yiqun.cacheGroupMsg,
 	cacheFriends:yiqun.cacheFriends,
 	cacheChats:yiqun.cacheChats,
-	cacheAll:yiqun.cacheAll
+	cache:yiqun.cache
 }

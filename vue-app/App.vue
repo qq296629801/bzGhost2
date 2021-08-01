@@ -2,17 +2,17 @@
 	// #ifdef APP-PLUS
 	import APPUpdate from "@/plugins/APPUpdate";
 	// #endif
-	import { cacheAll } from '@/util/yiqun.js';
+	import { cache } from '@/util/yiqun.js';
 	export default {
 		onLaunch: function() {
-			this.$socket.initWebIM().then(e=>{});
 			// #ifdef APP-PLUS
 			APPUpdate();
 			// #endif
+			this.$socket.initWebIM().then(e=>{});
 		},
 		onShow: function() {
-			if(this.userData.user){
-				cacheAll(this.userData.user.operId);
+			if(this.userData.user!=undefined){
+				cache(this.userData.user.operId);
 			}else {
 				uni.navigateTo({
 					url: "pages/login/login"
