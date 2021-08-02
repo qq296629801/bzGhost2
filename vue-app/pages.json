@@ -86,7 +86,7 @@
 				"navigationStyle": "custom",
 				// #endif
 				"transparentTitle": "auto",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",

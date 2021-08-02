@@ -1,6 +1,5 @@
 const circle = {
 	saveCircle:function(data,userId){
-		console.log(JSON.stringify(data))
 		uni.setStorageSync('circleItem_'+userId, JSON.stringify(data));
 	},
 	queryCircle:function(userId){

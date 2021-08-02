@@ -32,8 +32,8 @@ export default {
 			show: false,
 			selectShow: false,
 			selectList: [
-			{ id: '2', name: '扫一扫', icon: 'scan' },
 			{ id: '1', name: '添加朋友', icon: 'man-add' },
+			{ id: '2', name: '扫一扫', icon: 'scan' },
 			{ id: '3', name: '发起群聊', icon: 'chat' }
 			],
 			upOption: {

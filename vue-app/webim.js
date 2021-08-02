@@ -677,9 +677,8 @@ const WEBIM = {
 		eventDispatcher.addListener('103', func)
 	},
 	
-	toFabulousRes: (id, userId, postId, func) => {
+	toFabulousRes: (userId, postId, func) => {
 		let requestPacket = {
-			id,
 			postId,
 			pageSize: 10,
 			userId,
@@ -690,17 +689,8 @@ const WEBIM = {
 		eventDispatcher.addListener('109', func)
 	},
 	
-	toCommentReqPacket: (id, userId, postId, comment, func) => {
-		let requestPacket = {
-			id,
-			postId,
-			comment,
-			pageSize: 10,
-			userId,
-			version: 1,
-			command: 104
-		}
-		send(requestPacket)
+	toCommentReqPacket: (params, func) => {
+		send(params)
 		eventDispatcher.addListener('105', func)
 	},
 	getLinks: (userId, func) => {

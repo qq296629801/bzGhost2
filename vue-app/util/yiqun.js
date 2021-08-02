@@ -13,7 +13,6 @@ const yiqun = {
 	cacheCircle:function(userId){
 		return new Promise((resolve, reject) => {
 				webim.queryPostsReq(userId, 1 , res=>{
-					console.log(res)
 					if(res.response.success){
 						saveCircle(res.response.data, userId);
 						resolve(res.response.data)

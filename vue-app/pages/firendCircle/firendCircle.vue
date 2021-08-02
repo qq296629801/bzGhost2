@@ -5,6 +5,7 @@
 			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="36" @click="linkToRelease"></u-icon></view>
 		</u-navbar>
 		<!-- #endif -->
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="b()" @up="upCallback">
 		<view class="content-imgbox">
 			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>
 			<image class="headimg" :src="userInfo.headImg" @tap="jump(userInfo.id)"></image>
@@ -116,7 +117,7 @@
 				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg">发送</button>
 			</view>
 		</view>
-
+		</mescroll-body>
 		<u-action-sheet :list="list" v-model="show" border-radius="25" safe-area-inset-bottom @click="clickAction"></u-action-sheet>
 	</view>
 </template>
@@ -124,10 +125,19 @@
 <script>
 import { mapGetters } from 'vuex';
 import { queryCircle } from '@/util/circleStorage.js'
+import {cacheCircle} from '@/util/yiqun.js'
+import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 export default {
 	name: 'firendCircle',
+	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 	data() {
 		return {
+			upOption: {
+				auto: false 
+			},
+			downOption:{
+				auto: true
+			},
 			show: false, //u-action-sheet  show
 			list: [{ text: '更换相册封面', fontSize: '28' }],
 			content: '',
@@ -186,6 +196,13 @@ export default {
 				this.circleData = data
 			});
 		},
+		b(){
+			cacheCircle(this.userData.user.operId).then(data=>{
+				uni.stopPullDownRefresh()
+				this.mescroll.endByPage(1, 1)
+				this.circleData = data
+			});
+		},
 		//自定义标题栏按钮
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
@@ -209,6 +226,9 @@ export default {
 				const index = item.praise.findIndex(i => i.id == this.userInfo.id);
 				item.praise.splice(index, 1);
 			}
+			this.$socket.toFabulousRes(this.userData.user.operId,item.circleMegId,r=>{
+				console.log(r,'-------------------')
+			});
 		},
 		//跳转到名片
 		jump(userId) {
@@ -252,9 +272,12 @@ export default {
 					const { id, userName } = this.userInfo;
 					const { replyUserId, replyUserName } = this.commentInfo;
 					const params = {
-						userId: id,
-						userName,
-						content: this.content
+						userId: this.userData.user.operId,
+						userName:this.userData.user.username,
+						content: this.content,
+						postId:this.circleMegId,
+						version: 1,
+						command: 104
 					};
 					//如果是回复别人的话
 					if (Object.keys(this.commentInfo).length) {
@@ -274,6 +297,9 @@ export default {
 						}
 					}
 					item.comment.push(params);
+					this.$socket.toCommentReqPacket(params, p=>{
+						console.log(p,'-----------------');
+					});
 				}
 			});
 			this.closeInputModel();
@@ -379,11 +405,6 @@ export default {
 			}
 		});
 	},
-	//下拉刷新
-	async onPullDownRefresh() {
-		await this.getData();
-		uni.stopPullDownRefresh();
-	}
 };
 </script>
 
