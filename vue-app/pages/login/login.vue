@@ -51,9 +51,11 @@
 					if (res.success) {
 						this.$u.vuex("userData", res.response.data);
 						cache(res.response.data.user.operId);
-						this.$u.route({
-							url: 'pages/home/home',
-							type: 'switchTab'
+						this.$nextTick(() => {
+							this.$u.route({
+								url: 'pages/home/home',
+								type: 'switchTab'
+							});
 						});
 					} else {
 						this.util.modal(res.reason);

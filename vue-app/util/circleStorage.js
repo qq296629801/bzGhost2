@@ -1,12 +1,13 @@
+import cache from '@/util/cache.js'
 const circle = {
+	key:'circleItem_',
 	saveCircle:function(data,userId){
-		uni.setStorageSync('circleItem_'+userId, JSON.stringify(data));
+		cache.set(circle.key+userId,data)
 	},
 	queryCircle:function(userId){
 		return new Promise((resolve,reject) =>{
 			try{
-				let data =uni.getStorageSync('circleItem_'+userId)
-				 resolve(JSON.parse(data))
+				 resolve(cache.get(circle.key+userId))
 			}catch(e){
 				reject(e)
 			}

@@ -1,12 +1,13 @@
+import cache from '@/util/cache.js'
 const chat = {
+	key:'chatItem_',
 	saveChat:function(data,uid){
-		uni.setStorageSync('chatItem_'+uid, JSON.stringify(data));
+		cache.set(chat.key+uid, data);
 	},
 	queryChat:function(uid){
 		return new Promise((resolve,reject) =>{
 			try{
-				let list = uni.getStorageSync('chatItem_'+ uid);
-				 resolve(JSON.parse(list))
+				 resolve(cache.get(chat.key+uid))
 			}catch(e){
 				reject(e)
 			}

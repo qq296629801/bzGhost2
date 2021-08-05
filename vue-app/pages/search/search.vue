@@ -28,10 +28,28 @@
 				:action-style="{ color: '#007aff' }"
 				action-text="取消"
 				:bg-color="'#ffffff'"
+				:animation="true"
 				v-model="searchWord"
 			></u-search>
 		</view>
 		<!-- #endif -->
+		<view class="history_search_box">
+		    <view class="history_search_text">
+		        <view>猜你喜欢</view>
+		    </view>
+		    <view class="history_search_content">
+		        <view v-for="(item,index) of popularList" :key="index" @click="onHistory(item)">{{item}}</view>
+		    </view>
+		</view>
+		<view>
+			<view class="mescroll-empty empty-fixed">
+				<view> <image class="empty-icon" :src="empty.icon" mode="widthFix" /> </view>
+				<view class="empty-tip">{{ empty.tip }}</view>
+				<view class="empty-btn" @click="emptyClick">
+					你想干嘛?
+				</view>
+			</view>
+		</view>
 		<view class="content1" v-if="'0' == searchType">
 			<view v-for="(item, index) in list" :key="index">
 				<chatItem @linkTo="toUserInfo" :badgeIcon="false" :value="item" :index="index"></chatItem>
@@ -75,14 +93,22 @@
 </template>
 
 <script>
+	// 引入mescroll-uni.js,处理核心逻辑
+import MeScroll from '@/components/common/mescroll-uni/mescroll-uni.js';
+import MescrollEmpty from '@/components/common/mescroll-uni/components/mescroll-empty.vue';
 import chatItem from '@/components/chatItem.vue';
 import addressBook from '@/components/addressBook.vue'
 import { pinyin } from '../../public/Pinyin.js';
 export default {
 	name:'search',
-	components:{chatItem,addressBook},
+	components:{chatItem,addressBook,MescrollEmpty},
 	data() {
 		return {
+			empty: {
+				use: true, // 是否显示空布局
+				icon: "http://www.mescroll.com/img/mescroll-empty.png?v=1", // 图标路径 (建议放入static目录, 如 /static/img/mescroll-empty.png )
+				tip: '~ 空空如也 ~' // 提示
+			},
 			chatId: '',
 			pageNum: -1,
 			searchType: '0',
@@ -90,7 +116,8 @@ export default {
 			searchWord: '',
 			p:'',
 			list: [],
-			scrollTop:0
+			scrollTop:0,
+			popularList: [],
 		};
 	},
 	watch:{
@@ -189,11 +216,92 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/pages/chat/style.scss";
+/* 无任何数据的空布局 */
+.mescroll-empty {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 100rpx 50rpx;
+	text-align: center;
+	/* #ifndef APP-NVUE */
+	display: flex;
+	/* #endif */
+	flex-direction: column;
+	align-items: center;
+}
+
+.mescroll-empty.empty-fixed {
+	z-index: 99;
+	position: absolute; /*transform会使fixed失效,最终会降级为absolute */
+	top: 100rpx;
+	left: 0;
+}
+
+.mescroll-empty .empty-icon {
+	width: 280rpx;
+	height: 280rpx;
+}
+
+.mescroll-empty .empty-tip {
+	margin-top: 20rpx;
+	font-size: 24rpx;
+	color: gray;
+}
+
+.mescroll-empty .empty-btn {
+	display: inline-block;
+	margin-top: 40rpx;
+	min-width: 200rpx;
+	padding: 18rpx;
+	font-size: 28rpx;
+	border: 1rpx solid #e04b28;
+	border-radius: 60rpx;
+	color: #e04b28;
+}
+
+.mescroll-empty .empty-btn:active {
+	opacity: 0.75;
+}
 .u-card-wrap { 
 	background-color: $u-bg-color;
 	padding: 1px;
 }
+   .history_search_box {
+        padding: 40rpx 25rpx 15rpx 25rpx;
+        display: flex;
+        flex-direction: column;
+        background: #FFFFFF;
 
+        .history_search_text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0rpx 15rpx;
+            color: #333333;
+
+            >view {
+                font-size: 32rpx;
+            }
+
+            >text {
+                font-size: 28rpx;
+            }
+        }
+
+        .history_search_content {
+            padding: 40rpx 0rpx 0 0;
+            display: flex;
+            flex-wrap: wrap;
+
+            >view {
+                padding: 18rpx 40rpx;
+                background: #f7f7f7;
+                border-radius: 30rpx;
+                font-size: 24rpx;
+                color: #333333;
+                margin: 10rpx;
+            }
+        }
+    }
 .u-body-item {
 	font-size: 32rpx;
 	color: #333;

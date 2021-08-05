@@ -65,8 +65,7 @@ export default {
 			// 查询缓存
 			queryChat(this.userData.user.operId).then(data=>{
 				this.list = data
-				uni.stopPullDownRefresh()
-				this.mescroll.endByPage(1, 1)
+				this.mescroll.endSuccess(this.list.length);
 			}).catch(e=>{
 				//刷新缓存
 				cacheChats(this.userData.user.operId).then(data=>{

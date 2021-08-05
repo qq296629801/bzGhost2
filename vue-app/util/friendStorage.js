@@ -1,12 +1,13 @@
+import cache from '@/util/cache.js'
 const friend = {
+	key:'frindItem_',
 	saveFriend:function(data,uid){
-		uni.setStorageSync('friendItem_'+uid, JSON.stringify(data));
+		cache.set(friend.key+uid,data)
 	},
 	queryFriend:function(uid){
 		return new Promise((resolve,reject) =>{
 			try{
-				let data =uni.getStorageSync('friendItem_'+uid)
-				 resolve(JSON.parse(data))
+				 resolve(cache.get(friend.key+uid))
 			}catch(e){
 				reject(e)
 			}

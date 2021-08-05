@@ -93,6 +93,7 @@
 				hideEmoji:true,
 				winState:'',
 				message:{},
+				loading:false,
 			};
 		},
 		//头部按钮监听
@@ -365,7 +366,10 @@
 			},
 			//触发滑动到顶部(加载历史信息记录)
 			loadHistory(e){
-		
+			if(this.loading){
+				return;
+			}
+			this.loading = true;
 			let arr = ['queryFriendMessages','queryGroupMessages'];
 			let i = this.chatObj.chatType
 			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
@@ -383,6 +387,7 @@
 				  }else{
 					  this.mescroll.endErr();
 				  }
+				  this.loading = false;
 				});
 			},
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
