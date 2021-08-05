@@ -324,6 +324,7 @@ export default {
 	background-color: #F6F7F8;
 }
 .content {
+	z-index: 999;
 	.item {
 		width: 750rpx;
 		display: flex;
@@ -375,6 +376,7 @@ export default {
 }
 
 .content1 {
+	z-index: 999;
 	height: 100%;
 	background-color: white;
 	.list-cell {
