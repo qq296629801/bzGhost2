@@ -45,9 +45,6 @@
 			<view class="mescroll-empty empty-fixed">
 				<view> <image class="empty-icon" :src="empty.icon" mode="widthFix" /> </view>
 				<view class="empty-tip">{{ empty.tip }}</view>
-				<view class="empty-btn" @click="emptyClick">
-					你想干嘛?
-				</view>
 			</view>
 		</view>
 		<view class="content1" v-if="'0' == searchType">
