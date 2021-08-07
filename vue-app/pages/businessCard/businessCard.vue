@@ -29,6 +29,7 @@
 </template>
 
 <script>
+	import {queryFriend} from '@/util/friendStorage.js'
 	export default {
 		data() {
 			return {
@@ -93,14 +94,16 @@
 					this.isItMe = true;
 					return;
 				}
-				for(let i in this.firendItem){
-					let members = this.firendItem[i].members
-					for(let j in members){
-						if (members[j].id==id){
-							this.userInfo = members[j]
+				queryFriend(this.userData.user.operId).then(data=>{
+					for(let i in data){
+						let members = data[i].members
+						for(let j in members){
+							if (members[j].id==id){
+								this.userInfo = members[j]
+							}
 						}
 					}
-				}
+				})
 			}
 		}
 	}
