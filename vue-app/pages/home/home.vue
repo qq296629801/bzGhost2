@@ -55,7 +55,9 @@ export default {
 	computed:{
 	},
 	onLoad() {
-		this.a()
+		setTimeout(()=>{
+			this.a()
+		},200)
 	},
 	methods: {
 		a(){

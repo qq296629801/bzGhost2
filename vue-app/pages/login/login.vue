@@ -49,14 +49,12 @@
 			linkLogin(){
 				this.$socket.login(this.phone, this.pass, null, res=>{
 					if (res.success) {
+						this.$u.route({
+							url: 'pages/home/home',
+							type: 'switchTab'
+						});
 						this.$u.vuex("userData", res.response.data);
 						cache(res.response.data.user.operId);
-						setTimeout(()=>{
-							this.$u.route({
-								url: 'pages/home/home',
-								type: 'switchTab'
-							});
-						},200)
 					} else {
 						this.util.modal(res.reason);
 					}
