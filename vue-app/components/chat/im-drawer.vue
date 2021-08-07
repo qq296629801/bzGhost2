@@ -3,9 +3,9 @@
 		<!-- 抽屉栏 -->
 		<view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
 			<!-- 表情 -->
-			<emotion @addEmoji="addEmoji" @send="sendMsg(0,textMsg)" :class="{hidden:hideEmoji}"></emotion>
+			<emotion @addEmoji="addEmoji" @send="sendMsg(0,textMsg)" v-if="!hideEmoji"></emotion>
 			<!-- 更多功能 相册-拍照-红包 -->
-			<view class="more-layer" :class="{hidden:hideMore}">
+			<view class="more-layer" v-if="!hideMore">
 				<view class="list">
 					<view class="box" @tap="chooseImage">
 						<image class="box-xx" src="../../static/img/more/tupian.png"></image>

@@ -11,9 +11,7 @@
 			this.$socket.initWebIM().then(e=>{});
 		},
 		onShow: function() {
-			if(this.userData.user!=undefined){
-				cache(this.userData.user.operId);
-			}else {
+			if(this.userData.user==undefined){
 				uni.navigateTo({
 					url: "pages/login/login"
 				});

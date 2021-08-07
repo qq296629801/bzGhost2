@@ -3,7 +3,7 @@
 		<!-- 自己发出的消息 -->
 		<view class="my" v-if="row.sendUid==userData.user.operId">
 			<!-- 右键 -->
-			<view class="right-click" v-show="row.id==rClickId">
+			<view class="right-click" v-if="row.id==rClickId">
 				<view @tap="copyMethod(row.msgContext)">复制</view>
 				<view @tap="deleteMethod(row.id,index)" v-if="row.msgType!=1">删除</view>
 				<view @tap="forwardMethod(row)" v-if="row.msgType!=7">转发</view>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-	import { transform } from "../../static/emoji/ChatUtils.js";
+	import { transform } from "@/util/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'right-bubble',

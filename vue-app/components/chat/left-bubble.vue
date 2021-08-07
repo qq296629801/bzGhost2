@@ -3,7 +3,7 @@
 		<!-- 别人发出的消息 -->
 		<view class="other" v-if="row.sendUid!=userData.user.operId">
 			<!-- 右键 -->
-			<view class="left-click" v-show="row.id==lClickId">
+			<view class="left-click" v-if="row.id==lClickId">
 				<view @tap="copyMethod(row.msgContext)">复制</view>
 				<view @tap="deleteMethod(row.id,index)" v-if="row.msgType!=1">删除</view>
 				<view @tap="forwardMethod(row)" v-if="row.msgType!=7">转发</view>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import { transform } from "@/static/emoji/ChatUtils.js";
+	import { transform } from "@/util/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'left-bubble',

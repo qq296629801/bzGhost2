@@ -1,13 +1,13 @@
 <template>
 	<view class="emotion-wrap">
 		<view class="emotion-btn" @tap="handleRemoveEmoji">
-			<image src="/static/img/clear.png"></image>
+			<image src="@/static/img/clear.png"></image>
 		</view>
-		<swiper class="swiper-wrap" indicator-dots="true" duration="150">
+		<swiper class="swiper-wrap" indicator-dots="true" duration="100">
 			<swiper-item v-for="(page,pid) in list" :key="pid">
 				<view class="emotion-box">
 					<view v-for="(em,eid) in page" :key="eid" @tap="handleClikEmoji(em)">
-						<u-image class="emotion" width="80rpx" height="80rpx" :src="'http://bzghost.com/face/' + em.url"></u-image>
+						<u-image class="emotion" width="80rpx" height="80rpx" :src="'../../static/face/' + em.url"></u-image>
 					</view>
 				</view>
 			</swiper-item>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import { emojiList } from "@/static/emoji/emoji.js"
+	import { emojiList } from "@/util/emoji.js"
 	export default {
 		name:'u-emotion',
 		data() {
@@ -34,7 +34,7 @@
 			},
 			handleClikEmoji(item) {
 				this.cur = {
-					emojiPath: '/static/img/face/',
+					emojiPath: '',
 					minEmoji: true,
 					emojiItem: item,
 					groupIndex: 1,

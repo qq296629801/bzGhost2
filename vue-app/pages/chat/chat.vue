@@ -54,7 +54,7 @@
 	import SystemBubble from '@/components/chat/system-bubble.vue'
 	import { queryData, upData, upRedData, upCanceData } from '@/util/groupStorage.js'
 	import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
-	import { emojiList } from "@/static/emoji/emoji.js"
+	import { emojiList } from "@/util/emoji.js"
 	export default {
 		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 		components: {

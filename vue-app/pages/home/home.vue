@@ -62,16 +62,11 @@ export default {
 			if(this.userData.user==undefined){
 				return;
 			}
-			// 查询缓存
 			queryChat(this.userData.user.operId).then(data=>{
 				this.list = data
 				this.mescroll.endSuccess(this.list.length);
 			}).catch(e=>{
-				//刷新缓存
-				cacheChats(this.userData.user.operId).then(data=>{
-					this.list = data
-				});
-				 this.mescroll.endErr();
+			 this.mescroll.endErr();
 			});
 		},
 		// 跳转
