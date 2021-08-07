@@ -38,7 +38,6 @@
 					</div>
 				</view>
 			</view>
-			
 			<!-- 右-头像 -->
 			<view :class="row.msgType==0?'right text':'right'" @tap="linkToCard(row.sendUid)">
 				<img-cache :src="$url + userData.user.avatar"></img-cache>
