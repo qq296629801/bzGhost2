@@ -143,7 +143,7 @@ export let faceUtils = {
 		let obj = {}
     for (let i = 0; i < list.length; i++) {
       const key = `[${list[i]}]`
-      obj[key] = `static/img/face/${i}.png`
+      obj[key] = `http://bzghost.com/face/${i}.png`
     }
     return obj;
 	}
