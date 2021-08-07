@@ -50,7 +50,7 @@
 </template>
 
 <script>
-	import { transform } from "../../static/emoji/ChatUtils.js";
+	import { transform } from "@/static/emoji/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
 	export default {
 		name: 'left-bubble',
