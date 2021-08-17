@@ -1,253 +1,141 @@
 <template>
-  <view class="content">
-    <view class="list">
-      <view class="tishi">若您忘记了密码，可在此重新设置新密码。</view>
-      <view class="list-call">
-        <view class="iconfont iconphone" style="font-size: 20px;color: #E4E6F3;"></view>
-        <input class="sl-input" type="number" v-model="phone" maxlength="11" placeholder="请输入手机号" />
-      </view>
-      <view class="list-call">
-       <view class="iconfont iconmima1" style="font-size: 20px;color: #E4E6F3;"></view>
-        <input class="sl-input" type="text" v-model="password" maxlength="32" placeholder="请输入新密码" :password="!showPassword" />
-        <image class="img" :src="showPassword?'/static/shilu-login/op.png':'/static/shilu-login/cl.png'" @tap="display"></image>
-      </view>
-      <view class="list-call">
-        <view class="iconfont iconyanzhengyanzhengma" style="font-size: 17px;color: #E4E6F3;"></view>
-        <input class="sl-input" type="number" v-model="code" maxlength="6" placeholder="验证码" />
-        <view class="yzm" :class="{ yzms: second>0 }" @tap="getcode">{{yanzhengma}}</view>
-      </view>
-    </view>
-    <view class="button-login" hover-class="button-hover" @tap="bindLogin()">
-      <text>修改密码</text>
-    </view>
+	<view class="forget">
+		
+		<view class="content">
+			<!-- 主体 -->
+			<view class="main">
+				<view class="tips">若你忘记了密码，可在此重置新密码。</view>
+				<wInput
+					v-model="phoneData"
+					type="text"
+					maxlength="11"
+					placeholder="请输入手机号码"
+				></wInput>
+				<wInput
+					v-model="passData"
+					type="password"
+					maxlength="11"
+					placeholder="请输入新密码"
+					isShowPass
+				></wInput>
+				
+				<wInput
+					v-model="verCode"
+					type="number"
+					maxlength="4"
+					placeholder="验证码"
+					
+					isShowCode
+					codeText="获取重置码"
+					setTime="30"
+					ref="runCode"
+					@setCode="getVerCode()"
+				></wInput>
+			</view>
+			
+			<wButton 
+				class="wbutton"
+				text="重置密码"
+				:rotate="isRotate" 
+				@click.native="startRePass()"
+			></wButton>
 
-	<u-toast ref="uToast" />
-  </view>
+		</view>
+	</view>
 </template>
 
 <script>
-  var _this, js;
-  export default {
-    data() {
-      return {
-        phone: '',
-        second: 0,
-        code: "",
-        showPassword: false,
-        password: ''
-      }
-    },
-    onLoad() {
-      _this = this;
-    },
-    computed: {
-      yanzhengma() {
-        if (this.second == 0) {
-          return '获取验证码';
-        } else {
-          if (this.second < 10) {
-            return '重新获取0' + this.second;
-          } else {
-            return '重新获取' + this.second;
-          }
-        }
-      }
-    },
-    onUnload() {
-      this.clear()
-    },
-    methods: {
-      display() {
-        this.showPassword = !this.showPassword
-      },
-      clear(){
-        clearInterval(js)
-        js = null
-        this.second = 0
-      },
-      getcode() {
-        if (this.phone.length != 11) {
-          uni.showToast({
-            icon: 'none',
-            title: '手机号不正确'
-          });
-          return;
-        }
-        if (this.second > 0) {
-          return;
-        }
-        _this.second = 60;
-        js = setInterval(function() {
-          _this.second--;
-          if (_this.second == 0) {
-            _this.clear()
-          }
-        }, 1000)
-        
-		// 获取验证码
-		uni.request({
-			url:this.$api+'/register/sendSms', 
-			data: {phone:this.phone},
-			success: (res) => {
-				console.log(res.data);
-			},fail() {
-			  this.clear()
+	let _this;
+	import wInput from '../../components/watch-login/watch-input.vue' //input
+	import wButton from '../../components/watch-login/watch-button.vue' //button
+	export default {
+		data() {
+			return {
+				phoneData: "", //电话
+				passData: "", //密码
+				verCode:"", //验证码
+				isRotate: false, //是否加载旋转
 			}
-		});
-		
-      },
-      bindLogin() {
-        if (this.phone.length != 11) {
-          uni.showToast({
-            icon: 'none',
-            title: '手机号不正确'
-          });
-          return;
-        }
-        if (this.password.length < 6) {
-          uni.showToast({
-            icon: 'none',
-            title: '密码不正确'
-          });
-          return;
-        }
-        if (this.code.length != 6) {
-          uni.showToast({
-            icon: 'none',
-            title: '验证码不正确'
-          });
-          return;
-        }
-		
-		uni.request({
-			url:this.$api+'/register/updatePwd', 
-			data: {
-				phone:this.phone,
-				updatePwd:this.password,
-				code:this.code
+		},
+		components:{
+			wInput,
+			wButton
+		},
+		mounted() {
+			_this= this;
+		},
+		methods: {
+			getVerCode(){
+				//获取验证码
+				if (_this.phoneData.length != 11) {
+				     uni.showToast({
+				        icon: 'none',
+						position: 'bottom',
+				        title: '手机号不正确'
+				    });
+				    return false;
+				}
+				console.log("获取验证码")
+				this.$refs.runCode.$emit('runCode'); //触发倒计时（一般用于请求成功验证码后调用）
+				uni.showToast({
+				    icon: 'none',
+					position: 'bottom',
+				    title: '模拟倒计时触发'
+				});
+				
+				setTimeout(function(){
+					_this.$refs.runCode.$emit('runCode',0); //假装模拟下需要 终止倒计时
+					uni.showToast({
+					    icon: 'none',
+						position: 'bottom',
+					    title: '模拟倒计时终止'
+					});
+				},3000)
 			},
-			success: (res) => {
-				if(res.data.data === '修改失败') {
-					return this.$u.toast(res.data.data);
-				} else {
-					this.$refs.uToast.show({
-						title: '修改成功',
-						type: 'success', 
-						icon: true,
-						url:'pages/login/login'
-					})
-				}	
+			startRePass() {
+				//重置密码
+				if(this.isRotate){
+					//判断是否加载中，避免重复点击请求
+					return false;
+				}
+				if (this.phoneData.length != 11) {
+				    uni.showToast({
+				        icon: 'none',
+						position: 'bottom',
+				        title: '手机号不正确'
+				    });
+				    return false;
+				}
+			    if (this.passData.length < 6) {
+			        uni.showToast({
+			            icon: 'none',
+						position: 'bottom',
+			            title: '密码不正确'
+			        });
+			        return false;
+			    }
+				if (this.verCode.length != 4) {
+				    uni.showToast({
+				        icon: 'none',
+						position: 'bottom',
+				        title: '验证码不正确'
+				    });
+				    return false;
+				}
+				console.log("重置密码成功")
+				_this.isRotate=true
+				setTimeout(function(){
+					_this.isRotate=false
+				},3000)
+				
+				
 			}
-		});
-		
-        // uni.request({
-        //   url: 'http://***/forget.html',
-        //   data: {
-        //     phone: this.phone,
-        //     password: this.password,
-        //     code: this.code
-        //   },
-        //   method: 'POST',
-        //   dataType: 'json',
-        //   success: (res) => {
-        //     if (res.data.code != 200) {
-        //       uni.showToast({
-        //         title: res.data.msg,
-        //         icon: 'none'
-        //       });
-        //     } else {
-        //       uni.showToast({
-        //         title: res.data.msg
-        //       });
-        //       setTimeout(function() {
-        //         uni.navigateBack();
-        //       }, 1500)
-        //     }
-        //   }
-        // });
-
-      }
-    }
-  }
+		}
+	}
 </script>
 
 <style>
-  .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .tishi {
-    color: #999999;
-    font-size: 28rpx;
-    line-height: 50rpx;
-    margin-bottom: 50rpx;
-  }
-
-  .list {
-    display: flex;
-    flex-direction: column;
-    padding-top: 50rpx;
-    padding-left: 70rpx;
-    padding-right: 70rpx;
-  }
-
-  .list-call {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 100rpx;
-    color: #333333;
-    border-bottom: 0.5px solid #e2e2e2;
-  }
-
-  .list-call .img {
-    width: 40rpx;
-    height: 40rpx;
-  }
-
-  .list-call .sl-input {
-    flex: 1;
-    text-align: left;
-    font-size: 32rpx;
-    margin-left: 16rpx;
-  }
-
-  .button-login {
-    color: #FFFFFF;
-    font-size: 34rpx;
-    width: 630rpx;
-    height: 100rpx;
-    background: linear-gradient(-90deg, #79B1FF, #8C9CFF);
-    box-shadow: 0rpx 0rpx 13rpx 0rpx rgba(164, 217, 228, 0.2);
-    border-radius: 50rpx;
-    line-height: 100rpx;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100rpx;
-  }
-
-  .button-hover {
-    background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
-  }
-
-  .yzm {
-    color: #FF7D13;
-    font-size: 24rpx;
-    line-height: 64rpx;
-    padding-left: 10rpx;
-    padding-right: 10rpx;
-    width: auto;
-    height: 64rpx;
-    border: 1rpx solid rgba(255, 131, 30, 1);
-    border-radius: 50rpx;
-  }
-
-  .yzms {
-    color: #999999 !important;
-    border: 1rpx solid #999999;
-  }
+	@import url("../../components/watch-login/css/icon.css");
+	@import url("./css/main.css");
 </style>
+
