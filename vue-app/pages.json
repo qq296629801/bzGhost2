@@ -355,13 +355,6 @@
 				}
             }
         }
-		,{
-		    "path" : "pages/login/reg",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": ""
-		    }
-		}
     ],
 	"tabBar": {
 		"color": "#7B8AA0",
