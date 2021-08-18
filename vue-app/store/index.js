@@ -1,61 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
+import Vue from "vue";
+import Vuex from "vuex";
 
-let lifeData = {};
+Vue.use(Vuex);
+const files = require.context("./modules", false, /\.js$/);
+let modules = {
+	state: {},
+	mutations: {},
+	actions: {}
+};
 
-try {
-	lifeData = uni.getStorageSync('lifeData');
-} catch (e) {
-}
+files.keys().forEach((key) => {
+  Object.assign(modules.state, files(key)["state"]);
+  Object.assign(modules.mutations, files(key)["mutations"]);
+  Object.assign(modules.actions, files(key)["actions"]);
+});
+const store = new Vuex.Store(modules);
+export default store;
 
-let saveStateKeys = ['userData','chatObj','packet','push'];
-const saveLifeData = function(key, value) {
-	if (saveStateKeys.indexOf(key) != -1) {
-		let tmp = uni.getStorageSync('lifeData');
-		tmp = tmp ? tmp : {};
-		tmp[key] = value;
-		uni.setStorageSync('lifeData', tmp);
-	}
-}
-const store = new Vuex.Store({
-	state: {
-		userData: lifeData.userData?lifeData.userData:{},
-		push:lifeData.push?lifeData.push:{},
-		chatObj:lifeData.chatObj?lifeData.chatObj:{
-		  chatId:'',
-		  chatType:0,
-		  chatName:''
-		},
-		packet: lifeData.packet?lifeData.packet:{
-			description:'红包异常',
-			money:0,
-			number:0,
-			userAvatar:'defalut.jpg',
-		},
-		linkItem:[],
-		memberItem:[]
-	},
-	mutations: {
-		$uStore(state, payload) {
-			let nameArr = payload.name.split('.');
-			let saveKey = '';
-			let len = nameArr.length;
-			if (nameArr.length >= 2) {
-				let obj = state[nameArr[0]];
-				for (let i = 1; i < len - 1; i++) {
-					obj = obj[nameArr[i]];
-				}
-				obj[nameArr[len - 1]] = payload.value;
-				saveKey = nameArr[0];
-			} else {
-				state[payload.name] = payload.value;
-				saveKey = payload.name;
-			}
-			saveLifeData(saveKey, state[saveKey])
-		},
-	},
-	
-})
-
-export default store

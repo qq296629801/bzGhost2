@@ -1,16 +1,25 @@
 import Vue from 'vue'
 import App from './App'
 import uView from "uview-ui";
-import store from '@/store';
 import webim from 'webim.js';
 import util from '@/util/util.js'
+
+//数据管理中心
+import store from '@/store/index.js'
+Vue.prototype.$store = store;
+//权限配置中心
+import base from '@/config/baseUrl'
+Vue.prototype.$base = base;
+//挂载全局http请求
+import $http from '@/config/requestConfig'
+Vue.prototype.$http = $http;
+
 import * as filters from '@/filter/index.js'
-const vuexStore = require("@/store/$u.mixin.js");
 import publicModule from "@/components/common/public_module.vue";
 Vue.component("public-module", publicModule);
 import MescrollBody from "@/components/common/mescroll-uni/mescroll-body.vue";
 Vue.component("mescroll-body", MescrollBody);
-Vue.mixin(vuexStore);
+
 Vue.use(uView);
 
 Object.keys(filters).forEach(name=>{
