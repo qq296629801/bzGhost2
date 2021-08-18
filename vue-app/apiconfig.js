@@ -5,12 +5,16 @@ import request from 'request.js'
 class apiconfig {
   constructor(config = {}) {
         this.baseurl= 'http://42.193.146.14/'
-		this.pathconfig={
-			reg: this.baseurl +'/register/register'
+		this.pathconfig= {
+			reg: this.baseurl +'register/register',
+			conversation: this.baseurl + 'app/conversation'
 		}
   }
   register(config){
-  	   return request.post(this.pathconfig.reg,config);
+  	   return request.post(this.pathconfig.reg, config);
+  }
+  getConversationList(config){
+  	   return request.post(this.pathconfig.conversation, config);
   }
 }
 
