@@ -8,14 +8,14 @@
 			<!-- 主体表单 -->
 			<view class="main">
 				<wInput
-					v-model="loginData.username"
+					v-model="formData.username"
 					type="text"
 					maxlength="11"
 					placeholder="用户名/电话"
 					:focus="isFocus"
 				></wInput>
 				<wInput
-					v-model="loginData.password"
+					v-model="formData.password"
 					type="password"
 					maxlength="11"
 					placeholder="密码"
@@ -55,6 +55,11 @@
 	let _this;
 	import wInput from '../../components/watch-login/watch-input.vue' //input
 	import wButton from '../../components/watch-login/watch-button.vue' //button
+	import yiqun from '@/util/yiqun.js'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -62,13 +67,10 @@
 				logoImage: '/static/logo.png',
 				isRotate: false, //是否加载旋转
 				isFocus: true, // 是否聚焦
-			    loginData:{
-					username: '15774222012',
-					password: '123456',
-					rememberMe: false,
-					code: '1234',
-					uuid: ''
-				}
+			    formData: {
+					username: 'admin',
+					password: '123456'
+				},
 			};
 		},
 		components:{
@@ -80,6 +82,7 @@
 			//this.isLogin();
 		},
 		methods: {
+			...mapMutations(['setUserData']),
 			isLogin(){
 				//判断缓存中是否登录过，直接登录
 				// try {
@@ -97,78 +100,19 @@
 				// }
 			},
 		    startLogin(e){
-              //  console.log(e)
-				//登录
 				if(this.isRotate){
 					//判断是否加载中，避免重复点击请求
 					return false;
 				}
-				// if (this.phoneData.length == "") {
-				//      uni.showToast({
-				//         icon: 'none',
-				// 		position: 'bottom',
-				//         title: '用户名不能为空'
-				//     });
-				//     return;
-				// }
-		  //       if (this.passData.length < 4) {
-		  //           uni.showToast({
-		  //               icon: 'none',
-				// 		position: 'bottom',
-		  //               title: '密码不正确'
-		  //           });
-		  //           return;
-		  //       }
-				
-				console.log("登录成功")
-				
 				_this.isRotate=true
-				
-				
-				setTimeout(function(){
-					_this.isRotate=false
-				},3000)
-				
-				// uni.showLoading({
-				// 	title: '登录中'
-				// });
-				// getLogin()
-				// .then(res => {
-				// 	//console.log(res)
-				// 	//简单验证下登录（不安全）
-				// 	if(_this.phoneData==res.data.username && _this.passData==res.data.password){
-				// 		let userdata={
-				// 			"username":res.data.username,
-				// 			"nickname":res.data.nickname,
-				// 			"accesstoken":res.data.accesstoken,
-				// 		} //保存用户信息和accesstoken
-				// 		_this.$store.dispatch("setUserData",userdata); //存入状态
-				// 		try {
-				// 			uni.setStorageSync('setUserData', userdata); //存入缓存
-				// 		} catch (e) {
-				// 			// error
-				// 		}
-				// 		uni.showToast({
-				// 			icon: 'success',
-				// 			position: 'bottom',
-				// 			title: '登录成功'
-				// 		});
-				// 		uni.reLaunch({
-				// 			url: '../../../pages/index',
-				// 		});
-				// 	}else{
-				// 		_this.passData=""
-				// 		uni.showToast({
-				// 			icon: 'error',
-				// 			position: 'bottom',
-				// 			title: '账号或密码错误，账号admin密码admin'
-				// 		});
-				// 	}
-				// 	uni.hideLoading();
-				// }).catch(err => {
-				// 	uni.hideLoading();
-				// })
-				
+				this.$socket.login(this.formData.username,this.formData.password,null,res=>{
+					this.setUserData(res.response.data);
+					yiqun.cache(res.response.data.user.operId);
+					_this.isRotate=false;
+					uni.reLaunch({
+						url: '/pages/home/home',
+					});
+				});
 		    },
 			login_weixin() {
 				//微信登录

@@ -845,7 +845,7 @@ EventDispatcher.prototype.dispatchEvent = function(eventKey, event) {
 
 let send = (p) => {
 	 return new Promise((resolve, reject) => {
-		 p.token = store.state.userData.token;
+		// p.token = store.state.userData.token;
 		 // if(store.state.userData.token==undefined){
 			//  return;
 		 // }

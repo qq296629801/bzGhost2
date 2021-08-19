@@ -24,6 +24,10 @@ import chatItem from '@/components/chatItem.vue';
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 import { queryChat } from '@/util/chatStorage.js'
 import { cacheChats } from '@/util/yiqun.js'
+import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 export default {
 	components: { searchInput, selectInput, chatItem },
 	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
@@ -52,7 +56,8 @@ export default {
 			});
 		}
 	},
-	computed:{
+	computed: {
+		...mapState(['userData'])
 	},
 	onLoad() {
 		setTimeout(()=>{

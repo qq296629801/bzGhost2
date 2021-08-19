@@ -8,14 +8,12 @@
 			// #ifdef APP-PLUS
 			APPUpdate();
 			// #endif
-			this.$socket.initWebIM().then(e=>{});
+			this.$socket.initWebIM();
 		},
 		onShow: function() {
-			if(this.userData.user==undefined){
-				uni.navigateTo({
-					url: "pages/login/login"
-				});
-			}
+			// uni.navigateTo({
+			// 	url: "pages/login/login"
+			// });
 		},
 		onHide: function() {
 		}
