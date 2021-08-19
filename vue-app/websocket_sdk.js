@@ -1,5 +1,4 @@
 import packetCode from './PacketCodeC.js'
-import store from './store/index.js'
 export default class Websocket {
     constructor({
         heartCheck,
@@ -140,8 +139,7 @@ export default class Websocket {
     sendHeartbeatData() {
 		let packet = {
 		  version: 1,
-		  command: 17,
-		  token: store.state.userData.token
+		  command: 17
 		}
         this.sendBinary(99, {
             data: packet,
