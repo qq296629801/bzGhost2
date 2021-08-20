@@ -105,13 +105,14 @@
 					return false;
 				}
 				_this.isRotate=true
-				this.$socket.login(this.formData.username,this.formData.password,null,res=>{
+				this.$socket.login(this.formData.username,this.formData.password,null).then(res=>{
 					this.setUserData(res.response.data);
 					yiqun.cache(res.response.data.user.operId);
 					_this.isRotate=false;
 					uni.reLaunch({
 						url: '/pages/home/home',
 					});
+					console.log(res,'----------------')
 				});
 		    },
 			login_weixin() {

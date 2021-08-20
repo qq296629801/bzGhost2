@@ -66,7 +66,8 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	login: (username, password, code, func) => {
+	login: (username, password, code) => {
+		// 发送给socket服务器
 		let requestPacket = {
 			username,
 			password,
@@ -75,12 +76,14 @@ const WEBIM = {
 			version: 1,
 			command: 1
 		}
-		send(requestPacket).then(e => {
-			eventDispatcher.addListener('2', func);
-		});
+		send(requestPacket);
+		// 异步返回结果
+		 return new Promise((resolve, reject) => {
+			 eventDispatcher.addListener('2', res=>{
+				 resolve(res)
+			 });
+		 });
 	},
-	
-
 	heartTest: (userId, func) => {
 		let packet = {
 			userId,
@@ -91,7 +94,6 @@ const WEBIM = {
 		eventDispatcher.addListener('18', func)
 		});
 	},
-
 	send2Group: (toGroupId, userId, message, msgType, func) => {
 		let requestPacket = {
 			toGroupId,
