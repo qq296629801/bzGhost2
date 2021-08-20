@@ -5,7 +5,7 @@
 			 :scroll-top="scrollTop" :scroll-into-view="scrollToView">
 				
 				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="loadHistory" @up="upCallback">
-				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'chatId_'+index">
 					
 					<!-- 系统通知的消息 -->
 					<system-bubble :row="row"></system-bubble>
@@ -34,12 +34,11 @@
 					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice" @enterInput="enterInput"></footer-input>
 		
 		<!-- 红包卡片弹窗 -->
-		<red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card>
+		<!-- <red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card> -->
 		
 		<!-- 发红包弹窗 -->
 		<u-popup v-model="redFlag" mode="top" length="50%">
-			<red-envelope @sendRedPacket="sendRedPacket">
-			</red-envelope>
+			<red-envelope @sendRedPacket="sendRedPacket"></red-envelope>
 		</u-popup>
 	</view>
 </template>
@@ -52,9 +51,10 @@
 	import LeftBubble from '@/components/chat/left-bubble.vue'
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
-	import { queryData, upData, upRedData, upCanceData } from '@/util/groupStorage.js'
+	import { mapState, mapMutations} from 'vuex';
 	import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 	import { emojiList } from "@/util/emoji.js"
+	import history from '@/util/history.js'
 	export default {
 		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 		components: {
@@ -82,7 +82,7 @@
 				pageNum:1,
 				disabledSay:0,
 				scrollTop:0,
-				scrollToView:'',
+				scrollToView:'chatID_0',
 				inputOffsetBottom: 0,
 				viewOffsetBottom: 0, 
 				msgList:[],
@@ -115,14 +115,13 @@
 		onLoad() {
 			this.sendMsg(0,'');
 			this.getMsgItem();
-			this.readMe();
+			//this.readMe();
 		},
 		onShow(){
 			this.$nextTick(() => {
 				this.hideDrawer();
 				this.disabledSay = 0
-				//this.scrollToBottom()
-				//this.scrollTop = 9999;
+				this.scrollToBottom()
 			});
 		},
 		onReady() {
@@ -143,6 +142,9 @@
 					// #endif
 				}
 			});
+		},
+		computed: {
+			...mapState(['userData','chatObj'])
 		},
 		watch:{
 			inputOffsetBottom: {
@@ -350,16 +352,36 @@
 				}
 			  })
 			},
-			scrollBottom(){
+			scrollBottom: function() {
+				var that = this;
+				setTimeout(() => {
+					if (that.msgList.length) {
+						if (that.scrollIntoID == "chatId_" + (that.msgList.length - 1)) {
+							that.scrollIntoID = "chatId_" + (that.msgList.length - 2);
+							that.scrollBottom();
+						} else if (that.scrollIntoID == "chatId_" + (that.msgList.length - 2)) {
+							that.scrollIntoID = "chatId_" + (that.msgList.length - 1);
+						} else {
+							that.scrollIntoID = "chatId_" + (that.msgList.length - 1);
+						}
+					} else {
+						that.scrollIntoID = "chatId_0";
+					}
+				}, 50)
+			},
+			/* scrollBottom(){
 				this.$nextTick(() => {
 					if(this.msgList.length>0){
 						this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
 					}
 				});
-			},
+			}, */
 			// localStorage版本获取消息列表
 			getMsgItem(){
-				if(this.chatObj.chatType==0){
+				history.get(this.chatObj.chatId).then(res=>{
+					this.msgList = res
+				})
+				/* if(this.chatObj.chatType==0){
 					 this.$socket.queryFriendMessages(this.chatObj.chatId, this.userData.user.operId,1, (res) => {
 						 this.msgList = res.response.data;
 						 this.scrollBottom()
@@ -369,8 +391,7 @@
                         this.msgList = res;
 						this.scrollBottom()
                     });
-				}
-				
+				} */
 			},
 			//触发滑动到顶部(加载历史信息记录)
 			loadHistory(e){
@@ -561,7 +582,7 @@
 			// 红包
 			envelope(res){
 				if (res.msgId != undefined && res.message != undefined) {
-					this.$u.vuex('packet',this.red_process(res.message));
+					//this.$u.vuex('packet',this.red_process(res.message));
 					for(var index in this.msgList){
 						if(this.msgList[index].id==res.msgId){
 							this.msgList[index].msgContext = res.message;

@@ -8,7 +8,7 @@
 import searchInput from '@/components/searchInput/index.vue'
 import addressBook from '@/components/addressBook.vue'
 import { cacheFriends } from '@/util/yiqun.js' 
-import {queryFriend} from '@/util/friendStorage.js'
+//import {queryFriend} from '@/util/friendStorage.js'
 export default {
 	components:{ searchInput, addressBook },
 	data() {

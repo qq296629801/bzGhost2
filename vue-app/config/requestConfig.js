@@ -58,7 +58,7 @@ $http.getQnToken = function(callback) {
 }
 //请求开始拦截器
 $http.requestStart = function(options) {
-	console.log("请求开始", options);
+	//console.log("请求开始", options);
 	if (options.load) {
 		//打开加载动画
 		store.commit("setLoadingShow", true);
@@ -86,12 +86,12 @@ $http.requestStart = function(options) {
 	}
 	// #endif
 	//请求前加入token
-	let storeUserInfo = store.state.userInfo;
+	let storeUserInfo = store.state.userData;
 	if (!storeUserInfo.token) {
-		storeUserInfo = uni.getStorageSync("userInfo");
+		storeUserInfo = uni.getStorageSync("userData");
 	}
 	if (storeUserInfo.token) {
-		options.header['user_token'] = storeUserInfo.token;
+		options.header['Authentication'] = storeUserInfo.token;
 	};
 	return options;
 }
@@ -106,23 +106,25 @@ $http.requestEnd = function(options) {
 let loginPopupNum = 0;
 //所有接口数据处理（此方法需要开发者根据各自的接口返回类型修改，以下只是模板）
 $http.dataFactory = async function(res) {
-	console.log("接口请求数据", {
-		url: res.url,
-		resolve: res.response,
-		header: res.header,
-		data: res.data,
-		method: res.method,
-	});
+	// console.log("接口请求数据", {
+	// 	url: res.url,
+	// 	resolve: res.response,
+	// 	header: res.header,
+	// 	data: res.data,
+	// 	method: res.method,
+	// });
 	if (res.response.statusCode && res.response.statusCode == 200) {
 		let httpData = res.response.data;
 		if (typeof(httpData) == "string") {
 			httpData = JSON.parse(httpData);
 		}
 		//判断数据是否请求成功
-		if (httpData.success || httpData.code == 200) {
+		if (httpData.success) {
 			// 返回正确的结果(then接受数据)
+			//console.log(JSON.stringify(httpData.data))
+			
 			return Promise.resolve(httpData.data);
-		} else if (httpData.code == "1000" || httpData.code == "1001" || httpData.code == 1100 || httpData
+		}/* else if (httpData.code == "1000" || httpData.code == "1001" || httpData.code == 1100 || httpData
 			.code == 402) {
 			store.commit("emptyUserInfo");
 			// #ifdef MP-WEIXIN
@@ -199,7 +201,7 @@ $http.dataFactory = async function(res) {
 				data: res.data
 			});
 		}
-
+ */
 	} else {
 		// 返回错误的结果(catch接受数据)
 		return Promise.reject({

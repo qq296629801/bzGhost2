@@ -31,7 +31,7 @@
 <script>
 	import chatItem from '../../components/chatItem.vue'
 	import searchInput from '@/components/searchInput/index.vue';
-	import { queryData, upData, initData } from '@/util/groupStorage.js'
+//	import { queryData, upData, initData } from '@/util/groupStorage.js'
 	export default {
 		components: {
 			searchInput

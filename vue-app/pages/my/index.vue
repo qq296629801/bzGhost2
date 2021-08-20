@@ -9,7 +9,8 @@
 		</u-navbar>
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
 			<view class="u-m-r-10 u-p-r-30">
-				<u-avatar @tap="previewImage" mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar>
+				<u-avatar @tap="previewImage" mode="square" src="/static/image/girl.jpg" size="140"></u-avatar>
+				<!-- <u-avatar @tap="previewImage" mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar> -->
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -47,15 +49,15 @@
 				show:true,
 				groupList: [
 					{
-						title: '相册',
+						title: '视频',
 						color: '#409eff',
-						icon: 'photo',
-						url:'pages/my/photo'
+						icon: 'play-circle',
+						url:'pages/video/index'
 					},
 					{
-						title: '表情',
-						color: '#ff9900',
-						icon: 'eye',
+						title: '商店',
+						color: '#409eff',
+						icon: 'bag',
 						url:'pages/my/face'
 					}
 					,
@@ -70,6 +72,9 @@
 		},
 		onLoad() {
 		},
+		computed: {
+			...mapState(['userData','chatObj'])
+		},
 		methods: {
 			jump(url){
 				this.$u.route({
@@ -77,7 +82,8 @@
 				})
 			},
 			previewImage() {
-				let current = this.$url + this.userData.user.avatar
+				// let current = this.$url + this.userData.user.avatar
+				let current = '/static/image/girl.jpg'
 				uni.previewImage({
 					current,
 					urls: [current],

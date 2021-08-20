@@ -76,7 +76,7 @@
 								
 							</cover-view>
 						</block>
-						<image src="../../static/logo.png" :style="{ height: height }" v-else  class="video-box"></image>
+						<!-- <image src="../../static/avatar.png" :style="{ height: height }" v-else  class="video-box"></image> -->
 					</div>
 
 			</swiper-item>
@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-	import chunleiVideo from '../../components/chunlei-video/chunlei-video'
+	import chunleiVideo from '@/components/chunlei-video/chunlei-video'
     export default { 
 		components:{
 			chunleiVideo
@@ -101,10 +101,10 @@
 				width:'',
 				oldIndex:0,
 				danmuList:[
-					{text: '发条弹幕0',color: '#fff',time: 2,avatar:'../../static/avatar.png'},
-					{text: '发条弹幕1',color: '#fff',time: 3,avatar:'../../static/avatar.png'},
-					{text: '发条弹幕2',color: '#fff',time: 4,avatar:'../../static/avatar.png'},
-					{text: '发条弹幕3',color: '#fff',time: 5,avatar:'../../static/avatar.png'},
+					{text: '发条弹幕0',color: '#fff',time: 2,avatar:'@/static/avatar.png'},
+					{text: '发条弹幕1',color: '#fff',time: 3,avatar:'@/static/avatar.png'},
+					{text: '发条弹幕2',color: '#fff',time: 4,avatar:'@/static/avatar.png'},
+					{text: '发条弹幕3',color: '#fff',time: 5,avatar:'@/static/avatar.png'},
 				],
 			}
         },
@@ -121,9 +121,6 @@
 			this.width = `${width}px` 
 			this.videoList.length = 300
 			this.videoList.fill({src:''})
-			
-		
-			
 		},
 		async mounted() {
 			//设置id 通过id轮到相应位置
@@ -172,7 +169,7 @@
 			pushVideoList(){
 				let promise = new Promise((resolve,reject)=>{
 					uni.request({
-						url: 'https://api.apiopen.top/videoRecommend?id=127397',
+						url: 'http://api.apiopen.top/videoRecommend?id=127397',
 						success: (res) => {
 							let videoGroup = []
 							for (let item of res.data.result) {

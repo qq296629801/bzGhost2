@@ -22,15 +22,11 @@ import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import chatItem from '@/components/chatItem.vue';
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
-import { queryChat } from '@/util/chatStorage.js'
-import { cacheChats } from '@/util/yiqun.js'
-import {
-		mapState,
-		mapMutations
-	} from 'vuex';
+import conversation from '@/util/conversation.js'
+import { mapState, mapMutations} from 'vuex';
 export default {
 	components: { searchInput, selectInput, chatItem },
-	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
+	mixins: [MescrollMixin],
 	data() {
 		return {
 			show: false,
@@ -51,55 +47,43 @@ export default {
 	},
 	watch:{
         push: function(value){
-			cacheChats(this.userData.user.operId).then(data=>{
-				this.list = data
-			});
 		}
 	},
 	computed: {
-		...mapState(['userData'])
+		...mapState(['userData','packet'])
 	},
 	onLoad() {
-		setTimeout(()=>{
-			this.a()
-		},200)
 	},
 	methods: {
+		...mapMutations(['setChatObj','setPacket']),
 		a(){
-			if(this.userData.user==undefined){
-				return;
+			if(this.userData.token){
+				conversation.get(this.userData.user.operId).then(res=>{
+					this.list = res
+					this.mescroll.endSuccess(this.list.length);
+				}).catch(e=>{
+					this.mescroll.endErr();
+				});
 			}
-			queryChat(this.userData.user.operId).then(data=>{
-				this.list = data
-				this.mescroll.endSuccess(this.list.length);
-			}).catch(e=>{
-			 this.mescroll.endErr();
-			});
 		},
-		// 跳转
 		jump(item){
-			this.$u.vuex('chatObj', item);
+			this.setChatObj(item);
 			this.$u.route({
 				url: 'pages/chat/chat',
 				params: {}
 			});
 		},
-		//打开或者关闭弹窗
 		showSelect(){
 			this.selectShow = !this.selectShow;
 		},
-		//点击导航栏自定义按钮
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
 				this.showSelect()
 			}
 		},
-		//关闭弹窗
 		closeSelect(){
-			//小程序兼容
 			this.selectShow = false;
 		},
-		//扫码
 		checkSelect(index) {
 			if (index == 0) {
 				this.$u.route({
@@ -108,7 +92,6 @@ export default {
 				})
 			}
 			else if (index == 1) {
-				//扫码
 				const t = this
 				uni.scanCode({
 					success: function(res) {

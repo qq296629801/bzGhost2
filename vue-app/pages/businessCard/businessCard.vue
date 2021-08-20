@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import {queryFriend} from '@/util/friendStorage.js'
+	//import {queryFriend} from '@/util/friendStorage.js'
 	export default {
 		data() {
 			return {

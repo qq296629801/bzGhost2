@@ -124,7 +124,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { queryCircle } from '@/util/circleStorage.js'
+//import { queryCircle } from '@/util/circleStorage.js'
 import {cacheCircle} from '@/util/yiqun.js'
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 export default {

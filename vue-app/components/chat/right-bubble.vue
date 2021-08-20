@@ -40,7 +40,8 @@
 			</view>
 			<!-- 右-头像 -->
 			<view :class="row.msgType==0?'right text':'right'" @tap="linkToCard(row.sendUid)">
-				<img-cache :src="$url + userData.user.avatar"></img-cache>
+				<!-- <img-cache :src="$url + userData.user.avatar"></img-cache> -->
+				<img-cache src="/static/image/girl.jpg"></img-cache>
 			</view>
 		</view>
 	</view>
@@ -49,6 +50,7 @@
 <script>
 	import { transform } from "@/util/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		name: 'right-bubble',
 		components:{
@@ -79,6 +81,9 @@
 				//播放语音相关参数
 				AUDIO:uni.createInnerAudioContext(),
 			};
+		},
+		computed: {
+			...mapState(['userData','chatObj'])
 		},
 		mounted() {
 			//语音自然播放结束

@@ -8,7 +8,7 @@
 
 <script>
 	import chatItem from '@/components/chatItem.vue'
-	import { queryChat } from '@/util/chatStorage.js'
+	//import { queryChat } from '@/util/chatStorage.js'
 	import {  cacheGroupMsg, cacheChats } from '@/util/yiqun.js'
 	export default {
 		name:'forward',

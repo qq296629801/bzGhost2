@@ -12,7 +12,8 @@
 			</view>
 			<!-- 左-头像 -->
 			<view :class="row.msgType==0?'left text':'left'" @tap="linkToCard(row.sendUid)">
-				<img-cache :src="$url + row.avatar"></img-cache>
+				<!-- <img-cache :src="$url + row.avatar"></img-cache> -->
+				<img-cache src="/static/image/huge.jpg"></img-cache>
 			</view>
 			<!-- 右-用户名称-时间-消息 -->
 			<view class="right">
@@ -52,6 +53,7 @@
 <script>
 	import { transform } from "@/util/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		name: 'left-bubble',
 		components:{
@@ -76,6 +78,9 @@
 				type:Number,
 				defalut:0
 			},
+		},
+		computed: {
+			...mapState(['userData','chatObj'])
 		},
 		data() {
 			return {
