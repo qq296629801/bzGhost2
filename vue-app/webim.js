@@ -47,14 +47,14 @@ const WEBIM = {
 			 	let command = packet.command;
 			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
 			 	eventDispatcher.removeListener(command, toJSON(packet))
-			 	let name = 'push';
-			 	let value = packet;
-			 	if (command === -10) {
-			 		store.commit('$uStore', {
-			 			name,
-			 			value
-			 		});
-			 	}
+			 	// let name = 'push';
+			 	// let value = packet;
+			 	// if (command === -10) {
+			 	// 	store.commit('$uStore', {
+			 	// 		name,
+			 	// 		value
+			 	// 	});
+			 	// }
 			 });
 			 WEBIM.server.onNetworkChange(WEBIM.options);
 			 WEBIM.server.onSocketClosed(WEBIM.options)

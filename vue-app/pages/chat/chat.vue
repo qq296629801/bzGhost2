@@ -160,6 +160,14 @@
 			}
 		},
 		methods:{
+			scrollToBottom () {
+				this.$nextTick(function(){
+					uni.pageScrollTo({
+						scrollTop: 2000000,
+						duration : 10
+					})
+				})
+			},
 			enterInput:function(){
 			},
 			textMsgTap(t){
