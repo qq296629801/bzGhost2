@@ -7,8 +7,8 @@
 <script>
 import searchInput from '@/components/searchInput/index.vue'
 import addressBook from '@/components/addressBook.vue'
-import { cacheFriends } from '@/util/yiqun.js' 
-//import {queryFriend} from '@/util/friendStorage.js'
+import { mapState, mapMutations} from 'vuex';
+import common from '@/util/common.js'
 export default {
 	components:{ searchInput, addressBook },
 	data() {
@@ -23,14 +23,13 @@ export default {
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop;
 	},
+	computed: {
+		...mapState(['userData'])
+	},
 	methods: {
 		a(){
-			queryFriend(this.userData.user.operId).then(data=>{
-				this.list=data;
-			}).catch(e=>{
-				cacheFriends(this.userData.user.operId).then(data=>{
-					this.list=data;
-				});
+			common.get('friend').then(res=>{
+				this.list = res
 			});
 		},
 		jump({id}){

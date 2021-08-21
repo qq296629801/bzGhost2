@@ -5,7 +5,7 @@
 			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="36" @click="linkToRelease"></u-icon></view>
 		</u-navbar>
 		<!-- #endif -->
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="b()" @up="upCallback">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		<view class="content-imgbox">
 			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>
 			<image class="headimg" :src="userInfo.headImg" @tap="jump(userInfo.id)"></image>
@@ -124,8 +124,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-//import { queryCircle } from '@/util/circleStorage.js'
-import {cacheCircle} from '@/util/yiqun.js'
+import common from '@/util/common.js'
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
 export default {
 	name: 'firendCircle',
@@ -192,15 +191,11 @@ export default {
 	},
 	methods: {
 		a(){
-			queryCircle(this.userData.user.operId).then(data=>{
-				this.circleData = data
-			});
-		},
-		b(){
-			cacheCircle(this.userData.user.operId).then(data=>{
-				uni.stopPullDownRefresh()
-				this.mescroll.endByPage(1, 1)
-				this.circleData = data
+			common.get('post').then(res=>{
+				this.circleData = res
+				this.mescroll.endSuccess(res.length);
+			}).catch(e=>{
+				this.mescroll.endErr();
 			});
 		},
 		//自定义标题栏按钮

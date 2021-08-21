@@ -66,8 +66,7 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	login: (username, password, code) => {
-		// 发送给socket服务器
+	login: (username, password) => {
 		let requestPacket = {
 			username,
 			password,
@@ -77,7 +76,6 @@ const WEBIM = {
 			command: 1
 		}
 		send(requestPacket);
-		// 异步返回结果
 		 return new Promise((resolve, reject) => {
 			 eventDispatcher.addListener('2', res=>{
 				 resolve(res)

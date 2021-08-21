@@ -25,11 +25,11 @@
 	</view>
 </template>
 <script>
-	import chatItem from '../../components/chatItem.vue'
+	import message from '@/components/message.vue'
 	import searchInput from '@/components/searchInput/index.vue';
 	export default {
 		components: {
-			searchInput
+			searchInput,message
 		},
 		data() {
 			return {

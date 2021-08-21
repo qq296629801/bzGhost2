@@ -49,12 +49,12 @@
 		</view>
 		<view class="content1" v-if="'0' == searchType">
 			<view v-for="(item, index) in list" :key="index">
-				<chatItem @linkTo="toUserInfo" :badgeIcon="false" :value="item" :index="index"></chatItem>
+				<message @jump="toUserInfo" :badgeIcon="false" :value="item" :index="index"></message>
 			</view>
 		</view>
 		<view class="content" v-else-if="'1' == searchType">
 			<template v-for="(item,index) in list">
-				<chatItem @linkTo="linkTo" :value="item" :index="index"></chatItem>
+				<message @jump="linkTo" :value="item" :index="index"></message>
 			</template>
 		</view>
 		<view class="content1" v-else-if="'2' == searchType">
@@ -93,12 +93,12 @@
 	// 引入mescroll-uni.js,处理核心逻辑
 import MeScroll from '@/components/common/mescroll-uni/mescroll-uni.js';
 import MescrollEmpty from '@/components/common/mescroll-uni/components/mescroll-empty.vue';
-import chatItem from '@/components/chatItem.vue';
+import message from '@/components/message.vue';
 import addressBook from '@/components/addressBook.vue'
 import { pinyin } from '../../public/Pinyin.js';
 export default {
 	name:'search',
-	components:{chatItem,addressBook,MescrollEmpty},
+	components:{message,addressBook,MescrollEmpty},
 	data() {
 		return {
 			empty: {

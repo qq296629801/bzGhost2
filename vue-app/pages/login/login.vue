@@ -24,8 +24,8 @@
 			<wButton 
 				class="wbutton"
 				text="登 录"
-				:rotate="isRotate" 
-				@click="startLogin"
+				:rotate="loading" 
+				@click="onLogin"
 			></wButton>
 			
 			<view class="other_login cuIcon">
@@ -50,21 +50,18 @@
 </template>
 
 <script>
-	let _this;
-	import wInput from '../../components/watch-login/watch-input.vue' //input
-	import wButton from '../../components/watch-login/watch-button.vue' //button
-	import conversation from '@/util/conversation.js'
+	let my;
+	import wInput from '../../components/watch-login/watch-input.vue' 
+	import wButton from '../../components/watch-login/watch-button.vue'
 	import history from '@/util/history.js'
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex';
+	import common from '@/util/common.js'
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
 			return {
 				logoImage: '/static/logo.png',
-				isRotate: false, //是否加载旋转
-				isFocus: true, // 是否聚焦
+				loading: false, 
+				isFocus: true, 
 			    username: 'admin',
 			    password: '123456'
 			};
@@ -74,23 +71,26 @@
 			wButton,
 		},
 		mounted() {
-			_this= this;
+			my= this;
 		},
 		methods: {
 			...mapMutations(['setUserData']),
 			isLogin(){
 			},
-		    startLogin(e){
-				if(_this.isRotate){
+		    onLogin(e){
+				if(my.loading){
 					return false;
 				}
-				_this.isRotate=true
-				_this.$socket.login(_this.username,_this.password,null).then(res=>{
-					_this.setUserData(res.response.data);
-					history.put(res.response.data.user.operId);
-					conversation.put(res.response.data.user.operId);
+				my.loading=true
+				my.$socket.login(my.username,my.password).then(res=>{
+					my.setUserData(res.response.data);
 					setTimeout(()=>{
-						_this.isRotate=false;
+						history.push();
+						
+						common.put('post');
+						common.put('friend');
+						
+						my.loading=false;
 						uni.reLaunch({
 							url: '/pages/home/home',
 						});

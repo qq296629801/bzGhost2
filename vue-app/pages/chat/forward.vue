@@ -1,18 +1,16 @@
 <template>
 	<view>
 		<view v-for="(item,index) in list">
-			<chatItem @linkTo="jump" :value="item" :index="index"></chatItem>
+			<message @jump="jump" :value="item" :index="index"></message>
 		</view>
 	</view>
 </template>
 
 <script>
-	import chatItem from '@/components/chatItem.vue'
-	//import { queryChat } from '@/util/chatStorage.js'
-	import {  cacheGroupMsg, cacheChats } from '@/util/yiqun.js'
+	import message from '@/components/message.vue'
 	export default {
 		name:'forward',
-		components:{chatItem},
+		components:{message},
 		data() {
 			return {
 				msgContext:'',

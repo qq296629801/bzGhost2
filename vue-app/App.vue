@@ -2,7 +2,6 @@
 	// #ifdef APP-PLUS
 	import APPUpdate from "@/plugins/APPUpdate";
 	// #endif
-	import { cache } from '@/util/yiqun.js';
 	export default {
 		onLaunch: function() {
 			// #ifdef APP-PLUS

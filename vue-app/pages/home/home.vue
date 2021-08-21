@@ -8,11 +8,13 @@
 		</u-navbar>
 		<!-- #endif -->
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
+		
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		<searchInput :searchType="1"/>
-			<view v-for="(item,index) in list">
-				<chatItem @linkTo="jump" :value="item" :index="index"></chatItem>
-			</view>
+		
+		<view v-for="(item,index) in list">
+			<message @jump="jump" :value="item" :index="index"></message>
+		</view>
 		</mescroll-body>
 	</view>
 </template>
@@ -20,12 +22,12 @@
 <script>
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
-import chatItem from '@/components/chatItem.vue';
+import message from '@/components/message.vue';
 import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
-import conversation from '@/util/conversation.js'
+import common from '@/util/common.js'
 import { mapState, mapMutations} from 'vuex';
 export default {
-	components: { searchInput, selectInput, chatItem },
+	components: { searchInput, selectInput, message },
 	mixins: [MescrollMixin],
 	data() {
 		return {
@@ -37,7 +39,7 @@ export default {
 			{ id: '3', name: '发起群聊', icon: 'chat' }
 			],
 			upOption: {
-				auto: false 
+				auto: true 
 			},
 			downOption:{
 				auto: true
@@ -54,17 +56,20 @@ export default {
 	},
 	onLoad() {
 	},
+	onShow() {
+		common.put('conversation').then(res=>{
+			this.list = res
+		});
+	},
 	methods: {
-		...mapMutations(['setChatObj','setPacket']),
+		...mapMutations(['setChatObj']),
 		a(){
-			if(this.userData.token){
-				conversation.get(this.userData.user.operId).then(res=>{
-					this.list = res
-					this.mescroll.endSuccess(this.list.length);
-				}).catch(e=>{
-					this.mescroll.endErr();
-				});
-			}
+			common.get('conversation').then(res=>{
+				this.list = res
+				this.mescroll.endSuccess(this.list.length);
+			}).catch(e=>{
+				this.mescroll.endErr();
+			});
 		},
 		jump(item){
 			this.setChatObj(item);
