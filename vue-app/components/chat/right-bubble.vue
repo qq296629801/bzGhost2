@@ -1,45 +1,47 @@
 <template>
 	<view>
 		<!-- 自己发出的消息 -->
-		<view class="my" v-if="row.sendUid==userData.user.operId">
+		<view :id="'text_'+index" class="my" v-if="row.sendUid==userData.user.operId">
 			<!-- 右键 -->
-			<view class="right-click" v-if="row.id==rClickId">
+	<!-- 		<view class="right-click" v-if="row.id==rClickId">
 				<view @tap="copyMethod(row.msgContext)">复制</view>
 				<view @tap="deleteMethod(row.id,index)" v-if="row.msgType!=1">删除</view>
 				<view @tap="forwardMethod(row)" v-if="row.msgType!=7">转发</view>
 				<view @tap="collectMethod(row)" v-if="row.msgType==1">收藏</view>
 				<text @tap="rollBackMethod(row)">撤销</text>
-			</view>
+			</view> -->
+			<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
+			</chunLei-popups>
 			
 			<!-- 左-消息 -->
 			<view class="left">
 				<!-- 文字消息 -->
-				<view @longtap="oRt(row)" v-if="row.msgType==0" class="bubble text">
+				<view v-if="row.msgType==0" @tap="test" @longtap="taptext($event)"  class="bubble text">
 					<rich-text :nodes="transformFace(row.msgContext)"></rich-text>
 				</view>
 				<!-- 图片消息 -->
-				<view @longtap="oRt(row)" v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
+				<view v-if="row.msgType==1" class="bubble img" @tap="showPic(`${$url}/${row.msgContext}`)">
 					<image :src="$url+'/scale_'+ row.msgContext" style="width:100px;height:100px"></image>
 				</view>
 				<!-- 语言消息 -->
-				<view @longtap="oRt(row)" v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgId == row.id?'play':''">
+				<view v-if="row.msgType==3" class="bubble voice" @tap="playVoice(row)" :class="playMsgId == row.id?'play':''">
 					<view class="length">{{recordToJson(row.msgContext).length}}</view>
 					<view class="icon my-voice"></view>
 				</view>
 				<!-- 红包 -->
-				<view v-if="row.msgType==7" @tap="openPacket(row)">
-					<div class="message-red-packet-right" :style="redProcess(row.msgContext).surplusMoney===0?'background:#F7DFC3':'background:#F09D47'">
+				<view v-if="row.msgType==7" @tap="clickPacket">
+					<div class="message-red-packet-right" :style="processPacket(row.msgContext).surplusMoney===0?'background:#F7DFC3':'background:#F09D47'">
 						<div class="text">
-						  <image :src="redProcess(row.msgContext).surplusMoney===0?'../../static/img/red-chai.png':'../../static/img/red.png'"></image>
+						  <image :src="processPacket(row.msgContext).surplusMoney===0?'../../static/img/red-chai.png':'../../static/img/red.png'"></image>
 						  <span class="packet">恭喜发财，大吉大利</span>
 						</div>
-						<div :class="redProcess(row.msgContext).surplusMoney===0?'footer2':'footer'">红包</div>
-						<div class="arrow-org" :style="redProcess(row.msgContext).surplusMoney===0?'background:#F7DFC3':'background:#F09D47'"></div>
+						<div :class="processPacket(row.msgContext).surplusMoney===0?'footer2':'footer'">红包</div>
+						<div class="arrow-org" :style="processPacket(row.msgContext).surplusMoney===0?'background:#F7DFC3':'background:#F09D47'"></div>
 					</div>
 				</view>
 			</view>
 			<!-- 右-头像 -->
-			<view :class="row.msgType==0?'right text':'right'" @tap="linkToCard(row.sendUid)">
+			<view :class="row.msgType==0?'right text':'right'" @tap="onPageJump(row.sendUid)">
 				<!-- <img-cache :src="$url + userData.user.avatar"></img-cache> -->
 				<img-cache src="/static/image/girl.jpg"></img-cache>
 			</view>
@@ -48,10 +50,12 @@
 </template>
 
 <script>
+	import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 	import { transform } from "@/util/ChatUtils.js";
 	import ImgCache from '@/components/img-cache/img-cache.vue';
 	import { mapState, mapMutations} from 'vuex';
 	export default {
+		components:{ chunLeiPopups },
 		name: 'right-bubble',
 		components:{
 			ImgCache
@@ -78,8 +82,11 @@
 		},
 		data() {
 			return {
-				//播放语音相关参数
-				AUDIO:uni.createInnerAudioContext(),
+				x: 0,
+				y: 0,
+				AUDIO: uni.createInnerAudioContext(),
+				value: false,
+				data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}]
 			};
 		},
 		computed: {
@@ -90,45 +97,35 @@
 			this.AUDIO.onEnded((res)=>{
 			});
 		},
-		filters: {
-			formatDate: function (e) {
-				// 获取js 时间戳
-				let time = new Date().getTime();
-				// 去掉 js 时间戳后三位
-				time = parseInt((time - e) / 1000);
-				// 存储转换值
-				let s;
-				if (time < 60 * 10) {
-				  // 十分钟内
-				  return '刚刚';
-				} else if (time < 60 * 60 && time >= 60 * 10) {
-				  // 超过十分钟少于1小时
-				  s = Math.floor(time / 60);
-				  return s + '分钟前';
-				} else if (time < 60 * 60 * 24 && time >= 60 * 60) {
-				  // 超过1小时少于24小时
-				  s = Math.floor(time / 60 / 60);
-				  return s + '小时前';
-				} else if (time < 60 * 60 * 24 * 3 && time >= 60 * 60 * 24) {
-				  // 超过1天少于3天内
-				  s = Math.floor(time / 60 / 60 / 24);
-				  return s + '天前';
-				} else {
-				  // 超过3天
-				 var date = new Date(e);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-				 var Y = date.getFullYear() + '-';
-				 var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-				 var D = date.getDate() + ' ';
-				 var h = date.getHours() + ':';
-				 var m = date.getMinutes() + ':';
-				 var ss = date.getSeconds();
-				 return Y+M+D+h+m+ss;
-				}   
-			}
+		
+		//监听滚动隐藏
+		onPageScroll(){
 		},
 		methods:{
-			oRt(row){
-				this.$emit('oRt', row);
+			test(){
+				uni.showToast({
+					title:'1',
+					icon:'none'
+				})
+			},
+			taptext(e,index){
+				this.x = e.touches[0].clientX
+				this.y = e.touches[0].clientY
+				this.value = !this.value
+				//this[`value${index}`] = !this[`value${index}`]
+			},
+			tapOut(e){
+				let dom = uni.createSelectorQuery().in(this)
+				dom.select("#text_"+ this.index).boundingClientRect()
+				dom.exec((data) => {
+					this.x = (data[0].left+data[0].right)/2
+					this.y = data[0].top
+					this.value = !this.value
+				})
+			
+			},
+			clickText(){
+				this.$emit('click', row);
 			},
 			deleteMethod(id,index){
 				this.$emit('deleteMethod', id, index);
@@ -145,12 +142,15 @@
 				  });
 			},
 			// 打开红包
-			openPacket(msg){
-				this.$emit('openPacket',msg);
+			clickPacket(){
+				//this.$emit('clickPacket',row);
 			},
 			//处理红包数据
-			redProcess(msgContext){
-				let packets = JSON.parse(msgContext).Packets;
+			processPacket(msgContext){
+				let packets = msgContext;
+				if(typeof(msgContext)=='string'){
+					packets = JSON.parse(msgContext).Packets;
+				}
 				let msg = {
 					description:'好友暂不支持发红包',
 					money:0,
@@ -198,7 +198,10 @@
 				});
 			},
 			recordToJson(msg){
-				let s =JSON.parse(msg);
+				let s = msg;
+				if(typeof(msg)=='string'){
+					s = JSON.parse(msg);
+				}
 				return s
 			},
 			//复制
@@ -254,6 +257,42 @@
 			transformFace(text){
 				return transform(text)
 			},
+		},
+		filters: {
+			formatDate: function (e) {
+				// 获取js 时间戳
+				let time = new Date().getTime();
+				// 去掉 js 时间戳后三位
+				time = parseInt((time - e) / 1000);
+				// 存储转换值
+				let s;
+				if (time < 60 * 10) {
+				  // 十分钟内
+				  return '刚刚';
+				} else if (time < 60 * 60 && time >= 60 * 10) {
+				  // 超过十分钟少于1小时
+				  s = Math.floor(time / 60);
+				  return s + '分钟前';
+				} else if (time < 60 * 60 * 24 && time >= 60 * 60) {
+				  // 超过1小时少于24小时
+				  s = Math.floor(time / 60 / 60);
+				  return s + '小时前';
+				} else if (time < 60 * 60 * 24 * 3 && time >= 60 * 60 * 24) {
+				  // 超过1天少于3天内
+				  s = Math.floor(time / 60 / 60 / 24);
+				  return s + '天前';
+				} else {
+				  // 超过3天
+				 var date = new Date(e);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+				 var Y = date.getFullYear() + '-';
+				 var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+				 var D = date.getDate() + ' ';
+				 var h = date.getHours() + ':';
+				 var m = date.getMinutes() + ':';
+				 var ss = date.getSeconds();
+				 return Y+M+D+h+m+ss;
+				}   
+			}
 		}
 	}
 </script>

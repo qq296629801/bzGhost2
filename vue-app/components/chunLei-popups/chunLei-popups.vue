@@ -21,11 +21,11 @@
 			},
 			placement:{
 				type:String,
-				default:'default' //default top-start top-end bottom-start bottom-end 
+				default:'bottom-start' //default top-start top-end bottom-start bottom-end 
 			},
 			direction:{
 				type:String,
-				default:'column' //column row
+				default:'row' //column row
 			},
 			x:{
 				type:Number,
@@ -45,7 +45,7 @@
 			},
 			theme:{
 				type:String,
-				default:'light' //light dark
+				default:'dark' //light dark
 			},
 			dynamic:{
 				type:Boolean,

@@ -15,8 +15,8 @@
 					 @openPacket="openPacket" @deleteMethod="deleteMethod"></left-bubble>
 					
 					<!-- 自己发出的消息 -->
-					<right-bubble @deleteMethod="deleteMethod" @sendMsg="sendMsg" @oRt="oRt" :rClickId="rClickId"
-					  :index="index" @openPacket="openPacket" :row="row" :playMsgid="playMsgid"></right-bubble>
+					<right-bubble @sendMsg="sendMsg" :rClickId="rClickId"
+					  :index="index"  :row="row" :playMsgid="playMsgid"></right-bubble>
 				</view>
 				
 				</mescroll-body>
@@ -205,7 +205,7 @@
 			oLf(row){
 				this.lClickId = row.id;
 			},
-			oRt(row){
+			onPopups(row){
 				this.rClickId = row.id;
 			},
 			// 关闭红包弹窗
