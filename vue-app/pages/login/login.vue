@@ -51,8 +51,8 @@
 
 <script>
 	let my;
-	import wInput from '../../components/watch-login/watch-input.vue' 
-	import wButton from '../../components/watch-login/watch-button.vue'
+	import wInput from '@/components/watch-login/watch-input.vue' 
+	import wButton from '@/components/watch-login/watch-button.vue'
 	import history from '@/util/history.js'
 	import common from '@/util/common.js'
 	import { mapState, mapMutations } from 'vuex';
