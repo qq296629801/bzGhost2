@@ -16,11 +16,11 @@
 		</view>
 		
 		<!-- 抽屉栏 -->
-		<im-drawer @addEmoji="addEmoji" @sendMsg="sendMsg" @getImage="getImage"
+		<im-drawer :popupLayerClass="popupLayerClass" @addEmoji="addEmoji" @sendMsg="sendMsg" @getImage="getImage"
 				   @redShow="redFlag = true" :hideMore="hideMore" :hideEmoji="hideEmoji"></im-drawer>
 		
 		<!-- 底部输入框 -->
-		<footer-input @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
+		<footer-input :popupLayerClass="popupLayerClass" @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
 					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
 		 :disabledSay="disabledSay" :textMsg2="textMsg"
 					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
