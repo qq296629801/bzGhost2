@@ -14,12 +14,8 @@ Vue.prototype.$base = base;
 import $http from '@/config/requestConfig'
 Vue.prototype.$http = $http;
 
-import * as filters from '@/filter/index.js'
 import publicModule from "@/components/common/public_module.vue";
 Vue.component("public-module", publicModule);
-import MescrollBody from "@/components/common/mescroll-uni/mescroll-body.vue";
-Vue.component("mescroll-body", MescrollBody);
-
 Vue.use(uView);
 
 Object.keys(filters).forEach(name=>{
@@ -30,7 +26,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$socket = webim;
 Vue.prototype.$url = 'http://42.193.146.14/';
 Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload';
-Vue.prototype.util = util
+Vue.prototype.$util = util
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {
