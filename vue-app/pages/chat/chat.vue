@@ -1,26 +1,22 @@
 <template>
 	<view>
 		<view class="content" id="content" @touchstart="hideDrawer">
-			<scroll-view id="scrollview" class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" scroll-y="true"
-			 :scroll-top="scrollTop" :scroll-into-view="scrollToView">
+		
+				<mescroll-body class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" ref="mescrollRef" bottom="50%" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 				
-				<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="loadHistory" @up="upCallback">
 				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'chatId_'+index">
 					
 					<!-- 系统通知的消息 -->
 					<system-bubble :row="row"></system-bubble>
 					
 					<!-- 别人发出的消息 -->
-					<left-bubble @oLf="oLf" @sendMsg="sendMsg" :lClickId="lClickId" :row="row" :playMsgId="playMsgid" :index="index"
-					 @openPacket="openPacket" @deleteMethod="deleteMethod"></left-bubble>
+					<left-bubble @sendMsg="sendMsg" :row="row" :index="index"></left-bubble>
 					
 					<!-- 自己发出的消息 -->
-					<right-bubble @sendMsg="sendMsg" :rClickId="rClickId"
-					  :index="index"  :row="row" :playMsgid="playMsgid"></right-bubble>
+					<right-bubble @sendMsg="sendMsg" :rClickId="rClickId":index="index"  :row="row"></right-bubble>
 				</view>
 				
 				</mescroll-body>
-			</scroll-view>
 		</view>
 		
 		<!-- 抽屉栏 -->
@@ -81,8 +77,6 @@
 				lClickId:0,
 				pageNum:1,
 				disabledSay:0,
-				scrollTop:0,
-				scrollToView:'chatID_0',
 				inputOffsetBottom: 0,
 				viewOffsetBottom: 0, 
 				msgList:[],
