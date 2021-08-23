@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<view class="content" @touchstart="hideDrawer">
-				<mescroll-body class="msg-list" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+				<mescroll-body ref="mescrollRef" bottom="50%" class="msg-list" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 				
-					<view class="row" v-for="(row,index) in msgList" :key="row.id" :id="'message_'+index">
+					<view class="row" v-for="(row,index) in msgList" :key="row.id" :id="'msg'+row.id">
 						
 						<system-bubble :index="index" :row="row"></system-bubble>
 						
@@ -62,7 +62,6 @@
 		data() {
 			return {
 				downOption:{
-					auto:false,
 					autoShowLoading: true, // 显示下拉刷新的进度条
 					textColor: "#FF8095" // 下拉刷新的文本颜色
 				},
@@ -107,15 +106,11 @@
 		},
 		onLoad() {
 			this.sendMsg(0,'');
-			this.getMsgItem();
 			//this.readMe();
 		},
 		onShow(){
-			this.$nextTick(() => {
-				this.hideDrawer();
-				this.disabledSay = 0
-				
-			});
+			this.hideDrawer();
+			this.disabledSay = 0
 		},
 		onReady() {
             // #ifdef H5
@@ -147,7 +142,7 @@
 							//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
 							//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
 							// #ifndef MP-WEIXIN || H5
-							this.bindScroll(this.sel, 100);
+							//this.bindScroll(this.sel, 100);
 							// #endif
 						});
 					}
@@ -336,11 +331,23 @@
 			  })
 			},
 			// localStorage版本获取消息列表
-			getMsgItem(){
-				history.get(this.chatObj.chatId).then(res=>{
-					this.msgList = res
-					this.$nextTick(function(){
-						this.mescroll.scrollTo(99999, 0);
+			downCallback(){
+				history.get(this.chatObj.chatId).then(data=>{
+					// 先隐藏下拉刷新的状态
+					this.mescroll.endSuccess();
+					this.msgList = data;
+					let topMsg = data[data.length-1];
+					this.$nextTick(()=>{
+						// 第一页直接滚动到底部 ( this.pageNum已在前面加1 )
+						//this.mescroll.scrollTo(99999, 0)
+						/* if(topMsg){
+							// 保持顶部消息的位置
+							let view = uni.createSelectorQuery().select('#msg'+topMsg.id);
+							view.boundingClientRect(v => {
+								console.log("节点离页面顶部的距离=" + v.top);
+								this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
+							}).exec();
+						} */
 					})
 				})
 				/* if(this.chatObj.chatType==0){
