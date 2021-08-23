@@ -239,7 +239,6 @@
 			// 打开抽屉
 			openDrawer(){
 				this.popupLayerClass = 'showLayer';
-				this.scrollBottom()
 			},
 			// 隐藏抽屉
 			hideDrawer(){
@@ -347,12 +346,10 @@
 				/* if(this.chatObj.chatType==0){
 					 this.$socket.queryFriendMessages(this.chatObj.chatId, this.userData.user.operId,1, (res) => {
 						 this.msgList = res.response.data;
-						 this.scrollBottom()
 					 });
 				}else {
                     queryData(this.chatObj.chatId).then(res=>{
                         this.msgList = res;
-						this.scrollBottom()
                     });
 				} */
 			},
@@ -517,7 +514,6 @@
 						break;
 					default:
 				}
-				this.scrollBottom()
 			},
 			//撤销
 			rollBack(res){
