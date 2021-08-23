@@ -48,7 +48,7 @@
 	import FooterInput from '@/components/chat/footer-input.vue'
 	import SystemBubble from '@/components/chat/system-bubble.vue'
 	import { mapState, mapMutations} from 'vuex';
-	import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
+	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 	import { emojiList } from "@/util/emoji.js"
 	import history from '@/util/history.js'
 	export default {

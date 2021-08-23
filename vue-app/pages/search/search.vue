@@ -41,12 +41,7 @@
 		        <view v-for="(item,index) of popularList" :key="index" @click="onHistory(item)">{{item}}</view>
 		    </view>
 		</view>
-		<view>
-			<view class="mescroll-empty empty-fixed">
-				<view> <image class="empty-icon" :src="empty.icon" mode="widthFix" /> </view>
-				<view class="empty-tip">{{ empty.tip }}</view>
-			</view>
-		</view>
+		
 		<view class="content1" v-if="'0' == searchType">
 			<view v-for="(item, index) in list" :key="index">
 				<message @jump="toUserInfo" :badgeIcon="false" :value="item" :index="index"></message>
@@ -91,14 +86,13 @@
 
 <script>
 	// 引入mescroll-uni.js,处理核心逻辑
-import MeScroll from '@/components/common/mescroll-uni/mescroll-uni.js';
-import MescrollEmpty from '@/components/common/mescroll-uni/components/mescroll-empty.vue';
 import message from '@/components/message.vue';
 import addressBook from '@/components/addressBook.vue'
 import { pinyin } from '../../public/Pinyin.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
 	name:'search',
-	components:{message,addressBook,MescrollEmpty},
+	components:{message,addressBook},
 	data() {
 		return {
 			empty: {

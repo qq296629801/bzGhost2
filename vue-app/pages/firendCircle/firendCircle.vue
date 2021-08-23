@@ -125,7 +125,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import common from '@/util/common.js'
-import MescrollMixin from "@/components/common/mescroll-uni/mescroll-mixins.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
 	name: 'firendCircle',
 	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)

@@ -2,8 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import uView from "uview-ui";
 import webim from 'webim.js';
-import util from '@/util/util.js'
-
+import * as filters from '@/util/util.js'
 //数据管理中心
 import store from '@/store/index.js'
 Vue.prototype.$store = store;
@@ -24,9 +23,7 @@ Object.keys(filters).forEach(name=>{
 
 Vue.config.productionTip = false;
 Vue.prototype.$socket = webim;
-Vue.prototype.$url = 'http://42.193.146.14/';
-Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload';
-Vue.prototype.$util = util
+
 App.mpType = 'app'
 
 Promise.prototype.finally = function(callback) {
