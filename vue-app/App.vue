@@ -2,6 +2,7 @@
 	// #ifdef APP-PLUS
 	import APPUpdate from "@/plugins/APPUpdate";
 	// #endif
+	import store from '@/store/index.js'
 	export default {
 		onLaunch: function() {
 			// #ifdef APP-PLUS
@@ -10,9 +11,12 @@
 			this.$socket.initWebIM();
 		},
 		onShow: function() {
-			// uni.navigateTo({
-			// 	url: "pages/login/login"
-			// });
+			let storeUserData = store.state.userData;
+			if(!storeUserData.token){
+				uni.navigateTo({
+					url: "pages/login/login"
+				});
+			}
 		},
 		onHide: function() {
 		}

@@ -1,6 +1,7 @@
 import packetCode from './PacketCodeC.js'
 import store from './store/index.js'
 import SKIMSDK from './websocket_sdk.js'
+import base from '@/config/baseUrl';
 const EventDispatcher = function() {
 	this.listeners = {}
 }
@@ -13,7 +14,7 @@ const WEBIM = {
 	userId: null,
 	isReadDel: 0,
 	userIdStr: null,
-	serverUrl: 'ws://127.0.0.1:9999/chat',
+	serverUrl: base.socketUrl,
 	server: null,
 	/*消息超时 时间 默认 15 秒*/
 	sendTimeOut: 15,

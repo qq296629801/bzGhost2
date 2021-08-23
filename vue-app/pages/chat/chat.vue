@@ -1,33 +1,29 @@
 <template>
 	<view>
-		<view class="content" id="content" @touchstart="hideDrawer">
-		
-				<mescroll-body class="msg-list" :class="{'chat-h':popupLayerClass === 'showLayer'}" ref="mescrollRef" bottom="50%" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
+		<view class="content" @touchstart="hideDrawer">
+				<mescroll-body class="msg-list" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
 				
-				<view id="msglistview" class="row" v-for="(row,index) in msgList" :key="index" :id="'chatId_'+index">
-					
-					<!-- 系统通知的消息 -->
-					<system-bubble :row="row"></system-bubble>
-					
-					<!-- 别人发出的消息 -->
-					<left-bubble @sendMsg="sendMsg" :row="row" :index="index"></left-bubble>
-					
-					<!-- 自己发出的消息 -->
-					<right-bubble @sendMsg="sendMsg" :rClickId="rClickId":index="index"  :row="row"></right-bubble>
-				</view>
+					<view class="row" v-for="(row,index) in msgList" :key="row.id" :id="'message_'+index">
+						
+						<system-bubble :index="index" :row="row"></system-bubble>
+						
+						<left-bubble @sendMsg="sendMsg" :index="index" :row="row"></left-bubble>
+						
+						<right-bubble @sendMsg="sendMsg" :index="index"  :row="row"></right-bubble>
+					</view>
 				
 				</mescroll-body>
 		</view>
 		
 		<!-- 抽屉栏 -->
 		<im-drawer @addEmoji="addEmoji" @sendMsg="sendMsg" @getImage="getImage"
-				   @redShow="redFlag = true" :hideMore="hideMore" :hideEmoji="hideEmoji" :popupLayerClass="popupLayerClass"></im-drawer>
+				   @redShow="redFlag = true" :hideMore="hideMore" :hideEmoji="hideEmoji"></im-drawer>
 		
 		<!-- 底部输入框 -->
 		<footer-input @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
 					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
-		 :disabledSay="disabledSay" :textMsg2="textMsg" :popupLayerClass="popupLayerClass"
-					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice" @enterInput="enterInput"></footer-input>
+		 :disabledSay="disabledSay" :textMsg2="textMsg"
+					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
 		
 		<!-- 红包卡片弹窗 -->
 		<!-- <red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card> -->
@@ -65,16 +61,19 @@
 		},
 		data() {
 			return {
-				upOption: {
-					auto: false 
-				},
 				downOption:{
-					auto: false
+					auto:false,
+					autoShowLoading: true, // 显示下拉刷新的进度条
+					textColor: "#FF8095" // 下拉刷新的文本颜色
+				},
+				upOption: {
+					use: false, // 禁止上拉
+					toTop: {
+						src: '' // 不显示回到顶部按钮
+					}
 				},
 				textMsg: '',
 				redFlag: false,
-				rClickId:0,
-				lClickId:0,
 				pageNum:1,
 				disabledSay:0,
 				inputOffsetBottom: 0,
@@ -115,7 +114,7 @@
 			this.$nextTick(() => {
 				this.hideDrawer();
 				this.disabledSay = 0
-				this.scrollToBottom()
+				
 			});
 		},
 		onReady() {
@@ -156,16 +155,7 @@
 			}
 		},
 		methods:{
-			scrollToBottom () {
-				this.$nextTick(function(){
-					uni.pageScrollTo({
-						scrollTop: 2000000,
-						duration : 10
-					})
-				})
-			},
-			enterInput:function(){
-			},
+			// 监听文本输入
 			textMsgTap(t){
 				this.textMsg = t;
 			},
@@ -346,34 +336,13 @@
 				}
 			  })
 			},
-			scrollBottom: function() {
-				var that = this;
-				setTimeout(() => {
-					if (that.msgList.length) {
-						if (that.scrollIntoID == "chatId_" + (that.msgList.length - 1)) {
-							that.scrollIntoID = "chatId_" + (that.msgList.length - 2);
-							that.scrollBottom();
-						} else if (that.scrollIntoID == "chatId_" + (that.msgList.length - 2)) {
-							that.scrollIntoID = "chatId_" + (that.msgList.length - 1);
-						} else {
-							that.scrollIntoID = "chatId_" + (that.msgList.length - 1);
-						}
-					} else {
-						that.scrollIntoID = "chatId_0";
-					}
-				}, 50)
-			},
-			/* scrollBottom(){
-				this.$nextTick(() => {
-					if(this.msgList.length>0){
-						this.scrollToView = 'msg' + this.msgList[this.msgList.length-1].id
-					}
-				});
-			}, */
 			// localStorage版本获取消息列表
 			getMsgItem(){
 				history.get(this.chatObj.chatId).then(res=>{
 					this.msgList = res
+					this.$nextTick(function(){
+						this.mescroll.scrollTo(99999, 0);
+					})
 				})
 				/* if(this.chatObj.chatType==0){
 					 this.$socket.queryFriendMessages(this.chatObj.chatId, this.userData.user.operId,1, (res) => {

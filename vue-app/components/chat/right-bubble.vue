@@ -102,6 +102,8 @@
 		onPageScroll(){
 		},
 		methods:{
+			tapPopup(){
+			},
 			test(){
 				uni.showToast({
 					title:'1',

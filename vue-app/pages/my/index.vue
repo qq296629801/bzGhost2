@@ -98,7 +98,7 @@
 
 <style lang="scss">
 page{
-	background-color: #ededed;
+	background-color: #F6F7F8;
 }
 
 .camera{
