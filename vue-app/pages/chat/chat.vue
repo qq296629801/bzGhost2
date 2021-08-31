@@ -1,591 +1,547 @@
 <template>
-	<view>
-		<view class="content" @touchstart="hideDrawer">
-				<mescroll-body ref="mescrollRef" bottom="50%" class="msg-list" @init="mescrollInit" :down="downOption" :up="upOption" @down="downCallback" @up="upCallback">
-				
-					<view class="row" v-for="(row,index) in msgList" :key="row.id" :id="'msg'+row.id">
-						
-						<system-bubble :index="index" :row="row"></system-bubble>
-						
-						<left-bubble @sendMsg="sendMsg" :index="index" :row="row"></left-bubble>
-						
-						<right-bubble @sendMsg="sendMsg" :index="index"  :row="row"></right-bubble>
+	<view class="content">
+		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
+			<!-- 背景图- 定位方式 -->
+			<image class="content-box-bg" :src="_user_info.chatBgImg" :style="{ height: imgHeight }"></image>
+			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
+			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
+				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
+					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkToBusinessCard(item.fromUserId)"></image>
+					<!-- contentType = 1 文本 -->
+					<view class="content" v-if="item.contentType == 1">{{ item.content }}</view>
+					<!-- contentType = 2 语音 -->
+					<view
+						class="content contentType2"
+						:class="[{ 'content-type-right': item.isItMe }]"
+						v-if="item.contentType == 2"
+						@tap="handleAudio(item)"
+						hover-class="contentType2-hover-class"
+						:style="{width:`${130+(item.contentDuration*2)}rpx`}"
+					>
+						<view
+							class="voice_icon"
+							:class="[
+								{ voice_icon_right: item.isItMe },
+								{ voice_icon_left: !item.isItMe },
+								{ voice_icon_right_an: item.anmitionPlay && item.isItMe },
+								{ voice_icon_left_an: item.anmitionPlay && !item.isItMe }
+							]"
+						></view>
+						<view class="">{{ item.contentDuration }}''</view>
 					</view>
-				
-				</mescroll-body>
+					<!-- contentType = 3 图片 -->
+					<view 
+						class="content contentType3" 	
+						v-if="item.contentType == 3"
+						@tap="viewImg([item.content])"
+					>
+						<image :src="item.content" class="img" mode="widthFix"></image>
+					</view>
+				</view>
+			</view> 
 		</view>
 		
-		<!-- 抽屉栏 -->
-		<im-drawer :popupLayerClass="popupLayerClass" @addEmoji="addEmoji" @sendMsg="sendMsg" @getImage="getImage"
-				   @redShow="redFlag = true" :hideMore="hideMore" :hideEmoji="hideEmoji"></im-drawer>
+		<!-- 底部聊天输入框 -->
+		<view class="input-box" :class="{ 'input-box-mpInputMargin': mpInputMargin }">
+			<view class="input-box-flex">
+				<!-- #ifndef H5 -->
+				<image v-if="chatType === 'voice'" class="icon_img" :src="require('@/static/voice.png')"  @click="switchChatType('keyboard')"></image>
+				<image v-if="chatType === 'keyboard'" class="icon_img" :src="require('@/static/keyboard.png')"  @click="switchChatType('voice')"></image>
+				<!-- #endif -->
+				<view class="input-box-flex-grow"> 
+					<input
+						v-if="chatType === 'voice'"
+						type="text"
+						class="content"
+						id="input"
+						v-model="formData.content"
+						:hold-keyboard="true"
+						:confirm-type="'send'"
+						:confirm-hold="true"
+						placeholder-style="color:#DDDDDD;"
+						:cursor-spacing="10"
+						@confirm="sendMsg(null)"
+					/>
+					<view
+						class="voice_title"
+						v-if="chatType === 'keyboard'"
+						:style="{ background: recording ? '#c7c6c6' : '#FFFFFF' }"
+						@touchstart.stop.prevent="startVoice"
+						@touchmove.stop.prevent="moveVoice"
+						@touchend.stop="endVoice"
+						@touchcancel.stop="cancelVoice"
+					>
+						{{ voiceTitle }}
+					</view>
+				</view>
+				
+				<!-- 功能性按钮 -->
+				<image class=" icon_btn_add" :src="require('@/static/add.png')" @tap="switchFun"></image>
+				
+				<!-- #ifdef H5 --> 
+				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
+				<!-- #endif -->
+			</view>
+			
+			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
+				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
+					<u-grid-item v-for="(item, index) in funList" :index="index" :key="index" bg-color="#eaeaea">
+						<u-icon :name="item.icon" :size="52"></u-icon>
+						<view class="grid-text">{{ item.title }}</view>
+					</u-grid-item>
+				</u-grid>
+			</view>
+
+		</view>
 		
-		<!-- 底部输入框 -->
-		<footer-input :popupLayerClass="popupLayerClass" @textMsgTap="textMsgTap" @switchVoice="switchVoice" @chooseEmoji="chooseEmoji" @sendMsg="sendMsg"
-					  @showMore="showMore" @hideDrawer="hideDrawer" @openDrawer="openDrawer"
-		 :disabledSay="disabledSay" :textMsg2="textMsg"
-					  :inputOffsetBottom="inputOffsetBottom" :isVoice="isVoice"></footer-input>
-		
-		<!-- 红包卡片弹窗 -->
-		<!-- <red-card @robRed="robRed" @closeRed="closeRed" :winState="winState"></red-card> -->
-		
-		<!-- 发红包弹窗 -->
-		<u-popup v-model="redFlag" mode="top" length="50%">
-			<red-envelope @sendRedPacket="sendRedPacket"></red-envelope>
-		</u-popup>
+		<!-- //语音动画 -->
+		<view class="voice_an"  v-if="recording">
+			<view class="voice_an_icon">
+				<view id="one" class="wave"></view>
+				<view id="two" class="wave"></view>
+				<view id="three" class="wave"></view>
+				<view id="four" class="wave"></view>
+				<view id="five" class="wave"></view>
+				<view id="six" class="wave"></view>
+				<view id="seven" class="wave"></view>
+			</view>
+			<view class="text">{{voiceIconText}}</view>
+		</view>
 	</view>
 </template>
+
 <script>
-	import ImDrawer from '@/components/chat/im-drawer.vue'
-	import RedCard from '@/components/chat/red-card.vue'
-	import RedEnvelope from "@/components/redenvelope"
-	import ImgCache from '@/components/img-cache/img-cache.vue'
-	import RightBubble from '@/components/chat/right-bubble.vue'
-	import LeftBubble from '@/components/chat/left-bubble.vue'
-	import FooterInput from '@/components/chat/footer-input.vue'
-	import SystemBubble from '@/components/chat/system-bubble.vue'
-	import { mapState, mapMutations} from 'vuex';
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import { emojiList } from "@/util/emoji.js"
-	import history from '@/util/history.js'
-	export default {
-		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
-		components: {
-			ImDrawer,
-			RedCard,
-			ImgCache,
-			RightBubble,
-			LeftBubble,
-			SystemBubble,
-			RedEnvelope,
-			FooterInput
-		},
-		data() {
-			return {
-				downOption:{
-					autoShowLoading: true, // 显示下拉刷新的进度条
-					textColor: "#FF8095" // 下拉刷新的文本颜色
-				},
-				upOption: {
-					use: false, // 禁止上拉
-					toTop: {
-						src: '' // 不显示回到顶部按钮
-					}
-				},
-				textMsg: '',
-				redFlag: false,
-				pageNum:1,
-				disabledSay:0,
-				inputOffsetBottom: 0,
-				viewOffsetBottom: 0, 
-				msgList:[],
-				isVoice:false,
-				playMsgid:null,
-				popupLayerClass:'',
-				hideMore:true,
-				hideEmoji:true,
-				winState:'',
-				message:{},
-				loading:false,
-			};
-		},
-		//头部按钮监听
-		onNavigationBarButtonTap({ index }) {
-			if (index == 0) {
-				let url = this.chatObj.chatType==1?'groupDetail':'userDetail'
-				this.$u.route({
-					url: 'pages/chat/' + url,
-				});
-				//用户详情 设置
-			} else if (index == 1) {
-				//返回按钮
-				this.$u.route({
-					type: 'navigateBack',
-					url: 'pages/home/home'
-				});
-			}
-		},
-		onLoad() {
-			this.sendMsg(0,'');
-			//this.readMe();
-		},
-		onShow(){
-			this.hideDrawer();
-			this.disabledSay = 0
-		},
-		onReady() {
-            // #ifdef H5
-            const icon = document.getElementsByClassName('uni-page-head-btn')[0];
-            icon.style.display = 'none';
-            // #endif
-			uni.setNavigationBarTitle({
-				title: this.chatObj.chatName
-			});
-			//h5暂不支持键盘的高度监听
-			uni.onKeyboardHeightChange(res => {
-				this.inputOffsetBottom = res.height;
-				this.viewOffsetBottom = res.height + uni.upx2px(100);
-				if (res.height == 0) {
-					// #ifndef MP-WEIXIN
-					//this.showInput = false;
-					// #endif
-				}
-			});
-		},
-		computed: {
-			...mapState(['userData','chatObj'])
-		},
-		watch:{
-			inputOffsetBottom: {
-				handler(val) {
-					if (val != 0) {
-						this.$nextTick(() => {
-							//暂时不支持h5的滚动方式 因为h5不支持键盘的高度监听
-							//微信小程序会把input的焦点和placeholder顶起，正在寻找解决方案
-							// #ifndef MP-WEIXIN || H5
-							//this.bindScroll(this.sel, 100);
-							// #endif
-						});
-					}
-				}
-			}
-		},
-		methods:{
-			// 监听文本输入
-			textMsgTap(t){
-				this.textMsg = t;
+export default {
+	data() {
+		return {
+			fromUserInfo: {},
+			formData: {
+				content: '',
+				limit: 15,
+				index: 1
 			},
-			// 切换语音/文字输入
-			switchVoice(){
-				this.hideDrawer();
-				this.isVoice = this.isVoice?false:true;
+			_user_info:{
+				headImg:'',
+				chatBgImg:''
 			},
-			//添加表情
-			addEmoji(em, del){
-				//判断删除按钮
-				if(del){
-				  var str;
-				  var msglen = this.textMsg.length - 1;
-				  let start = this.textMsg.lastIndexOf("[");
-				  let end = this.textMsg.lastIndexOf("]");
-				  let len = end - start;
-				  if(end != -1 && end === msglen && len >= 2 && len <= 4){
-					    // 表情字符
-						str = this.textMsg.slice(0, start);
-					}else{
-						// 普通键盘输入汉字 或者字符
-						str = this.textMsg.slice(0, msglen);
-					}
-					
-					this.textMsg = str
-					return;
-				}
-			    this.textMsg += em.emojiItem.alt;
-			},
-			oLf(row){
-				this.lClickId = row.id;
-			},
-			onPopups(row){
-				this.rClickId = row.id;
-			},
-			// 关闭红包弹窗
-			closeRed(){
-				this.winState = 'hide';
-				setTimeout(()=>{
-					this.winState = '';
-				},200)
-			},
-			// 打开红包
-			openPacket(msg){
-				this.winState = 'show'
-				this.message = msg
-				this.$u.vuex('packet',this.red_process(msg.msgContext));
-			},
-			// 开始抢红包
-			robRed(){
-				this.sendMsg(8, this.message.id);
-			},
-			//处理红包数据
-			red_process(msgContext){
-				let packets = JSON.parse(msgContext).Packets;
-				let msg = {
-						description:'红包异常',
-						money:0,
-						number:0,
-						userAvatar:'defalut.jpg',
-					}
-				if(packets===undefined)
-					return msg;
-				return packets[0];
-			},
-			hideRed(){
-				this.redFlag = false;
-			},
-			//更多功能(点击+弹出)
-			showMore(){
-				this.isVoice = false;
-				this.hideEmoji = true;
-				if(this.hideMore){
-					this.hideMore = false;
-					this.openDrawer();
-				}else{
-					this.hideDrawer();
-				}
-			},
-			// 打开抽屉
-			openDrawer(){
-				this.popupLayerClass = 'showLayer';
-			},
-			// 隐藏抽屉
-			hideDrawer(){
-				setTimeout(()=>{
-					this.popupLayerClass = '';
-					this.hideMore = true;
-					this.hideEmoji = true;
-					this.rClickId = 0;
-					this.lClickId = 0;
-					uni.hideKeyboard();
-				},150);
-			},
-			//删除
-			deleteMethod(id,index){
-				this.msgList.splice(index,1);
-			},
-			//处理红包数据
-			red_process(msgContext){
-				let packets = JSON.parse(msgContext).Packets;
-				let msg = {
-					description:'红包异常',
-					money:0,
-					number:0,
-					userAvatar:'defalut.jpg',
-					surplusMoney:0,
-					Records:[]
-				}
-				if(packets==undefined){
-					return msg;
-				}
-				if(packets.length==0){
-					return msg;
-				}
-				return packets[0];
-			},
-			//发送红包
-			sendRedPacket(packet){
-				if(this.chatObj.chatType==0){
-					uni.showToast({
-						title:'暂不支持私发红包'
-					})
-					return;
-				}
-				this.sendMsg(7, packet)
-				this.redFlag = false;
-			},
-			//暂时不适配微信小程序，正在解决此bug
-			bindScroll(sel, duration = 0) {
-				uni.createSelectorQuery()
-					.select('#content')
-					.boundingClientRect(data => {
-						//最外层盒子节点
-						uni.createSelectorQuery()
-							.select(sel)
-							.boundingClientRect(res => {
-								if (!res) return;
-								//选中的节点
-								let windowHeight = 0;
-								uni.getSystemInfo({
-									success: system => {
-										windowHeight = system.windowHeight;
-									}
-								});
-								const inputKeyBoardHeight = uni.upx2px(100) + this.inputOffsetBottom; 
-								//input输入框和键盘的高度
-								const contentHeight = windowHeight - inputKeyBoardHeight; 
-								//可视内容的高度（除去input输入框和键盘）
-								let scrollTop = 0;
-								scrollTop = res.top - data.top - contentHeight + res.height; 
-								//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离再减去可视内容的高度然后再加上此元素的高度
-								uni.pageScrollTo({ duration, scrollTop });
-							})
-							.exec();
-					})
-					.exec();
-			},
-			//消费消息
-			readMe() {
-			  let _this = this
-			  this.$socket.openChat(this.chatObj.chatId, this.userData.user.operId, this.chatObj.chatType, res => {
-				if (res.success) {
-				  if (_this.chatObj.chatType == 1) {
-					if (res.groupUser === undefined) {
-					  _this.disabledSay = 1
-					} else {
-					  _this.disabledSay = res.groupUser.status
-					}
-				  }
-				}else {
-					uni.showToast({
-						icon:'none',
-						title: res.response.errorMessage
-					})
-				}
-			  })
-			},
-			// localStorage版本获取消息列表
-			downCallback(){
-				history.get(this.chatObj.chatId).then(data=>{
-					// 先隐藏下拉刷新的状态
-					this.mescroll.endSuccess();
-					this.msgList = data;
-					let topMsg = data[data.length-1];
-					this.$nextTick(()=>{
-						// 第一页直接滚动到底部 ( this.pageNum已在前面加1 )
-						//this.mescroll.scrollTo(99999, 0)
-						/* if(topMsg){
-							// 保持顶部消息的位置
-							let view = uni.createSelectorQuery().select('#msg'+topMsg.id);
-							view.boundingClientRect(v => {
-								console.log("节点离页面顶部的距离=" + v.top);
-								this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
-							}).exec();
-						} */
-					})
-				})
-				/* if(this.chatObj.chatType==0){
-					 this.$socket.queryFriendMessages(this.chatObj.chatId, this.userData.user.operId,1, (res) => {
-						 this.msgList = res.response.data;
-					 });
-				}else {
-                    queryData(this.chatObj.chatId).then(res=>{
-                        this.msgList = res;
-                    });
-				} */
-			},
-			//触发滑动到顶部(加载历史信息记录)
-			loadHistory(e){
-			if(this.loading){
+			messageList: [],
+			loading: true, //标识是否正在获取数据
+			imgHeight: '1000px',
+			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
+			chatType:"voice",  // 图标类型 'voice'语音 'keyboard'键盘
+			voiceTitle: '按住 说话',
+			Recorder: uni.getRecorderManager(),
+			Audio: uni.createInnerAudioContext(),
+			recording: false, //标识是否正在录音
+			isStopVoice: false, //加锁 防止点击过快引起的当录音正在准备(还没有开始录音)的时候,却调用了stop方法但并不能阻止录音的问题
+			voiceInterval:null,
+			voiceTime:0, //总共录音时长
+			canSend:true, //是否可以发送
+			PointY:0, //坐标位置
+			voiceIconText:"正在录音...",
+			showFunBtn:false, //是否展示功能型按钮
+			AudioExam:null, //正在播放音频的实例
+			funList: [
+				{ icon:"photo-fill",title:"照片",uploadType:["album"] },
+				{ icon:"camera-fill",title:"拍摄",uploadType:["camera"] },
+			],
+		};
+	},
+	methods: {
+		//拼接消息 处理滚动
+		async joinData() {
+			if (!this.loading) {
+				//如果没有获取数据 即loading为false时，return 避免用户重复上拉触发加载
 				return;
 			}
-			this.loading = true;
-			let arr = ['queryFriendMessages','queryGroupMessages'];
-			let i = this.chatObj.chatType
-			  this.$socket[arr[i]](this.chatObj.chatId, this.userData.user.operId, this.pageNum, res => { 
-				  let message = res.response.data;
-				  if(message.length>0){
-					  message.forEach(m=>{
-						  if (!this.msgList.map(v => v.id).includes(m.id)) {
-							this.msgList.push(m)
-						  }  
-					  });
-					  uni.stopPullDownRefresh();
-					  this.mescroll.endByPage(1, 1);
-					  this.msgList.sort((a, b) => { return a.id - b.id })
-					  this.pageNum++
-				  }else{
-					  this.mescroll.endErr();
-				  }
-				  this.loading = false;
-				});
-			},
-			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-			setPicSize(content){
-				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-				let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
-				let maxH = uni.upx2px(350);//350是定义消息图片最大高度
-				if(content.w>maxW||content.h>maxH){
-					let scale = content.w/content.h;
-					content.w = scale>1?maxW:maxH*scale;
-					content.h = scale>1?maxW/scale:maxH;
+			this.loading = false;
+			const data = await this.getMessageData();
+			//获取节点信息
+			const { index } = this.formData;
+			const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
+			this.messageList = [...data, ...this.messageList];
+			//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
+			this.$nextTick(() => {
+				this.bindScroll(sel);
+				//如果还有数据
+				if (this.formData.limit >= data.length) {
+					this.formData.index++;
+					setTimeout(() => {
+						this.loading = true;
+					}, 200);
 				}
-				return content;
-			},
-			
-			// 选择图片发送
-			chooseImage(){
-				this.getImage('album');
-			},
-			//拍照发送
-			camera(){
-			  this.getImage('camera');
-			},
-			//发红包
-			handRedEnvelopes(){
-			  this.hideDrawer();
-			},
-			//选照片 or 拍照
-			getImage(type){
-				let that=this;
-				this.hideDrawer();
-				uni.chooseImage({
-					sourceType:[type],
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					success: (res)=>{
-						for(let i=0;i<res.tempFilePaths.length;i++){
-							uni.getImageInfo({
-								src: res.tempFilePaths[i],
-								success: (image)=>{
-									  uni.uploadFile({
-									            url: this.$uploadUrl, //仅为示例，非真实的接口地址
-									            filePath: res.tempFilePaths[i],
-									          header: {
-											   'merchcode':'md5'
-											   },
-											   name: 'file',
-											   formData: {
-											       'user': 'test'
-											   },
-											     success: (res) => {
-													 let data = JSON.parse(res.data)
-												     this.sendMsg(1, data.data)
-									            }
-									   });
-								}
+			});
+		},
+		//处理滚动
+		bindScroll(sel, duration = 0) {
+			const query = uni.createSelectorQuery().in(this);
+			query
+				.select(sel)
+				.boundingClientRect(data => {
+					uni.pageScrollTo({
+						scrollTop: data && data.top - 40,
+						duration
+					});
+				})
+				.exec();
+		},
+		//获取消息
+		getMessageData() {
+			let getData = () => {
+				let arr = [];
+				let startIndex = (this.formData.index - 1) * this.formData.limit;
+				let endIndex = startIndex + this.formData.limit;
+				for (let i = startIndex; i < endIndex; i++) {
+					const isItMe = Math.random() > 0.5 ? true : false;
+					arr.unshift({
+						hasBeenSentId: i, //已发送过去消息的id
+						content: `很高兴认识你，这是第${i + 1}条消息。`,
+						fromUserHeadImg: isItMe ? this._user_info.headImg : this.fromUserInfo.fromUserHeadImg, //用户头像
+						fromUserId: isItMe ? this._user_info.id : this.fromUserInfo.fromUserId,
+						isItMe, //true此条信息是我发送的 false别人发送的
+						createTime: Date.now(),
+						contentType: 1, // 1文字文本 2语音
+						anmitionPlay: false //标识音频是否在播放
+					});
+				}
+				return arr;
+			};
+			return new Promise((resolve, reject) => {
+				const data = getData();
+				setTimeout(() => {
+					resolve(data);
+				}, 500);
+			});
+		},
+		//切换语音或者键盘方式
+		switchChatType(type) {
+			this.chatType = type;
+			this.showFunBtn =false;
+		},
+		//切换功能性按钮
+		switchFun(){
+			this.chatType = 'keyboard'
+			this.showFunBtn = !this.showFunBtn;
+			uni.hideKeyboard()
+		},
+		//发送消息
+		sendMsg(data) {
+			const params = {
+				hasBeenSentId: Date.now(), //已发送过去消息的id
+				content: this.formData.content,
+				fromUserHeadImg: this._user_info.headImg, //用户头像
+				fromUserId: this._user_info.id,
+				isItMe: true, //true此条信息是我发送的  false别人发送的
+				createTime: Date.now(),
+				contentType: 1
+			};
+
+			if (data) {
+				if(data.contentType == 2){
+					//说明是发送语音
+					params.content = data.content;
+					params.contentType = data.contentType;
+					params.contentDuration = data.contentDuration;
+					params.anmitionPlay = false;
+				}else if(data.contentType == 3){
+					//发送图片
+					params.content = data.content;
+					params.contentType = data.contentType;
+				}
+			} else if (!this.$u.trim(this.formData.content)) {
+				//验证输入框书否为空字符传
+				return;
+			}
+
+			this.messageList.push(params);
+
+			this.$nextTick(() => {
+				this.formData.content = '';
+				// #ifdef MP-WEIXIN
+					if(params.contentType == 1){
+						uni.pageScrollTo({
+							scrollTop: 99999,
+							duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
+						});
+					}else{
+						setTimeout(()=>{
+							uni.pageScrollTo({
+								scrollTop: 99999,
+								duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
 							});
-						}
+						},150)
 					}
-				});
-			},
-			// 选择表情
-			chooseEmoji(){
-				this.hideMore = true;
-				if(this.hideEmoji){
-					this.hideEmoji = false;
-					this.openDrawer();
-				}else{
-					this.hideDrawer();
-				}
-			},
-			//发送消息
-			sendMsg (msgType, text) {
-			 
-			 if (this.disabledSay == 1) {
-				 uni.showToast({
-				 	title:'你已经被管理员禁言'
-				 });
-				 return;
-			 }
-			 
-			 // if(text!='' && this.chatObj.chatType==1){
-				//  this.$socket.createChatList(this.userData.user.operId, this.chatObj.chatId, text, msgType, res => {});
-			 // }
-			 
-			  let arr = ['send2Friend','send2Group'];
-			  let _this = this;
-			  
-			  this.$socket[arr[this.chatObj.chatType]](this.chatObj.chatId, this.userData.user.operId, text, msgType, res => {
-				if (res.success) {
-					if (res.response!==undefined) {
-						const data = res.response.data
-						if(res.msgType===8){
-							_this.envelope(res);
-						}else if(res.msgType===6){
-							_this.rollBack(res);
-						}else {
-							if(_this.chatObj.chatType===1){
-								if(data!==undefined){
-									if (data.groupId === this.chatObj.chatId) {
-										_this.addMsg(data);
-										uni.vibrateLong();
-									}
-									history.up(data, _this.chatObj.chatId);
-								}
-							}else {
-								if(data!==undefined){
-									if(data.sendUid==this.chatObj.chatId||data.sendUid==this.userData.user.operId){
-										_this.addMsg(data);
-										uni.vibrateLong();
-									}
-								}
-								
-							}
-						}
-					}
-				}
-				this.textMsg = ''
-			  });
-			},
-			// 接受消息(筛选处理)
-			addMsg(msg){
-				// 用户消息
-				switch (msg.msgType){
-					case 0:
-						this.addTextMsg(msg);
-						break;
-					case 1:
-						this.addImgMsg(msg);
-						break;
-					case 3:
-						this.addVoiceMsg(msg);
-						break;
-					case 7:
-						this.addEnvelopeMsg(msg);
-						break;
-					default:
-				}
-			},
-			//撤销
-			rollBack(res){
-				if(this.chatObj.chatType==0){
-					if (res.chatId != undefined && res.message == undefined) {
-					  for(var index in this.msgList){
-						if(this.msgList[index].id==res.chatId){
-							this.msgList.splice(index,1);
-							upCanceData(res.chatId,this.chatObj.chatId,this.msgList[index]);
-						}
-					  }
-					}
-				}else {
-					if (res.msgId != undefined && res.message == undefined) {
-					  for(var index in this.msgList){
-						if(this.msgList[index].id==res.msgId){
-							this.msgList.splice(index,1);
-							upCanceData(res.msgId,this.chatObj.chatId,this.msgList[index]);
-						}
-					  }
-					}
+				// #endif
+					
+				// #ifndef MP-WEIXIN
+					uni.pageScrollTo({
+						scrollTop: 99999,
+						duration: 100
+					});
+				// #endif
+				
+				if(this.showFunBtn){
+					this.showFunBtn = false;
 				}
 				
-			},
-			// 红包
-			envelope(res){
-				if (res.msgId != undefined && res.message != undefined) {
-					//this.$u.vuex('packet',this.red_process(res.message));
-					for(var index in this.msgList){
-						if(this.msgList[index].id==res.msgId){
-							this.msgList[index].msgContext = res.message;
-						}
-					}
-					upRedData(res.msgId,this.chatObj.chatId,res.message);
+				// #ifdef MP-WEIXIN 
+				if (params.contentType == 1) {
+					this.mpInputMargin = true;
+				} 
+				// #endif
+				//h5浏览器并没有很好的办法控制键盘一直处于唤起状态 而且会有样式性的问题
+				// #ifdef H5
+				uni.hideKeyboard();
+				// #endif
+			});
+		},
+		//用户触摸屏幕的时候隐藏键盘
+		touchstart() {
+			uni.hideKeyboard();
+		},
+		// userid 用户id
+		linkToBusinessCard(userId) {
+			this.$u.route({
+				url: 'pages/businessCard/businessCard',
+				params: {
+					userId
 				}
-			},
-			// 添加文字消息到列表
-            addTextMsg(msg){
-                this.msgList.push(msg);
-            },
-            // 添加语音消息到列表
-            addVoiceMsg(msg){
-                this.msgList.push(msg);
-            },
-            // 添加图片消息到列表
-            addImgMsg(msg){
-                this.msgList.push(msg);
-            },
-            addEnvelopeMsg(msg){
-                this.msgList.push(msg);
-            },
-            // 添加系统文字消息到列表
-            addSystemTextMsg(msg){
-                this.msgList.push(msg);
-            },
-            // 添加系统红包消息到列表
-            addSystemRedEnvelopeMsg(msg){
-                this.msgList.push(msg);
-            },
-			discard(){
+			});
+		},
+		//准备开始录音
+		startVoice(e) {
+			if(!this.Audio.paused){
+				//如果音频正在播放 先暂停。
+				this.stopAudio(this.AudioExam)
+			}
+			this.recording = true;
+			this.isStopVoice = false;
+			this.canSend = true;
+			this.voiceIconText = "正在录音..."
+			this.PointY = e.touches[0].clientY;
+			this.Recorder.start({
+				format: 'mp3'
+			});
+		},
+		//录音已经开始
+		beginVoice(){
+			if (this.isStopVoice) {
+				this.Recorder.stop();
 				return;
-			},
+			}
+			this.voiceTitle = '松开 结束'
+			this.voiceInterval =  setInterval(()=>{
+				this.voiceTime ++;
+			},1000)
+		},
+		//move 正在录音中
+		moveVoice(e){
+			const PointY = e.touches[0].clientY
+			const slideY = this.PointY - PointY;
+			if(slideY > uni.upx2px(120)){
+				this.canSend = false;
+				this.voiceIconText = '松开手指 取消发送 '
+			}else if(slideY > uni.upx2px(60)){
+				this.canSend = true;
+				this.voiceIconText = '手指上滑 取消发送 '
+			}else{
+				this.voiceIconText = '正在录音... '
+			}
+		},
+		//结束录音
+		endVoice() {
+			this.isStopVoice = true; //加锁 确保已经结束录音并不会录制
+			this.Recorder.stop();
+			this.voiceTitle = '按住 说话'
+		},
+		//录音被打断
+		cancelVoice(e){
+			this.voiceTime = 0;
+			this.voiceTitle = '按住 说话';
+			this.canSend = false;
+			this.Recorder.stop();
+		},
+		//处理录音文件
+		handleRecorder({ tempFilePath,duration }) {
+			let contentDuration;
+			// #ifdef MP-WEIXIN
+			this.voiceTime = 0;
+			if (duration < 600) {
+				this.voiceIconText="说话时间过短";
+				setTimeout(()=>{
+					this.recording = false;
+				},200)
+				return;
+			} 
+			contentDuration = duration/1000;
+			// #endif
+			
+			// #ifdef APP-PLUS
+			contentDuration = this.voiceTime +1;
+			this.voiceTime = 0;
+			if(contentDuration <= 0) {
+				this.voiceIconText="说话时间过短";
+				setTimeout(()=>{
+					this.recording = false;
+				},200)
+				return;
+			};
+			// #endif
+			
+			this.recording = false;
+			const params = {
+				contentType: 2,
+				content: tempFilePath,
+				contentDuration: Math.ceil(contentDuration)
+			};
+			this.canSend && this.sendMsg(params);
+		},
+		//控制播放还是暂停音频文件
+		handleAudio(item) {
+			this.AudioExam = item;
+			this.Audio.paused ? this.playAudio(item) : this.stopAudio(item);
+		},
+		//播放音频
+		playAudio(item) {
+			this.Audio.src = item.content;
+			this.Audio.hasBeenSentId = item.hasBeenSentId;
+			this.Audio.play();
+			item.anmitionPlay = true;
+		},
+		//停止音频
+		stopAudio(item) {
+			item.anmitionPlay = false;
+			this.Audio.src = '';
+			this.Audio.stop();
+		},
+		//关闭动画
+		closeAnmition() {
+			const hasBeenSentId = this.Audio.hasBeenSentId;
+			const item = this.messageList.find(it => it.hasBeenSentId == hasBeenSentId);
+			item.anmitionPlay = false;
+		},
+		//点击宫格时触发
+		clickGrid(index){
+			if(index == 0){
+				this.chooseImage(['album'])
+			}else if(index == 1){
+				this.chooseImage(['camera'])
+			}
+		},
+		//发送图片
+		chooseImage(sourceType){
+			uni.chooseImage({
+				sourceType,
+				sizeType:['compressed'], 
+				success:res=>{ 
+					this.showFunBtn = false;
+					for(let i = 0;i<res.tempFilePaths.length;i++){
+						const params = {
+							contentType: 3,
+							content: res.tempFilePaths[i],
+						};
+						this.sendMsg(params)
+					}
+				}
+			})
+		},
+		//查看大图
+		viewImg(imgList){
+			uni.previewImage({
+				urls: imgList,
+				// #ifndef MP-WEIXIN
+				indicator: 'number'
+				// #endif
+			});
+		},
+	},
+	onPageScroll(e) {
+		if (e.scrollTop < 50) {
+			this.joinData();
 		}
+	},
+	onNavigationBarButtonTap({ index }) {
+		if (index == 0) {
+			//用户详情 设置
+		} else if (index == 1) {
+			//返回按钮
+			this.$u.route({
+				type: 'switchTab',
+				url: 'pages/home/home'
+			});
+		}
+	},
+	//返回按钮事件
+	onBackPress(e) {
+		//以下内容对h5不生效
+		//--所以如果用浏览器自带的返回按钮进行返回的时候页面不会重定向 正在寻找合适的解决方案
+		this.$u.route({
+			type: 'switchTab',
+			url: 'pages/home/home'
+		});
+		return true;
+	},
+	onLoad(info) {
+		// { messageId,fromUserName,fromUserHeadImg } = info
+		const userInfo = this.firendList.filter(item => item.userId == info.fromUserId)[0];
+		this.fromUserInfo = {
+			fromUserName: userInfo.userName,
+			fromUserHeadImg: userInfo.headImg,
+			fromUserId: userInfo.userId,
+			messageId: info.messageId
+		};
+
+		//录音开始事件
+		this.Recorder.onStart(e => {
+			
+			this.beginVoice();
+		});
+		//录音结束事件
+		this.Recorder.onStop(res => {
+			clearInterval(this.voiceInterval);
+			this.handleRecorder(res);
+		});
+
+		//音频停止事件
+		this.Audio.onStop(e => {
+			this.closeAnmition();
+		});
+
+		//音频播放结束事件
+		this.Audio.onEnded(e => {
+			this.closeAnmition();
+		});
+	},
+	onReady() {
+		//自定义返回按钮 因为原生的返回按钮不可阻止默认事件
+		// #ifdef H5
+		const icon = document.getElementsByClassName('uni-page-head-btn')[0];
+		icon.style.display = 'none';
+		// #endif
+
+		uni.setNavigationBarTitle({
+			title: this.fromUserInfo.fromUserName
+		});
+		this.joinData();
+		uni.getSystemInfo({
+			success: res => {
+				this.imgHeight = res.windowHeight + 'px';
+			}
+		});
+		
+		uni.onKeyboardHeightChange(res => {
+			if (res.height == 0) {
+				// #ifdef MP-WEIXIN
+				this.mpInputMargin = false;
+				// #endif
+			}else{
+				this.showFunBtn = false;
+			}
+		});
 	}
+};
 </script>
-<style lang="scss">
-	@import "./style.scss";
+
+<style lang="scss" scoped>
+ @import './index.scss'
 </style>
