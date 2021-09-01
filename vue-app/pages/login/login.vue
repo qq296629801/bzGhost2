@@ -87,7 +87,18 @@
 				
 				this.$http.get('/login',this.formData).then(res=>{
 					console.log(res)
-					
+					my.setUserData(res.data);
+					setTimeout(()=>{
+						history.push();
+						
+						common.put('post');
+						common.put('friend');
+						
+						my.loading=false;
+						uni.reLaunch({
+							url: '/pages/home/home',
+						});
+					},200)
 				});
 				
 			/* 	my.$socket.login(my.username,my.password).then(res=>{
