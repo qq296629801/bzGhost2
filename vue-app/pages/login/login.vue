@@ -7,14 +7,14 @@
 			
 			<view class="main">
 				<wInput
-					v-model="username"
+					v-model="formData.username"
 					type="text"
 					maxlength="11"
 					placeholder="用户名/电话"
 					:focus="isFocus"
 				></wInput>
 				<wInput
-					v-model="password"
+					v-model="formData.password"
 					type="password"
 					maxlength="11"
 					placeholder="密码"
@@ -62,8 +62,10 @@
 				logoImage: '/static/logo.png',
 				loading: false, 
 				isFocus: true, 
-			    username: 'admin',
-			    password: '123456'
+			    formData:{
+					username: 'admin',
+					password: '123456'
+				}
 			};
 		},
 		components:{
@@ -82,7 +84,13 @@
 					return false;
 				}
 				my.loading=true
-				my.$socket.login(my.username,my.password).then(res=>{
+				
+				this.$http.get('/login',this.formData).then(res=>{
+					console.log(res)
+					
+				});
+				
+			/* 	my.$socket.login(my.username,my.password).then(res=>{
 					my.setUserData(res.response.data);
 					setTimeout(()=>{
 						history.push();
@@ -95,7 +103,7 @@
 							url: '/pages/home/home',
 						});
 					},200)
-				});
+				}); */
 		    },
 			login_weixin() {
 				uni.showToast({

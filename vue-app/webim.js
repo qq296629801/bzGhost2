@@ -67,7 +67,7 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	login: (username, password) => {
+	login: (username, password,res) => {
 		let requestPacket = {
 			username,
 			password,
@@ -77,11 +77,7 @@ const WEBIM = {
 			command: 1
 		}
 		send(requestPacket);
-		 return new Promise((resolve, reject) => {
-			 eventDispatcher.addListener('2', res=>{
-				 resolve(res)
-			 });
-		 });
+		eventDispatcher.addListener('2',res);
 	},
 	heartTest: (userId, func) => {
 		let packet = {
