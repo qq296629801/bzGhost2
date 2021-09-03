@@ -1,5 +1,5 @@
 <template>
-	<view class="item" hover-class="message-hover-class" @tap="jump(value)">
+	<view class="item" :class="value.isTop ? 'bg_view' : ''" hover-class="message-hover-class" @tap="jump(value)">
 		<!-- <img-cache :src="$url + (value.avatar|| value.imgUrl)"></img-cache> -->
 		<img-cache src="/static/image/huge.jpg"></img-cache>
 		<view class="right title-wrap u-border-bottom">

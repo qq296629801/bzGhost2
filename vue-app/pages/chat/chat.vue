@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
 			<!-- 背景图- 定位方式 -->
-			<image class="content-box-bg" :src="_user_info.chatBgImg" :style="{ height: imgHeight }"></image>
+			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
@@ -76,7 +76,8 @@
 				</view>
 				
 				<!-- 功能性按钮 -->
-				<image class=" icon_btn_add" :src="require('@/static/add.png')" @tap="switchFun"></image>
+				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun"></view>
+				<!-- <image class="icon_btn_add" :src="require('@/static/add.png')" @tap="switchFun"></image> -->
 				
 				<!-- #ifdef H5 --> 
 				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
@@ -119,10 +120,6 @@ export default {
 				content: '',
 				limit: 15,
 				index: 1
-			},
-			_user_info:{
-				headImg:'',
-				chatBgImg:''
 			},
 			messageList: [],
 			loading: true, //标识是否正在获取数据
@@ -229,8 +226,8 @@ export default {
 			const params = {
 				hasBeenSentId: Date.now(), //已发送过去消息的id
 				content: this.formData.content,
-				fromUserHeadImg: this._user_info.headImg, //用户头像
-				fromUserId: this._user_info.id,
+				fromUserHeadImg: '/static/logo.png', //用户头像
+				fromUserId: 1,
 				isItMe: true, //true此条信息是我发送的  false别人发送的
 				createTime: Date.now(),
 				contentType: 1
@@ -254,6 +251,15 @@ export default {
 			}
 
 			this.messageList.push(params);
+
+			// 发送通讯
+			this.$socket.send2Friend(params, res=>{
+				console.log(res);
+				// if(res.fromUserId!=this.id){
+				// 	res.isItMe = false;
+				// 	this.messageList.push(res);
+				// }
+			});
 
 			this.$nextTick(() => {
 				this.formData.content = '';
@@ -483,13 +489,13 @@ export default {
 	},
 	onLoad(info) {
 		// { messageId,fromUserName,fromUserHeadImg } = info
-		const userInfo = this.firendList.filter(item => item.userId == info.fromUserId)[0];
+		/* const userInfo = this.firendList.filter(item => item.userId == info.fromUserId)[0];
 		this.fromUserInfo = {
 			fromUserName: userInfo.userName,
 			fromUserHeadImg: userInfo.headImg,
 			fromUserId: userInfo.userId,
 			messageId: info.messageId
-		};
+		}; */
 
 		//录音开始事件
 		this.Recorder.onStart(e => {
@@ -522,7 +528,7 @@ export default {
 		uni.setNavigationBarTitle({
 			title: this.fromUserInfo.fromUserName
 		});
-		this.joinData();
+		//this.joinData();
 		uni.getSystemInfo({
 			success: res => {
 				this.imgHeight = res.windowHeight + 'px';

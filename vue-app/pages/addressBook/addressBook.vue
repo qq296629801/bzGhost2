@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<searchInput :searchType="2"/>
+		<!-- <searchInput :searchType="2"/> -->
 		<addressBook :list="list" :scrollTop="scrollTop" :isShowMenu="true" @linkTo="jump"></addressBook>
 	</view>
 </template>

@@ -67,12 +67,9 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	login: (username, password,res) => {
+	login: (userId,res) => {
 		let requestPacket = {
-			username,
-			password,
-			code: null,
-			devId: 0,
+			userId,
 			version: 1,
 			command: 1
 		}
@@ -102,16 +99,10 @@ const WEBIM = {
 		eventDispatcher.addListener('16', func)
 		});
 	},
-	send2Friend: (toUserId, userId, message, msgType, func) => {
-		let requestPacket = {
-			userId,
-			toUserId,
-			msgType,
-			message,
-			version: 1,
-			command: 3
-		}
-		send(requestPacket).then(e => {
+	send2Friend: (params, func) => {
+		params.version = 1;
+		params.command = 3;
+		send(params).then(e => {
 		eventDispatcher.addListener('4', func)
 		});
 	},

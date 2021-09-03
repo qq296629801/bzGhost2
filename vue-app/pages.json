@@ -14,9 +14,14 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"fontSrc": "/static/iconfont/iconfont.ttf",
+							"fontSrc": "/static/icon/iconfont.ttf",
 							"float": "right",
-							"text": "\ue9c9"
+							"text": "\ue671"
+						},{
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"float": "right",
+							"text": "\ue67d",
+							"width":"70rpx"
 						}]
 					}
 				}
@@ -321,6 +326,13 @@
 			"path": "pages/login/forget",
 			"style": {
 				"navigationBarTitleText": "忘记密码",
+				"navigationBarBackgroundColor":"#F6F7F8"
+			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册",
 				"navigationBarBackgroundColor":"#F6F7F8"
 			}
 		},

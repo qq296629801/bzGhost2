@@ -28,18 +28,6 @@
 				@click="onLogin"
 			></wButton>
 			
-			<view class="other_login cuIcon">
-				<view class="login_icon">
-					<view class="cuIcon-weixin" @tap="login_weixin"></view>
-				</view>
-				<view class="login_icon">
-					<view class="cuIcon-weibo" @tap="login_weibo"></view>
-				</view>
-				<view class="login_icon">
-					<view class="cuIcon-github" @tap="login_github"></view>
-				</view>
-			</view>
-			
 			<view class="footer">
 				<navigator url="forget" open-type="navigate">找回密码</navigator>
 				<text>|</text>
@@ -86,19 +74,21 @@
 				my.loading=true
 				
 				this.$http.get('/login',this.formData).then(res=>{
-					console.log(res)
-					my.setUserData(res.data);
-					setTimeout(()=>{
-						history.push();
-						
-						common.put('post');
-						common.put('friend');
-						
-						my.loading=false;
-						uni.reLaunch({
-							url: '/pages/home/home',
-						});
-					},200)
+					my.setUserData(res);
+					this.$socket.login(res.user.operId,res=>{
+						console.log(res);
+						setTimeout(()=>{
+							history.push();
+							
+							common.put('post');
+							common.put('friend');
+							
+							my.loading=false;
+							uni.reLaunch({
+								url: '/pages/home/home',
+							});
+						},200);
+					});
 				});
 				
 			/* 	my.$socket.login(my.username,my.password).then(res=>{

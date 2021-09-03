@@ -10,7 +10,6 @@
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
-		<searchInput :searchType="1"/>
 		
 		<view v-for="(item,index) in list">
 			<message @jump="jump" :value="item" :index="index"></message>
@@ -84,6 +83,11 @@ export default {
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
 				this.showSelect()
+			}else {
+				uni.showToast({
+					title:'开发中',
+					icon:'success'
+				})
 			}
 		},
 		closeSelect(){
