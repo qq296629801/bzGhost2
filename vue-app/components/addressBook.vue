@@ -2,7 +2,7 @@
 	<view>
 		<u-index-list :scrollTop="scrollTop" :index-list="indexList" :active-color="'#3CC51F'">
 			<view v-if="isShowMenu">
-				<u-index-anchor index="#" />
+				<u-index-anchor active-color="#1fb6f1" index="#" />
 				<view class="list-cell" hover-class="message-hover-class" @tap="linkToNewFriend">
 					<u-image width="70rpx" height="70rpx" src="/static/image/friend_1.png"></u-image>
 					<view class="list-cell-name">新的朋友</view>
@@ -12,16 +12,10 @@
 					<view  class="list-cell-name">我的群聊</view>
 				</view>
 			</view>
-			<view v-if="isSearch">
-				<u-index-anchor index="#" />
-				<view class="list-cell" hover-class="message-hover-class">
-					<u-search v-model="keyword" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
-				</view>	
-			</view>
+			
 			<view v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" v-if="item.members&&item.members.length"/>
 				<view v-for="user in item.members" :key="user.id"  class="list-cell " @tap="linkToCard(user)" hover-class="message-hover-class">
-					<!-- <img-cache :src="$url + user.avatar"></img-cache> -->
 					<img-cache src="/static/image/huge.jpg"></img-cache>
 					<view  class="list-cell-name">{{user.nickName}}</view>
 				</view>
