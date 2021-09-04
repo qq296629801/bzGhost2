@@ -10,7 +10,6 @@
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
 			<view class="u-m-r-10 u-p-r-30">
 				<u-avatar @tap="previewImage" mode="square" src="/static/image/girl.jpg" size="140"></u-avatar>
-				<!-- <u-avatar @tap="previewImage" mode="square" :src="$url + userData.user.avatar" size="140"></u-avatar> -->
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
@@ -27,13 +26,6 @@
 			<u-cell-group>
 				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
 					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon>
-				</u-cell-item>
-			</u-cell-group>
-		</view>
-		<view class="u-m-t-20">
-			<u-cell-group>
-				<u-cell-item @click="jump('pages/setings/setings')" title="设置" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
-					<u-icon slot="icon" name="setting-fill" color="#1fb6f1" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
@@ -66,6 +58,12 @@
 						color: '#1fb6f1',
 						icon: 'moments-circel-fill',
 						url:'pages/firendCircle/firendCircle'
+					},
+					{
+						title: '设置',
+						color: '#1fb6f1',
+						icon: 'setting-fill',
+						url:'pages/setings/setings'
 					}
 				],
 			}

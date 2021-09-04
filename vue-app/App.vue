@@ -11,12 +11,12 @@
 			this.$socket.initWebIM();
 		},
 		onShow: function() {
-			/* let storeUserData = store.state.userData;
+			let storeUserData = store.state.userData;
 			if(!storeUserData.token){
 				uni.navigateTo({
 					url: "pages/login/login"
 				});
-			} */
+			}
 		},
 		onHide: function() {
 		}
