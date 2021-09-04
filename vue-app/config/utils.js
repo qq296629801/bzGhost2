@@ -32,11 +32,11 @@ export const wxShare = function (title,path) {
 	}else if(path === undefined){
 		shareInfo.path = base.share.path;
 	}
-	if (store.state.userInfo.token) {
+	if (store.state.userData.token) {
 		if (shareInfo.path.indexOf("?") >= 0) {
-			shareInfo.path += "&recommendCode=" + store.state.userInfo.uid;
+			shareInfo.path += "&recommendCode=" + store.state.userData.uid;
 		} else {
-			shareInfo.path += "?recommendCode=" + store.state.userInfo.uid;
+			shareInfo.path += "?recommendCode=" + store.state.userData.uid;
 		}
 	}
 	return shareInfo;

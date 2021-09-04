@@ -203,7 +203,7 @@ const utils = {
 		// #endif
 	},
 	//设置用户信息
-	setUserInfo: function(mobile, token) {
+	setUserData: function(mobile, token) {
 		uni.setStorageSync("token", token)
 		uni.setStorageSync("mobile", mobile)
 	},
@@ -503,7 +503,7 @@ module.exports = {
 	request: utils.request,
 	uploadFile: utils.uploadFile,
 	tuiJsonp: utils.tuiJsonp,
-	setUserInfo: utils.setUserInfo,
+	setUserData: utils.setUserData,
 	getToken: utils.getToken,
 	trim: utils.trim,
 	replaceAll: utils.replaceAll,

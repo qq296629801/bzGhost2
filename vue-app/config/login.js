@@ -116,9 +116,9 @@ function judgeLogin(callback, type = "judge"){
             icon: "none"
         });
     } else {
-        let storeUserInfo = store.state.userInfo;
+        let storeUserData = store.state.userData;
         if(!storeUserInfo.token){
-        	storeUserInfo = uni.getStorageSync("userInfo");
+        	storeUserData = uni.getStorageSync("userData");
         }
         if (type != "force" && storeUserInfo.token && storeUserInfo.thirdLoginSuccess) {
         	callback();

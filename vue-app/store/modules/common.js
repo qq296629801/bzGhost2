@@ -16,7 +16,7 @@ export const state = {
   },
 };
 //缓存浏览器的数据名称
-const cacheNameList = ["userInfo", "webViewUrl"];
+const cacheNameList = ["userData", "webViewUrl"];
 let clearTime;
 export const mutations = {
   //取出缓存数据（打开APP就取出）

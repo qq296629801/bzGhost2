@@ -52,7 +52,7 @@
 						title: '视频',
 						color: '#409eff',
 						icon: 'play-circle',
-						url:'pages/video/index'
+						url:'pages/index/index'
 					},
 					{
 						title: '商店',

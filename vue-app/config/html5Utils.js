@@ -125,11 +125,11 @@ export const publicShareFun = function (info = {},callback) {
 			imgUrl: info.imgUrl || info.shareImg || base.share.imgUrl,
 			link: info.link || info.shareUrl || base.share.link,
 		};
-		if (store.state.userInfo.token) {
+		if (store.state.userData.token) {
 			if (shareInfo.link.indexOf("?") >= 0) {
-				shareInfo.link += "&recommendCode=" + store.state.userInfo.uid;
+				shareInfo.link += "&recommendCode=" + store.state.userData.uid;
 			} else {
-				shareInfo.link += "?recommendCode=" + store.state.userInfo.uid;
+				shareInfo.link += "?recommendCode=" + store.state.userData.uid;
 			}
 		}
 		setShare(shareInfo, callback);

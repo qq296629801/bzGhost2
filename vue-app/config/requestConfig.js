@@ -86,12 +86,12 @@ $http.requestStart = function(options) {
 	}
 	// #endif
 	//请求前加入token
-	let storeUserInfo = store.state.userData;
-	if (!storeUserInfo.token) {
-		storeUserInfo = uni.getStorageSync("userData");
+	let storeUserData = store.state.userData;
+	if (!storeUserData.token) {
+		storeUserData = uni.getStorageSync("userData");
 	}
-	if (storeUserInfo.token) {
-		options.header['Authentication'] = storeUserInfo.token;
+	if (storeUserData.token) {
+		options.header['Authentication'] = storeUserData.token;
 	};
 	return options;
 }

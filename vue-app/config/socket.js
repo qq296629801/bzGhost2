@@ -17,7 +17,7 @@ class socket {
 		if (base.socketUrl && this.canInitSocket) {
 			this.canInitSocket = false;
 			uni.connectSocket({
-				url: this.socketUrl + store.state.userInfo.token,
+				url: this.socketUrl + store.state.userData.token,
 				method: 'GET'
 			});
 			uni.onSocketOpen(function (res) {
@@ -33,8 +33,8 @@ class socket {
 	//Socket给服务器发送消息
 	send(data, callback) {
 		const _this = this;
-		if (store.state.userInfo.uid) {
-			data.userUid = store.state.userInfo.uid;
+		if (store.state.userData.uid) {
+			data.userUid = store.state.userData.uid;
 		}
 		uni.sendSocketMessage({
 			data: JSON.stringify(data),
