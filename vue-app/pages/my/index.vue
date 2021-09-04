@@ -33,7 +33,7 @@
 		<view class="u-m-t-20">
 			<u-cell-group>
 				<u-cell-item @click="jump('pages/setings/setings')" title="设置" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
-					<u-icon slot="icon" name="setting" color="#55aaff" size="40"></u-icon>
+					<u-icon slot="icon" name="setting-fill" color="#1fb6f1" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
 		</view>
@@ -50,21 +50,21 @@
 				groupList: [
 					{
 						title: '视频',
-						color: '#409eff',
-						icon: 'play-circle',
+						color: '#1fb6f1',
+						icon: 'play-circle-fill',
 						url:'pages/index/index'
 					},
 					{
 						title: '商店',
-						color: '#409eff',
-						icon: 'bag',
+						color: '#1fb6f1',
+						icon: 'shopping-cart-fill',
 						url:'pages/my/face'
 					}
 					,
 					{
 						title: '友圈',
-						color: '#409eff',
-						icon: 'moments',
+						color: '#1fb6f1',
+						icon: 'moments-circel-fill',
 						url:'pages/firendCircle/firendCircle'
 					}
 				],

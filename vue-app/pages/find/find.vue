@@ -2,13 +2,13 @@
 	<view class="content">
 		<u-cell-group>
 			<u-cell-item  title="朋友圈" :title-style="titleStyle" @tap="linkToMoment">
-				<u-icon slot="icon" name="moments" color="#409eff" size="40"></u-icon> 
+				<u-icon slot="icon" name="moments-circel-fill" color="#1fb6f1" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
 		<view style="height: 20rpx;"></view>
 		<u-cell-group>
 			<u-cell-item  title="扫一扫" :title-style="titleStyle" @tap="linkToScan">
-				<u-icon slot="icon" name="scan" color="#409eff" size="40"></u-icon> 
+				<u-icon slot="icon" name="scan" color="#1fb6f1" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
 		<view style="height: 20rpx;"></view>
