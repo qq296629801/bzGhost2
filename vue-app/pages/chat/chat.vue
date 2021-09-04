@@ -535,7 +535,7 @@ export default {
 		// #endif
 
 		uni.setNavigationBarTitle({
-			title: this.fromUserInfo.fromUserName
+			title: this.chatObj.chatName
 		});
 		//this.joinData();
 		uni.getSystemInfo({
