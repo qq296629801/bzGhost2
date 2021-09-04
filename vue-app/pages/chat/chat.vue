@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';	
 export default {
 	data() {
 		return {
@@ -143,6 +144,9 @@ export default {
 				{ icon:"camera-fill",title:"拍摄",uploadType:["camera"] },
 			],
 		};
+	},
+	computed:{
+		...mapState(['userData','chatObj'])
 	},
 	methods: {
 		//拼接消息 处理滚动
@@ -227,10 +231,15 @@ export default {
 				hasBeenSentId: Date.now(), //已发送过去消息的id
 				content: this.formData.content,
 				fromUserHeadImg: '/static/logo.png', //用户头像
-				fromUserId: 1,
+				fromUserId: this.userData.user.operId,
+				fromUserName:this.userData.user.username,
 				isItMe: true, //true此条信息是我发送的  false别人发送的
 				createTime: Date.now(),
-				contentType: 1
+				contentType: 1,
+				userId:this.userData.user.operId,
+				toUserId:this.chatObj.chatId,
+				toUserHeadImg:'/static/logo.png',
+				toUserName:this.chatObj.chatName,
 			};
 
 			if (data) {
@@ -254,11 +263,11 @@ export default {
 
 			// 发送通讯
 			this.$socket.send2Friend(params, res=>{
-				console.log(res);
-				// if(res.fromUserId!=this.id){
-				// 	res.isItMe = false;
-				// 	this.messageList.push(res);
-				// }
+				console.log(JSON.stringify(res));
+				if(res.fromUserId!=this.userData.user.operId){
+					res.isItMe = false;
+					this.messageList.push(res);
+				}
 			});
 
 			this.$nextTick(() => {
