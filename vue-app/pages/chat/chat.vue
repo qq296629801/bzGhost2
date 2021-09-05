@@ -264,15 +264,9 @@ export default {
 
 			// 发送消息
 			this.$socket.sendMessage(params, res=>{
-				// 群聊
-				if(res.chatType == 1){
-					console.log(JSON.stringify(res));
-				}else {
-					// 私聊
-					if(res.fromUserId!=this.userData.user.operId){
-						res.isItMe = false;
-						this.messageList.push(res);
-					}
+				if(res.fromUserId!=this.userData.user.operId){
+					res.isItMe = false;
+					this.messageList.push(res);
 				}
 			});
 
