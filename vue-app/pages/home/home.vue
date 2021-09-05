@@ -72,8 +72,11 @@ export default {
 		},
 		jump(item){
 			this.setChatObj(item);
+			this.onPageJump('/pages/chat/chat');
+		},
+		onPageJump(url){
 			this.$u.route({
-				url: 'pages/chat/chat',
+				url: url,
 				params: {}
 			});
 		},
@@ -84,9 +87,8 @@ export default {
 			if (index == 0) {
 				this.showSelect()
 			}else {
-				uni.showToast({
-					title:'开发中',
-					icon:'success'
+				this.$u.route({
+					url: 'pages/search/search'
 				})
 			}
 		},
@@ -95,10 +97,7 @@ export default {
 		},
 		checkSelect(index) {
 			if (index == 0) {
-				this.$u.route({
-					url:"pages/search/search",
-					params: {searchType: 0}
-				})
+				this.onPageJump('/pages/search/search2');
 			}
 			else if (index == 1) {
 				const t = this

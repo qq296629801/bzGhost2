@@ -1,395 +1,252 @@
 <template>
-	<view>
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar title=" " :background="{ background: '#F6F7F8' }">
-			<view class="slot-wrap">
-				<u-search
-					:focus="true"
-					@custom="clickCancel"
-					placeholder="搜索..."
-					shape="square"
-					:action-style="{ color: '#007aff' }"
-					action-text="取消"
-					:bg-color="'#ffffff'"
-					v-model="searchWord"
-				></u-search>
+	<view class="content">
+		<view class="search-box">
+			<!-- mSearch组件 如果使用原样式，删除组件元素-->
+			<mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch>
+			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->
+			<!-- 						
+			<view class="input-box">
+				<input type="text" :adjust-position="true" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
+				 placeholder-class="placeholder-class" confirm-type="search">
 			</view>
-		</u-navbar>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-		<view class="status_bar"></view>
-		<view class="content_search">
-			<u-search
-				:focus="true"
-				@custom="clickCancel"
-				@search="toSearch"
-				:placeholder="p"
-				shape="square"
-				:action-style="{ color: '#007aff' }"
-				action-text="取消"
-				:bg-color="'#ffffff'"
-				:animation="true"
-				v-model="searchWord"
-			></u-search>
+			<view class="search-btn" @tap="doSearch(false)">搜索</view> 
+			 -->
+			<!-- 原样式 end -->
 		</view>
-		<!-- #endif -->
-		<view class="history_search_box">
-		    <view class="history_search_text">
-		        <view>猜你喜欢</view>
-		    </view>
-		    <view class="history_search_content">
-		        <view v-for="(item,index) of popularList" :key="index" @click="onHistory(item)">{{item}}</view>
-		    </view>
-		</view>
-		
-		<view class="content1" v-if="'0' == searchType">
-			<view v-for="(item, index) in list" :key="index">
-				<message @jump="toUserInfo" :badgeIcon="false" :value="item" :index="index"></message>
-			</view>
-		</view>
-		<view class="content" v-else-if="'1' == searchType">
-			<template v-for="(item,index) in list">
-				<message @jump="linkTo" :value="item" :index="index"></message>
-			</template>
-		</view>
-		<view class="content1" v-else-if="'2' == searchType">
-			<addressBook :list="list" :scrollTop="scrollTop" @linkTo="linkToCard"></addressBook>
-		</view>
-		<view class="content" v-else-if="'3' == searchType">
-			<view class="msg-list" v-for="(item, index) in list" style="top: 100rpx;">
-				<view class="row">
-					<view class="my">
-						<view class="left">
-							<view class="bubble text">
-								{{item.msgContext}}
-							</view>
+		<view class="search-keyword" >
+			<scroll-view class="keyword-list-box" v-show="isShowKeywordList" scroll-y>
+				<block v-for="(row,index) in keywordList" :key="index">
+					<view class="keyword-entry" hover-class="keyword-entry-tap" >
+						<view class="keyword-text" @tap.stop="doSearch(keywordList[index].keyword)">
+							<rich-text :nodes="row.htmlStr"></rich-text>
+						</view>
+						<view class="keyword-img" @tap.stop="setKeyword(keywordList[index].keyword)">
+							<image src="/static/HM-search/back.png"></image>
 						</view>
 					</view>
-				</view>
-			</view>
-		</view>
-		<view class="content" v-else-if="'4' == searchType">
-			<view class="msg-list" v-for="(item, index) in list" style="top: 100rpx;">
-				<view class="row">
-					<view class="my">
-						<view class="left">
-							<view class="bubble text">
-								{{item.msgContext}}
-							</view>
+				</block>
+				
+			</scroll-view>
+			<scroll-view class="keyword-box" v-show="!isShowKeywordList" scroll-y>
+				<view class="keyword-block" v-if="oldKeywordList.length>0">
+					<view class="keyword-list-header">
+						<view>历史搜索</view>
+						<view>
+							<image @tap="oldDelete" src="/static/HM-search/delete.png"></image>
 						</view>
 					</view>
+					<view class="keyword">
+						<view v-for="(keyword,index) in oldKeywordList" @tap="doSearch(keyword)" :key="index">{{keyword}}</view>
+					</view>
 				</view>
-			</view>
+				<view class="keyword-block">
+					<view class="keyword-list-header">
+						<view>热门搜索</view>
+						<view>
+							<image @tap="hotToggle" :src="'/static/HM-search/attention'+forbid+'.png'"></image>
+						</view>
+					</view>
+					<view class="keyword" v-if="forbid==''">
+						<view v-for="(keyword,index) in hotKeywordList" @tap="doSearch(keyword)" :key="index">{{keyword}}</view>
+					</view>
+					<view class="hide-hot-tis" v-else>
+						<view>当前搜热门搜索已隐藏</view>
+					</view>
+				</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
 
 <script>
-	// 引入mescroll-uni.js,处理核心逻辑
-import message from '@/components/message.vue';
-import addressBook from '@/components/addressBook.vue'
-import { pinyin } from '../../public/Pinyin.js';
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-export default {
-	name:'search',
-	components:{message,addressBook},
-	data() {
-		return {
-			empty: {
-				use: true, // 是否显示空布局
-				icon: "http://www.mescroll.com/img/mescroll-empty.png?v=1", // 图标路径 (建议放入static目录, 如 /static/img/mescroll-empty.png )
-				tip: '~ 空空如也 ~' // 提示
+	//引用mSearch组件，如不需要删除即可
+	import mSearch from '@/components/mehaotian-search-revision/mehaotian-search-revision.vue';
+	export default {
+		data() {
+			return {
+				defaultKeyword: "",
+				keyword: "",
+				oldKeywordList: [],
+				hotKeywordList: [],
+				keywordList: [],
+				forbid: '',
+				isShowKeywordList: false
+			}
+		},
+		onLoad() {
+			this.init();
+		},
+		components: {
+			//引用mSearch组件，如不需要删除即可
+			mSearch
+		},
+		methods: {
+			init() {
+				this.loadDefaultKeyword();
+				this.loadOldKeyword();
+				this.loadHotKeyword();
+
 			},
-			chatId: '',
-			pageNum: -1,
-			searchType: '0',
-			placeholder:['好友','消息列表','通讯录','好友消息','群消息'],
-			searchWord: '',
-			p:'',
-			list: [],
-			scrollTop:0,
-			popularList: [],
-		};
-	},
-	watch:{
-		searchWord:function(v){
-			this.toSearch(v)
-		}
-	},
-	onPageScroll(e) {
-		this.scrollTop = e.scrollTop;
-	},
-	methods: {
-		toUserInfo(userInfo){
-			this.$u.route({
-				url: 'pages/businessCard/businessCard',
-				params:{ ...userInfo, source: 2}
-			})
-		},
-		clickCancel() {
-			this.$u.route({
-				type: 'navigateBack'
-			});
-		},
-		linkToCard({ id }) {
-			this.$u.route({
-				url: 'pages/businessCard/businessCard',
-				params:{ id: id, source: 0}
-			});
-		},
-		toSearch(v) {
-			let that = this;
-			const keyword = v
-			switch(that.searchType){
-				case '0':
-					that.$socket.findFriendRequestList(keyword, res => {
-						if (res.success) {
-							that.list = res.userList;
+			blur(){
+				uni.hideKeyboard()
+			},
+			//加载默认搜索关键字
+			loadDefaultKeyword() {
+				//定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
+				this.defaultKeyword = "默认关键字";
+			},
+			//加载历史搜索,自动读取本地Storage
+			loadOldKeyword() {
+				uni.getStorage({
+					key: 'OldKeys',
+					success: (res) => {
+						var OldKeys = JSON.parse(res.data);
+						this.oldKeywordList = OldKeys;
+					}
+				});
+			},
+			//加载热门搜索
+			loadHotKeyword() {
+				//定义热门搜索关键字，可以自己实现ajax请求数据再赋值
+				this.hotKeywordList = ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'];
+			}, 
+			//监听输入
+			inputChange(event) {
+				//兼容引入组件时传入参数情况
+				var keyword = event.detail?event.detail.value:event;
+				if (!keyword) {
+					this.keywordList = [];
+					this.isShowKeywordList = false;
+					return;
+				}
+				this.isShowKeywordList = true;
+				//以下示例截取淘宝的关键字，请替换成你的接口
+				uni.request({
+					url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
+					success: (res) => {
+						this.keywordList = [];
+						this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
+						
+					}
+				});
+			},
+			//高亮关键字
+			drawCorrelativeKeyword(keywords, keyword) {
+				var len = keywords.length,
+					keywordArr = [];
+				for (var i = 0; i < len; i++) {
+					var row = keywords[i];
+					//定义高亮#9f9f9f
+					var html = row[0].replace(keyword, "<span style='color: #9f9f9f;'>" + keyword + "</span>");
+					html = '<div>' + html + '</div>';
+					var tmpObj = {
+						keyword: row[0],
+						htmlStr: html
+					};
+					keywordArr.push(tmpObj)
+				}
+				return keywordArr;
+			},
+			//顶置关键字
+			setKeyword(index) {
+				this.keyword = this.keywordList[index].keyword;
+			},
+			//清除历史搜索
+			oldDelete() {
+				uni.showModal({
+					content: '确定清除历史搜索记录？',
+					success: (res) => {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							this.oldKeywordList = [];
+							uni.removeStorage({
+								key: 'OldKeys'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
 						}
-					});
-					break;
-				case '1':
-					that.$socket.queryChats(keyword, that.userData.user.operId, res => {
-						if (res.success) {
-							that.list = res.chats;
-							this.list = res.chats.filter(v => v.chatName.includes(keyword));
+					}
+				});
+			},
+			//热门搜索开关
+			hotToggle() {
+				this.forbid = this.forbid ? '' : '_forbid';
+			},
+			//执行搜索
+			doSearch(keyword) {
+				keyword = keyword===false?this.keyword:keyword;
+				this.keyword = keyword;
+				this.saveKeyword(keyword); //保存为历史 
+				uni.showToast({
+					title: keyword,
+					icon: 'none',
+					duration: 2000
+				});
+				//以下是示例跳转淘宝搜索，可自己实现搜索逻辑
+				/*
+				//#ifdef APP-PLUS
+				plus.runtime.openURL(encodeURI('taobao://s.taobao.com/search?q=' + keyword));
+				//#endif
+				//#ifdef H5
+				window.location.href = 'taobao://s.taobao.com/search?q=' + keyword
+				//#endif
+				*/
+			},
+			//保存关键字到历史记录
+			saveKeyword(keyword) {
+				uni.getStorage({
+					key: 'OldKeys',
+					success: (res) => {
+						var OldKeys = JSON.parse(res.data);
+						var findIndex = OldKeys.indexOf(keyword);
+						if (findIndex == -1) {
+							OldKeys.unshift(keyword);
+						} else {
+							OldKeys.splice(findIndex, 1);
+							OldKeys.unshift(keyword);
 						}
-					});
-					break;
-				case '2':
-					that.list = that.firendItem.filter(v => {
-						let flag = false
-						if(v.members.length>0){
-							v.members.forEach(m=>{
-								if(m.nickName.includes(keyword)
-								||pinyin.getCamelChars(m.nickName).includes(keyword)
-								||pinyin.getFullChars(m.nickName).includes(keyword)){
-									flag = true
-								}
-							})
-						}
-						return flag
-					});
-					break;
-				case '3':
-					that.$socket.getFriendMessageByCondition(this.chatId, that.userData.user.operId, this.pageNum, keyword, res => {
-						if (res.success) {
-							that.list = res.response.data;
-						}
-					});
-				case '4':
-					that.$socket.getGroupMessageByCondition(this.chatId, that.userData.user.operId, this.pageNum, keyword, res => {
-						if (res.success) {
-							that.list = res.response.data;
-						}
-					});
-					break;
-				default:
+						//最多10个纪录
+						OldKeys.length > 10 && OldKeys.pop();
+						uni.setStorage({
+							key: 'OldKeys',
+							data: JSON.stringify(OldKeys)
+						});
+						this.oldKeywordList = OldKeys; //更新历史搜索
+					},
+					fail: (e) => {
+						var OldKeys = [keyword];
+						uni.setStorage({
+							key: 'OldKeys',
+							data: JSON.stringify(OldKeys)
+						});
+						this.oldKeywordList = OldKeys; //更新历史搜索
+					}
+				});
 			}
-		},
-		linkTo(chat) {
-			this.$u.vuex('chatObj',chat);
-			this.$u.route({
-				url: 'pages/chat/chat',
-				params: {}
-			});
 		}
-	},
-	onShow() {},
-	onLoad({ searchType, chatId }) {
-		this.searchType = searchType;
-		this.chatId = chatId;
-		this.p= this.placeholder[searchType];
-		
 	}
-};
 </script>
-
-<style lang="scss" scoped>
-@import "@/pages/chat/style.scss";
-/* 无任何数据的空布局 */
-.mescroll-empty {
-	box-sizing: border-box;
-	width: 100%;
-	padding: 100rpx 50rpx;
-	text-align: center;
-	/* #ifndef APP-NVUE */
-	display: flex;
-	/* #endif */
-	flex-direction: column;
-	align-items: center;
-}
-
-.mescroll-empty.empty-fixed {
-	z-index: 99;
-	position: absolute; /*transform会使fixed失效,最终会降级为absolute */
-	top: 100rpx;
-	left: 0;
-}
-
-.mescroll-empty .empty-icon {
-	width: 280rpx;
-	height: 280rpx;
-}
-
-.mescroll-empty .empty-tip {
-	margin-top: 20rpx;
-	font-size: 24rpx;
-	color: gray;
-}
-
-.mescroll-empty .empty-btn {
-	display: inline-block;
-	margin-top: 40rpx;
-	min-width: 200rpx;
-	padding: 18rpx;
-	font-size: 28rpx;
-	border: 1rpx solid #e04b28;
-	border-radius: 60rpx;
-	color: #e04b28;
-}
-
-.mescroll-empty .empty-btn:active {
-	opacity: 0.75;
-}
-.u-card-wrap { 
-	background-color: $u-bg-color;
-	padding: 1px;
-}
-   .history_search_box {
-        padding: 40rpx 25rpx 15rpx 25rpx;
-        display: flex;
-        flex-direction: column;
-        background: #FFFFFF;
-
-        .history_search_text {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0rpx 15rpx;
-            color: #333333;
-
-            >view {
-                font-size: 32rpx;
-            }
-
-            >text {
-                font-size: 28rpx;
-            }
-        }
-
-        .history_search_content {
-            padding: 40rpx 0rpx 0 0;
-            display: flex;
-            flex-wrap: wrap;
-
-            >view {
-                padding: 18rpx 40rpx;
-                background: #f7f7f7;
-                border-radius: 30rpx;
-                font-size: 24rpx;
-                color: #333333;
-                margin: 10rpx;
-            }
-        }
-    }
-.u-body-item {
-	font-size: 32rpx;
-	color: #333;
-	padding: 20rpx 10rpx;
-}
-	
-.u-body-item image {
-	width: 120rpx;
-	flex: 0 0 120rpx;
-	height: 120rpx;
-	border-radius: 8rpx;
-	margin-left: 12rpx;
-}
-.status_bar {
-	height: var(--status-bar-height);
-	width: 100%;
-}
-.content_search {
-	padding: 16rpx;
-	background-color: #F6F7F8;
-}
-.content {
-	z-index: 999;
-	.item {
-		width: 750rpx;
-		display: flex;
-		align-items: center;
-		// padding: 20rpx;
-		image {
-			width: 76rpx;
-			height: 76rpx;
-			margin: 20rpx;
-			border-radius: 12rpx;
-			flex: 0 0 76rpx;
-		}
-		.right {
-			overflow: hidden;
-			flex: 1 0;
-			padding: 20rpx 20rpx 20rpx 0;
-			&_top {
-				display: flex;
-				justify-content: space-between;
-				&_name {
-					font-size: 28rpx;
-					color: $u-main-color;
-					flex: 0 0 450rpx;
-					overflow: hidden;
-				}
-				&_time {
-					font-size: 22rpx;
-					color: $u-light-color;
-				}
-			}
-			&_btm {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				font-size: 22rpx;
-				color: $u-tips-color;
-				padding-top: 10rpx;
-			}
-		}
-	}
-	.bg_view {
-		background-color: #fafafa;
-	}
-	.slot-wrap {
-		display: flex;
-		align-items: center;
-		padding: 0 30rpx;
-	}
-}
-
-.content1 {
-	z-index: 999;
-	height: 100%;
-	background-color: white;
-	.list-cell {
-		display: flex;
-		box-sizing: border-box;
-		width: 100%;
-		padding: 10px 24rpx;
-		overflow: hidden;
-		color: #323233;
-		font-size: 28rpx;
-		line-height: 48rpx;
-		background-color: #fff;
-		align-items: center;
-		image {
-			width: 76rpx;
-			height: 76rpx;
-			border-radius: 12rpx;
-			flex: 0 0 76rpx;
-		}
-		&-name {
-			padding-left: 20rpx;
-		}
-	}
-}
+<style>
+	view{display:block;}
+	.search-box {width:95%;background-color:rgb(242,242,242);padding:15upx 2.5%;display:flex;justify-content:space-between;position:sticky;top: 0;}
+	.search-box .mSearch-input-box{width: 100%;}
+	.search-box .input-box {width:85%;flex-shrink:1;display:flex;justify-content:center;align-items:center;}
+	.search-box .search-btn {width:15%;margin:0 0 0 2%;display:flex;justify-content:center;align-items:center;flex-shrink:0;font-size:28upx;color:#fff;background:linear-gradient(to right,#ff9801,#ff570a);border-radius:60upx;}
+	.search-box .input-box>input {width:100%;height:60upx;font-size:32upx;border:0;border-radius:60upx;-webkit-appearance:none;-moz-appearance:none;appearance:none;padding:0 3%;margin:0;background-color:#ffffff;}
+	.placeholder-class {color:#9e9e9e;}
+	.search-keyword {width:100%;background-color:rgb(242,242,242);}
+	.keyword-list-box {height:calc(100vh - 110upx);padding-top:10upx;border-radius:20upx 20upx 0 0;background-color:#fff;}
+	.keyword-entry-tap {background-color:#eee;}
+	.keyword-entry {width:94%;height:80upx;margin:0 3%;font-size:30upx;color:#333;display:flex;justify-content:space-between;align-items:center;border-bottom:solid 1upx #e7e7e7;}
+	.keyword-entry image {width:60upx;height:60upx;}
+	.keyword-entry .keyword-text,.keyword-entry .keyword-img {height:80upx;display:flex;align-items:center;}
+	.keyword-entry .keyword-text {width:90%;}
+	.keyword-entry .keyword-img {width:10%;justify-content:center;}
+	.keyword-box {height:calc(100vh - 110upx);border-radius:20upx 20upx 0 0;background-color:#fff;}
+	.keyword-box .keyword-block {padding:10upx 0;}
+	.keyword-box .keyword-block .keyword-list-header {width:94%;padding:10upx 3%;font-size:27upx;color:#333;display:flex;justify-content:space-between;}
+	.keyword-box .keyword-block .keyword-list-header image {width:40upx;height:40upx;}
+	.keyword-box .keyword-block .keyword {width:94%;padding:3px 3%;display:flex;flex-flow:wrap;justify-content:flex-start;}
+	.keyword-box .keyword-block .hide-hot-tis {display:flex;justify-content:center;font-size:28upx;color:#6b6b6b;}
+	.keyword-box .keyword-block .keyword>view {display:flex;justify-content:center;align-items:center;border-radius:60upx;padding:0 20upx;margin:10upx 20upx 10upx 0;height:60upx;font-size:28upx;background-color:rgb(242,242,242);color:#6b6b6b;}
 </style>

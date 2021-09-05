@@ -48,13 +48,7 @@
 		{
 			"path": "pages/search/search",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false,
-					"animationType": "zoom-out",
-					"animationDuration": 300
-				}
+				"navigationBarTitleText": "搜索"
 			}
 		}, {
 			"path": "pages/chat/chat",
