@@ -8,7 +8,7 @@
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkToBusinessCard(item.fromUserId)"></image>
 					<!-- contentType = 1 文本 -->
-					<view class="content" v-if="item.contentType == 1">{{ item.content }}</view>
+					<view class="content" v-if="item.contentType == 0">{{ item.content }}</view>
 					<!-- contentType = 2 语音 -->
 					<view
 						class="content contentType2"
@@ -50,7 +50,7 @@
 				<!-- #endif -->
 				<view class="input-box-flex-grow"> 
 					<input
-						v-if="chatType === 'voice'"
+						v-if="chatType === 'keyboard'"
 						type="text"
 						class="content"
 						id="input"
@@ -64,7 +64,7 @@
 					/>
 					<view
 						class="voice_title"
-						v-if="chatType === 'keyboard'"
+						v-if="chatType === 'voice'"
 						:style="{ background: recording ? '#c7c6c6' : '#FFFFFF' }"
 						@touchstart.stop.prevent="startVoice"
 						@touchmove.stop.prevent="moveVoice"
@@ -112,7 +112,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';	
+import { mapState, mapMutations } from 'vuex';
+import history from '@/util/history.js'
 export default {
 	data() {
 		return {
@@ -126,7 +127,7 @@ export default {
 			loading: true, //标识是否正在获取数据
 			imgHeight: '1000px',
 			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
-			chatType:"voice",  // 图标类型 'voice'语音 'keyboard'键盘
+			chatType:"keyboard",  // 图标类型 'voice'语音 'keyboard'键盘
 			voiceTitle: '按住 说话',
 			Recorder: uni.getRecorderManager(),
 			Audio: uni.createInnerAudioContext(),
@@ -156,21 +157,24 @@ export default {
 				return;
 			}
 			this.loading = false;
-			const data = await this.getMessageData();
-			//获取节点信息
-			const { index } = this.formData;
-			const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
-			this.messageList = [...data, ...this.messageList];
-			//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
-			this.$nextTick(() => {
-				this.bindScroll(sel);
-				//如果还有数据
-				if (this.formData.limit >= data.length) {
-					this.formData.index++;
-					setTimeout(() => {
-						this.loading = true;
-					}, 200);
-				}
+			
+			history.get(this.chatObj.chatId).then(res=>{
+				const data = res;
+				//获取节点信息
+				const { index } = this.formData;
+				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
+				this.messageList = [...data, ...this.messageList];
+				//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
+				this.$nextTick(() => {
+					this.bindScroll(sel);
+					//如果还有数据
+					if (this.formData.limit >= data.length) {
+						this.formData.index++;
+						setTimeout(() => {
+							this.loading = true;
+						}, 200);
+					}
+				});
 			});
 		},
 		//处理滚动
@@ -235,7 +239,7 @@ export default {
 				fromUserName:this.userData.user.username,
 				isItMe: true, //true此条信息是我发送的  false别人发送的
 				createTime: Date.now(),
-				contentType: 1,
+				contentType: 0,
 				userId:this.userData.user.operId,
 				toUserId:this.chatObj.chatId,
 				toUserHeadImg:'/static/logo.png',
@@ -259,7 +263,8 @@ export default {
 				//验证输入框书否为空字符传
 				return;
 			}
-
+			
+			
 			this.messageList.push(params);
 
 			// 发送消息
@@ -541,13 +546,16 @@ export default {
 		uni.setNavigationBarTitle({
 			title: this.chatObj.chatName
 		});
-		//this.joinData();
+		
+		this.joinData();
 		
 		// 群聊才需要绑定通道
 		if(this.chatObj.chatType==1){
 			this.$socket.joinGroup(this.chatObj.chatId,this.userData.user.operId,res=>{
-				console.log(res,'---joinGroup')
+				this.sendMsg(null);
 			});
+			
+			
 		}
 		
 		uni.getSystemInfo({

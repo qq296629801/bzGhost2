@@ -75,6 +75,8 @@
 				
 				this.$http.get('/login',this.formData).then(res=>{
 					my.setUserData(res);
+					
+					// 绑定当前用户id
 					this.$socket.login(res.user.operId,res=>{
 						console.log(res);
 						setTimeout(()=>{
@@ -90,21 +92,7 @@
 						},200);
 					});
 				});
-				
-			/* 	my.$socket.login(my.username,my.password).then(res=>{
-					my.setUserData(res.response.data);
-					setTimeout(()=>{
-						history.push();
-						
-						common.put('post');
-						common.put('friend');
-						
-						my.loading=false;
-						uni.reLaunch({
-							url: '/pages/home/home',
-						});
-					},200)
-				}); */
+			
 		    },
 			login_weixin() {
 				uni.showToast({
