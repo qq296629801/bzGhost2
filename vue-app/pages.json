@@ -14,14 +14,14 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"fontSrc": "/static/icon/iconfont.ttf",
+							"fontSrc": "/static/iconfont/iconfont.ttf",
 							"float": "right",
-							"text": "\ue671"
+							"text": "\ue9c9"
 						},{
 							"fontSrc": "/static/icon/iconfont.ttf",
 							"float": "right",
 							"text": "\ue67d",
-							"width":"70rpx"
+							"width":"80rpx"
 						}]
 					}
 				}

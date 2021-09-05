@@ -42,26 +42,26 @@
 				groupList: [
 					{
 						title: '视频',
-						color: '#1fb6f1',
+						color: '#6598f9',
 						icon: 'play-circle-fill',
 						url:'pages/index/index'
 					},
 					{
 						title: '商店',
-						color: '#1fb6f1',
+						color: '#6598f9',
 						icon: 'shopping-cart-fill',
 						url:'pages/my/face'
 					}
 					,
 					{
 						title: '友圈',
-						color: '#1fb6f1',
+						color: '#6598f9',
 						icon: 'moments-circel-fill',
 						url:'pages/firendCircle/firendCircle'
 					},
 					{
 						title: '设置',
-						color: '#1fb6f1',
+						color: '#6598f9',
 						icon: 'setting-fill',
 						url:'pages/setings/setings'
 					}
