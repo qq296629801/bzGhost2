@@ -240,6 +240,7 @@ export default {
 				toUserId:this.chatObj.chatId,
 				toUserHeadImg:'/static/logo.png',
 				toUserName:this.chatObj.chatName,
+				chatType:this.chatObj.chatType
 			};
 
 			if (data) {
@@ -261,12 +262,17 @@ export default {
 
 			this.messageList.push(params);
 
-			// 发送通讯
-			this.$socket.send2Friend(params, res=>{
-				console.log(JSON.stringify(res));
-				if(res.fromUserId!=this.userData.user.operId){
-					res.isItMe = false;
-					this.messageList.push(res);
+			// 发送消息
+			this.$socket.sendMessage(params, res=>{
+				// 群聊
+				if(res.chatType == 1){
+					console.log(JSON.stringify(res));
+				}else {
+					// 私聊
+					if(res.fromUserId!=this.userData.user.operId){
+						res.isItMe = false;
+						this.messageList.push(res);
+					}
 				}
 			});
 
@@ -505,6 +511,10 @@ export default {
 			fromUserId: userInfo.userId,
 			messageId: info.messageId
 		}; */
+		
+		
+		
+		
 
 		//录音开始事件
 		this.Recorder.onStart(e => {
@@ -538,6 +548,14 @@ export default {
 			title: this.chatObj.chatName
 		});
 		//this.joinData();
+		
+		// 群聊才需要绑定通道
+		if(this.chatObj.chatType==1){
+			this.$socket.joinGroup(this.chatObj.chatId,this.userData.user.operId,res=>{
+				console.log(res,'---joinGroup')
+			});
+		}
+		
 		uni.getSystemInfo({
 			success: res => {
 				this.imgHeight = res.windowHeight + 'px';

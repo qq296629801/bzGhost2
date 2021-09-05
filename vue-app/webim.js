@@ -76,6 +76,29 @@ const WEBIM = {
 		send(requestPacket);
 		eventDispatcher.addListener('2',res);
 	},
+	
+	joinGroup: (groupId,userId,res) => {
+		let requestPacket = {
+			groupId,
+			userId,
+			version: 1,
+			command: 7
+		}
+		send(requestPacket);
+		eventDispatcher.addListener('8',res);
+	},
+	
+	quitGroup: (groupId,userId,res) => {
+		let requestPacket = {
+			groupId,
+			userId,
+			version: 1,
+			command: 9
+		}
+		send(requestPacket);
+		eventDispatcher.addListener('10',res);
+	},
+	
 	heartTest: (userId, func) => {
 		let packet = {
 			userId,
@@ -86,20 +109,7 @@ const WEBIM = {
 		eventDispatcher.addListener('18', func)
 		});
 	},
-	send2Group: (toGroupId, userId, message, msgType, func) => {
-		let requestPacket = {
-			toGroupId,
-			userId,
-			msgType,
-			message,
-			version: 1,
-			command: 15
-		}
-		send(requestPacket).then(e => {
-		eventDispatcher.addListener('16', func)
-		});
-	},
-	send2Friend: (params, func) => {
+	sendMessage: (params, func) => {
 		params.version = 1;
 		params.command = 3;
 		send(params).then(e => {
