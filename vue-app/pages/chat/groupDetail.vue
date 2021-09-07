@@ -1,12 +1,5 @@
 <template>
 	<view class="content">
-		<u-navbar
-			:is-back="true"
-			:title="'群聊(' + group.members.length + ')'"
-			:background="{ background: '#F6F7F8' }"
-			:border-bottom="false"
-			z-index="1001"
-		></u-navbar>
 		<view class="group-box">
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
@@ -159,7 +152,7 @@ export default {
 		}
 	},
 	onShow() {
-		this.queryMembers();
+		//this.queryMembers();
 	}
 };
 </script>

@@ -184,20 +184,12 @@
 		}, {
 			"path": "pages/chat/userDetail",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
+				"navigationBarTitleText": "私聊"
 			}
 		}, {
 			"path": "pages/chat/groupDetail",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
+				"navigationBarTitleText": "群聊"
 			}
 		}, {
 			"path": "pages/setings/setings",

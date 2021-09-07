@@ -1,7 +1,5 @@
 <template>
 	<view class="content">
-		<u-navbar :is-back="true" title="私聊" :background="{ background: '#F6F7F8'  }" title-color="#404133" :border-bottom="false" z-index="1001">
-		</u-navbar>
 		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>

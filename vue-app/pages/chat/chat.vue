@@ -157,6 +157,7 @@ export default {
 			funList: [
 				{ icon:"photo-fill",title:"照片",uploadType:["album"] },
 				{ icon:"camera-fill",title:"拍摄",uploadType:["camera"] },
+				{ icon:"red-packet-fill",title:"红包",uploadType:["camera"] },
 			],
 		};
 	},
@@ -182,7 +183,6 @@ export default {
 				return;
 			}
 			this.loading = false;
-			
 			history.get(this.chatObj.chatId).then(res=>{
 				const data = res;
 				//获取节点信息
@@ -471,6 +471,11 @@ export default {
 				this.chooseImage(['album'])
 			}else if(index == 1){
 				this.chooseImage(['camera'])
+			}else if(index==2){
+				uni.showToast({
+					title:'敬请期待',
+					icon:'success',
+				});
 			}
 		},
 		//发送图片
@@ -499,6 +504,12 @@ export default {
 				// #endif
 			});
 		},
+		onPageJump(url){
+			this.$u.route({
+				url: url,
+				params: {}
+			});
+		},
 	},
 	onPageScroll(e) {
 		if (e.scrollTop < 50) {
@@ -507,6 +518,7 @@ export default {
 	},
 	onNavigationBarButtonTap({ index }) {
 		if (index == 0) {
+			this.onPageJump('/pages/chat/groupDetail');
 			//用户详情 设置
 		} else if (index == 1) {
 			//返回按钮
