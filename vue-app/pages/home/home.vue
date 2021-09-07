@@ -11,14 +11,19 @@
 		
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		
+		<!-- //左右按键 -->
+		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="column" theme="dark" placement="bottom-end" dynamic>
+		</chunLei-popups>
+		
 		<view v-for="(item,index) in list">
-			<message @jump="jump" :value="item" :index="index"></message>
+			<message @taptext="taptext($event)" @jump="jump" :value="item" :index="index"></message>
 		</view>
 		</mescroll-body>
 	</view>
 </template>
 
 <script>
+import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
@@ -30,6 +35,12 @@ export default {
 	mixins: [MescrollMixin],
 	data() {
 		return {
+			// 右键
+			x: 0,
+			y: 0,
+			value: false,
+			data: [{title:'标记未读'},{title:'置顶该聊天'},{title:'不显示该聊天'},{title:'删除该聊天'}],
+			//
 			show: false,
 			selectShow: false,
 			selectList: [
@@ -62,6 +73,17 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setChatObj']),
+		tapPopup(){
+			uni.showToast({
+				title:'测试开发',
+				icon:'success'
+			})
+		},
+		taptext(e,index){
+			this.x = e.touches[0].clientX
+			this.y = e.touches[0].clientY
+			this.value = !this.value
+		},
 		a(){
 			common.get('conversation').then(res=>{
 				this.list = res

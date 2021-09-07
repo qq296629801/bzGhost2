@@ -188,8 +188,8 @@ export default {
 			flex-shrink: 0;
 			padding: 0 30upx;
 			//HM修改 按钮背景色
-			background:linear-gradient(to right,#ff9801,#ff570a);
-			//background: $uni-color-success;
+			//background:linear-gradient(to right,#d1d1d1,#d1d1d1);
+			background: $uni-color-success;
 			line-height: 60upx;
 			color: #fff;
 			//border-left: 1px #ccc solid; //HM修改 去掉边框

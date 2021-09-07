@@ -3,12 +3,13 @@
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
 			<!-- 背景图- 定位方式 -->
 			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
+			
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkToBusinessCard(item.fromUserId)"></image>
 					<!-- contentType = 1 文本 -->
-					<view class="content" v-if="item.contentType == 0">{{ item.content }}</view>
+					<view @longtap="taptext($event)" class="content" v-if="item.contentType == 0">{{ item.content }}</view>
 					<!-- contentType = 2 语音 -->
 					<view
 						class="content contentType2"
@@ -107,16 +108,29 @@
 				<view id="seven" class="wave"></view>
 			</view>
 			<view class="text">{{voiceIconText}}</view>
-		</view>
+		</view
+		>
+		
+		<!-- //左右按键 -->
+		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
+		</chunLei-popups>
+		
 	</view>
 </template>
 
 <script>
+import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
 import history from '@/util/history.js'
 export default {
 	data() {
 		return {
+			// 右键
+			x: 0,
+			y: 0,
+			value: false,
+			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
+			//
 			fromUserInfo: {},
 			formData: {
 				content: '',
@@ -150,6 +164,17 @@ export default {
 		...mapState(['userData','chatObj'])
 	},
 	methods: {
+		tapPopup(){
+			uni.showToast({
+				title:'测试开发',
+				icon:'success'
+			})
+		},
+		taptext(e,index){
+			this.x = e.touches[0].clientX
+			this.y = e.touches[0].clientY
+			this.value = !this.value
+		},
 		//拼接消息 处理滚动
 		async joinData() {
 			if (!this.loading) {
