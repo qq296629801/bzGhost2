@@ -36,6 +36,13 @@ function push(){
 			})
 			resolve(res)
 		}).catch(e=>{reject});
+		
+		$http.post('app/friend/msg/online', {userId,condition:''}).then(res=>{
+			res.forEach(r=>{
+				cache.set(postfix+r.friendInfo.id,r.friendMsg)
+			})
+			resolve(res)
+		}).catch(e=>{reject});
 	});
 }
 
