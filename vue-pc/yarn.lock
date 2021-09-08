@@ -6304,8 +6304,8 @@
   "version" "0.10.0"
 
 "node-gyp@^3.8.0":
-  "integrity" "sha1-VAMEJhwzDoDQ1e3OJTpoyzlkIYw="
-  "resolved" "https://registry.npm.taobao.org/node-gyp/download/node-gyp-3.8.0.tgz"
+  "integrity" "sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA=="
+  "resolved" "https://registry.npmjs.org/node-gyp/-/node-gyp-3.8.0.tgz"
   "version" "3.8.0"
   dependencies:
     "fstream" "^1.0.0"
@@ -6852,9 +6852,9 @@
   "version" "2.0.1"
 
 "path-parse@^1.0.6":
-  "integrity" "sha1-1i27VnlAXXLEc37FhgDp3c8G0kw="
-  "resolved" "https://registry.npm.taobao.org/path-parse/download/path-parse-1.0.6.tgz"
-  "version" "1.0.6"
+  "integrity" "sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw=="
+  "resolved" "https://registry.npmjs.org/path-parse/-/path-parse-1.0.7.tgz"
+  "version" "1.0.7"
 
 "path-to-regexp@0.1.7":
   "integrity" "sha1-32BBeABfUi8V60SQ5yR6G/qmf4w="
@@ -8962,8 +8962,8 @@
   "version" "0.2.9"
 
 "tar@^2.0.0":
-  "integrity" "sha1-DKiEhWLHKZuLRG/2pNYM27I+3EA="
-  "resolved" "https://registry.npm.taobao.org/tar/download/tar-2.2.2.tgz?cache=0&sync_timestamp=1580272840873&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftar%2Fdownload%2Ftar-2.2.2.tgz"
+  "integrity" "sha512-FCEhQ/4rE1zYv9rYXJw/msRqsnmlje5jHP6huWeBZ704jUTy02c5AZyWujpMR1ax6mVw9NyJMfuK2CMDWVIfgA=="
+  "resolved" "https://registry.npmjs.org/tar/-/tar-2.2.2.tgz"
   "version" "2.2.2"
   dependencies:
     "block-stream" "*"

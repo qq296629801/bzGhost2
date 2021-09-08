@@ -10,10 +10,10 @@
             <div class="login-form-right">
                 <div class="title">账号密码登录</div>
                 <div class="item">
-                    <Input clearable prefix="ios-contact-outline" v-model="telephone" placeholder="手机" class="item-input" />
+                    <Input clearable prefix="ios-contact-outline" v-model="requestData.username" placeholder="手机" class="item-input" />
                 </div>
                 <div class="item">
-                    <Input clearable prefix="ios-lock-outline" type="password" v-model="password" placeholder="密码" class="item-input" />
+                    <Input clearable prefix="ios-lock-outline" type="password" v-model="requestData.password" placeholder="密码" class="item-input" />
                 </div>
                 <div class="btn item">
                     <Button type="primary" @click="login()" icon="md-contact">登录</Button>
@@ -134,7 +134,8 @@
                 time: '',
                 slider: [20, 50],
                 textarea: ''
-            }
+            },
+            requestData:{}
         };
     },
     components: {
@@ -177,27 +178,13 @@
             })
         },
         login: function () {
-            let self = this;
-            this.$socket.login(this.telephone, this.password, this.checkCode, res => {
-                if (res.success) {
-                    this.$store.commit('setUserData', res.response.data);
-                    this.$store.commit('setUser', res.response.data.user);
+            this.$http.get('/login',this.requestData).then(res=>{
+                  console.log(res);
 
-                    // 缓存消息列表
-                    this.$socket.queryOnlineMessage(res.response.data.user.operId,q =>{
-                        let d = q.response.data;
-                        for(var i in d){
-                            initData(d[i].groupMsg.list, d[i].groupInfo.chatId);
-                        }
-                    })
-
-                    self.$router.push({
+                  this.$router.push({
                         path: '/index/chatBox',
                         params: {}
                     });
-                } else {
-                    this.$Message.error(res.reason);
-                }
             });
         }
     },
