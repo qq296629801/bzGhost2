@@ -297,7 +297,7 @@ const {
 } = require("../../../utils/ChatUtils");
 const { ipcRenderer } = require('electron')
 moment.locale('zh-cn');
-import { queryData, upData, initData } from '../../../utils/dbUtil';
+import { mapState, mapMutations } from 'vuex';
 export default {
     components: {
         Faces,
@@ -306,38 +306,7 @@ export default {
     },
     name: 'chat',
     computed: {
-        chat: {
-            get: function () {
-                return this.$store.state.chat;
-            },
-            set: function (chat) {
-                this.$store.commit('setChat', chat);
-            }
-        },
-        chatType: {
-            get: function () {
-                return this.$store.state.chatType;
-            },
-            set: function (chatType) {
-                this.$store.commit('setChatType', chatType);
-            }
-        },
-        members: {
-            get: function () {
-                return this.$store.state.members;
-            },
-            set: function (members) {
-                this.$store.commit('setMembers', members);
-            }
-        },
-        msgList: {
-            get: function () {
-                return this.$store.state.msgList;
-            },
-            set: function (members) {
-                this.$store.commit('setMsgList', members);
-            }
-        }
+        ...mapState(['chat'])
     },
     data() {
         return {
@@ -450,6 +419,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['setChat']),
         handleScreenshot() {
             ipcRenderer.send('capture-screen')
         },

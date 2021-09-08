@@ -1,6 +1,6 @@
 import App from './App';
 import router from './router';
-import store from './store/store.js';
+import store from './store/index.js';
 import Strophe from 'strophe.js'
 import axios from './utils/axios'
 import iView from 'iview';
@@ -19,10 +19,7 @@ Vue.use(vcolorpicker)
 Vue.use(VueParticles);
 Vue.use(iView);
 Vue.prototype.$socket = webim;
-Vue.prototype.$axios = axios
-Vue.prototype.$uploadUrl = 'http://42.193.146.14/file/upload'
-Vue.prototype.$url = "http://42.193.146.14/"
-Vue.prototype.$ws = 'ws://42.193.146.14:9999/chat'
+Vue.prototype.$http= axios
 
 if (process.env.IS_WEB) {
     Vue.prototype.winControl = require('../main/webControl').default;
