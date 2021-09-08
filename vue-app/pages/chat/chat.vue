@@ -299,6 +299,16 @@ export default {
 					this.messageList.push(res);
 				}
 			});
+			
+			// 存储服务器
+			this.$http.post('app/group/msg/add',{
+				groupId: this.chatObj.chatId,
+				userId: this.userData.user.operId,
+				message: this.formData.content,
+				msgType: 0
+			}).then(res=>{
+				console.log(JSON.stringify(res));
+			});
 
 			this.$nextTick(() => {
 				this.formData.content = '';
