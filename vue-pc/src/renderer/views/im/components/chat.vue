@@ -33,7 +33,7 @@
                                 </div>
                                 <!-- 语音 -->
                                 <div v-if="item.msgType==3" @click="openVoice(item.content,item.timeLen)">
-                                    <img src="../../../../../static/assets/voice.png" alt style="width: 25px;height: 25px;vertical-align:middle;" />
+                                    <!-- <img src="../../../../../static/assets/voice.png" alt style="width: 25px;height: 25px;vertical-align:middle;" /> -->
                                     <span>{{item.timeLen}}</span>
                                 </div>
                                 <!-- 位置 -->
@@ -63,7 +63,7 @@
                                 <div v-if="item.msgType==9" class="im-chat-text" @click="openFile(item)">
                                     <div class="fileTop">
                                         <div class="fileMsg_div">
-                                            <img class="fileImage" src="../../../../../static/assets/file.png" alt />
+                                            <!-- <img class="fileImage" src="../../../../../static/assets/file.png" alt /> -->
                                         </div>
                                         <div class="fileMsg_divShow" v-viewer="{movable: false}" style="display: none">
                                             <img class="fileImage" :src="item.content" alt />
@@ -285,7 +285,6 @@
 </template>
 
 <script>
-import Button from 'iview/src/components/button/button';
 import Faces from './faces.vue';
 import Word from './word.vue'
 import moment from 'moment';

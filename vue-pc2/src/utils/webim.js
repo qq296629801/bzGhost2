@@ -56,7 +56,6 @@ const WEBIM = {
 			 	// 	});
 			 	// }
 			 });
-			 WEBIM.server.onNetworkChange(WEBIM.options);
 			 WEBIM.server.onSocketClosed(WEBIM.options)
 		 });
 	},

@@ -44,15 +44,6 @@
             <FormItem label="确认密码" prop="qurePassWord">
                 <Input clearable class="my-ipt" type="password" v-model="registerForm.qurePassWord" placeholder="请输入密码"></Input>
             </FormItem>
-            <!-- <FormItem label="性别" prop="sex">
-                <RadioGroup v-model="registerForm.sex">
-                    <Radio label="male">男</Radio>
-                    <Radio label="female">女</Radio>
-                </RadioGroup>
-            </FormItem>
-            <FormItem label="出生日期" prop="birthday">
-                <DatePicker class="my-ipt" type="date" v-model="registerForm.birthday" placeholder="出生日期"></DatePicker>
-            </FormItem> -->
             <Button type="primary" long @click="saveRegister">保存</Button>
         </Form>
     </Modal>
@@ -62,7 +53,7 @@
 
 <script>
     import Top from './im/components/top.vue';
-    import axios from '../utils/axios'
+    import base from '../utils/baseUrl'
     export default {
     name: 'login',
     data() {
@@ -88,17 +79,6 @@
                     message: '请再次填写密码',
                     trigger: 'blur'
                 }],
-                // sex: [{
-                //     required: true,
-                //     message: '请选择性别',
-                //     trigger: 'change'
-                // }],
-                // birthday: [{
-                //     required: true,
-                //     type: 'date',
-                //     message: '请选择出生日期',
-                //     trigger: 'change'
-                // }]
             },
             checkCode: null,
             app_name: '',
@@ -134,7 +114,10 @@
                 slider: [20, 50],
                 textarea: ''
             },
-            requestData:{}
+            requestData:{
+                username:'admin',
+                password:'123456'
+            }
         };
     },
     components: {
@@ -177,13 +160,14 @@
             })
         },
         login: function () {
-            this.$http.get('/login',this.requestData).then(res=>{
-                  console.log(res);
-
-                  this.$router.push({
-                        path: '/index/chatBox',
-                        params: {}
-                    });
+            this.$get('/login', this.requestData).then(res => {
+                    if (res) {
+                            this.$message.info('登录成功');
+                            localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
+                            localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
+                            localStorage.setItem('ROLES', JSON.stringify(res.roles))
+                            localStorage.setItem('USER', JSON.stringify(res.user))
+                    }
             });
         }
     },

@@ -26,7 +26,7 @@
           </router-link>
         </li>
         <li title="退出" class="logout" @click="myLogout">
-          <Icon type="ios-power-outline" />
+          <Icon type="ios-settings-outline" />
         </li>
       </ul>
     </div>
