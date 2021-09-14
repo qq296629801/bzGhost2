@@ -53,7 +53,8 @@
 
 <script>
     import Top from './im/components/top.vue';
-    import base from '../utils/baseUrl'
+    import { put,get } from '../utils/common'
+    import { mapState, mapMutations } from 'vuex';
     export default {
     name: 'login',
     data() {
@@ -127,6 +128,7 @@
         this.$socket.initWebIM(this.$ws, true, true);
     },
     methods: {
+        ...mapMutations(['setUserData']),
         clickUser() {
             location.reload();
         },
@@ -162,7 +164,9 @@
         login: function () {
             this.$get('/login', this.requestData).then(res => {
                     if (res) {
-                            this.$message.info('登录成功');
+                            this.setUserData(res)
+                            put('post')
+							put('friend')
                             localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
                             localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
                             localStorage.setItem('ROLES', JSON.stringify(res.roles))
