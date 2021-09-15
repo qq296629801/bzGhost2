@@ -1,10 +1,8 @@
-import cache from '@/util/cache.js'
-import $http from '@/config/requestConfig'
+import cache from './cache.js'
 import store from '@/store/index.js'
+import { post } from './request'
 var postfix = 'msgItem_';
-/**
- * @param {Object} gid
- */
+
  function get(gid) {
    let list = cache.get(postfix+gid);
    return new Promise((resolve,reject) =>{
@@ -28,7 +26,7 @@ function push(){
 	}
 	let userId = storeUserData.user.operId;
 	return new Promise((resolve,reject) =>{
-		$http.post('app/group/msg/online', {
+		post('app/group/msg/online', {
 			userId
 		}).then(res=>{
 			res.forEach(r=>{
@@ -99,12 +97,4 @@ function up(obj, gid){
 	list.push(obj);
 	cache.set(postfix+gid,list)
 }
-
-module.exports = {
-    push: push,
-    get: get,
-	up:up,
-	cance:cance,
-	packet:packet
-}
-
+export { push, get, up, cance, packet }

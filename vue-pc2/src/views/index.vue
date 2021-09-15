@@ -80,10 +80,12 @@ export default {
     }
   },
   created: function() {
-    RequestUtils.webSocketOperation(this);
-    this.user = this.$store.state.user;
+    //RequestUtils.webSocketOperation(this);
+    //this.user = this.$store.state.user;
   },
-  mounted: function() {}
+  mounted: function() {
+     this.$socket.initWebIM();
+  }
 };
 </script>
 <style lang="scss">

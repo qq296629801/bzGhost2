@@ -15,7 +15,7 @@ import { post } from './request'
 function put(key){
 	let storeUserData = store.state.userData;
 	if (!storeUserData.token) {
-		storeUserData = uni.getStorageSync("userData");
+		storeUserData = JSON.parse(localStorage.getItem("userData"));
 	}
 	let userId = storeUserData.user.operId;
 	return new Promise((resolve,reject) =>{
@@ -35,7 +35,7 @@ function put(key){
 function get(key){
 	let storeUserData = store.state.userData;
 	if (!storeUserData.token) {
-		storeUserData = uni.getStorageSync("userData");
+		storeUserData = JSON.parse(localStorage.getItem("userData"));
 	}
 	let userId = storeUserData.user.operId;
 	return new Promise((resolve,reject) =>{

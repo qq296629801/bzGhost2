@@ -8,12 +8,12 @@
             <a
               href="javascript:"
               @click="showChat(chat)"
-              :class="currentChat && currentChat.id === chat.id ? 'active' : ''"
+              :class="currentChat && currentChat.chatId === chat.chatId ? 'active' : ''"
             >
-              <i v-if="chat.unReadCount > 0">{{ chat.unReadCount }}</i>
-              <img :src="chat.avatar" alt="头像" />
-              <b>{{ chat.name }}</b>
-              <p>{{ chat.sign }}</p>
+              <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
+              <img :src="chat.imgUrl" alt="头像" />
+              <b>{{ chat.chatName }}</b>
+              <p>{{ contontType[chat.chatType] }}</p>
             </a>
             <Icon type="md-close" @click="delChat(chat)"></Icon>
           </li>
@@ -36,7 +36,8 @@ import {
   MessageTargetType
 } from "../../../utils/ChatUtils";
 import conf from "../conf";
-
+import { mapState, mapMutations} from 'vuex';
+ import { put,get } from '@/utils/common'
 export default {
   components: {
     Search,
@@ -44,28 +45,14 @@ export default {
     UserChat
   },
   data() {
-    return {};
+    return {
+      currentChat:{},
+      chatList:[],
+      contontType:["文本","语音","图片","红包"]
+    };
   },
   computed: {
-    currentChat: {
-      get: function() {
-        return this.$store.state.currentChat;
-      },
-      set: function(currentChat) {
-        this.$store.commit(
-          "setCurrentChat",
-          JSON.parse(JSON.stringify(currentChat))
-        );
-      }
-    },
-    chatList: {
-      get: function() {
-        return this.$store.state.chatList;
-      },
-      set: function(chatList) {
-        this.$store.commit("setChatList", chatList);
-      }
-    }
+   ...mapState(["userData"])
   },
   methods: {
     showChat: function(chat) {
@@ -98,26 +85,19 @@ export default {
   },
   activated: function() {
     let self = this;
+
     // 当前聊天室
-    if (self.$route.query.chat) {
-      self.$store.commit(
-        "setCurrentChat",
-        JSON.parse(JSON.stringify(self.$route.query.chat))
-      );
-    }
-    console.log("activated", self.currentChat);
-    // 重新设置chatList
-    self.$store.commit(
-      "setChatList",
-      ChatListUtils.getChatList(self.$store.state.user.id)
-    );
+    self.currentChat = this.chatList[0]
+
     // 每次滚动到最底部
     self.$nextTick(() => {
       imageLoad("message-box");
     });
   },
   mounted: function() {
-    console.log(this.chatList);
+    get('conversation').then(list=>{
+      this.chatList = list
+    });
   }
 };
 </script>

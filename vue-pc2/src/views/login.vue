@@ -54,6 +54,7 @@
 <script>
     import Top from './im/components/top.vue';
     import { put,get } from '../utils/common'
+    import { push } from '../utils/history'
     import { mapState, mapMutations } from 'vuex';
     export default {
     name: 'login',
@@ -125,7 +126,6 @@
         Top
     },
     mounted(){
-        this.$socket.initWebIM(this.$ws, true, true);
     },
     methods: {
         ...mapMutations(['setUserData']),
@@ -163,15 +163,26 @@
         },
         login: function () {
             this.$get('/login', this.requestData).then(res => {
-                    if (res) {
-                            this.setUserData(res)
-                            put('post')
-							put('friend')
-                            localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
-                            localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
-                            localStorage.setItem('ROLES', JSON.stringify(res.roles))
-                            localStorage.setItem('USER', JSON.stringify(res.user))
-                    }
+                if (res) {
+                    this.setUserData(res)
+
+                    setTimeout(()=>{
+                        put('post')
+                        put('friend')
+                        put('conversation')
+                        push()
+                    },200);
+                    
+                    localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
+                    localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
+                    localStorage.setItem('ROLES', JSON.stringify(res.roles))
+                    localStorage.setItem('USER', JSON.stringify(res.user))
+
+                    this.$router.push({
+                        path: '/index/chatBox',
+                        params: {}
+                    });
+                }
             });
         }
     },

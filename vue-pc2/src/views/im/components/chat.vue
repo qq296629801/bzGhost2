@@ -1,7 +1,7 @@
 <template>
-  <div class="im-chat" v-if="chat.name">
+  <div class="im-chat" v-if="chat.chatName">
     <div class="im-chat-top" v-if="chat">
-      <span>{{ chat.name }}</span>
+      <span>{{ chat.chatName }}</span>
       <a href="javascript:;" @click="modal = true" class="pull-right menu">
         <Icon type="md-menu" />
       </a>
@@ -13,20 +13,20 @@
             <li
               v-for="(item, index) in messageList"
               :key="index"
-              :class="{ 'im-chat-mine': item.mine }"
+              :class="{ 'im-chat-mine': item.isItMe }"
             >
               <div class="im-chat-user">
                 <img :src="item.avatar" alt="头像" />
-                <div class="message-info right" v-if="item.mine">
+                <div class="message-info right" v-if="item.isItMe">
                   <i>
                     <Time :time="item.timestamp" />
                   </i>
                   <span>{{ item.username }}</span>
                 </div>
-                <div class="message-info" v-if="!item.mine">
+                <div class="message-info" v-if="!item.isItMe">
                   <span>{{ item.username }}</span>
                   <i>
-                    <Time :time="item.timestamp" />
+                    <Time :time="item.createTime" />
                   </i>
                 </div>
               </div>
@@ -142,7 +142,7 @@ import {
   ChatListUtils,
   transform
 } from "../../../utils/ChatUtils";
-
+import { get } from '@/utils/history'
 export default {
   components: {
     Faces,
@@ -152,14 +152,6 @@ export default {
   },
   name: "userChat",
   computed: {
-    messageList: {
-      get: function() {
-        return this.$store.state.messageList;
-      },
-      set: function(messageList) {
-        this.$store.commit("setMessageList", messageList);
-      }
-    }
   },
   data() {
     return {
@@ -172,6 +164,7 @@ export default {
       // 保存各个聊天记录的map
       messageListMap: new Map(),
       messageContent: "",
+      messageList:[],
       showFace: false,
       showHistory: false,
       userList: [],
@@ -267,14 +260,12 @@ export default {
     initGroupChat() {
       let self = this;
       //群组聊天
-      if (isGroupChat(self.chat)) {
-        let param = new FormData();
-        param.set("chatId", self.chat.id);
-        RequestUtils.request(conf.getChatUsersUrl(), param).then(json => {
-          self.userList = json;
-        });
-      }
-      self.isGroup = isGroupChat(self.chat);
+
+      get(this.chat.chatId).then(res=>{
+          self.messageList = res
+      });
+
+
     },
     getHistoryMessage(pageNo) {
       let self = this;
@@ -310,16 +301,12 @@ export default {
       let self = this;
       self.messageList = [];
       // 从内存中取聊天信息
-      let cacheMessages = self.$store.state.messageListMap[self.chat.id];
-      if (cacheMessages) {
-        self.messageList = cacheMessages;
-      } else {
-        self.getHistoryMessage(1);
-      }
+      
       // 每次滚动到最底部
       this.$nextTick(() => {
         imageLoad("message-box");
       });
+      
       self.initGroupChat();
     }
   },
