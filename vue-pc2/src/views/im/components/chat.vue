@@ -19,12 +19,12 @@
                 <img :src="item.avatar" alt="头像" />
                 <div class="message-info right" v-if="item.isItMe">
                   <i>
-                    <Time :time="item.timestamp" />
+                    <Time :time="item.createTime" />
                   </i>
-                  <span>{{ item.username }}</span>
+                  <span>{{ item.fromUserName }}</span>
                 </div>
                 <div class="message-info" v-if="!item.isItMe">
-                  <span>{{ item.username }}</span>
+                  <span>{{ item.fromUserName }}</span>
                   <i>
                     <Time :time="item.createTime" />
                   </i>
