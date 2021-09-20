@@ -82,9 +82,10 @@ export default {
   created: function() {
     //RequestUtils.webSocketOperation(this);
     //this.user = this.$store.state.user;
+    this.$socket.initWebIM();
   },
   mounted: function() {
-     this.$socket.initWebIM();
+     
   }
 };
 </script>

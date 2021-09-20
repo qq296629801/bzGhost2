@@ -187,8 +187,12 @@ export default {
 				const data = res;
 				//获取节点信息
 				const { index } = this.formData;
+				
+				
 				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
 				this.messageList = [...data, ...this.messageList];
+				
+				
 				//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
 				this.$nextTick(() => {
 					this.bindScroll(sel);
@@ -294,9 +298,15 @@ export default {
 
 			// 发送消息
 			this.$socket.sendMessage(params, res=>{
+				
 				if(res.fromUserId!=this.userData.user.operId){
 					res.isItMe = false;
 					this.messageList.push(res);
+					
+					const sel = `#msg-${this.messageList[this.messageList.length - 1].hasBeenSentId}`;
+					this.$nextTick(() => {
+						this.bindScroll(sel);
+					});
 				}
 			});
 			

@@ -1,7 +1,7 @@
 <template>
-  <div class="im-chat" v-if="chat.chatName">
-    <div class="im-chat-top" v-if="chat">
-      <span>{{ chat.chatName }}</span>
+  <div class="im-chat" v-if="chatObj.chatName">
+    <div class="im-chat-top" v-if="chatObj">
+      <span>{{ chatObj.chatName }}</span>
       <a href="javascript:;" @click="modal = true" class="pull-right menu">
         <Icon type="md-menu" />
       </a>
@@ -87,15 +87,15 @@
       width="300"
     >
       <div v-if="!isGroup">
-        <UserModal :userId="chat.id"></UserModal>
+        <UserModal :userId="chatObj.chatId"></UserModal>
       </div>
       <div v-if="isGroup">
         <p class="user-model-img">
-          <img :src="chat.avatar" class="img" />
+          <img :src="chatObj.avatar" class="img" />
         </p>
         <p class="user-model-item">
           <label>群名称：</label>
-          <span>{{ chat.name }}</span>
+          <span>{{ chatObj.name }}</span>
         </p>
       </div>
     </Modal>
@@ -122,7 +122,7 @@
     >
       <history-message
         :showHistory="showHistory"
-        :chat="chat"
+        :chat="chatObj"
       ></history-message>
     </Drawer>
   </div>
@@ -135,6 +135,7 @@ import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import RequestUtils from "../../../utils/RequestUtils";
+import { mapState, mapMutations } from 'vuex';
 import {
   isGroupChat,
   MessageTargetType,
@@ -152,6 +153,7 @@ export default {
   },
   name: "userChat",
   computed: {
+    ...mapState(['userData'])
   },
   data() {
     return {
@@ -171,7 +173,7 @@ export default {
       isGroup: false
     };
   },
-  props: ["chat"],
+  props: ["chatObj"],
   methods: {
     history() {
       this.showHistory = !this.showHistory;
@@ -223,33 +225,58 @@ export default {
     // 本人发送信息
     mineSend() {
       let self = this;
-      let currentUser = self.$store.state.user;
+
       let time = new Date().getTime();
       let content = self.messageContent;
       if (content !== "" && content !== "\n") {
         if (content.length > 2000) {
           self.openMessage("不能超过2000个字符");
         } else {
-          let currentMessage = {
-            mine: true,
-            avatar: currentUser.avatar,
-            username: currentUser.name,
-            timestamp: time,
-            content: self.messageContent,
-            fromid: currentUser.id,
-            id: self.chat.id,
-            type: self.chat.type
-          };
-          self.send(currentMessage);
+
+        const params = {
+          hasBeenSentId: Date.now(), //已发送过去消息的id
+          content: self.messageContent,
+          fromUserHeadImg: '/static/logo.png', //用户头像
+          fromUserId: self.userData.user.operId,
+          fromUserName:self.userData.user.username,
+          isItMe: true, //true此条信息是我发送的  false别人发送的
+          createTime: Date.now(),
+          contentType: 0,
+          userId:self.userData.user.operId,
+          toUserId:self.chatObj.chatId,
+          toUserHeadImg:'/static/logo.png',
+          toUserName:self.chatObj.chatName,
+          chatType:self.chatObj.chatType
+        };
+
+
+        self.messageList.push(params);
+
+        self.$socket.sendMessage(params, res=>{
+
+          console.log(JSON.stringify(res));
+
+          if(res.fromUserId!=self.userData.user.operId){
+            res.isItMe = false;
+            self.messageList.push(res);
+             // 每次滚动到最底部
+              self.$nextTick(() => {
+                imageLoad("message-box");
+              });
+          }
+
+
+        });
+
+        self.send(params);
+         
         }
       }
     },
     // 发送消息的基础方法
     send(message) {
       let self = this;
-      self.$store.commit("sendMessage", message);
-      message.timestamp = self.formatDateTime(new Date(message.timestamp));
-      self.$store.commit("addMessage", message);
+      // message.timestamp = self.formatDateTime(new Date(message.timestamp));
       self.messageContent = "";
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -259,12 +286,16 @@ export default {
 
     initGroupChat() {
       let self = this;
-      //群组聊天
 
-      get(this.chat.chatId).then(res=>{
+      //获取群消息
+      get(self.chatObj.chatId).then(res=>{
           self.messageList = res
       });
 
+      // 加入群通道
+      self.$socket.joinGroup(self.chatObj.chatId,self.userData.user.operId,res=>{
+        console.log(JSON.stringify(res));
+			});
 
     },
     getHistoryMessage(pageNo) {
@@ -273,8 +304,8 @@ export default {
         pageNo = 1;
       }
       let param = new FormData();
-      param.set("chatId", self.chat.id);
-      param.set("chatType", self.chat.type);
+      param.set("chatId", self.chatObj.id);
+      param.set("chatType", self.chatObj.type);
       param.set("fromId", self.$store.state.user.id);
       param.set("pageNo", pageNo);
 
@@ -296,10 +327,13 @@ export default {
     }
   },
   watch: {
-    // 监听每次 chat 的变化
-    chat: function() {
+    // 监听每次 chatObj 的变化
+    chatObj: function() {
       let self = this;
+
+
       self.messageList = [];
+
       // 从内存中取聊天信息
       
       // 每次滚动到最底部

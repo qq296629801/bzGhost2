@@ -47,6 +47,10 @@ const WEBIM = {
 			 	let command = packet.command;
 			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
 			 	eventDispatcher.removeListener(command, toJSON(packet))
+
+				console.log(packet);
+
+
 			 	// let name = 'push';
 			 	// let value = packet;
 			 	// if (command === -10) {
@@ -110,9 +114,8 @@ const WEBIM = {
 	sendMessage: (params, func) => {
 		params.version = 1;
 		params.command = 3;
-		send(params).then(e => {
+		send(params)
 		eventDispatcher.addListener('4', func)
-		});
 	},
 	logout: (userId, func) => {
 		let requestPacket = {

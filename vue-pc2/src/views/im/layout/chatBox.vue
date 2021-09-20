@@ -22,7 +22,7 @@
     </div>
     <div class="chat-box">
       <Top></Top>
-      <UserChat :chat="currentChat" @showChat="showChat"></UserChat>
+      <UserChat :chatObj="currentChat" @showChat="showChat"></UserChat>
     </div>
   </div>
 </template>
@@ -57,7 +57,9 @@ export default {
   methods: {
     showChat: function(chat) {
       let self = this;
-      self.$store.commit("resetUnRead");
+      
+      //self.$store.commit("resetUnRead");
+      
       self.currentChat = chat;
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -72,22 +74,23 @@ export default {
       self.$nextTick(() => {
         imageLoad("message-box");
       });
-      ChatListUtils.resetChatList(
-        self,
-        chat,
-        conf.getHostUrl(),
-        MessageTargetType.FRIEND
-      );
+      // ChatListUtils.resetChatList(
+      //   self,
+      //   chat,
+      //   conf.getHostUrl(),
+      //   MessageTargetType.FRIEND
+      // );
     },
     delChat(chat) {
-      this.$store.commit("delChat", chat);
+     // this.$store.commit("delChat", chat);
     }
   },
   activated: function() {
     let self = this;
 
     // 当前聊天室
-    self.currentChat = this.chatList[0]
+
+    self.currentChat = {}
 
     // 每次滚动到最底部
     self.$nextTick(() => {
