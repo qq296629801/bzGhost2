@@ -234,12 +234,12 @@ export default {
         } else {
 
         const params = {
-          hasBeenSentId: Date.now(), //已发送过去消息的id
+          hasBeenSentId: Date.now(), 
           content: self.messageContent,
-          fromUserHeadImg: '/static/logo.png', //用户头像
+          fromUserHeadImg: '/static/logo.png', 
           fromUserId: self.userData.user.operId,
           fromUserName:self.userData.user.username,
-          isItMe: true, //true此条信息是我发送的  false别人发送的
+          isItMe: true,
           createTime: Date.now(),
           contentType: 0,
           userId:self.userData.user.operId,
@@ -254,8 +254,6 @@ export default {
 
         self.$socket.sendMessage(params, res=>{
 
-          console.log(JSON.stringify(res));
-
           if(res.fromUserId!=self.userData.user.operId){
             res.isItMe = false;
             self.messageList.push(res);
@@ -268,8 +266,15 @@ export default {
 
         });
 
-        self.send(params);
-         
+      // 存储服务器
+        self.$post('app/group/msg/add',{
+          groupId: this.chatObj.chatId,
+          userId: this.userData.user.operId,
+          message: self.messageContent,
+          msgType: 0
+        }).then(res=>{});
+
+         self.send(params);
         }
       }
     },
