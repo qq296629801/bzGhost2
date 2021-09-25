@@ -2,14 +2,16 @@
 	<view class="content">
 		<view v-for="(value, index) in list">
 			<view class="item u-border-bottom" hover-class="message-hover-class">
-				<img-cache :src="$url + value.avatar"></img-cache>
+				<img-cache src="/static/image/huge.jpg"></img-cache>
 				<view class="right title-wrap">
+					
 					<view class="right_top">
 						<view class="right_top_name u-line-1">{{ value.nickName }}</view>
-						<view class="right_top_time ">{{value.lastOperTime | format}}</view>
+						<view class="right_top_time ">{{value.operTime | format}}</view>
 					</view>
+					
 					<view class="right_btm">
-						<view class="u-line-1" v-show="value.status==0">
+						<view class="u-line-1 u-flex">
 							<u-button @tap="handleOn(value.id)" type="success" size="mini">同意</u-button>
 						</view>
 					</view>
@@ -20,6 +22,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 export default {
 	components: {
 	},
@@ -28,10 +31,11 @@ export default {
 			list: []
 		};
 	},
-	onLoad() {
+	computed:{
+		...mapState(['userData'])
 	},
 	onShow() {
-		this.getNewFriend(false)
+		this.getNewFriend()
 	},
 	methods: {
 		handleOn(fid){
@@ -45,12 +49,10 @@ export default {
 				})
 			})
 		},
-		getNewFriend(freshFlag) {
-			this.$socket.queryFriendRequestList(this.userData.user.operId, res => {
-				this.list = res.userList;
-				if(freshFlag){
-					uni.stopPullDownRefresh();
-				}
+		getNewFriend() {
+			this.$http.post('app/friendAsk/list',{userId:this.userData.user.operId}).then(res => {
+				this.list = res;
+				console.log(JSON.stringify(res))
 			});
 		}
 	},

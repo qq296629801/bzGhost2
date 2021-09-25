@@ -5,14 +5,16 @@
 			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="36" @click="linkToRelease"></u-icon></view>
 		</u-navbar>
 		<!-- #endif -->
+		
+		
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		<view class="content-imgbox">
 			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>
 			<image class="headimg" :src="userInfo.headImg" @tap="jump(userInfo.id)"></image>
-			<text class="nickname">{{ userInfo.userName }}</text>
+			<text class="nickname">{{ userData.user.username }}</text>
 		</view>
 		<view class="signature">
-			<view class="">{{ userInfo.signature }}</view>
+			<view class="">个性签名</view>
 		</view>
 
 		<!-- 朋友圈列表 -->
@@ -125,6 +127,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import common from '@/util/common.js'
+import { mapState, mapMutations } from 'vuex';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
 	name: 'firendCircle',
@@ -170,6 +173,9 @@ export default {
 				{ src:require('@/static/image/circleBanner/4.jpg'),isCheck:false },
 			]
 		};
+	},
+	computed:{
+		...mapState(['userData'])
 	},
 	watch: {
 		inputOffsetBottom: {
@@ -429,7 +435,7 @@ image {
 			bottom: -20rpx;
 		}
 		.nickname {
-			color: #ffffff;
+			color: #fff;
 			position: absolute;
 			right: 170rpx;
 			bottom: 20rpx;
@@ -491,7 +497,7 @@ image {
 				}
 				.msg-box {
 					width: 100%;
-					background-color: $u-type-error-light;
+					background-color: #fff;
 					margin-top: 15rpx;
 					border-radius: 4rpx;
 					.thumbinfo {
@@ -545,7 +551,7 @@ image {
 					display: flex;
 					align-items: center;
 					&-item {
-						background-color: $u-type-error-light;
+						background-color: #fff;
 						padding: 4rpx 12rpx;
 						border-radius: 6rpx;
 						&.thumb {
