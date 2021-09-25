@@ -3,7 +3,7 @@
 		<view v-for="(value, index) in list">
 			<view class="item u-border-bottom" :class="currIndex ===index ? 'bg_view' : ''" hover-class="message-hover-class" 
 			@tap="link(value)">
-				<img-cache :src="`${$url}/${value.avatar || value.imgUrl}`"></img-cache>
+				<img-cache src="/static/image/huge.jpg"></img-cache>
 				<view class="right title-wrap">
 					<view class="right_top">
 						<view class="right_top_name u-line-1">{{ value.chatName }}</view>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 export default {
 	components: {
 	},
@@ -28,28 +29,25 @@ export default {
 			currIndex: -1
 		};
 	},
-	onLoad() {
+	computed:{
+		...mapState(['userData'])
 	},
 	onShow() {
 		this.getGroups();
 	},
 	methods: {
+		...mapMutations(['setChatObj']),
 		link(item,index) {
 			this.currIndex = index;
-			this.$u.vuex('chatObj', item);
-			this.$u.route({url: 'pages/chat/chat'});
+			this.setChatObj(item);
+			this.$u.route({
+				url: 'pages/chat/chat',
+				params: {}
+			});
 		},
 		getGroups() {
-			this.$socket.getGroups('', this.userData.user.operId, result => {
-				if(result.response.success){
-					this.list = result.response.data;
-				}else{
-					uni.showToast({
-						icon:'none',
-						title:result.response.errorMessage
-					})
-				}
-				uni.stopPullDownRefresh();
+			this.$http.post('app/group/list', {userId:this.userData.user.operId}).then(res=>{
+				this.list = res.data
 			});
 		}
 	},

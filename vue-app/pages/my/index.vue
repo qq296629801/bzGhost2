@@ -24,7 +24,7 @@
 		</view>
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
+				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
 					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon>
 				</u-cell-item>
 			</u-cell-group>
@@ -37,20 +37,13 @@
 	export default {
 		data() {
 			return {
-				pic:'',
 				show:true,
-				groupList: [
+				list: [
 					{
 						title: '视频',
 						color: '#6598f9',
 						icon: 'play-circle-fill',
 						url:'pages/index/index'
-					},
-					{
-						title: '商店',
-						color: '#6598f9',
-						icon: 'shopping-cart-fill',
-						url:'pages/my/face'
 					}
 					,
 					{
@@ -58,6 +51,12 @@
 						color: '#6598f9',
 						icon: 'moments-circel-fill',
 						url:'pages/firendCircle/firendCircle'
+					},
+					{
+						title: '商店',
+						color: '#6598f9',
+						icon: 'shopping-cart-fill',
+						url:'pages/my/face'
 					},
 					{
 						title: '设置',

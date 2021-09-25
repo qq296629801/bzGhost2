@@ -3,12 +3,12 @@ let socketUrl = "";
 let projectToken = "3jiayun";
 if (process.env.NODE_ENV === 'development') {
 	// 开发环境
-	baseUrl = "http://127.0.0.1:9998/";
-	socketUrl = "ws://127.0.0.1:9999/chat";
+	baseUrl = "http://192.168.217.109:9998/";
+	socketUrl = "ws://192.168.217.109:9999/chat";
 } else if (process.env.NODE_ENV === 'production') {
 	// 生产环境
-	baseUrl = "http://120.27.95.106:9094/";
-	socketUrl = "ws://120.27.95.106:9094/";
+	baseUrl = "http://127.0.0.1:9998/";
+	socketUrl = "ws://127.0.0.1:9999/chat";
 }
 const courtConfig = {
 	//微信公众号APPID

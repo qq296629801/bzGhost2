@@ -1,24 +1,27 @@
 <template>
 	<view class="content">
-		<view class="group-box">
+		<view class="member">
+			
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
-					<img-cache :src="$url + item.avatar"></img-cache>
-					<view class="group-text">{{ item.groupNickName || item.nickName }}</view>
+					<img-cache src="/static/image/huge.jpg"></img-cache>
+					<view class="text">{{ item.groupNickName || item.nickName }}</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
-					<view class="group-plus">
+					<view class="plus">
 						<u-icon name="plus" size="35" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
-					<view class="group-plus">
+					<view class="plus">
 						<u-icon name="minus" size="35" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
-			<view class="more-btn" @tap="seeMore" v-if="group.members.length>20">查看更多</view>
+			
+			<view class="more" @tap="seeMore" v-if="group.members.length>20">查看更多</view>
 		</view>
+		
 		<view style="height: 20rpx;"></view>
 		
 		<u-cell-group>
@@ -27,9 +30,6 @@
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
 			</u-cell-item>
 			<u-cell-item title="群公告" @click="link(group.mine.id, group.gContext, 2)" :value="group.gContext ? group.gContext : '暂无公告'" :title-style="titleStyle"></u-cell-item>
-		</u-cell-group>
-			<view style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item
 				title="群昵称"
 				@click="link(3)"
@@ -39,18 +39,11 @@
 			<u-cell-item title="全体禁言" :title-style="titleStyle" :arrow="false">
 				<u-switch active-color="rgb(25, 190, 107)" v-model="allSpeak"></u-switch>
 			</u-cell-item>
-		</u-cell-group>
-		<view style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item title="设置聊天背景" :title-style="titleStyle" @click="chooseImg"></u-cell-item>
 			<u-cell-item :title-style="titleStyle" @click="clearGroupMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>
-		</u-cell-group>
-		
-		<view style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item :title-style="titleStyle" @click="removeMem" :arrow="false">
 				<view style="text-align: center; color: red;">删除并退出</view>
 			</u-cell-item>
@@ -60,6 +53,7 @@
 
 <script>
 import ImgCache from '@/components/img-cache/img-cache.vue';
+import { mapState, mapMutations } from 'vuex';
 export default {
 	components:{
 		ImgCache
@@ -76,9 +70,6 @@ export default {
 				gContext:''
 			}
 		};
-	},
-	onPullDownRefresh() {
-		uni.stopPullDownRefresh();
 	},
 	methods: {
 		seeMore(){
@@ -139,36 +130,34 @@ export default {
 			});
 		},
 		queryMembers() {
-			this.$socket.queryMembers(this.chatObj.chatId, this.userData.user.operId, res => {
-				if (res.success) {
-					this.group.members = res.members;
-					this.group.user = res.groupUser;
-					this.group.mine = res.group;
-					this.$u.vuex('memberItem',res.members);
-				} else {
-					this.util.modal(res.rease);
-				}
+			this.$http.post('app/group/member',{userId:this.userData.user.operId,groupId:this.chatObj.chatId}).then(res => {
+				this.group.members = res.members;
+				this.group.user = res.groupUser;
+				this.group.mine = res.group;
 			});
 		}
 	},
 	onShow() {
-		//this.queryMembers();
+		this.queryMembers();
+	},
+	computed:{
+		...mapState(['userData','chatObj'])
 	}
 };
 </script>
 
 <style lang="scss">
 	.content{
-		.group-box{
+		.member{
 			background-color: #FFFFFF;
 			padding-left: 30rpx;
 		}
-		.more-btn{
+		.more{
 			text-align: center;
 			color: #404133;
 			padding-bottom: 10rpx;
 		}
-		.group-plus{
+		.plus{
 			border: 4rpx dashed #f3f3f4;
 			border-radius: 10rpx;
 			text-align: center;
@@ -176,7 +165,7 @@ export default {
 			width: 70rpx;
 			height: 70rpx;
 		}
-		.group-text {
+		.text {
 			width: 80rpx;
 			height: 40rpx;
 			overflow: hidden;
