@@ -65,7 +65,7 @@
 			return {
 				//logo图片 base64
 				logoImage: '/static/logo.png',
-				phoneData:'', // 用户/电话
+				phoneData:'18767176707', // 用户/电话
 				passData:'', //密码
 				verCode:"", //验证码
 				showAgree:true, //协议是否选择
@@ -110,6 +110,11 @@
 					    title: '模拟倒计时终止'
 					});
 				},3000)
+				
+				_this.$http.post('/register/sendSms',{phone:_this.phoneData}).then(res=>{
+					console.log(res);
+				});
+				
 			},
 		    startReg() {
 				//注册

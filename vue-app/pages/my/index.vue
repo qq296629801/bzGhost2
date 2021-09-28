@@ -16,9 +16,6 @@
 				<view class="u-font-14 u-tips-color">{{userData.user.money}}</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
-				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe" @tap="jump('pages/my/person')"></view>
-			</view>
-			<view class="u-m-l-10 u-p-10">
 				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/my/person')"></u-icon>
 			</view>
 		</view>
@@ -39,28 +36,28 @@
 			return {
 				show:true,
 				list: [
+					// {
+					// 	title: '视频',
+					// 	color: '#6598f9',
+					// 	icon: 'play-circle-fill',
+					// 	url:'pages/index/index'
+					// }
+					// ,
 					{
-						title: '视频',
-						color: '#6598f9',
-						icon: 'play-circle-fill',
-						url:'pages/index/index'
-					}
-					,
-					{
-						title: '友圈',
-						color: '#6598f9',
+						title: '圈子',
+						color: '#00aaff',
 						icon: 'moments-circel-fill',
 						url:'pages/firendCircle/firendCircle'
 					},
-					{
-						title: '商店',
-						color: '#6598f9',
-						icon: 'shopping-cart-fill',
-						url:'pages/my/face'
-					},
+					// {
+					// 	title: '商店',
+					// 	color: '#6598f9',
+					// 	icon: 'shopping-cart-fill',
+					// 	url:'pages/my/face'
+					// },
 					{
 						title: '设置',
-						color: '#6598f9',
+						color: '#00aaff',
 						icon: 'setting-fill',
 						url:'pages/setings/setings'
 					}
