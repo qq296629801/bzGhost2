@@ -22,9 +22,14 @@
 					isShowPass
 				></wInput>
 				<wInput
+					v-model="nickName"
+					type="text"
+					placeholder="昵称"
+				></wInput>
+				<wInput
 					v-model="verCode"
 					type="number"
-					maxlength="4"
+					maxlength="6"
 					placeholder="验证码"
 					
 					isShowCode
@@ -63,10 +68,10 @@
 	export default {
 		data() {
 			return {
-				//logo图片 base64
 				logoImage: '/static/logo.png',
 				phoneData:'18767176707', // 用户/电话
-				passData:'', //密码
+				passData:"", //密码
+				nickName:"",
 				verCode:"", //验证码
 				showAgree:true, //协议是否选择
 				isRotate: false, //是否加载旋转
@@ -146,7 +151,7 @@
 		            });
 		            return false;
 		        }
-				if (this.verCode.length != 4) {
+				if (this.verCode.length != 6) {
 				    uni.showToast({
 				        icon: 'none',
 						position: 'bottom',
@@ -154,11 +159,22 @@
 				    });
 				    return false;
 				}
-				console.log("注册成功")
+				console.log("注册成功");
 				_this.isRotate=true
-				setTimeout(function(){
+				this.$http.post('/register/register',{phone:this.phoneData,code:this.verCode,nickName:this.nickName,pwd:this.passData}).then(res=>{
 					_this.isRotate=false
-				},3000)
+					uni.showToast({
+						title:res,
+						icon:'success'
+					})
+					console.log(res)
+					if(res=='注册成功'){
+						uni.navigateTo({
+							url:'/pages/login/login'
+						})
+					}
+				});
+			
 		    }
 		}
 	}
