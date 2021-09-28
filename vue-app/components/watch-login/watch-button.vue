@@ -38,7 +38,7 @@
 			bgColor:{
 				//按钮背景颜色
 				type: String,
-				default: "#6598f9",
+				default: "#00aaff",
 			},
 			fontColor:{
 				//按钮字体颜色
