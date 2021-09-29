@@ -1,6 +1,6 @@
 {
-  "name": "v-im",
-  "version": "0.6.4",
+  "name": "yiqun",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode web-serve",
