@@ -7,8 +7,8 @@ if (process.env.NODE_ENV === 'development') {
 	socketUrl = "ws://127.0.0.1:9999/chat";
 } else if (process.env.NODE_ENV === 'production') {
 	// 生产环境
-	baseUrl = "http://127.0.0.1:9998/";
-	socketUrl = "ws://127.0.0.1:9999/chat";
+	baseUrl = "http://42.193.146.14:9998/";
+	socketUrl = "ws://42.193.146.14:9999/chat";
 }
 const courtConfig = {
 	//微信公众号APPID
