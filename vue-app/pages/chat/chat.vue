@@ -531,17 +531,17 @@ export default {
 			});
 		},
 	},
+	// 滑块
 	onPageScroll(e) {
 		if (e.scrollTop < 50) {
 			this.joinData();
 		}
 	},
+	//导航栏
 	onNavigationBarButtonTap({ index }) {
 		if (index == 0) {
 			this.onPageJump('/pages/chat/groupDetail');
-			//用户详情 设置
 		} else if (index == 1) {
-			//返回按钮
 			this.$u.route({
 				type: 'switchTab',
 				url: 'pages/home/home'
@@ -550,13 +550,11 @@ export default {
 	},
 	//返回按钮事件
 	onBackPress(e) {
-		//以下内容对h5不生效
-		//--所以如果用浏览器自带的返回按钮进行返回的时候页面不会重定向 正在寻找合适的解决方案
 		this.$u.route({
 			type: 'switchTab',
 			url: 'pages/home/home'
 		});
-		return true;
+		// /return true;
 	},
 	onLoad(info) {
 		// { messageId,fromUserName,fromUserHeadImg } = info
