@@ -316,8 +316,6 @@ export default {
 				userId: this.userData.user.operId,
 				message: this.formData.content,
 				msgType: 0
-			}).then(res=>{
-				console.log(JSON.stringify(res));
 			});
 
 			this.$nextTick(() => {
