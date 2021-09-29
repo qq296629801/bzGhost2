@@ -4,15 +4,17 @@
 			<view class="item u-border-bottom" hover-class="message-hover-class">
 				<img-cache src="/static/image/huge.jpg"></img-cache>
 				<view class="right title-wrap">
-					
 					<view class="right_top">
-						<view class="right_top_name u-line-1">{{ value.nickName }}</view>
-						<view class="right_top_time ">{{value.operTime | format}}</view>
+						<view class="right_top_name">{{ value.nickName }}</view>
+						<view class="right_top_time">{{value.operTime | format}}</view>
 					</view>
 					
 					<view class="right_btm">
-						<view class="u-line-1 u-flex">
-							<u-button @tap="handleOn(value.id)" type="success" size="mini">同意</u-button>
+						<view>
+							{{value.remark}}
+						</view>
+						<view>
+							<u-button @tap="addFriend(value)" type="success" size="mini">同意</u-button>
 						</view>
 					</view>
 				</view>
@@ -35,24 +37,18 @@ export default {
 		...mapState(['userData'])
 	},
 	onShow() {
-		this.getNewFriend()
+		this.findFriend()
 	},
 	methods: {
-		handleOn(fid){
-			this.$socket.AcceptFriendRequest(fid,this.userData.user.operId,res=>{
-				uni.showToast({
-				title: '添加好友',
-				icon: 'success'
-				});
-				this.$u.route({
-					url: 'pages/addressBook/addressBook'
-				})
-			})
+		addFriend(item){
+			item.userId = this.userData.user.operId
+			this.$http.post('app/friend/accept',item).then(res=>{
+				uni.navigateBack()
+			});
 		},
-		getNewFriend() {
+		findFriend() {
 			this.$http.post('app/friendAsk/list',{userId:this.userData.user.operId}).then(res => {
 				this.list = res;
-				console.log(JSON.stringify(res))
 			});
 		}
 	},
