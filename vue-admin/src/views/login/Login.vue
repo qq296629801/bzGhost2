@@ -106,7 +106,7 @@ export default {
         submitForm () {
             this.$refs['ruleForm'].validate(valid => {
                 if (valid) {
-                    this.$formData('/login', this.ruleForm).then(res => {
+                    this.$get('/login', this.ruleForm).then(res => {
                         if (res) {
                             this.$message.success('登录成功')
                             localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
