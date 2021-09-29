@@ -59,15 +59,9 @@ H5版本可以用微信或者手机浏览器扫描二维码即可
 
 # 下载中心 
 
-* [后台管理](http://42.193.146.14/index.html)
-* [安卓端](http://bzghost.com/yiqun_android_1.0.0.apk)
-* [苹果端](http://bzghost.com/yiqun_ios_1.0.0.ipa)
-* [电脑端](http://bzghost.com/yiqun_pc_1.0.0.exe)
-
-# 商城
-
-* [商城安卓下载](http://bzghost.com/shop.apk)
-* [商城后台地址](http://bzghost.com:9091/cityAdmin//admin/open/3jiayun/login)
+* [后台管理](http://42.193.146.14:8081/index.html)
+* [安卓端](http://42.193.146.14:8081/__UNI__F0BC691__20210929234559.apk)
+* [电脑端](http://42.193.146.14:8081/1)
 
 
 
