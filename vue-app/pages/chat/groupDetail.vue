@@ -158,7 +158,7 @@ export default {
 			padding-bottom: 10rpx;
 		}
 		.plus{
-			border: 4rpx dashed #f3f3f4;
+			//border: 4rpx dashed #f3f3f4;
 			border-radius: 10rpx;
 			text-align: center;
 			line-height: 80rpx;
