@@ -264,15 +264,34 @@ export default {
 				return;
 			}
 			
-			
+			//本地内存
 			this.messageList.push(params);
+			
+			//本地缓存
+			history.up(params,this.chatObj.chatId);
+			
+			// 消息列表
+			let message = {
+				userId:this.userData.user.operId,
+				chatId:this.chatObj.chatId,
+				chatType:this.chatObj.chatType,
+				message:this.formData.content,
+				msgType:0
+			}
+			this.$http.post('app/conversation/create',message).then(res=>{
+				console.log(JSON.stringify(res))
+			});
 
-			// 发送消息
+			// 发送消息到服务器转发
 			this.$socket.sendMessage(params, res=>{
-				
 				if(res.fromUserId!=this.userData.user.operId){
 					res.isItMe = false;
+					
+					// 本地内存
 					this.messageList.push(res);
+					//本地缓存
+					history.up(res,this.chatObj.chatId);
+					
 					const sel = `#msg-${this.messageList[this.messageList.length - 1].hasBeenSentId}`;
 					this.$nextTick(() => {
 						this.bindScroll(sel);
