@@ -1,12 +1,5 @@
 <template>
 	<view class="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar :is-back="false" title="消息" :background="{ background: '#F6F7F8'  }" title-color="#404133" :border-bottom="false" z-index="1001">
-			<view class="slot-wrap" slot="right">
-				<u-icon name="plus-circle" size="34" @click="showSelect"></u-icon>
-			</view>	
-		</u-navbar>
-		<!-- #endif -->
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
