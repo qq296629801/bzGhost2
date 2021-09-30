@@ -188,7 +188,6 @@ export default {
 				//获取节点信息
 				const { index } = this.formData;
 				
-				
 				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
 				this.messageList = [...data, ...this.messageList];
 				
@@ -218,34 +217,6 @@ export default {
 					});
 				})
 				.exec();
-		},
-		//获取消息
-		getMessageData() {
-			let getData = () => {
-				let arr = [];
-				let startIndex = (this.formData.index - 1) * this.formData.limit;
-				let endIndex = startIndex + this.formData.limit;
-				for (let i = startIndex; i < endIndex; i++) {
-					const isItMe = Math.random() > 0.5 ? true : false;
-					arr.unshift({
-						hasBeenSentId: i, //已发送过去消息的id
-						content: `很高兴认识你，这是第${i + 1}条消息。`,
-						fromUserHeadImg: isItMe ? this._user_info.headImg : this.fromUserInfo.fromUserHeadImg, //用户头像
-						fromUserId: isItMe ? this._user_info.id : this.fromUserInfo.fromUserId,
-						isItMe, //true此条信息是我发送的 false别人发送的
-						createTime: Date.now(),
-						contentType: 1, // 1文字文本 2语音
-						anmitionPlay: false //标识音频是否在播放
-					});
-				}
-				return arr;
-			};
-			return new Promise((resolve, reject) => {
-				const data = getData();
-				setTimeout(() => {
-					resolve(data);
-				}, 500);
-			});
 		},
 		//切换语音或者键盘方式
 		switchChatType(type) {
@@ -302,7 +273,6 @@ export default {
 				if(res.fromUserId!=this.userData.user.operId){
 					res.isItMe = false;
 					this.messageList.push(res);
-					
 					const sel = `#msg-${this.messageList[this.messageList.length - 1].hasBeenSentId}`;
 					this.$nextTick(() => {
 						this.bindScroll(sel);
@@ -555,18 +525,6 @@ export default {
 		// /return true;
 	},
 	onLoad(info) {
-		// { messageId,fromUserName,fromUserHeadImg } = info
-		/* const userInfo = this.firendList.filter(item => item.userId == info.fromUserId)[0];
-		this.fromUserInfo = {
-			fromUserName: userInfo.userName,
-			fromUserHeadImg: userInfo.headImg,
-			fromUserId: userInfo.userId,
-			messageId: info.messageId
-		}; */
-		
-		
-		
-		
 
 		//录音开始事件
 		this.Recorder.onStart(e => {
@@ -602,14 +560,21 @@ export default {
 		
 		this.joinData();
 		
-		// 群聊才需要绑定通道
-		if(this.chatObj.chatType==1){
-			this.$socket.joinGroup(this.chatObj.chatId,this.userData.user.operId,res=>{
-				this.sendMsg(null);
+		let _this = this
+		
+		// 绑定通道
+		this.$socket.joinGroup(this.chatObj.chatId,this.userData.user.operId,this.chatObj.chatType,res=>{
+			//console.log(res,'加入群组')
+			// 发送空消息
+			let params = {
+				toUserId:_this.chatObj.chatId,
+				userId:_this.userData.user.operId,
+				chatType:_this.chatObj.chatType
+			}
+			_this.$socket.sendMessage(params, res2=>{
+				//console.log(res2,'发送空消息')
 			});
-			
-			
-		}
+		});
 		
 		uni.getSystemInfo({
 			success: res => {

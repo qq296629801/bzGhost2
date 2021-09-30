@@ -76,11 +76,11 @@ const WEBIM = {
 		send(requestPacket);
 		eventDispatcher.addListener('2',res);
 	},
-	
-	joinGroup: (groupId,userId,res) => {
+	joinGroup: (chatId,userId,chatType,res) => {
 		let requestPacket = {
-			groupId,
+			chatId,
 			userId,
+			chatType,
 			version: 1,
 			command: 7
 		}

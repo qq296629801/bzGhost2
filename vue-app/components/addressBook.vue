@@ -15,7 +15,7 @@
 			
 			<view v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" v-if="item.members&&item.members.length"/>
-				<view v-for="user in item.members" :key="user.id"  class="list-cell " @tap="linkToCard(user)" hover-class="message-hover-class">
+				<view v-for="user in item.members" :key="user.id"  class="list-cell " @tap="toCard(user)" hover-class="message-hover-class">
 					<img-cache src="/static/image/huge.jpg"></img-cache>
 					<view  class="list-cell-name">{{user.nickName}}</view>
 				</view>
@@ -83,8 +83,8 @@
 			};
 		},
 		methods:{
-			linkToCard(user){
-				this.$emit('linkTo',user);
+			toCard(user){
+				this.$emit('toCard',user);
 			},
 			linkToNewFriend(){
 				this.$u.route({

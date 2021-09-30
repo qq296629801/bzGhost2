@@ -1,16 +1,14 @@
 <template>
 	<view class="content">
-		<!-- <searchInput :searchType="2"/> -->
-		<addressBook :list="list" :scrollTop="scrollTop" :isShowMenu="true" @linkTo="jump"></addressBook>
+		<addressBook :list="list" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook>
 	</view>
 </template>
 <script>
-import searchInput from '@/components/searchInput/index.vue'
 import addressBook from '@/components/addressBook.vue'
 import { mapState, mapMutations} from 'vuex';
 import common from '@/util/common.js'
 export default {
-	components:{ searchInput, addressBook },
+	components:{ addressBook },
 	data() {
 		return {
 			scrollTop: 0,
@@ -32,10 +30,11 @@ export default {
 				this.list = res
 			});
 		},
-		jump({id}){
+		jump({id,nickName}){
+			//console.log(JSON.stringify(item))
 			this.$u.route({
 				url: 'pages/businessCard/businessCard',
-				params:{ id: id, source: 1}
+				params:{ userId: id, source: 0,nickName:nickName}
 			});
 		}
 	}
