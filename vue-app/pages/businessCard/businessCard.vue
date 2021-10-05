@@ -18,10 +18,10 @@
 		<view  class="perch"></view>
 		
 		<u-cell-group>
-			<u-cell-item title="" @click="userAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item v-if="source == 1" title="" @click="userAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
 				<view style="text-align: center;">添加到通讯录</view>
 			</u-cell-item>
-			<u-cell-item title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="linkToChat">
+			<u-cell-item title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="toChat">
 				<u-icon slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 			</u-cell-item>
 		</u-cell-group>
@@ -29,21 +29,23 @@
 </template>
 
 <script>
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		data() {
 			return {
 				nickName:'',
-				userId:''
+				userId:'',
+				source:0
 			}
 		},
 		methods: {
+			...mapMutations(['setChatObj']),
 			toChat(){
-				let chat = {
+				this.setChatObj({
 					chatId: this.userId,
 					chatName:this.nickName,
 					chatType:0
-				}
-				this.$u.vuex('chatObj',chat);
+				});
 				this.$u.route({
 					url:"pages/chat/chat"
 				});
@@ -55,8 +57,9 @@
 			},
 		},
 		onLoad({ userId, nickName, source }) {
-			this.nickName = nickName,
+			this.nickName = nickName
 			this.userId = userId
+			this.source = source
 		}
 	}
 </script>

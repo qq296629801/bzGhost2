@@ -527,21 +527,23 @@ export default {
 	//导航栏
 	onNavigationBarButtonTap({ index }) {
 		if (index == 0) {
-			this.onPageJump('/pages/chat/groupDetail');
-		} else if (index == 1) {
-			this.$u.route({
-				type: 'switchTab',
-				url: 'pages/home/home'
+			uni.navigateTo({
+				url: '/pages/chat/groupDetail'
 			});
+			//this.onPageJump('/pages/chat/groupDetail');
+		} else if (index == 1) {
+			uni.navigateBack({
+				delta: 0,
+				animationDuration: 0
+			})
 		}
 	},
 	//返回按钮事件
 	onBackPress(e) {
-		this.$u.route({
-			type: 'switchTab',
-			url: 'pages/home/home'
-		});
-		// /return true;
+		// uni.navigateBack({
+		// 	delta: 0,
+		// 	animationDuration: 0
+		// })
 	},
 	onLoad(info) {
 

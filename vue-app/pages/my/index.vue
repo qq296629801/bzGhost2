@@ -36,25 +36,12 @@
 			return {
 				show:true,
 				list: [
-					// {
-					// 	title: '视频',
-					// 	color: '#6598f9',
-					// 	icon: 'play-circle-fill',
-					// 	url:'pages/index/index'
-					// }
-					// ,
 					{
-						title: '圈子',
+						title: '朋友圈',
 						color: '#00aaff',
-						icon: 'moments-circel-fill',
+						icon: 'photo-fill',
 						url:'pages/firendCircle/firendCircle'
 					},
-					// {
-					// 	title: '商店',
-					// 	color: '#6598f9',
-					// 	icon: 'shopping-cart-fill',
-					// 	url:'pages/my/face'
-					// },
 					{
 						title: '设置',
 						color: '#00aaff',
