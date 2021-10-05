@@ -296,6 +296,10 @@ export default {
 					this.$nextTick(() => {
 						this.bindScroll(sel);
 					});
+					
+					uni.showTabBarRedDot({
+						index: 0
+					});
 				}
 			});
 			

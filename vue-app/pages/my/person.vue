@@ -6,24 +6,18 @@
 		<!-- #ifndef MP-WEIXIN -->
 		<view class="status_bar"></view>
 		<!-- #endif -->
+		
 		<u-cell-group>
 			<u-cell-item title="头像" :title-style="{ marginLeft: '10rpx' }">
 				<u-upload :showUploadList="false" style="display: inline;" :custom-btn="true" @on-uploaded="onUploaded" :action="action">
 					<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
-						<u-icon :name="`${$url}/${userData.user.avatar}`" size="60" :color="$u.color['lightColor']"></u-icon>
+						<!-- <u-icon :name="`${$url}/${userData.user.avatar}`" size="60" :color="$u.color['lightColor']"></u-icon> -->
 					</view>
 				</u-upload>
 			</u-cell-item>
 			<u-cell-item title="名字" @tap="linkTo(userData.user.realname,0)" :value="userData.user.realname" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			<u-cell-item title="用户名" :arrow="false" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-		</u-cell-group>
-		<view style="height: 20rpx;"></view>
-		<u-cell-group>
-			<u-cell-item title="分享码" :arrow="false" :value="userData.user.invitationCode" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-			<u-cell-item title="邀请码" :arrow="false" :value="userData.user.invitationPerson" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
@@ -33,12 +27,17 @@
 </template>
 
 <script>
+	import base from '@/config/baseUrl.js'
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
 			return {
-				action:this.$uploadUrl,
+				action:base.baseUrl,
 				filesArr: [],
 			}
+		},
+		computed:{
+			...mapState(['userData','packet'])
 		},
 		methods: {
 			onUploaded(lists) {
