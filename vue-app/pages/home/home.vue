@@ -51,11 +51,15 @@ export default {
 		};
 	},
 	watch:{
-        push: function(value){
+        newsPush: function(value){
+			console.log(JSON.stringify(value))
+			common.put('conversation').then(res=>{
+				this.list = res
+			});
 		}
 	},
 	computed: {
-		...mapState(['userData','packet'])
+		...mapState(['userData','packet','newsPush'])
 	},
 	onLoad() {
 	},
