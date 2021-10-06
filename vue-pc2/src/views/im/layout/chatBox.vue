@@ -30,14 +30,10 @@
 import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
-import {
-  ChatListUtils,
-  imageLoad,
-  MessageTargetType
-} from "../../../utils/ChatUtils";
+import { imageLoad } from "../../../utils/ChatUtils";
 import conf from "../conf";
 import { mapState, mapMutations} from 'vuex';
- import { put,get } from '@/utils/common'
+import { put,get } from '@/utils/common'
 export default {
   components: {
     Search,
@@ -68,18 +64,12 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-      self.$store.commit("resetUnRead");
+     // self.$store.commit("resetUnRead");
       self.currentChat = chat;
       // 每次滚动到最底部
       self.$nextTick(() => {
         imageLoad("message-box");
       });
-      // ChatListUtils.resetChatList(
-      //   self,
-      //   chat,
-      //   conf.getHostUrl(),
-      //   MessageTargetType.FRIEND
-      // );
     },
     delChat(chat) {
      // this.$store.commit("delChat", chat);

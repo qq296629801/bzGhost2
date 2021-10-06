@@ -6,13 +6,13 @@
         <ul class="user-list">
           <li
             class="user"
-            v-for="(chatGroup, index) in chatGroupList"
+            v-for="(chatGroup, index) in list"
             :key="index"
           >
             <a href="javascript:" @click="showChat(chatGroup)">
               <img :src="[host + chatGroup.avatar]" />
-              <b>{{ chatGroup.name }}</b>
-              <p>{{ chatGroup.name }}</p>
+              <b>{{ chatGroup.chatName }}</b>
+              <p>{{ chatGroup.chatName }}</p>
             </a>
           </li>
         </ul>
@@ -29,8 +29,7 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import conf from "../conf";
-import { ChatListUtils, MessageTargetType } from "../../../utils/ChatUtils";
-
+import { mapState, mapMutations} from 'vuex';
 export default {
   components: {
     Search,
@@ -38,36 +37,23 @@ export default {
     Welcome
   },
   computed: {
-    //需要展示的用户群组
-    chatGroupList: {
-      get: function() {
-        return this.$store.state.chatGroupList;
-      },
-      set: function(chatGroupList) {
-        this.$store.commit("setChatGroupList", chatGroupList);
-      }
-    }
+    ...mapState(['userData'])
   },
   data() {
     return {
-      host: conf.getHostUrl()
+      list:[]
     };
+  },
+  mounted: function() {
+    this.$post('app/group/list', {userId:this.userData.user.operId}).then(res=>{
+				this.list = res.data
+			});
   },
   methods: {
     // 打开一个聊天对话框
     showChat: function(user) {
       let self = this;
-      self.$router.push({
-        path: "/index/chatBox/",
-        query: {
-          chat: ChatListUtils.resetChatList(
-            self,
-            user,
-            conf.getHostUrl(),
-            MessageTargetType.CHAT_GROUP
-          )
-        }
-      });
+      
     }
   }
 };
