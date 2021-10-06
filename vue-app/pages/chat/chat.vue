@@ -525,7 +525,7 @@ export default {
 	// 滑块
 	onPageScroll(e) {
 		if (e.scrollTop < 50) {
-			this.joinData();
+			//this.joinData();
 		}
 	},
 	//导航栏
