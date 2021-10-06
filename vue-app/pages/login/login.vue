@@ -81,10 +81,9 @@
 						console.log(res);
 						setTimeout(()=>{
 							history.push();
-							
 							common.put('post');
 							common.put('friend');
-							
+							common.put('conversation');
 							my.loading=false;
 							uni.reLaunch({
 								url: '/pages/home/home',
