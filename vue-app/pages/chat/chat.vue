@@ -531,10 +531,15 @@ export default {
 	//导航栏
 	onNavigationBarButtonTap({ index }) {
 		if (index == 0) {
-			uni.navigateTo({
-				url: '/pages/chat/groupDetail'
-			});
-			//this.onPageJump('/pages/chat/groupDetail');
+			if(this.chatObj.chatType==1){
+				uni.navigateTo({
+					url: '/pages/chat/groupDetail'
+				});
+			}else {
+				uni.navigateTo({
+					url: '/pages/chat/userDetail'
+				});
+			}
 		} else if (index == 1) {
 			uni.navigateBack({
 				delta: 0,

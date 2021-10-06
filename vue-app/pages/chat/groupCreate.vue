@@ -3,25 +3,19 @@
 		<u-navbar :is-back="true" title="创建群组" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="createGroup">保存</u-button>
+				<u-button size="mini" @click="createGroup">保存</u-button>
 			</view>
 		</u-navbar>
-		<view class="list-search">
-			<u-search v-model="keyword" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
-		</view>
+		
 		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
 			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" />
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox v-if="userData.user.operId!=user.id" @change="chechMem(user)" v-model="user.checked" :name="user.id">
-							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
+						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
+							<!-- <u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar> -->
 							{{ user.nickName }}
 						</u-checkbox>
-						<template v-else>
-							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar>
-							{{ user.nickName }}
-						</template>
 					</view>
 				</u-checkbox-group>
 			</view>
@@ -29,12 +23,10 @@
 	</view>
 </template>
 <script>
-	import message from '@/components/message.vue'
-	import searchInput from '@/components/searchInput/index.vue';
-//	import { queryData, upData, initData } from '@/util/groupStorage.js'
+	import common from '@/util/common.js'
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		components: {
-			searchInput
 		},
 		data() {
 			return {
@@ -47,15 +39,17 @@
 			}
 		},
 		onShow() {
-			this.$socket.listGuests(this.userData.user.operId, res => {
-				this.$u.vuex('firendItem', res.response.data);
-				this.list = res.response.data
+			common.get('friend').then(res=>{
+				this.list = res
 				let indexList = []
 				this.list.forEach(item => {
 					indexList.push(item.name)
 				})
 				this.indexList = indexList
 			});
+		},
+		computed:{
+			...mapState(['userData'])
 		},
 		onLoad(option) {},
 		watch: {

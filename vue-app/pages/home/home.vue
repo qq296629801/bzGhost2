@@ -17,14 +17,13 @@
 
 <script>
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
-import searchInput from '@/components/searchInput/index.vue';
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import common from '@/util/common.js'
 import { mapState, mapMutations} from 'vuex';
 export default {
-	components: { searchInput, selectInput, message },
+	components: { selectInput, message },
 	mixins: [MescrollMixin],
 	data() {
 		return {

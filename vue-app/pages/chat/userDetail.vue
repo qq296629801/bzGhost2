@@ -1,25 +1,21 @@
 <template>
 	<view class="content">
-		<view style="background-color: #FFFFFF;padding-left: 30rpx;">
+		<view class="head">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
-					<u-avatar :src="$url + userInfo.avatar" mode="square"></u-avatar>
-					<view class="grid-text">{{userInfo.nickName}}</view>
+					<u-avatar src="/static/image/huge.jpg" mode="square"></u-avatar>
+					<view class="grid-text">{{chatObj.chatName}}</view>
 				</u-grid-item>
 			</u-grid>
 		</view>
+		
 		<view style="height: 20rpx;"></view>
+		
 		<u-cell-group>
 			<u-cell-item title="查看聊天内容" @click="showSearch" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
-		</u-cell-group>
-		<view style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg">
 			</u-cell-item>
-		</u-cell-group>
-		<view style="height: 20rpx;"></view>
-		<u-cell-group>
 			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>
@@ -28,84 +24,26 @@
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
 			return {
-				userInfo:{}
 			}
 		},
-		
+		computed:{
+			...mapState(['chatObj'])
+		},
 		methods: {
-			showSearch() {
-				this.$u.route({
-					url:"pages/search/search",
-					params: {searchType: 3, chatId:this.chatObj.chatId}
-				})
-			},
-			chooseImg() {
-				this.$u.route({
-					url: 'components/u-avatar-cropper/u-avatar-cropper',
-					params: {
-						destWidth: uni.upx2px(750),
-						rectWidth: uni.upx2px(500),
-						fileType: 'jpg'
-					}
-				});
-			},
-			delFriendMsg(){
-				this.$socket.deleteFriendMsg(this.userData.user.operId, this.chatObj.chatId, res=> {
-					uni.showModal({
-						title: res.success?'成功':'失败',
-						showCancel: false
-					});
-				})
-			},
-		},
-		onLoad(option) {
-		},
-		onShow() {
-			this.$socket.getUserById(this.chatObj.chatId, res=> {
-				this.userInfo = res.user
-			})
-		},
-		onReady() {
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.header{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 60rpx 38rpx;
-		background-color: #ffffff;
-		&_left{
-			display: flex;
-			align-items: center;
-			&_content{
-				padding-left: 20rpx;
-				&_name{
-					font-weight: bold;
-				}
-				&_number{
-					color:#969799 ;
-					font-size: 26rpx;
-				}
-			}
-		}
-		&_right{
-			font-size: 28rpx;
-			color: #969799;
-		}
-		image {
-			width: 100rpx;
-			height: 100rpx;
-			border-radius: 6rpx;
-		}
+	.head{
+		background-color: white;
 	}
-.status_bar {
-	height: var(--status-bar-height);
-	width: 100%;
-}
+	.status_bar {
+		height: var(--status-bar-height);
+		width: 100%;
+	}
 </style>

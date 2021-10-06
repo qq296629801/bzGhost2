@@ -7,7 +7,6 @@
 			</view>
 		</u-navbar>
 		<view class="list-search">
-			<u-search v-model="keyword" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
 		</view>
 		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
 			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
@@ -25,11 +24,8 @@
 	</view>
 </template>
 <script>
-	import message from '@/components/message.vue'
-	import searchInput from '@/components/searchInput/index.vue';
 	export default {
 		components: {
-			searchInput,message
 		},
 		data() {
 			return {
