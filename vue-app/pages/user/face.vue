@@ -2,8 +2,11 @@
 	<view>
 		<u-search v-model="keyword" @change="search" placeholder="搜索" shape="square" :show-action="false" :bg-color="'#ffffff'"></u-search>
 		<view  style="height: 10rpx;"></view>
+		
 		<u-swiper :list="list"></u-swiper>
+		
 		<view class="title">精选</view>
+		
 		<view class="item bg_view" v-for="(item, index) in faces" hover-class="message-hover-class">
 			<image mode="aspectFill" :src="item.faceUrl" />
 			<view class="right u-border-bottom title-wrap">
