@@ -3,7 +3,7 @@
 		<u-navbar :is-back="false" title="　" :border-bottom="false">
 			<view class="u-flex u-row-right" style="width: 100%;">
 				<view class="camera u-flex u-row-center">
-					<u-icon @tap="jump('pages/firendCircle/firendCircle')" name="camera-fill" color="#000000" size="40"></u-icon>
+					<u-icon @tap="jump('pages/find/firendCircle')" name="camera-fill" color="#000000" size="40"></u-icon>
 				</view>
 			</view>
 		</u-navbar>
@@ -16,7 +16,7 @@
 				<view class="u-font-14 u-tips-color">{{userData.user.money}}</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
-				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/my/person')"></u-icon>
+				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/user/my')"></u-icon>
 			</view>
 		</view>
 		<view class="u-m-t-20">
