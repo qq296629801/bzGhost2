@@ -121,7 +121,7 @@
 			}
 		},
 		{
-			"path": "pages/user/builtinBgImg",
+			"path": "pages/seting/builtinBgImg",
 			"style": {
 				"navigationBarTitleText": "选择背景图",
 				// #ifdef MP-WEIXIN
@@ -134,6 +134,30 @@
 							"text": "完成",
 							"color": "#18b566",
 							"fontSize": "16"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/friend/friend",
+			"style": {
+				"navigationBarTitleText": "消息",
+				"enablePullDownRefresh": false ,
+				// #ifdef MP-WEIXIN
+				"navigationStyle": "custom",
+				// #endif
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/iconfont/iconfont.ttf",
+							"float": "right",
+							"text": "\ue9c9"
+						},{
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"float": "right",
+							"text": "\ue67d",
+							"width":"80rpx"
 						}]
 					}
 				}

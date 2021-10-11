@@ -54,7 +54,7 @@
 					:class="showAgree?'cuIcon-radiobox':'cuIcon-round'"
 				> 同意</text>
 				<!-- 协议地址 -->
-				<navigator url="" open-type="navigate">《协议》</navigator>
+				<navigator url="/pages/login/agreement" open-type="navigate">《协议》</navigator>
 			</view>
 		</view>
 	</view>
