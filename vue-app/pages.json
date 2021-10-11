@@ -161,10 +161,10 @@
 			"selectedIconPath": "static/menu/see_s.png",
 			"text": "发现"
 		}, {
-			"pagePath": "pages/my/index",
+			"pagePath": "pages/user/index",
 			"iconPath": "static/menu/my.png",
 			"selectedIconPath": "static/menu/my_s.png",
-			"text": "我"
+			"text": "我的"
 		}]
 	},
 	"globalStyle": {
