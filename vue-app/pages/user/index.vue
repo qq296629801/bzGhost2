@@ -1,96 +1,49 @@
 <template>
-	<view>
-		<u-navbar :is-back="false" title="　" :border-bottom="false">
-			<view class="u-flex u-row-right" style="width: 100%;">
-				<view class="camera u-flex u-row-center">
-					<u-icon @tap="jump('pages/firendCircle/firendCircle')" name="camera-fill" color="#000000" size="40"></u-icon>
-				</view>
-			</view>
-		</u-navbar>
-		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
-			<view class="u-m-r-10 u-p-r-30">
-				<u-avatar @tap="previewImage" mode="square" src="/static/image/huge.jpg" size="140"></u-avatar>
-			</view>
-			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
-				<view class="u-font-14 u-tips-color">{{userData.user.money}}</view>
-			</view>
-			<view class="u-m-l-10 u-p-10">
-				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/my/person')"></u-icon>
-			</view>
+	<view class="content">
+		<view class="head">
+			<u-grid :col="6" :border="false">
+				<u-grid-item>
+					<u-avatar src="/static/image/huge.jpg" mode="square"></u-avatar>
+					<view class="grid-text">{{chatObj.chatName}}</view>
+				</u-grid-item>
+			</u-grid>
 		</view>
-		<view class="u-m-t-20">
-			<u-cell-group>
-				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'800'}">
-					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon>
-				</u-cell-item>
-			</u-cell-group>
-		</view>
+		
+		<view style="height: 20rpx;"></view>
+		
+		<u-cell-group>
+			<u-cell-item title="查看聊天内容" @click="showSearch" :title-style="{ marginLeft: '10rpx' }">
+			</u-cell-item>
+			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg">
+			</u-cell-item>
+			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
+				<view style="text-align: center; color: red;">清空聊天记录</view>
+			</u-cell-item>
+		</u-cell-group>
 	</view>
 </template>
 
 <script>
-	import { mapState, mapMutations} from 'vuex';
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
 			return {
-				show:true,
-				list: [
-					{
-						title: '朋友圈',
-						color: '#00aaff',
-						icon: 'photo-fill',
-						url:'pages/firendCircle/firendCircle'
-					},
-					{
-						title: '设置',
-						color: '#00aaff',
-						icon: 'setting-fill',
-						url:'pages/setings/setings'
-					}
-				],
 			}
 		},
-		onLoad() {
-		},
-		computed: {
-			...mapState(['userData','chatObj'])
+		computed:{
+			...mapState(['chatObj'])
 		},
 		methods: {
-			jump(url){
-				this.$u.route({
-					url:url
-				})
-			},
-			previewImage() {
-				// let current = this.$url + this.userData.user.avatar
-				let current = '/static/image/girl.jpg'
-				uni.previewImage({
-					current,
-					urls: [current],
-					// #ifndef MP-WEIXIN
-					indicator: 'number'
-					// #endif
-				});
-			}
 		}
 	}
 </script>
 
-<style lang="scss">
-page{
-	background-color: #F6F7F8;
-}
-
-.camera{
-	width: 54px;
-	height: 44px;
-	
-	&:active{
-		background-color: #ededed;
+<style lang="scss" scoped>
+	.head{
+		background-color: white;
 	}
-}
-.user-box{
-	background-color: #fff;
-}
+	.status_bar {
+		height: var(--status-bar-height);
+		width: 100%;
+	}
 </style>
