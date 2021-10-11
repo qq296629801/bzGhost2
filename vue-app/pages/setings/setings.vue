@@ -7,7 +7,6 @@
 		<view class="status_bar"></view>
 		<!-- #endif -->
 		
-		
 		<u-cell-group>
 			<u-cell-item title="账号与安全" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 			<u-cell-item @click="linkToCommon(index)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '10rpx' }">

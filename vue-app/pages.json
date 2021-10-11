@@ -28,29 +28,6 @@
 			}
 		},
 		{
-			"path": "pages/addressBook/addressBook",
-			"style": {
-				"navigationBarTitleText": "通讯录"
-			}
-		},
-		{
-			"path": "pages/find/find",
-			"style": {
-				"navigationBarTitleText": "发现"
-			}
-		},
-		{
-			"path": "pages/agreement/agreement",
-			"style": {
-				"navigationBarTitleText": "协议"
-			}
-		},
-		{
-			"path": "pages/search/search",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
-		}, {
 			"path": "pages/chat/chat",
 			"style": {
 				"app-plus": {
@@ -78,7 +55,7 @@
 				}
 			}
 		}, {
-			"path": "pages/firendCircle/firendCircle",
+			"path": "pages/find/firendCircle",
 			"style": {
 				"navigationBarTitleText": " ",
 				// #ifdef MP-WEIXIN
@@ -117,18 +94,8 @@
 					}
 				}
 			}
-		}, {
-			"path": "pages/businessCard/businessCard",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"titleNView": {
-						"backgroundColor": "#FFFFFF"
-					}
-				}
-			}
-		}, {
-			"path": "pages/releaseFirendCircle/releaseFirendCircle",
+		},  {
+			"path": "pages/find/releaseCircle",
 			"style": {
 				"navigationBarTitleText": "",
 				// #ifdef MP-WEIXIN
@@ -145,11 +112,6 @@
 					}
 				}
 			}
-		}, {
-			"path": "pages/chooseBgImg/chooseBgImg",
-			"style": {
-				"navigationBarTitleText": "选择背景图"
-			}
 		},
 		{
 			"path": "components/u-avatar-cropper/u-avatar-cropper",
@@ -159,7 +121,7 @@
 			}
 		},
 		{
-			"path": "pages/builtinBgImg/builtinBgImg",
+			"path": "pages/user/builtinBgImg",
 			"style": {
 				"navigationBarTitleText": "选择背景图",
 				// #ifdef MP-WEIXIN
@@ -176,247 +138,7 @@
 					}
 				}
 			}
-		}, {
-			"path": "pages/moreInforMation/moreInforMation",
-			"style": {
-				"navigationBarTitleText": "更多信息"
-			}
-		}, {
-			"path": "pages/chat/userDetail",
-			"style": {
-				"navigationBarTitleText": "私聊"
-			}
-		}, {
-			"path": "pages/chat/groupDetail",
-			"style": {
-				"navigationBarTitleText": "群聊"
-			}
-		}, {
-			"path": "pages/setings/setings",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		}, {
-			"path": "pages/my/person",
-			"style": {
-				"navigationBarTitleText": "个人信息"
-			}
-		}, {
-			"path": "pages/my/common",
-			"style": {
-				"navigationBarTitleText": "通用"
-			}
-		}, {
-			"path": "pages/my/account",
-			"style": {
-				"navigationBarTitleText": "账号与安全"
-			}
-		}, {
-			"path": "pages/chat/groupEdit",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
-			}
-		}, {
-			"path": "pages/chat/memAdd",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
-			}
-		},
-		{
-			"path": "pages/chat/groupCreate",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
-			}
-		},
-		{
-			"path": "pages/chat/memDel",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
-			}
-		},
-		{
-			"path": "pages/chat/detail",
-			"style": {
-				"app-plus": {
-					"softinputNavBar": "none",
-					"softinputMode": "adjustPan",
-					"titleNView": {
-						"backgroundColor": "#EC624F",
-						"titleColor": "#fff",
-						"titleText": ""
-					}
-				}
-			}
 		}
-
-		, {
-			"path": "pages/qrcode/qrcode",
-			"style": {
-				"navigationBarTitleText": "我的二维码"
-			}
-		}, {
-			"path": "pages/chat/remind",
-			"style": {
-				"navigationBarTitleText": "选择要提醒的人"
-			}
-		}, {
-			"path": "pages/chat/forward",
-			"style": {
-				"navigationBarTitleText": "选择一个聊天"
-			}
-		}, {
-			"path": "pages/webview/webview",
-			"style": {
-				"navigationBarTitleText": "webview"
-			}
-		}, {
-			"path": "pages/my/photo",
-			"style": {
-				"navigationBarTitleText": "朋友圈相册"
-			}
-		}, {
-			"path": "pages/my/face",
-			"style": {
-				"navigationBarTitleText": "表情商店"
-			}
-		}, {
-			"path": "pages/chat/memMore",
-			"style": {
-				"navigationBarTitleText": "所有成员"
-			}
-		}
-	    ,{
-            "path" : "pages/my/index",
-            "style": {
-            	"navigationBarTitleText": "我的",
-            	"navigationStyle": "custom"
-            }
-        },
-		{
-			"path": "pages/login/forget",
-			"style": {
-				"navigationBarTitleText": "忘记密码",
-				"navigationBarBackgroundColor":"#F6F7F8"
-			}
-		},
-		{
-			"path": "pages/login/register",
-			"style": {
-				"navigationBarTitleText": "注册",
-				"navigationBarBackgroundColor":"#F6F7F8"
-			}
-		},
-		{
-			"path": "pages/login/agreement",
-			"style": {
-				"navigationBarTitleText": "用户协议"
-			}
-		}
-        ,{
-            "path" : "pages/newFriend/newFriend",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "新的朋友"
-            }
-            
-        }
-        ,{
-            "path" : "pages/groupItem/groupItem",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的群组"
-            }
-        }
-        ,{
-            "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleView": false
-				}
-            }
-        },
-	{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "swiper",
-			"navigationStyle":"custom",
-			"app-plus": {
-				"titleNView": false,
-				"subNVues": [{
-					"id": "comment",
-					"path": "pages/subnvue/comment",
-					"style": {
-						"height": "100%",
-						"position":"absolute",
-						"bottom":"0",
-						"background":"transparent",
-						"zindex":1
-					}
-				},{
-					"id": "input-box",
-					"path": "pages/subnvue/input-box",
-					"style": {
-						"height": "100%",
-						"position":"absolute",
-						"bottom":"0",
-						"background":"transparent",
-						"zindex":2
-					}
-				}]
-			}
-		}
-	},
-	{
-		"path": "pages/css3/index",
-		"style": {
-			"navigationBarTitleText": "css3",
-			"navigationStyle":"custom"
-			// "app-plus": {
-			// 	"titleNView": false,
-			// 	"subNVues": [{
-			// 		"id": "comment",
-			// 		"path": "pages/subnvue/comment",
-			// 		"style": {
-			// 			"height": "100%",
-			// 			"position":"absolute",
-			// 			"bottom":"0",
-			// 			"background":"transparent",
-			// 			"zindex":1
-						
-			// 		}
-			// 	},{
-			// 		"id": "input-box",
-			// 		"path": "pages/subnvue/input-box",
-			// 		"style": {
-			// 			"height": "100%",
-			// 			"position":"absolute",
-			// 			"bottom":"0",
-			// 			"background":"transparent",
-			// 			"zindex":2
-			// 		}
-			// 	}]
-			// }
-		}
-	}
-	
     ],
 	"tabBar": {
 		"color": "#7B8AA0",
@@ -429,7 +151,7 @@
 			"selectedIconPath": "static/menu/chat_s.png",
 			"text": "消息"
 		}, {
-			"pagePath": "pages/addressBook/addressBook",
+			"pagePath": "pages/friend/index",
 			"iconPath": "static/menu/contact.png",
 			"selectedIconPath": "static/menu/contact_s.png",
 			"text": "通讯录"
