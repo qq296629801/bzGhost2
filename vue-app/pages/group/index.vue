@@ -29,7 +29,7 @@
 			<u-cell-item title="二维码" :title-style="titleStyle">
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
 			</u-cell-item>
-			<u-cell-item title="群公告" @click="link(group.mine.id, group.gContext, 2)" :value="group.gContext ? group.gContext : '暂无公告'" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="群公告" label="暂无公告" @click="link(group.mine.id, group.gContext, 2)" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item
 				title="群昵称"
 				@click="link(3)"

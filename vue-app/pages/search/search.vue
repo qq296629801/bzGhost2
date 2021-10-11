@@ -9,7 +9,7 @@
 			<scroll-view class="keyword-list-box" v-show="isShowKeywordList" scroll-y>
 				<block v-for="(row,index) in keywordList" :key="index">
 					<view class="keyword-entry" hover-class="keyword-entry-tap" >
-						<view class="keyword-text" @tap.stop="doSearch(keywordList[index].keyword)">
+						<view class="keyword-text" @tap.stop="doSearch(keywordList[index])">
 							<rich-text :nodes="row.htmlStr"></rich-text>
 						</view>
 						<view class="keyword-img" @tap.stop="setKeyword(keywordList[index].keyword)">
@@ -112,15 +112,23 @@
 					return;
 				}
 				this.isShowKeywordList = true;
-				//以下示例截取淘宝的关键字，请替换成你的接口
-				uni.request({
-					url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
-					success: (res) => {
-						this.keywordList = [];
-						this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
-						
-					}
+				
+				this.$http.post('app/friend/query',{nickName:''}).then(res=>{
+					//console.log(JSON.stringify(res))
+					this.keywordList = [];
+					this.keywordList = this.drawCorrelativeKeyword(res, keyword);
+					
 				});
+				
+				//以下示例截取淘宝的关键字，请替换成你的接口
+				// uni.request({
+				// 	url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
+				// 	success: (res) => {
+				// 		this.keywordList = [];
+				// 		this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
+						
+				// 	}
+				// });
 			},
 			//高亮关键字
 			drawCorrelativeKeyword(keywords, keyword) {
@@ -129,11 +137,12 @@
 				for (var i = 0; i < len; i++) {
 					var row = keywords[i];
 					//定义高亮#9f9f9f
-					var html = row[0].replace(keyword, "<span style='color: #9f9f9f;'>" + keyword + "</span>");
+					var html = row.userName.replace(keyword, "<span style='color: #9f9f9f;'>" + keyword + "</span>");
 					html = '<div>' + html + '</div>';
 					var tmpObj = {
-						keyword: row[0],
-						htmlStr: html
+						keyword: row.userName,
+						htmlStr: html,
+						item:row
 					};
 					keywordArr.push(tmpObj)
 				}
@@ -165,24 +174,16 @@
 				this.forbid = this.forbid ? '' : '_forbid';
 			},
 			//执行搜索
-			doSearch(keyword) {
-				keyword = keyword===false?this.keyword:keyword;
-				this.keyword = keyword;
-				this.saveKeyword(keyword); //保存为历史 
-				uni.showToast({
-					title: keyword,
-					icon: 'none',
-					duration: 2000
+			doSearch(obj) {
+				obj.keyword = obj.keyword===false?this.keyword:obj.keyword;
+				this.keyword = obj.keyword;
+				this.saveKeyword(obj.keyword); //保存为历史 
+			
+				let {id,nickName} = obj.item
+				this.$u.route({
+					url: '/pages/friend/businessCard',
+					params:{ userId: id, source: 1,nickName:nickName}
 				});
-				//以下是示例跳转淘宝搜索，可自己实现搜索逻辑
-				/*
-				//#ifdef APP-PLUS
-				plus.runtime.openURL(encodeURI('taobao://s.taobao.com/search?q=' + keyword));
-				//#endif
-				//#ifdef H5
-				window.location.href = 'taobao://s.taobao.com/search?q=' + keyword
-				//#endif
-				*/
 			},
 			//保存关键字到历史记录
 			saveKeyword(keyword) {

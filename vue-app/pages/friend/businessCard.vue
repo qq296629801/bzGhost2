@@ -4,7 +4,7 @@
 			<u-avatar src="/static/image/huge.jpg" mode="square" size="110" @tap="previewImg(url)"></u-avatar>
 			<view class="userinfo-desc">
 				<view class="userinfo-desc-name">{{nickName}}</view>
-				<view class="userinfo-desc-gray"></view>
+				<view class="userinfo-desc-gray">地区 未知</view>
 			</view>
 		</view>
 		
@@ -12,17 +12,17 @@
 		
 		<u-cell-group>
 			<u-cell-item title="朋友圈" label="模拟数据暂不支持查看好友朋友圈" hover-class="none" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-			<u-cell-item title="更多信息" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
+			<u-cell-item title="更多" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
 		</u-cell-group>
 		
 		<view  class="perch"></view>
 		
 		<u-cell-group>
 			<u-cell-item v-if="source == 1" title="" @click="userAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
-				<view style="text-align: center;">添加到通讯录</view>
+					<view  style="text-align: center;">添加到通讯录</view>
 			</u-cell-item>
-			<u-cell-item title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="toChat">
-				<u-icon slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
+			<u-cell-item v-else title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="toChat">
+				<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 			</u-cell-item>
 		</u-cell-group>
 	</view>
@@ -35,8 +35,11 @@
 			return {
 				nickName:'',
 				userId:'',
-				source:0
+				source:0,//
 			}
+		},
+		computed:{
+			...mapState(['userData'])
 		},
 		methods: {
 			...mapMutations(['setChatObj']),
@@ -51,6 +54,13 @@
 				});
 			},
 			userAdd(){
+				let item = {
+					userId: this.userData.user.operId,
+					friendId: this.userId,
+				}
+				this.$http.post('app/friend/addAsk', item).then(res=>{
+					uni.navigateBack()
+				});
 			},
 			previewImg(urls){
 				uni.previewImage({urls:[urls]})

@@ -43,7 +43,7 @@ export default {
 		addFriend(item){
 			item.userId = this.userData.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{
-				uni.navigateBack()
+				this.findFriend();
 			});
 		},
 		findFriend() {
