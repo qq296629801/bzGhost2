@@ -88,12 +88,12 @@
 			},
 			linkToNewFriend(){
 				this.$u.route({
-					url: 'pages/newFriend/newFriend'
+					url: 'pages/user/newFriend'
 				});
 			},
 			linkToGroupItem(){
 				this.$u.route({
-					url: 'pages/groupItem/groupItem'
+					url: 'pages/group/groupItem'
 				});
 			}
 		}

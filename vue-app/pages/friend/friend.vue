@@ -33,7 +33,7 @@ export default {
 		jump({id,nickName}){
 			//console.log(JSON.stringify(item))
 			this.$u.route({
-				url: 'pages/businessCard/businessCard',
+				url: 'pages/friend/businessCard',
 				params:{ userId: id, source: 0,nickName:nickName}
 			});
 		}

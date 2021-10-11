@@ -533,11 +533,11 @@ export default {
 		if (index == 0) {
 			if(this.chatObj.chatType==1){
 				uni.navigateTo({
-					url: '/pages/chat/groupDetail'
+					url: '/pages/group/index'
 				});
 			}else {
 				uni.navigateTo({
-					url: '/pages/chat/userDetail'
+					url: '/pages/user/index'
 				});
 			}
 		} else if (index == 1) {

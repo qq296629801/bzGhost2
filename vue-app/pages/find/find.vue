@@ -49,7 +49,7 @@ export default {
 		},
 		linkToMoment(){
 			this.$u.route({
-				url:'pages/firendCircle/firendCircle'
+				url:'pages/find/firendCircle'
 			})
 		},
 		linkToScan(){
