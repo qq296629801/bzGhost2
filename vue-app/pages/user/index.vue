@@ -16,6 +16,12 @@
 			</u-cell-item>
 			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg">
 			</u-cell-item>
+			
+		</u-cell-group>
+		
+		<view style="height: 20rpx;"></view>
+		
+		<u-cell-group>
 			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>

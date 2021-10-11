@@ -12,10 +12,13 @@
 					</view>
 				</u-upload>
 			</u-cell-item>
-			<u-cell-item title="名字" @tap="linkTo(userData.user.realname,0)" :value="userData.user.realname" :title-style="{ marginLeft: '10rpx' }">
+			
+			<u-cell-item title="昵称" @tap="linkTo(userData.user.realname,0)" :value="userData.user.realname" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
+			
 			<u-cell-item title="用户名" :arrow="false" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
+			
 			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
 				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
 			</u-cell-item>

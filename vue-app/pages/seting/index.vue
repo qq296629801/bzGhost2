@@ -8,14 +8,14 @@
 		<!-- #endif -->
 		
 		<u-cell-group>
-			<u-cell-item title="账号与安全" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-			<u-cell-item @click="linkToCommon(index)" v-for="(item, index) in groupList" :key="index" :title="item.title" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item title="账号与安全" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			<u-cell-item @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
 
 		<view  style="height: 20rpx;"></view>
+		
 		<u-cell-group>
 			<u-cell-item :arrow="false" @click="logout">
 				<view style="text-align: center;">退出登录</view>
@@ -34,10 +34,6 @@ export default {
 	data() {
 		return {
 			version: "", // 版本号
-			groupList: [
-				{ title: '隐私', color: '#409eff', icon: 'photo' },
-				{ title: '帮助与反馈', color: '#ff9900', icon: 'heart' }
-			],
 		}
 	},
 	onLoad(e) {
@@ -61,7 +57,7 @@ export default {
 		},
 		linkToAccount(){
 			this.$u.route({
-				url: 'pages/my/account'
+				url: 'pages/user/account'
 			});
 		},
 		logout(){

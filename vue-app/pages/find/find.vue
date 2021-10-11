@@ -5,13 +5,17 @@
 				<u-icon slot="icon" name="moments-circel-fill" color="#00aaff" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
+		
 		<view style="height: 20rpx;"></view>
+		
 		<u-cell-group>
 			<u-cell-item  title="扫一扫" :title-style="titleStyle" @tap="linkToScan">
 				<u-icon slot="icon" name="scan" color="#00aaff" size="40"></u-icon> 
 			</u-cell-item>
 		</u-cell-group>	
+		
 		<view style="height: 20rpx;"></view>
+		
 		<view class="" v-for="(item,index) in links" :key="index">
 			<u-cell-group>
 				<u-cell-item  :title="item.title" :title-style="titleStyle"  @tap="linkTo(item,index)">
@@ -20,6 +24,7 @@
 			</u-cell-group>
 			<view v-if="index!=links.length" class="" style="height: 20rpx;"></view>
 		</view>
+		
 	</view>
 </template>
 <script>

@@ -40,13 +40,13 @@
 						title: '朋友圈',
 						color: '#00aaff',
 						icon: 'photo-fill',
-						url:'pages/firendCircle/firendCircle'
+						url:'pages/find/firendCircle'
 					},
 					{
 						title: '设置',
 						color: '#00aaff',
 						icon: 'setting-fill',
-						url:'pages/setings/setings'
+						url:'pages/seting/index'
 					}
 				],
 			}

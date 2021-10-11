@@ -41,6 +41,12 @@
 			</u-cell-item>
 			<u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item title="设置聊天背景" :title-style="titleStyle" @click="chooseImg"></u-cell-item>
+			
+		</u-cell-group>
+		
+		<view  style="height: 20rpx;"></view>
+		
+		<u-cell-group>
 			<u-cell-item :title-style="titleStyle" @click="clearGroupMsg" :arrow="false">
 				<view style="text-align: center; color: red;">清空聊天记录</view>
 			</u-cell-item>
