@@ -13,7 +13,6 @@
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
 						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
-							<!-- <u-avatar class="my-avatar" :src="$url + user.avatar" mode="square" size="60"></u-avatar> -->
 							{{ user.nickName }}
 						</u-checkbox>
 					</view>
@@ -35,12 +34,14 @@
 				ids: [],
 				userNames: [],
 				list: [],
-				keyword: ''
+				keyword: '',
+				firendItem:[]
 			}
 		},
 		onShow() {
 			common.get('friend').then(res=>{
 				this.list = res
+				this.firendItem = res
 				let indexList = []
 				this.list.forEach(item => {
 					indexList.push(item.name)
@@ -90,15 +91,14 @@
 					})
 					return;
 				}
-				let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
-				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
+				//let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
+				let data = {
+					users:this.ids,
+					defaultGroupNames:this.userNames, 
+					userId:this.userData.user.operId
+				}
+				this.$http.post('app/group/create',data).then(res => {
 					if (res.success) {
-						this.$socket.queryOnlineMessage(this.userData.user.operId,q =>{
-							let data = q.response.data;
-							for(var i in data){
-								initData(data[i].groupMsg.list, data[i].groupInfo.chatId);
-							}
-						})
 						this.$u.route({
 							type: 'navigateBack'
 						});
