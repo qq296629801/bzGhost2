@@ -2,14 +2,13 @@
 	<view class="content">
 		<u-navbar :is-back="true" :title="titles[type]" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false" z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button :disabled="isInput" size="mini" type="success" @click="save">保存</u-button>
+				<u-button :disabled="isInput" size="mini" type="success" @click="saveData">保存</u-button>
 			</view>
 		</u-navbar>
 		<u-cell-group>
-			<u-input class="text" v-if="type=='0'" v-model="context" :auto-height="true" />
-			<u-input class="text" v-if="type=='1'"  v-model="context" :auto-height="true" />
-			<u-input class="text" v-if="type=='2'"  v-model="context" :auto-height="true" />
-			<u-input class="text" v-if="type=='3'"  v-model="context"  :auto-height="true" />
+			<u-cell-item>
+				<u-input class="text" v-model="context" :auto-height="true" />
+			</u-cell-item>
 		</u-cell-group>
 	</view>
 </template>
@@ -24,7 +23,8 @@ export default {
 			isInput:true,
 			show: false,
 			border: false,
-			titles: ['昵称','群名称','群公告','群昵称']
+			titles: ['昵称','群名称','群公告','群昵称'],
+			func:['NickName','GroupName','Notice','GroupNick'],
 		}
 	},
 	watch:{
@@ -40,42 +40,16 @@ export default {
 	onShow() {
 	},
 	methods: {
-		save(){
-			switch(this.type){
-				case '0':
-					this.updateNickName();
-					break;
-				case '1':
-					this.updateGroupName();
-					break;
-				case '2':
-					this.updateNotice();
-					break;
-				case '3':
-					this.updateGroupNick();
-					break;
-				default:
-			}
+		saveData(){
+			this.update[func[type]]();
 		},
 		updateNickName () {
-			this.$socket.updateNickName(this.userData.user.operId, this.context, (res) => {
-			  this.util.modal(res.success?'成功':'失败');
-			})
 		},
 		updateGroupName(){
-			this.$socket.updateGroupName(this.userData.user.operId, this.groupId, this.context, res => {
-				 this.util.modal(res.success?'成功':'失败');
-			})
 		},
 		updateNotice(){
-			this.$socket.updateNotice(this.userData.user.operId, this.groupId, this.context, res => {
-				 this.util.modal(res.success?'成功':'失败');
-			})
 		},
 		updateGroupNick(){
-			this.$socket.updateGroupNick(this.userData.user.operId, this.groupId, this.context, res => {
-				 this.util.modal(res.success?'成功':'失败');
-			})
 		}
 	}
 };

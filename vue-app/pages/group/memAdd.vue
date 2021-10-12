@@ -1,9 +1,9 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="增加好友" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="成员" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="joinGroup">保存</u-button>
+				<u-button size="mini" type="success" @click="saveGroupMember">增加</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
@@ -14,9 +14,9 @@
 				<u-checkbox-group style="width: 100%;">
 					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
 						<u-checkbox v-model="user.checked" :name="user.id" @change="chechMem(user)">
-							<u-avatar class="my-avatar" :src="$url + user.avatar" mode="square"></u-avatar>
+							<!-- <u-avatar class="my-avatar" :src="$url + user.avatar" mode="square"></u-avatar> -->
+							{{ user.nickName }}
 						</u-checkbox>
-						{{ user.nickName }}
 					</view>
 				</u-checkbox-group>
 			</view>
@@ -24,6 +24,7 @@
 	</view>
 </template>
 <script>
+	import common from '@/util/common.js'
 	export default {
 		components: {
 		},
@@ -34,22 +35,23 @@
 				ids: [],
 				userNames: [],
 				list: [],
-				keyword: ''
+				keyword: '',
+				groupId:'',
+				firendItem: []
 			}
 		},
 		onShow() {
-			this.$socket.listGuests(this.userData.user.operId, res => {
-				this.$u.vuex('firendItem', res.response.data);
-				this.list = res.response.data
+			common.get('friend').then(res=>{
+				this.list = res
+				this.firendItem = res
 				let indexList = []
 				this.list.forEach(item => {
 					indexList.push(item.name)
 				})
 				this.indexList = indexList
-				
 			});
 		},
-		onLoad(option) {},
+		onLoad({groupId}) { this.groupId = groupId },
 		watch: {
 			keyword: function(val) {
 				let arr = this.firendItem;
@@ -80,7 +82,7 @@
 					this.userNames.splice(this.userNames.indexOf(user.nickName), 1);
 				}
 			},
-			joinGroup(){
+			saveGroupMember() {
 				if(this.userNames.length==0){
 					uni.showToast({
 						title:'至少选中一个',
@@ -88,36 +90,19 @@
 					})
 					return;
 				}
-				let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
-				this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
+				//let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
+				let data = {
+					userIds:this.ids,
+					groupId:this.groupId, 
+					userNames:this.userNames
+				}
+				this.$http.post('app/group/user/add',data).then(res => {
 					if (res.success) {
 						this.$u.route({
-							url: 'pages/home/home'
+							type: 'navigateBack'
 						});
 					}
 				});
-			},
-			saveGroupMember() {
-				let type = this.$route.query.type
-				if (type === '1') {
-					let defaultGroupName = this.userNames.length > 8 ? this.userNames.substr(0, 8) + '...' : this.userNames
-					this.$socket.createGroup(this.ids, defaultGroupName, this.userData.user.operId, res => {
-						if (res.success) {
-							this.$u.route({
-								url: 'pages/home/home'
-							});
-						}
-					});
-				}
-				if (type === '2') {
-					this.$socket.joinGroup(this.chatObj.chatId, this.ids, this.userData.user.username, res => {
-						if (res.success) {
-							this.$u.route({
-								url: 'pages/chat/groupDetail'
-							});
-						}
-					});
-				}
 			},
 		},
 		onPageScroll(e) {
