@@ -24,7 +24,7 @@ export default {
 			show: false,
 			border: false,
 			titles: ['昵称','群名称','群公告','群昵称'],
-			func:['NickName','GroupName','Notice','GroupNick'],
+			func:['updateNickName','updateGroupName','updateNotice','updateGroupNick'],
 		}
 	},
 	watch:{
@@ -41,7 +41,7 @@ export default {
 	},
 	methods: {
 		saveData(){
-			this.update[func[type]]();
+			this.[func[type]]();
 		},
 		updateNickName () {
 		},
