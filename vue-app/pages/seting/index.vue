@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import apiconfig from '../../apiconfig.js'
 // #ifdef APP-PLUS
 import APPUpdate, { getCurrentNo } from "@/plugins/APPUpdate";
 // #endif
