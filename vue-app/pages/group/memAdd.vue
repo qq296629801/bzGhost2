@@ -90,18 +90,16 @@
 					})
 					return;
 				}
-				//let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
 				let data = {
 					userIds:this.ids,
 					groupId:this.groupId, 
 					userNames:this.userNames
 				}
 				this.$http.post('app/group/user/add',data).then(res => {
-					if (res.success) {
-						this.$u.route({
-							type: 'navigateBack'
-						});
-					}
+					uni.navigateBack({
+						delta: 0,
+						animationDuration: 0
+					})
 				});
 			},
 		},

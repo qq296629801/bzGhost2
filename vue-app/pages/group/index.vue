@@ -103,22 +103,24 @@ export default {
 		},
 		linkAdd(){
 			this.$u.route({
-				url: 'pages/chat/memAdd'
+				url: 'pages/group/memAdd',
+				params:{groupId:this.chatObj.chatId}
 			});
 		},
 		linkDel(){
 			this.$u.route({
-				url: 'pages/chat/memDel'
+				url: 'pages/group/memDel',
+				params:{groupId:this.chatObj.chatId}
 			});
 		},
 		removeMem() {
-			this.$socket.removeGroupUser([this.userData.user.operId], this.chatObj.chatId, res => {
-				if (res.success) {
-					this.$u.route({
-						type: 'navigateBack'
-					});
-				}
-			});
+			// this.$socket.removeGroupUser([this.userData.user.operId], this.chatObj.chatId, res => {
+			// 	if (res.success) {
+			// 		this.$u.route({
+			// 			type: 'navigateBack'
+			// 		});
+			// 	}
+			// });
 		},
 		clearGroupMsg() {
 			this.$socket.clearGroupMsg(this.userData.user.operId, this.chatObj.chatId, res => {

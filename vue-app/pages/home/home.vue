@@ -36,7 +36,7 @@ export default {
 			show: false,
 			selectShow: false,
 			selectList: [
-			{ id: '1', name: '添加朋友', icon: 'man-add' },
+			{ id: '1', name: '添加好友', icon: 'man-add' },
 			{ id: '2', name: '扫一扫', icon: 'scan' },
 			{ id: '3', name: '发起群聊', icon: 'chat' }
 			],
@@ -115,27 +115,27 @@ export default {
 		},
 		checkSelect(index) {
 			if (index == 0) {
-				this.onPageJump('/pages/search/search2');
+				this.onPageJump('/pages/search/search');
 			}
 			else if (index == 1) {
 				const t = this
 				uni.scanCode({
 					success: function(res) {
-						uni.vibrateLong();
-						let uId = res.result
-						if (uId==t.userData.user.operId){
-							t.util.modal('不能添加自己为好友');
+						//uni.vibrateLong();
+						let result = res.result
+						if (result==t.userData.user.operId){
+							//t.util.modal('不能添加自己为好友');
 						} else {
 							t.$u.route({
-								url: 'pages/businessCard/businessCard',
-								params:{ id: uId, source: 2}
+								url: 'pages/friend/businessCard',
+								params:{ userId: result,nickName:'', source: 1}
 							})
 						}
 					}
 				});
 			}else {
 				this.$u.route({
-					url: 'pages/chat/groupCreate'
+					url: 'pages/group/groupCreate'
 				})
 			}
 		},

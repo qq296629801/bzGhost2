@@ -23,6 +23,7 @@
 	</view>
 </template>
 <script>
+	import common from '@/util/common.js'
 	export default {
 		components: {
 		},
@@ -39,7 +40,15 @@
 			}
 		},
 		onShow() {
-			
+			common.get('friend').then(res=>{
+				this.list = res
+				this.firendItem = res
+				let indexList = []
+				this.list.forEach(item => {
+					indexList.push(item.name)
+				})
+				this.indexList = indexList
+			});
 		},
 		onLoad({groupId}) {this.groupId=groupId},
 		watch: {
@@ -78,11 +87,10 @@
 					groupId:this.groupId, 
 				}
 				this.$http.post('app/group/user/del',data).then(res => {
-					if (res.success) {
-						this.$u.route({
-							type: 'navigateBack'
-						});
-					}
+					uni.navigateBack({
+						delta: 0,
+						animationDuration: 0
+					})
 				});
 			},
 		},
