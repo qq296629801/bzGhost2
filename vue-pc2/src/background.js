@@ -77,7 +77,7 @@ function createWindow() {
     }
   ]);
 
-  appIcon.setToolTip("v-im");
+  appIcon.setToolTip("yiqun");
   appIcon.setContextMenu(contextMenu);
   appIcon.on("click", function() {
     showMain();

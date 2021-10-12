@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "v-im"
+  name: "yiqun"
 };
 </script>
 <style lang="scss">
