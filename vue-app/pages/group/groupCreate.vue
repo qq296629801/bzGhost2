@@ -98,11 +98,9 @@
 					userId:this.userData.user.operId
 				}
 				this.$http.post('app/group/create',data).then(res => {
-					if (res.success) {
-						this.$u.route({
-							type: 'navigateBack'
-						});
-					}
+					uni.reLaunch({
+						url: '/pages/home/home',
+					});
 				});
 			},
 		},
