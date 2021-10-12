@@ -1,6 +1,7 @@
 import axios from 'axios'
 let axiosInstance = axios.create()
 axiosInstance.defaults.timeout = 100000
+axiosInstance.defaults.baseURL = 'http://42.193.146.14:9998/'
 axiosInstance.interceptors.request.use(config => {
   config.headers.Authentication = localStorage.getItem('token') || ''
   return config

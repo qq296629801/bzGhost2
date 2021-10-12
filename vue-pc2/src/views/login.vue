@@ -162,7 +162,8 @@
             })
         },
         login: function () {
-            this.$get('/login', this.requestData).then(res => {
+            this.$get('login', this.requestData).then(res => {
+                //alert(res)
                 if (res) {
                     this.setUserData(res)
 
