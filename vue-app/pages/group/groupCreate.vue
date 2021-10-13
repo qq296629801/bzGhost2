@@ -1,12 +1,11 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="创建群组" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="创建群组" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" @click="createGroup">保存</u-button>
+				<u-button size="mini" type="success" @click="createGroup">保存</u-button>
 			</view>
 		</u-navbar>
-		
 		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
 			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" />

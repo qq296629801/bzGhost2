@@ -323,6 +323,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		    
@@ -332,6 +333,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		    
@@ -341,6 +343,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
+				"navigationStyle": "custom",
 		        "enablePullDownRefresh": false
 		    }
 		    

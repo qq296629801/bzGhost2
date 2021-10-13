@@ -1,6 +1,6 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="成员" :background="{ background: '#F6F7F8' }" title-color="#404133" :border-bottom="false"
+		<u-navbar :is-back="true" title="成员" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
 				<u-button size="mini" type="success" @click="saveGroupMember">增加</u-button>
