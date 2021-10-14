@@ -19,39 +19,37 @@
 				</u-grid-item>
 			</u-grid>
 			
-			<view class="more" @tap="seeMore" v-if="group.members.length>20">查看更多</view>
+			<view class="more" @tap="linkMore" v-if="group.members.length>20">查看更多</view>
 		</view>
 		
 		<view style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item title="群名称" @click="link(group.mine.id, group.mine.groupName, 1)" :value="group.mine.groupName" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item title="二维码" :title-style="titleStyle">
-				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
+				<view class="iconfont iconxingzhuangjiehe erweima"></view>
 			</u-cell-item>
-			<u-cell-item title="群公告" label="暂无公告" @click="link(group.mine.id, group.gContext, 2)" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item
 				title="群昵称"
-				@click="link(3)"
-				:value="group.user.groupNickName || userData.user.realname"
+				:value="group.groupUser.groupNickName"
 				:title-style="titleStyle"
 			></u-cell-item>
 			<u-cell-item title="全体禁言" :title-style="titleStyle" :arrow="false">
-				<u-switch active-color="rgb(25, 190, 107)" v-model="allSpeak"></u-switch>
+				<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
 			</u-cell-item>
-			<u-cell-item title="查看聊天内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
-			<u-cell-item title="设置聊天背景" :title-style="titleStyle" @click="chooseImg"></u-cell-item>
-			
+			<u-cell-item title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell-item>
 		</u-cell-group>
 		
 		<view  style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item :title-style="titleStyle" @click="clearGroupMsg" :arrow="false">
-				<view style="text-align: center; color: red;">清空聊天记录</view>
+			<u-cell-item :title-style="titleStyle" @click="delMess" :arrow="false">
+				<view class="btn-red">清空聊天记录</view>
 			</u-cell-item>
 			<u-cell-item :title-style="titleStyle" @click="removeMem" :arrow="false">
-				<view style="text-align: center; color: red;">删除并退出</view>
+				<view class="btn-red">删除并退出</view>
 			</u-cell-item>
 		</u-cell-group>
 	</view>
@@ -66,32 +64,31 @@ export default {
 	},
 	data() {
 		return {
-			src1: require('@/static/qrcode.png'),
-			allSpeak: false,
+			disTalk: false,
 			titleStyle:{ marginLeft: '10rpx' },
 			group:{
-				mine:{},
-				user:{},
+				group:{},
+				groupUser:{},
 				members:[],
 				gContext:''
 			}
 		};
 	},
 	methods: {
-		seeMore(){
+		linkMore(){
 			this.$u.route({
-				url: 'pages/chat/moreMem'
+				url: 'pages/group/moreMem'
 			})
 		},
-		link(groupId, context, type) {
+		linkName(groupId, context, type) {
 			this.$u.route({
-				url: 'pages/chat/groupEdit',
+				url: 'pages/group/groupName',
 				params: {  groupId,  context,  type }
 			});
 		},
 		linkCard(id){
 			this.$u.route({
-				url: 'pages/businessCard/businessCard',
+				url: 'pages/friend/businessCard',
 				params:{ id: id, source: 1}
 			})
 		},
@@ -122,10 +119,10 @@ export default {
 			// 	}
 			// });
 		},
-		clearGroupMsg() {
-			this.$socket.clearGroupMsg(this.userData.user.operId, this.chatObj.chatId, res => {
-				this.util.modal('不能添加自己为好友');
-			});
+		delMess() {
+			// this.$socket.clearGroupMsg(this.userData.user.operId, this.chatObj.chatId, res => {
+			// 	this.util.modal('不能添加自己为好友');
+			// });
 		},
 		chooseImg() {
 			this.$u.route({
@@ -138,10 +135,12 @@ export default {
 			});
 		},
 		queryMembers() {
-			this.$http.post('app/group/member',{userId:this.userData.user.operId,groupId:this.chatObj.chatId}).then(res => {
-				this.group.members = res.members;
-				this.group.user = res.groupUser;
-				this.group.mine = res.group;
+			let pData = {
+				userId: this.userData.user.operId,
+				groupId: this.chatObj.chatId,
+			}
+			this.$http.post('app/group/member', pData).then(res => {
+				this.group = res
 			});
 		}
 	},
@@ -156,6 +155,13 @@ export default {
 
 <style lang="scss">
 	.content{
+		.btn-red{
+			text-align: center; color: red;
+		}
+		.erweima{
+			font-size: 16px;
+			color: #969799;
+		}
 		.member{
 			background-color: #FFFFFF;
 			padding-left: 30rpx;
