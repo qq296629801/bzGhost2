@@ -41,7 +41,7 @@ export default {
 	},
 	methods: {
 		saveData(){
-			this.[func[type]]();
+			//this.[func[type]]();
 		},
 		updateNickName () {
 		},
