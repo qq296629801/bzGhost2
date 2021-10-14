@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="userinfo">
-			<u-avatar src="/static/image/huge.jpg" mode="square" size="110" @tap="previewImg(url)"></u-avatar>
+			<u-avatar src="/static/image/huge.jpg" mode="square" size="110" @tap="linkImg(url)"></u-avatar>
 			<view class="userinfo-desc">
 				<view class="userinfo-desc-name">{{nickName}}</view>
 				<view class="userinfo-desc-gray">地区 未知</view>
@@ -18,10 +18,10 @@
 		<view  class="perch"></view>
 		
 		<u-cell-group>
-			<u-cell-item v-if="source == 1" title="" @click="userAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item v-if="source == 1" title="" @click="linkAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
 					<view  style="text-align: center;">添加到通讯录</view>
 			</u-cell-item>
-			<u-cell-item v-else title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="toChat">
+			<u-cell-item v-else title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="linkChat">
 				<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 			</u-cell-item>
 		</u-cell-group>
@@ -43,7 +43,7 @@
 		},
 		methods: {
 			...mapMutations(['setChatObj']),
-			toChat(){
+			linkChat(){
 				this.setChatObj({
 					chatId: this.userId,
 					chatName:this.nickName,
@@ -53,7 +53,7 @@
 					url:"pages/chat/chat"
 				});
 			},
-			userAdd(){
+			linkAdd(){
 				let item = {
 					userId: this.userData.user.operId,
 					friendId: this.userId,
@@ -62,7 +62,7 @@
 					uni.navigateBack()
 				});
 			},
-			previewImg(urls){
+			linkImg(urls){
 				uni.previewImage({urls:[urls]})
 			},
 		},
