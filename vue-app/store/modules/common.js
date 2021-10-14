@@ -14,11 +14,26 @@ export const state = {
   	areaName: "请选择",
   	areaId: ''
   },
+  chatObj:{},
+  packet:{},
+  newsPush:{}
 };
 //缓存浏览器的数据名称
 const cacheNameList = ["userData", "webViewUrl"];
 let clearTime;
 export const mutations = {
+	// 
+	setNewsPush(state, data){
+		if(data){
+			state.newsPush = data
+		}
+	},
+	// 
+	setChatObj(state, data){
+		if(data){
+			state.chatObj = data
+		}
+	},
   //取出缓存数据（打开APP就取出）
   setCacheData(state) {
   	for (let name of cacheNameList) {
