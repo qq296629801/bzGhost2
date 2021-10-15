@@ -51,7 +51,6 @@ export default {
 	},
 	watch:{
         newsPush: function(value){
-			//console.log(JSON.stringify(value))
 			dbCommon.put('conversation').then(res=>{
 				this.list = res
 			});
@@ -121,10 +120,8 @@ export default {
 				const t = this
 				uni.scanCode({
 					success: function(res) {
-						//uni.vibrateLong();
 						let result = res.result
 						if (result==t.userData.user.operId){
-							//t.util.modal('不能添加自己为好友');
 						} else {
 							t.$u.route({
 								url: 'pages/friend/businessCard',

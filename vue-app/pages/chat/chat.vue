@@ -130,8 +130,6 @@ export default {
 			y: 0,
 			value: false,
 			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
-			//
-			fromUserInfo: {},
 			formData: {
 				content: '',
 				limit: 15,
@@ -302,14 +300,23 @@ export default {
 				}
 			});
 			
-			// 存储服务器
-			let reqData = {
+			// 存储服务器1
+			let groupHttpReq = {
 				groupId: this.chatObj.chatId,
 				userId: this.userData.user.operId,
 				message: this.formData.content,
 				msgType: 0
 			}
-			this.$http.post('app/group/msg/add', reqData);
+			this.$http.post('app/group/msg/add', groupHttpReq);
+			
+			// 存储服务器2
+			let friendHttpReq = {
+				toUserId: this.chatObj.chatId,
+				userId: this.userData.user.operId,
+				context: this.formData.content,
+				msgType: 0
+			}
+			this.$http.post('app/friend/msg/add', friendHttpReq);
 
 			this.$nextTick(() => {
 				this.formData.content = '';
