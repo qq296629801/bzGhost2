@@ -7,7 +7,7 @@
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
-					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkToBusinessCard(item.fromUserId)"></image>
+					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
 					<!-- contentType = 1 文本 -->
 					<view @longtap="taptext($event)" class="content" v-if="item.contentType == 0">{{ item.content }}</view>
 					<!-- contentType = 2 语音 -->
@@ -121,7 +121,7 @@
 <script>
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
-import history from '@/util/history.js'
+import dbMessage from '@/util/db_message.js'
 export default {
 	data() {
 		return {
@@ -183,7 +183,7 @@ export default {
 				return;
 			}
 			this.loading = false;
-			history.get(this.chatObj.chatId).then(res=>{
+			dbMessage.get(this.chatObj.chatId).then(res=>{
 				const data = res;
 				//获取节点信息
 				const { index } = this.formData;
@@ -268,7 +268,7 @@ export default {
 			this.messageList.push(params);
 			
 			//本地缓存
-			history.up(params,this.chatObj.chatId);
+			dbMessage.commit(params,this.chatObj.chatId);
 			
 			// 消息列表
 			let message = {
@@ -286,17 +286,16 @@ export default {
 			this.$socket.sendMessage(params, res=>{
 				if(res.fromUserId!=this.userData.user.operId){
 					res.isItMe = false;
-					
 					// 本地内存
 					this.messageList.push(res);
-					//本地缓存
-					history.up(res,this.chatObj.chatId);
-					
+					// 本地缓存
+					dbMessage.commit(res,this.chatObj.chatId);
+					// 页面置底
 					const sel = `#msg-${this.messageList[this.messageList.length - 1].hasBeenSentId}`;
 					this.$nextTick(() => {
 						this.bindScroll(sel);
 					});
-					
+					// 页面红点
 					uni.showTabBarRedDot({
 						index: 0
 					});
@@ -304,12 +303,13 @@ export default {
 			});
 			
 			// 存储服务器
-			this.$http.post('app/group/msg/add',{
+			let reqData = {
 				groupId: this.chatObj.chatId,
 				userId: this.userData.user.operId,
 				message: this.formData.content,
 				msgType: 0
-			});
+			}
+			this.$http.post('app/group/msg/add', reqData);
 
 			this.$nextTick(() => {
 				this.formData.content = '';
@@ -355,12 +355,12 @@ export default {
 		touchstart() {
 			uni.hideKeyboard();
 		},
-		// userid 用户id
-		linkToBusinessCard(userId) {
+		// 卡片
+		linkCard({userId, nickName, source}) {
 			this.$u.route({
-				url: 'pages/businessCard/businessCard',
+				url: 'pages/friend/businessCard',
 				params: {
-					userId
+					userId, userName, source:0
 				}
 			});
 		},

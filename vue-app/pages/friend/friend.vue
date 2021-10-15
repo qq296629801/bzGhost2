@@ -6,7 +6,7 @@
 <script>
 import addressBook from '@/components/addressBook.vue'
 import { mapState, mapMutations} from 'vuex';
-import common from '@/util/common.js'
+import dbCommon from '@/util/db_common.js'
 export default {
 	components:{ addressBook },
 	data() {
@@ -26,7 +26,7 @@ export default {
 	},
 	methods: {
 		a(){
-			common.get('friend').then(res=>{
+			dbCommon.get('friend').then(res=>{
 				this.list = res
 			});
 		},

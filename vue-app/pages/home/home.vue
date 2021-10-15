@@ -20,7 +20,7 @@ import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import common from '@/util/common.js'
+import dbCommon from '@/util/db_common.js'
 import { mapState, mapMutations} from 'vuex';
 export default {
 	components: { selectInput, message },
@@ -51,8 +51,8 @@ export default {
 	},
 	watch:{
         newsPush: function(value){
-			console.log(JSON.stringify(value))
-			common.put('conversation').then(res=>{
+			//console.log(JSON.stringify(value))
+			dbCommon.put('conversation').then(res=>{
 				this.list = res
 			});
 		}
@@ -63,7 +63,7 @@ export default {
 	onLoad() {
 	},
 	onShow() {
-		common.put('conversation').then(res=>{
+		dbCommon.put('conversation').then(res=>{
 			this.list = res
 		});
 	},

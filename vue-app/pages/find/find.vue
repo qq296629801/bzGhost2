@@ -44,13 +44,13 @@ export default {
 	},
 	methods: {
 		querylinkItem(){
-			this.$socket.getLinks(this.userData.user.operId, res=>{
-				if(res.response.success){
-					//this.$u.vuex('linkItem',res.response.data);
-				}else {
-					this.util.modal(res.response.errorMessage)
-				}
-			});
+			// this.$socket.getLinks(this.userData.user.operId, res=>{
+			// 	if(res.response.success){
+			// 		//this.$u.vuex('linkItem',res.response.data);
+			// 	}else {
+			// 		this.util.modal(res.response.errorMessage)
+			// 	}
+			// });
 		},
 		linkToMoment(){
 			this.$u.route({

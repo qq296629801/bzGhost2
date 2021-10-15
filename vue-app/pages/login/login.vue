@@ -41,8 +41,8 @@
 	let my;
 	import wInput from '@/components/watch-login/watch-input.vue' 
 	import wButton from '@/components/watch-login/watch-button.vue'
-	import history from '@/util/history.js'
-	import common from '@/util/common.js'
+	import dbMessage from '@/util/db_message.js'
+	import dbCommon from '@/util/db_common.js'
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
@@ -80,11 +80,14 @@
 					this.$socket.login(res.user.operId,res=>{
 						console.log(res);
 						setTimeout(()=>{
-							history.push();
-							common.put('post');
-							common.put('friend');
-							common.put('conversation');
+							dbMessage.pull();
+							
+							dbCommon.put('post');
+							dbCommon.put('friend');
+							dbCommon.put('conversation');
+							
 							my.loading=false;
+							
 							uni.reLaunch({
 								url: '/pages/home/home',
 							});

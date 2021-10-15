@@ -24,7 +24,7 @@
 	</view>
 </template>
 <script>
-	import common from '@/util/common.js'
+	import dbCommon from '@/util/db_common.js'
 	export default {
 		components: {
 		},
@@ -41,7 +41,7 @@
 			}
 		},
 		onShow() {
-			common.get('friend').then(res=>{
+			dbCommon.get('friend').then(res=>{
 				this.list = res
 				this.firendItem = res
 				let indexList = []
