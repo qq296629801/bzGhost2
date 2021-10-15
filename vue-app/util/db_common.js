@@ -16,6 +16,9 @@ function put(key){
 	if (!userData.token) {
 		userData = uni.getStorageSync("userData");
 	}
+	if(userData.user==undefined){
+		return;
+	}
 	let userId = userData.user.operId;
 	return new Promise((resolve,reject) =>{
 		let httpData = {
@@ -35,6 +38,9 @@ function get(key){
 	let userData = $store.state.userData;
 	if (!userData.token) {
 		userData = uni.getStorageSync("userData");
+	}
+	if(userData.user==undefined){
+		return;
 	}
 	let userId = userData.user.operId;
 	return new Promise((resolve,reject) =>{

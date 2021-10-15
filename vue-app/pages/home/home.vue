@@ -51,6 +51,7 @@ export default {
 	},
 	watch:{
         newsPush: function(value){
+			console.log(value)
 			dbCommon.put('conversation').then(res=>{
 				this.list = res
 			});
@@ -62,6 +63,9 @@ export default {
 	onLoad() {
 	},
 	onShow() {
+		if(this.userData.user==undefined){
+			return;
+		}
 		dbCommon.put('conversation').then(res=>{
 			this.list = res
 		});
@@ -80,7 +84,10 @@ export default {
 			this.value = !this.value
 		},
 		a(){
-			common.get('conversation').then(res=>{
+			if(this.userData.user==undefined){
+				return;
+			}
+			dbCommon.get('conversation').then(res=>{
 				this.list = res
 				this.mescroll.endSuccess(this.list.length);
 			}).catch(e=>{

@@ -9,7 +9,7 @@
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
 					<!-- contentType = 1 文本 -->
-					<view @longtap="taptext($event)" class="content" v-if="item.contentType == 0">{{ item.content }}</view>
+					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == 0">{{ item.content }}</view>
 					<!-- contentType = 2 语音 -->
 					<view
 						class="content contentType2"
@@ -121,7 +121,8 @@
 <script>
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
-import dbMessage from '@/util/db_message.js'
+import dbMessage from '@/util/db_message.js';
+import api from '@/util/api.js'
 export default {
 	data() {
 		return {
@@ -136,6 +137,7 @@ export default {
 				index: 1
 			},
 			messageList: [],
+			message:{},
 			loading: true, //标识是否正在获取数据
 			imgHeight: '1000px',
 			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
@@ -163,13 +165,23 @@ export default {
 		...mapState(['userData','chatObj'])
 	},
 	methods: {
-		tapPopup(){
-			uni.showToast({
-				title:'测试开发',
-				icon:'success'
-			})
+		tapPopup(item){
+			if(item.title=='转发'){
+				this.$u.route({
+					url: 'pages/chat/forward',
+					params: {
+						message:this.message.content, 
+						msgType:this.message.contentType
+					}
+				});
+				//console.log(JSON.stringify(item))
+			}
 		},
-		taptext(e,index){
+		tapText(item){
+			//console.log(JSON.stringify(item))
+			this.message=item;
+		},
+		longtapText(e,index){
 			this.x = e.touches[0].clientX
 			this.y = e.touches[0].clientY
 			this.value = !this.value
@@ -196,9 +208,7 @@ export default {
 					//如果还有数据
 					if (this.formData.limit >= data.length) {
 						this.formData.index++;
-						setTimeout(() => {
-							this.loading = true;
-						}, 200);
+						this.loading = true;
 					}
 				});
 			});
@@ -268,18 +278,9 @@ export default {
 			//本地缓存
 			dbMessage.commit(params,this.chatObj.chatId);
 			
-			// 消息列表
-			let message = {
-				userId:this.userData.user.operId,
-				chatId:this.chatObj.chatId,
-				chatType:this.chatObj.chatType,
-				message:this.formData.content,
-				msgType:0
-			}
-			this.$http.post('app/conversation/create',message).then(res=>{
-				console.log(JSON.stringify(res))
-			});
-
+			api.conversationCreate(this.formData.content);
+			api.messageCreate(this.formData.content);
+			
 			// 发送消息到服务器转发
 			this.$socket.sendMessage(params, res=>{
 				if(res.fromUserId!=this.userData.user.operId){
@@ -300,23 +301,6 @@ export default {
 				}
 			});
 			
-			// 存储服务器1
-			let groupHttpReq = {
-				groupId: this.chatObj.chatId,
-				userId: this.userData.user.operId,
-				message: this.formData.content,
-				msgType: 0
-			}
-			this.$http.post('app/group/msg/add', groupHttpReq);
-			
-			// 存储服务器2
-			let friendHttpReq = {
-				toUserId: this.chatObj.chatId,
-				userId: this.userData.user.operId,
-				context: this.formData.content,
-				msgType: 0
-			}
-			this.$http.post('app/friend/msg/add', friendHttpReq);
 
 			this.$nextTick(() => {
 				this.formData.content = '';
@@ -594,6 +578,8 @@ export default {
 		uni.setNavigationBarTitle({
 			title: this.chatObj.chatName
 		});
+		
+		//this.sendMsg(null);
 		
 		this.joinData();
 		
