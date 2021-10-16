@@ -278,7 +278,7 @@ export default {
 			//本地缓存
 			dbMessage.commit(params,this.chatObj.chatId);
 			
-			api.conversationCreate(this.formData.content);
+			// 服务器入库
 			api.messageCreate(this.formData.content);
 			
 			// 发送消息到服务器转发
@@ -579,7 +579,9 @@ export default {
 			title: this.chatObj.chatName
 		});
 		
-		//this.sendMsg(null);
+		uni.hideTabBarRedDot({
+			index : 0,
+		})
 		
 		this.joinData();
 		
