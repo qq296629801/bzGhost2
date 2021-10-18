@@ -73,25 +73,18 @@
 				}
 				my.loading=true
 				
-				this.$http.get('/login',this.formData).then(res=>{
-					my.setUserData(res);
-					
+				this.$http.get('/login',this.formData).then(a=>{
+					my.setUserData(a);
 					// 绑定当前用户id
-					this.$socket.login(res.user.operId,res=>{
-						console.log(res);
-						setTimeout(()=>{
-							dbMessage.pull();
-							
-							dbCommon.put('post');
-							dbCommon.put('friend');
-							dbCommon.put('conversation');
-							
-							my.loading=false;
-							
-							uni.reLaunch({
-								url: '/pages/home/home',
-							});
-						},200);
+					this.$socket.login(b=>{
+						dbMessage.pull();
+						dbCommon.put('post');
+						dbCommon.put('friend');
+						dbCommon.put('conversation');
+						my.loading=false;
+						uni.reLaunch({
+							url: '/pages/home/home',
+						});
 					});
 				});
 			

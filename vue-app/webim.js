@@ -62,20 +62,20 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	login: (userId,res) => {
+	login: (res) => {
 		let requestPacket = {
-			userId,
+			userId:store.state.userData.user.operId,
 			version: 1,
 			command: 1
 		}
 		send(requestPacket);
 		eventDispatcher.addListener('2',res);
 	},
-	joinGroup: (chatId,userId,chatType,res) => {
+	joinGroup: (res) => {
 		let requestPacket = {
-			chatId,
-			userId,
-			chatType,
+			chatId:store.state.chatObj.chatId,
+			userId:store.state.userData.user.operId,
+			chatType:store.state.chatObj.chatType,
 			version: 1,
 			command: 7
 		}
@@ -83,43 +83,51 @@ const WEBIM = {
 		eventDispatcher.addListener('8',res);
 	},
 	
-	quitGroup: (groupId,userId,res) => {
+	quitGroup: (res) => {
 		let requestPacket = {
-			groupId,
-			userId,
+			chatId:store.state.chatObj.chatId,
+			userId:store.state.userData.user.operId,
+			chatType:store.state.chatObj.chatType,
 			version: 1,
 			command: 9
 		}
 		send(requestPacket);
 		eventDispatcher.addListener('10',res);
 	},
-	
-	heartTest: (userId, func) => {
+	heartTest: (func) => {
 		let packet = {
-			userId,
+			userId:store.state.userData.user.operId,
 			version: 1,
 			command: 17
 		}
-		send(packet).then(e => {
+		send(packet)
 		eventDispatcher.addListener('18', func)
-		});
 	},
 	sendMessage: (params, func) => {
 		params.version = 1;
 		params.command = 3;
-		send(params).then(e => {
-		eventDispatcher.addListener('4', func)
-		});
+		params.createTime= Date.now()
+		params.hasBeenSentId= Date.now()
+		params.fromUserId=store.state.userData.user.operId
+		params.fromUserName=store.state.userData.user.username
+		params.fromUserHeadImg= '/static/logo.png'
+		params.userId=store.state.userData.user.operId
+		params.toUserId=store.state.chatObj.chatId
+		params.toUserName=store.state.chatObj.chatName
+		params.toUserHeadImg='/static/logo.png'
+		params.chatType=store.state.chatObj.chatType
+		params.isItMe = true
+		send(params);
+		eventDispatcher.addListener('4', func);
 	},
-	logout: (userId, func) => {
+	logout: (func) => {
 		let requestPacket = {
-			userId,
+			userId:store.state.userData.user.operId,
 			version: 1,
 			command: 5
 		}
-		send(requestPacket).then(e => {
-		eventDispatcher.addListener('6', func)
-		});
+		send(requestPacket);
+		eventDispatcher.addListener('6', func);
 	}
 }
 
@@ -170,30 +178,23 @@ EventDispatcher.prototype.dispatchEvent = function(eventKey, event) {
 }
 
 let send = (p) => {
-	 return new Promise((resolve, reject) => {
-		// p.token = store.state.userData.token;
-		 // if(store.state.userData.token==undefined){
-			//  return;
-		 // }
-		 WEBIM.server.sendWebSocketMsg({
-		 	data: p,
-		 	success(res) {resolve(res)},
-		 	fail(err) {
-				// 进行重连
-				reject(err)
-				WEBIM.server._isLogin = false;
-				if (WEBIM.server._isReconnection) {
-					console.log('网络中断，尝试重连')
-					WEBIM.options = {
-						url: WEBIM.serverUrl,
-						success(res) {resolve(res)},
-						fail(err) {reject(err)}
-					}
-				    WEBIM.server._reConnect(WEBIM.options)
+	 WEBIM.server.sendWebSocketMsg({
+	 	data: p,
+	 	success(res) {},
+	 	fail(err) {
+			// 进行重连
+			WEBIM.server._isLogin = false;
+			if (WEBIM.server._isReconnection) {
+				console.log('网络中断，尝试重连')
+				WEBIM.options = {
+					url: WEBIM.serverUrl,
+					success(res) {},
+					fail(err) {}
 				}
-		 		console.log('【websocket】发送失败,尝试手动重连')
-		 	}
-		 });
+				WEBIM.server._reConnect(WEBIM.options)
+			}
+	 		console.log('【websocket】发送失败,尝试手动重连')
+	 	}
 	 });
 }
 

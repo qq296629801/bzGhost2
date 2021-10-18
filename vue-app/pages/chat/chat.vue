@@ -197,10 +197,8 @@ export default {
 				const data = res;
 				//获取节点信息
 				const { index } = this.formData;
-				
 				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
 				this.messageList = [...data, ...this.messageList];
-				
 				
 				//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
 				this.$nextTick(() => {
@@ -240,19 +238,8 @@ export default {
 		//发送消息
 		sendMsg(data) {
 			const params = {
-				hasBeenSentId: Date.now(), //已发送过去消息的id
 				content: this.formData.content,
-				fromUserHeadImg: '/static/logo.png', //用户头像
-				fromUserId: this.userData.user.operId,
-				fromUserName:this.userData.user.username,
-				isItMe: true, //true此条信息是我发送的  false别人发送的
-				createTime: Date.now(),
-				contentType: 0,
-				userId:this.userData.user.operId,
-				toUserId:this.chatObj.chatId,
-				toUserHeadImg:'/static/logo.png',
-				toUserName:this.chatObj.chatName,
-				chatType:this.chatObj.chatType
+				contentType: 0,				
 			};
 
 			if (data) {
@@ -283,21 +270,29 @@ export default {
 			
 			// 发送消息到服务器转发
 			this.$socket.sendMessage(params, res=>{
-				if(res.fromUserId!=this.userData.user.operId){
-					res.isItMe = false;
-					// 本地内存
-					this.messageList.push(res);
-					// 本地缓存
-					dbMessage.commit(res,this.chatObj.chatId);
-					// 页面置底
-					const sel = `#msg-${this.messageList[this.messageList.length - 1].hasBeenSentId}`;
-					this.$nextTick(() => {
-						this.bindScroll(sel);
-					});
-					// 页面红点
-					uni.showTabBarRedDot({
-						index: 0
-					});
+				// 判断是否当前群组
+				if(res.toUserId==this.chatObj.chatId){
+					// 判断发送人是不是自己
+					if(res.fromUserId!=this.userData.user.operId){
+						if(res.content!=''){
+							res.isItMe = false;
+							// 本地内存
+							this.messageList.push(res);
+							// 本地缓存
+							dbMessage.commit(res,this.chatObj.chatId);
+							// 页面置底
+							// #ifndef MP-WEIXIN
+								uni.pageScrollTo({
+									scrollTop: 99999,
+									duration: 100
+								});
+							// #endif
+							// 页面红点
+							uni.showTabBarRedDot({
+								index: 0
+							});
+						}
+					}
 				}
 			});
 			
@@ -588,17 +583,7 @@ export default {
 		let _this = this
 		
 		// 绑定通道
-		this.$socket.joinGroup(this.chatObj.chatId,this.userData.user.operId,this.chatObj.chatType,res=>{
-			//console.log(res,'加入群组')
-			// 发送空消息
-			let params = {
-				toUserId:_this.chatObj.chatId,
-				userId:_this.userData.user.operId,
-				chatType:_this.chatObj.chatType
-			}
-			_this.$socket.sendMessage(params, res2=>{
-				//console.log(res2,'发送空消息')
-			});
+		this.$socket.joinGroup(a=>{
 		});
 		
 		uni.getSystemInfo({

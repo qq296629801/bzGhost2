@@ -6,7 +6,6 @@
 		</u-navbar>
 		<!-- #endif -->
 		
-		
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
 		<view class="content-imgbox">
 			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>

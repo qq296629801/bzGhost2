@@ -1,7 +1,7 @@
 {
-    "name" : "yiqun极速版",
+    "name" : "yiqun",
     "appid" : "__UNI__F0BC691",
-    "description" : "打造跨平台即时通信软件，个人也能玩得转!",
+    "description" : "打造跨平台即时通信软件，个人也能玩得转",
     "versionName" : "1.0.9",
     "versionCode" : 108,
     "transformPx" : false,

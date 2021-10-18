@@ -60,7 +60,7 @@ export default {
 			});
 		},
 		logout(){
-			this.$socket.logout(this.userData.user.operId, e =>{})
+			this.$socket.logout(res =>{});
 			uni.clearStorageSync();
 			this.$u.route({
 				url: 'pages/login/login'
@@ -71,7 +71,7 @@ export default {
 			plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
 				// 获取验证码
 				uni.request({
-					url: this.$api + '/version/queryVersions', 
+					url: '', 
 					data: {keyword:''},
 					success: (res) => {
 						if(widgetInfo.version == res.data.data.version){
