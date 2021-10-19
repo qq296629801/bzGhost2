@@ -1,16 +1,6 @@
 import request from "@/plugins/request";
 import store from '@/store';
 import base from '@/config/baseUrl';
-// #ifdef H5
-import {
-	h5Login
-} from '@/config/html5Utils';
-// #endif
-// #ifdef MP-WEIXIN
-import {
-	onLogin
-} from '@/config/login';
-// #endif
 let version_code = '';
 // #ifdef APP-PLUS
 import {
@@ -121,87 +111,8 @@ $http.dataFactory = async function(res) {
 		//判断数据是否请求成功
 		if (httpData.success) {
 			// 返回正确的结果(then接受数据)
-			//console.log(JSON.stringify(httpData.data))
-			
 			return Promise.resolve(httpData.data);
-		}/* else if (httpData.code == "1000" || httpData.code == "1001" || httpData.code == 1100 || httpData
-			.code == 402) {
-			store.commit("emptyUserInfo");
-			// #ifdef MP-WEIXIN
-			onLogin();
-			// #endif
-			// #ifdef H5
-			h5Login("force");
-			// #endif
-			// #ifdef APP-PLUS
-			var content = '此时此刻需要您登录喔~';
-			if (httpData.code == "1000") {
-				content = '此时此刻需要您登录喔';
-			}
-			if (loginPopupNum <= 0) {
-				loginPopupNum++;
-				uni.showModal({
-					title: '温馨提示',
-					content: content,
-					confirmText: "去登录",
-					cancelText: "再逛会",
-					success: function(res) {
-						loginPopupNum--;
-						if (res.confirm) {
-							uni.navigateTo({
-								url: "/pages/user/login"
-							});
-						}
-					}
-				});
-			}
-			// #endif
-			// 返回错误的结果(catch接受数据)
-			return Promise.reject({
-				statusCode: 0,
-				errMsg: "【request】" + (httpData.info || httpData.msg),
-				data: res.data
-			});
-		} else if (httpData.code == "1004") {
-			if (loginPopupNum <= 0) {
-				loginPopupNum++;
-				uni.showModal({
-					title: "提示",
-					content: "您还未绑定手机号，请先绑定~",
-					confirmText: "去绑定",
-					cancelText: "再逛会",
-					success: (res) => {
-						loginPopupNum--;
-						if (res.confirm) {
-							uni.navigateTo({
-								url: '/pages/user/bindPhone'
-							});
-						}
-					}
-				});
-			}
-			// 返回错误的结果(catch接受数据)
-			return Promise.reject({
-				statusCode: 0,
-				errMsg: "【request】" + (httpData.info || httpData.msg),
-				data: res.data
-			});
-		} else { //其他错误提示   
-			if (res.isPrompt) {
-				uni.showToast({
-					title: httpData.info || httpData.msg,
-					icon: "none",
-					duration: 3000
-				});
-			}
-			// 返回错误的结果(catch接受数据)
-			return Promise.reject({
-				statusCode: 0,
-				errMsg: "【request】" + (httpData.info || httpData.msg),
-				data: res.data
-			});
 		}
- */
 	} else {
 		// 返回错误的结果(catch接受数据)
 		return Promise.reject({

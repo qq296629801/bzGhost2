@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App'
 import uView from "uview-ui";
 import webim from 'webim.js';
-import * as filters from '@/util/util.js'
 //数据管理中心
 import store from '@/store/index.js'
 Vue.prototype.$store = store;
@@ -17,27 +16,9 @@ import publicModule from "@/components/common/public_module.vue";
 Vue.component("public-module", publicModule);
 Vue.use(uView);
 
-Object.keys(filters).forEach(name=>{
-	Vue.filter(name,filters[name])
-})
-
 Vue.config.productionTip = false;
 Vue.prototype.$socket = webim;
-
 App.mpType = 'app'
-
-Promise.prototype.finally = function(callback) {
-    let constructor = this.constructor;
-    return this.then(function(value) {
-        return constructor.resolve(callback()).then(function() {
-            return value
-        })
-    }, function(issue) {
-        return constructor.resolve(callback()).then(function() {
-            throw issue
-        })
-    })
-}
 
 const app = new Vue({
 	store,

@@ -25,7 +25,7 @@
 				class="wbutton"
 				text="登 录"
 				:rotate="loading" 
-				@click="onLogin"
+				@click="linkLogin"
 			></wButton>
 			
 			<view class="footer">
@@ -47,13 +47,14 @@
 	export default {
 		data() {
 			return {
-				logoImage: '/static/logo.png',
 				loading: false, 
 				isFocus: true, 
 			    formData:{
 					username: 'admin',
 					password: '123456'
-				}
+				},
+				homePath:'',
+				logoImage: '',
 			};
 		},
 		components:{
@@ -63,53 +64,33 @@
 		mounted() {
 			my= this;
 		},
+		onLoad() {
+			this.homePath = this.$base.homePath
+			this.logoImage = this.$base.logoImage
+		},
 		methods: {
 			...mapMutations(['setUserData']),
-			isLogin(){
-			},
-		    onLogin(e){
+		    linkLogin(e){
 				if(my.loading){
 					return false;
 				}
 				my.loading=true
-				
 				this.$http.get('/login',this.formData).then(a=>{
 					my.setUserData(a);
-					// 绑定当前用户id
 					this.$socket.login(b=>{
 						dbMessage.pull();
+						
 						dbCommon.put('post');
 						dbCommon.put('friend');
 						dbCommon.put('conversation');
 						my.loading=false;
+						
 						uni.reLaunch({
-							url: '/pages/home/home',
+							url: this.homePath,
 						});
 					});
 				});
-			
-		    },
-			login_weixin() {
-				uni.showToast({
-					icon: 'none',
-					position: 'bottom',
-					title: '...'
-				});
-			},
-			login_weibo() {
-				uni.showToast({
-					icon: 'none',
-					position: 'bottom',
-					title: '...'
-				});
-			},
-			login_github() {
-				uni.showToast({
-					icon: 'none',
-					position: 'bottom',
-					title: '...'
-				});
-			}
+		    }
 		}
 	}
 </script>
