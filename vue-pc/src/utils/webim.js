@@ -56,7 +56,7 @@ const WEBIM = {
       WEBIM.server.onSocketClosed(WEBIM.options);
     });
   },
-  disconnect: function(e) {
+  disconnect: function() {
     WEBIM.server.closeWebSocket();
   },
   isConnect: function() {
@@ -180,16 +180,16 @@ EventDispatcher.prototype.dispatchEvent = function(eventKey, event) {
 let send = p => {
   WEBIM.server.sendWebSocketMsg({
     data: p,
-    success(res) {},
-    fail(err) {
+    success() {},
+    fail() {
       // 进行重连
       WEBIM.server._isLogin = false;
       if (WEBIM.server._isReconnection) {
         console.log("网络中断，尝试重连");
         WEBIM.options = {
           url: WEBIM.serverUrl,
-          success(res) {},
-          fail(err) {}
+          success() {},
+          fail() {}
         };
         WEBIM.server._reConnect(WEBIM.options);
       }
