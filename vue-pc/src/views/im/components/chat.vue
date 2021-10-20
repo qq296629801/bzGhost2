@@ -134,8 +134,10 @@ import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState } from "vuex";
-import { get } from "@/utils/db_common.js";
 import { imageLoad } from "../../../utils/ChatUtils";
+import { get } from "@/utils/db_message.js";
+import { commit } from "@/utils/db_message.js";
+import { messageCreate } from "@/utils/api.js";
 export default {
   components: {
     Faces,
@@ -154,8 +156,6 @@ export default {
       modal: false,
       groupUserModel: false,
       groupUser: {},
-      // 保存各个聊天记录的map
-      messageListMap: new Map(),
       messageContent: "",
       messageList: [],
       showFace: false,
@@ -201,71 +201,61 @@ export default {
     // 本人发送信息
     mineSend() {
       let self = this;
-      //let time = new Date().getTime();
       let content = self.messageContent;
       if (content !== "" && content !== "\n") {
         if (content.length > 2000) {
-          self.openMessage("不能超过2000个字符");
         } else {
-          const params = {
-            hasBeenSentId: Date.now(),
-            content: self.messageContent,
-            fromUserHeadImg: "/static/logo.png",
-            fromUserId: self.userData.user.operId,
-            fromUserName: self.userData.user.username,
-            isItMe: true,
-            createTime: Date.now(),
-            contentType: 0,
-            userId: self.userData.user.operId,
-            toUserId: self.chatObj.chatId,
-            toUserHeadImg: "/static/logo.png",
-            toUserName: self.chatObj.chatName,
-            chatType: self.chatObj.chatType
-          };
-
-          self.messageList.push(params);
-
-          self.$socket.sendMessage(params, res => {
-            if (res.fromUserId != self.userData.user.operId) {
-              res.isItMe = false;
-              self.messageList.push(res);
-              // 每次滚动到最底部
-              self.$nextTick(() => {
-                imageLoad("message-box");
-              });
-            }
-          });
-
-          // 存储服务器
-          self.send(params);
+          this.send();
         }
       }
     },
-    // 发送消息的基础方法
-    send() {
-      let self = this;
-      // message.timestamp = self.formatDateTime(new Date(message.timestamp));
-      self.messageContent = "";
-      // 每次滚动到最底部
-      self.$nextTick(() => {
-        imageLoad("message-box");
-      });
+    send(){
+          let self = this
+          const params = {
+            content: self.messageContent,
+            contentType: 0
+          };
+
+          //本地内存
+          self.messageList.push(params);
+
+          //本地缓存
+          commit(params, self.chatObj.chatId);
+
+          // 服务器入库
+          messageCreate(self.formData.content);
+
+          // 发送消息到服务器转发
+          self.$socket.sendMessage(params, res => {
+            // 判断是否当前群组
+            if (res.toUserId == self.chatObj.chatId) {
+              // 判断发送人是不是自己
+              if (res.fromUserId != self.userData.user.operId) {
+                if (res.content != "") {
+                  res.isItMe = false;
+                  // 本地内存
+                  self.messageList.push(res);
+                  // 本地缓存
+                  commit(res, self.chatObj.chatId);
+                  // 页面置底
+                  // 每次滚动到最底部
+                  self.$nextTick(() => {
+                    imageLoad("message-box");
+                  });
+                }
+              }
+            }
+          });
     },
     initChat() {
       let self = this;
-      //获取群消息
       get(self.chatObj.chatId).then(res => {
         self.messageList = res;
       });
-
-      // 加入群通道
-      // self.$socket.joinGroup(
-      //   self.chatObj.chatId,
-      //   self.userData.user.operId,
-      //   res => {
-      //     console.log(JSON.stringify(res));
-      //   }
-      // );
+      // 绑定通道
+      self.$socket.joinGroup(a=>{
+        self.send();
+      });
     },
     getHistoryMessage(pageNo) {
       let self = this;
@@ -287,12 +277,9 @@ export default {
     // 监听每次 chatObj 的变化
     chatObj: function() {
       let self = this;
-      self.messageList = [];
-      // 从内存中取聊天信息
       self.initChat();
-
       // 每次滚动到最底部
-      this.$nextTick(() => {
+      self.$nextTick(() => {
         imageLoad("message-box");
       });
     }

@@ -16,6 +16,4 @@ function messageCreate(message, msgType = 0) {
   $http.post("app/msg/add", requestData);
 }
 
-module.exports = {
-  messageCreate: messageCreate
-};
+export { messageCreate };

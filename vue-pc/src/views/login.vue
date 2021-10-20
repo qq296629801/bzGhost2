@@ -203,14 +203,14 @@ export default {
     },
     verifyTelephone: function() {},
     imgChange: function() {
-      var file = $("#photoImg")[0].files[0];
-      this.formData = new FormData();
-      this.formData.append("file", file);
-      var URL = window.URL || window.webkitURL;
-      var imgURL = URL.createObjectURL(file);
-      this.img = imgURL;
-      this.isdefultImg = false;
-      this.ifshow = true;
+      // var file = $("#photoImg")[0].files[0];
+      // this.formData = new FormData();
+      // this.formData.append("file", file);
+      // var URL = window.URL || window.webkitURL;
+      // var imgURL = URL.createObjectURL(file);
+      // this.img = imgURL;
+      // this.isdefultImg = false;
+      // this.ifshow = true;
     },
     selectImg: function() {
       this.$refs.img.click();

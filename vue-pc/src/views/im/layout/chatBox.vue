@@ -138,7 +138,7 @@ export default {
     font-size: 1.2rem;
     cursor: pointer;
     font-weight: 200;
-    margin-bottom: 2rem;
+    //margin-bottom: 2rem;
 
     h5 {
       padding: 0.5rem 0;
