@@ -35,7 +35,7 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-import { get } from '@/utils/db_common.js';
+import { get } from "@/utils/db_common.js";
 import { mapState } from "vuex";
 export default {
   components: {
@@ -71,12 +71,12 @@ export default {
         imageLoad("message-box");
       });
     },
-    delChat() {
-    }
+    delChat() {}
   },
   activated: function() {
     let self = this;
     self.currentChat = {};
+    self.currentChat = this.chatList[0];
     // 每次滚动到最底部
     self.$nextTick(() => {
       imageLoad("message-box");

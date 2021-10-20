@@ -71,7 +71,7 @@
             @click="showUser(item)"
           >
             <span class="im-chat-avatar">
-              <img :src="[host + item.avatar]" alt="" />
+              <img src="/static/logo.png" alt="" />
             </span>
             {{ item.name }}
           </li>
@@ -133,14 +133,9 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
-import { mapState, mapMutations } from "vuex";
-import {
-  isGroupChat,
-  MessageTargetType,
-  imageLoad,
-  ChatListUtils,
-  transform
-} from "../../../utils/ChatUtils";
+import { mapState } from "vuex";
+import { get } from "@/utils/db_common.js";
+import { imageLoad } from "../../../utils/ChatUtils";
 export default {
   components: {
     Faces,
@@ -154,7 +149,6 @@ export default {
   },
   data() {
     return {
-      host: conf.getHostUrl(),
       count: 0,
       pageSize: 20,
       modal: false,
@@ -191,22 +185,7 @@ export default {
         self.winControl.openURL(event.target.href);
       }
     },
-    showChat(user) {
-      let self = this;
-      if (user.id !== self.$store.state.user.id) {
-        let chat = ChatListUtils.resetChatList(
-          self,
-          user,
-          conf.getHostUrl(),
-          MessageTargetType.FRIEND
-        );
-        //self.isGroup = isGroupChat(chat);
-        self.$store.commit("setCurrentChat", JSON.parse(JSON.stringify(chat)));
-      } else {
-        self.$Message.warning("不能给自己说话哦");
-      }
-      self.groupUserModel = false;
-    },
+    showChat() {},
     showUser: function(user) {
       let self = this;
       self.groupUserModel = true;
@@ -222,8 +201,7 @@ export default {
     // 本人发送信息
     mineSend() {
       let self = this;
-
-      let time = new Date().getTime();
+      //let time = new Date().getTime();
       let content = self.messageContent;
       if (content !== "" && content !== "\n") {
         if (content.length > 2000) {
@@ -259,21 +237,12 @@ export default {
           });
 
           // 存储服务器
-          self
-            .$post("app/group/msg/add", {
-              groupId: this.chatObj.chatId,
-              userId: this.userData.user.operId,
-              message: self.messageContent,
-              msgType: 0
-            })
-            .then(res => {});
-
           self.send(params);
         }
       }
     },
     // 发送消息的基础方法
-    send(message) {
+    send() {
       let self = this;
       // message.timestamp = self.formatDateTime(new Date(message.timestamp));
       self.messageContent = "";
@@ -282,23 +251,21 @@ export default {
         imageLoad("message-box");
       });
     },
-
-    initGroupChat() {
+    initChat() {
       let self = this;
-
       //获取群消息
       get(self.chatObj.chatId).then(res => {
         self.messageList = res;
       });
 
       // 加入群通道
-      self.$socket.joinGroup(
-        self.chatObj.chatId,
-        self.userData.user.operId,
-        res => {
-          console.log(JSON.stringify(res));
-        }
-      );
+      // self.$socket.joinGroup(
+      //   self.chatObj.chatId,
+      //   self.userData.user.operId,
+      //   res => {
+      //     console.log(JSON.stringify(res));
+      //   }
+      // );
     },
     getHistoryMessage(pageNo) {
       let self = this;
@@ -320,25 +287,22 @@ export default {
     // 监听每次 chatObj 的变化
     chatObj: function() {
       let self = this;
-
       self.messageList = [];
-
       // 从内存中取聊天信息
+      self.initChat();
 
       // 每次滚动到最底部
       this.$nextTick(() => {
         imageLoad("message-box");
       });
-
-      self.initGroupChat();
     }
   },
   mounted: function() {
     let self = this;
+    self.initChat();
 
-    self.initGroupChat();
     // 每次滚动到最底部
-    this.$nextTick(() => {
+    self.$nextTick(() => {
       imageLoad("message-box");
     });
   }
