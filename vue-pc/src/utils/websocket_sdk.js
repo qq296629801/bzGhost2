@@ -32,7 +32,7 @@ export default class Websocket {
   }
   // 监听websocket连接关闭
   onSocketClosed(options) {
-    socket.onerror = function(event) {
+    socket.onerror = function() {
       webim.isConnected = false;
       // 停止心跳连接
       if (this._heartCheck) {
@@ -51,7 +51,7 @@ export default class Websocket {
   }
   _onSocketOpened() {
     let _this = this;
-    socket.onopen = function(event) {
+    socket.onopen = function() {
       // 打开已登录开关
       _this._isLogin = true;
       // 发送心跳
@@ -66,7 +66,7 @@ export default class Websocket {
   }
   // 接收服务器返回的消息
   onReceivedMsg(callBack) {
-    socket.onmessage = function(event) {
+    socket.onmessage = function() {
       if (typeof callBack == "function") {
         callBack(event);
       }
@@ -95,8 +95,8 @@ export default class Websocket {
     };
     this.sendBinary(99, {
       data: packet,
-      success(res) {},
-      fail(err) {}
+      success() {},
+      fail() {}
     });
   }
 
@@ -104,15 +104,14 @@ export default class Websocket {
   sendLoginData() {
     this.sendBinary(99, {
       data: {},
-      success(res) {},
-      fail(err) {}
+      success() {},
+      fail() {}
     });
   }
 
   // 重连方法，会根据时间频率越来越慢
   _reConnect(options) {
     let timer,
-      _this = this;
     if (this._connectNum < 20) {
       timer = setTimeout(() => {
         this.initWebSocket(options);
@@ -132,12 +131,14 @@ export default class Websocket {
   }
   // 关闭websocket连接
   closeWebSocket() {
-    uni.closeSocket();
-    this._isClosed = true;
+    socket.onclose = function(){
+      this._isClosed = true;
+    }
   }
 
   //发送二进制
   sendBinary(commendType, options) {
+    console.log(commendType);
     if (socket.readyState === WebSocket.OPEN) {
       socket.send(packetCode.encode(options.data));
     }
