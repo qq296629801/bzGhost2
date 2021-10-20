@@ -28,7 +28,6 @@
 import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
-import conf from "../conf";
 import { mapState, mapMutations} from 'vuex';
 export default {
   components: {

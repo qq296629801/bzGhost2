@@ -129,7 +129,6 @@
 </template>
 
 <script>
-import conf from "../conf";
 import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
