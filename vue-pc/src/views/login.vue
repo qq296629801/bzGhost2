@@ -1,6 +1,7 @@
 <template>
 <div class="login">
     <Top></Top>
+
     <div class="login-panel" style="-webkit-app-region: no-drag">
         <Alert v-if="showErr" type="error">{{err}}</Alert>
         <div v-show="!showRegister" class="login-form">
@@ -47,14 +48,15 @@
             <Button type="primary" long @click="saveRegister">保存</Button>
         </Form>
     </Modal>
+
     <vue-particles color="#dedede" :particlesNumber="50" class="bg-login"></vue-particles>
 </div>
 </template>
 
 <script>
     import Top from './im/components/top.vue';
-    import { put,get } from '../utils/common'
-    import { push } from '../utils/history'
+    import dbMessage from '@/util/db_message.js';
+	import dbCommon from '@/util/db_common.js';
     import { mapState, mapMutations } from 'vuex';
     export default {
     name: 'login',
@@ -129,10 +131,10 @@
     },
     methods: {
         ...mapMutations(['setUserData']),
-        clickUser() {
+        clickUser:function() {
             location.reload();
         },
-        verifyTelephone() {},
+        verifyTelephone: function() {},
         imgChange: function () {
             var file = $('#photoImg')[0].files[0];
             this.formData = new FormData();
@@ -146,12 +148,12 @@
         selectImg: function () {
             this.$refs.img.click();
         },
-        dataChange() {},
-        saveRegister() {
+        dataChange: function() {},
+        saveRegister: function() {
             this.$refs.formValidate.validate((valid) => {
                 if (valid) {
                     let _this = this
-                    axios.post(this.$url + '/register/register', this.registerForm)
+                    this.$post( '/register/register', this.registerForm)
                     .then(function (response) {
                         _this.$Message.success(response.data.data);
                     })
@@ -163,22 +165,13 @@
         },
         login: function () {
             this.$get('login', this.requestData).then(res => {
-                //alert(res)
                 if (res) {
                     this.setUserData(res)
-
-                    setTimeout(()=>{
-                        put('post')
-                        put('friend')
-                        put('conversation')
-                        push()
-                    },200);
-                    
-                    localStorage.setItem('USER_TOKEN', JSON.stringify(res.token))
-                    localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
-                    localStorage.setItem('ROLES', JSON.stringify(res.roles))
-                    localStorage.setItem('USER', JSON.stringify(res.user))
-
+                    dbMessage.pull();
+                    dbCommon.put('post');
+                    dbCommon.put('friend');
+                    dbCommon.put('conversation');
+       
                     this.$router.push({
                         path: '/index/chatBox',
                         params: {}

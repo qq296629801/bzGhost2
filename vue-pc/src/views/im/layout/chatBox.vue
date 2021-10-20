@@ -31,9 +31,8 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-import conf from "../conf";
+
 import { mapState, mapMutations} from 'vuex';
-import { put,get } from '@/utils/common'
 export default {
   components: {
     Search,
