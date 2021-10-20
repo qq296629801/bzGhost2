@@ -19,14 +19,14 @@
                 <img :src="item.avatar" alt="头像" />
                 <div class="message-info right" v-if="item.isItMe">
                   <i>
-                    <Time :time="item.createTime" />
+                    <!-- <Time :time="item.createTime" /> -->
                   </i>
                   <span>{{ item.fromUserName }}</span>
                 </div>
                 <div class="message-info" v-if="!item.isItMe">
                   <span>{{ item.fromUserName }}</span>
                   <i>
-                    <Time :time="item.createTime" />
+                    <!-- <Time :time="item.createTime" /> -->
                   </i>
                 </div>
               </div>
@@ -131,7 +131,7 @@
 <script>
 import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
-import UploadTool from "./uploadTool.vue";
+//import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState } from "vuex";
 import { imageLoad } from "../../../utils/ChatUtils";
@@ -143,7 +143,7 @@ export default {
     Faces,
     UserModal,
     HistoryMessage,
-    UploadTool
+   // UploadTool
   },
   name: "userChat",
   computed: {
@@ -204,6 +204,7 @@ export default {
       let content = self.messageContent;
       if (content !== "" && content !== "\n") {
         if (content.length > 2000) {
+          console.log(1);
         } else {
           this.send();
         }
@@ -213,18 +214,25 @@ export default {
           let self = this
           const params = {
             content: self.messageContent,
-            contentType: 0
+            contentType: 0,
+            createTime: Date.now(),
+            hasBeenSentId: Date.now(),
+            fromUserId:self.userData.user.operId,
+            fromUserName:self.userData.user.username,
+            fromUserHeadImg: '/static/logo.png',
+            userId:self.userData.user.operId,
+            toUserId:self.chatObj.chatId,
+            toUserName:self.chatObj.chatName,
+            toUserHeadImg:'/static/logo.png',
+            chatType:self.chatObj.chatType,
+            isItMe:true
           };
-
-          //本地内存
-          self.messageList.push(params);
-
           //本地缓存
           commit(params, self.chatObj.chatId);
-
+           //本地内存
+          self.messageList.push(params);
           // 服务器入库
-          messageCreate(self.formData.content);
-
+          messageCreate(self.messageContent);
           // 发送消息到服务器转发
           self.$socket.sendMessage(params, res => {
             // 判断是否当前群组
@@ -238,13 +246,14 @@ export default {
                   // 本地缓存
                   commit(res, self.chatObj.chatId);
                   // 页面置底
-                  // 每次滚动到最底部
-                  self.$nextTick(() => {
-                    imageLoad("message-box");
-                  });
+                 
                 }
               }
             }
+             // 每次滚动到最底部
+              self.$nextTick(() => {
+                imageLoad("message-box");
+              });
           });
     },
     initChat() {
@@ -254,6 +263,7 @@ export default {
       });
       // 绑定通道
       self.$socket.joinGroup(a=>{
+        console.log(a);
         self.send();
       });
     },

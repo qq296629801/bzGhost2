@@ -24,7 +24,7 @@ function get(gid) {
 function pull() {
   let userData = $store.state.userData;
   if (!userData.token) {
-    userData = uni.getStorageSync("userData");
+    userData = localStorage.getItem("userData");
   }
   let userId = userData.user.operId;
   post("app/group/msg/online", {
@@ -60,9 +60,6 @@ function del(id, gid, obj) {
 function upPacket(id, gid, msgContext) {
   let list = $local.get(postfix + gid);
   if (list == "") {
-    let tempItem = [];
-    tempItem.push(obj);
-    $local.set(postfix + gid, tempItem);
     return;
   }
   for (var i in list) {

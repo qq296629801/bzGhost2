@@ -1,5 +1,5 @@
 import $store from "@/store/index.js";
-import $http from "@/utils/request.js";
+import { post } from "@/utils/request.js";
 
 /**
  * 通用接口
@@ -13,7 +13,7 @@ function messageCreate(message, msgType = 0) {
     message,
     msgType
   };
-  $http.post("app/msg/add", requestData);
+  post("app/msg/add", requestData);
 }
 
 export { messageCreate };
