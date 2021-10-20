@@ -35,8 +35,8 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-
-import { mapState, mapMutations } from "vuex";
+import { get } from '@/utils/db_common.js';
+import { mapState } from "vuex";
 export default {
   components: {
     Search,
@@ -56,9 +56,6 @@ export default {
   methods: {
     showChat: function(chat) {
       let self = this;
-
-      //self.$store.commit("resetUnRead");
-
       self.currentChat = chat;
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -74,17 +71,12 @@ export default {
         imageLoad("message-box");
       });
     },
-    delChat(chat) {
-      // this.$store.commit("delChat", chat);
+    delChat() {
     }
   },
   activated: function() {
     let self = this;
-
-    // 当前聊天室
-
     self.currentChat = {};
-
     // 每次滚动到最底部
     self.$nextTick(() => {
       imageLoad("message-box");
