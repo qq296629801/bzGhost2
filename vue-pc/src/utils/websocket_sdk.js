@@ -111,20 +111,21 @@ export default class Websocket {
 
   // 重连方法，会根据时间频率越来越慢
   _reConnect(options) {
-    let timer,
+    let timer,selft = this;
+    console.log(timer);
     if (this._connectNum < 20) {
       timer = setTimeout(() => {
-        this.initWebSocket(options);
+        selft.initWebSocket(options);
       }, 500);
       this._connectNum += 1;
     } else if (this._connectNum < 50) {
       timer = setTimeout(() => {
-        this.initWebSocket(options);
+        selft.initWebSocket(options);
       }, 1000);
       this._connectNum += 1;
     } else {
       timer = setTimeout(() => {
-        this.initWebSocket(options);
+        selft.initWebSocket(options);
       }, 3000);
       this._connectNum += 1;
     }
