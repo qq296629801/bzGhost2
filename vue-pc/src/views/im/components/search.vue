@@ -40,9 +40,7 @@
   </div>
 </template>
 <script>
-import conf from "../conf";
 import { pinyin } from "../../../utils/Pinyin.js";
-
 export default {
   components: {},
   data() {

@@ -133,7 +133,6 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
-import RequestUtils from "../../../utils/RequestUtils";
 import { mapState, mapMutations } from 'vuex';
 import {
   isGroupChat,
@@ -142,7 +141,6 @@ import {
   ChatListUtils,
   transform
 } from "../../../utils/ChatUtils";
-import { get } from '@/utils/history'
 export default {
   components: {
     Faces,
@@ -202,7 +200,7 @@ export default {
           conf.getHostUrl(),
           MessageTargetType.FRIEND
         );
-        self.isGroup = isGroupChat(chat);
+        //self.isGroup = isGroupChat(chat);
         self.$store.commit("setCurrentChat", JSON.parse(JSON.stringify(chat)));
       } else {
         self.$Message.warning("不能给自己说话哦");

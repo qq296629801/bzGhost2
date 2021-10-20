@@ -39,9 +39,7 @@ import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
 import conf from "../conf";
 import { MessageTargetType } from "../../../utils/ChatUtils";
-
 const { ChatListUtils } = require("../../../utils/ChatUtils.js");
- import { put,get } from '@/utils/common'
 export default {
   components: {
     Search,

@@ -41,8 +41,6 @@
 
 <script>
 import StoreUtils from "@/utils/StoreUtils";
-import conf from "@/views/im/conf";
-
 export default {
   name: "upload-tool",
   data() {
