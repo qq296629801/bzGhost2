@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import StoreUtils from "@/utils/StoreUtils";
 export default {
   name: "upload-tool",
   data() {

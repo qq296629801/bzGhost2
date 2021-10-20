@@ -41,8 +41,6 @@
 </template>
 
 <script>
-import RequestUtils from "@/utils/RequestUtils";
-import conf from "@/views/im/conf";
 import { transform, imageLoad } from "../../../utils/ChatUtils";
 
 export default {
@@ -59,7 +57,6 @@ export default {
   },
   data() {
     return {
-      host: conf.getHostUrl(),
       count: 0,
       pageSize: 20,
       hisMessageList: []
@@ -99,21 +96,6 @@ export default {
       param.set("chatType", self.chat.type);
       param.set("fromId", self.$store.state.user.id);
       param.set("pageNo", pageNo);
-
-      RequestUtils.request(conf.getHisUrl(), param).then(json => {
-        let list = json.messageList.map(function(element) {
-          element.content = transform(element.content);
-          element.timestamp = self.formatDateTime(new Date(element.timestamp));
-          return element;
-        });
-        self.hisMessageList = list.reverse();
-        self.count = json.count;
-        self.pageSize = json.pageSize;
-        // 每次滚动到最底部
-        self.$nextTick(() => {
-          imageLoad("his-chat-message");
-        });
-      });
     }
   }
 };

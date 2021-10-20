@@ -133,7 +133,7 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations } from "vuex";
 import {
   isGroupChat,
   MessageTargetType,
@@ -150,7 +150,7 @@ export default {
   },
   name: "userChat",
   computed: {
-    ...mapState(['userData'])
+    ...mapState(["userData"])
   },
   data() {
     return {
@@ -163,7 +163,7 @@ export default {
       // 保存各个聊天记录的map
       messageListMap: new Map(),
       messageContent: "",
-      messageList:[],
+      messageList: [],
       showFace: false,
       showHistory: false,
       userList: [],
@@ -229,49 +229,46 @@ export default {
         if (content.length > 2000) {
           self.openMessage("不能超过2000个字符");
         } else {
+          const params = {
+            hasBeenSentId: Date.now(),
+            content: self.messageContent,
+            fromUserHeadImg: "/static/logo.png",
+            fromUserId: self.userData.user.operId,
+            fromUserName: self.userData.user.username,
+            isItMe: true,
+            createTime: Date.now(),
+            contentType: 0,
+            userId: self.userData.user.operId,
+            toUserId: self.chatObj.chatId,
+            toUserHeadImg: "/static/logo.png",
+            toUserName: self.chatObj.chatName,
+            chatType: self.chatObj.chatType
+          };
 
-        const params = {
-          hasBeenSentId: Date.now(), 
-          content: self.messageContent,
-          fromUserHeadImg: '/static/logo.png', 
-          fromUserId: self.userData.user.operId,
-          fromUserName:self.userData.user.username,
-          isItMe: true,
-          createTime: Date.now(),
-          contentType: 0,
-          userId:self.userData.user.operId,
-          toUserId:self.chatObj.chatId,
-          toUserHeadImg:'/static/logo.png',
-          toUserName:self.chatObj.chatName,
-          chatType:self.chatObj.chatType
-        };
+          self.messageList.push(params);
 
-
-        self.messageList.push(params);
-
-        self.$socket.sendMessage(params, res=>{
-
-          if(res.fromUserId!=self.userData.user.operId){
-            res.isItMe = false;
-            self.messageList.push(res);
-             // 每次滚动到最底部
+          self.$socket.sendMessage(params, res => {
+            if (res.fromUserId != self.userData.user.operId) {
+              res.isItMe = false;
+              self.messageList.push(res);
+              // 每次滚动到最底部
               self.$nextTick(() => {
                 imageLoad("message-box");
               });
-          }
+            }
+          });
 
+          // 存储服务器
+          self
+            .$post("app/group/msg/add", {
+              groupId: this.chatObj.chatId,
+              userId: this.userData.user.operId,
+              message: self.messageContent,
+              msgType: 0
+            })
+            .then(res => {});
 
-        });
-
-      // 存储服务器
-        self.$post('app/group/msg/add',{
-          groupId: this.chatObj.chatId,
-          userId: this.userData.user.operId,
-          message: self.messageContent,
-          msgType: 0
-        }).then(res=>{});
-
-         self.send(params);
+          self.send(params);
         }
       }
     },
@@ -290,15 +287,18 @@ export default {
       let self = this;
 
       //获取群消息
-      get(self.chatObj.chatId).then(res=>{
-          self.messageList = res
+      get(self.chatObj.chatId).then(res => {
+        self.messageList = res;
       });
 
       // 加入群通道
-      self.$socket.joinGroup(self.chatObj.chatId,self.userData.user.operId,res=>{
-        console.log(JSON.stringify(res));
-			});
-
+      self.$socket.joinGroup(
+        self.chatObj.chatId,
+        self.userData.user.operId,
+        res => {
+          console.log(JSON.stringify(res));
+        }
+      );
     },
     getHistoryMessage(pageNo) {
       let self = this;
@@ -311,21 +311,9 @@ export default {
       param.set("fromId", self.$store.state.user.id);
       param.set("pageNo", pageNo);
 
-      RequestUtils.request(conf.getHisUrl(), param).then(json => {
-        let list = json.messageList.map(function(element) {
-          element.content = transform(element.content);
-          element.timestamp = self.formatDateTime(new Date(element.timestamp));
-          if (element.avatar.indexOf("http") === -1) {
-            element.avatar = self.host + element.avatar;
-          }
-          return element;
-        });
-        self.messageList = list.reverse();
-        // 每次滚动到最底部
-        self.$nextTick(() => {
-          imageLoad("message-box");
-        });
-      });
+      //   self.$nextTick(() => {
+      //     imageLoad("message-box");
+      //   });
     }
   },
   watch: {
@@ -333,16 +321,15 @@ export default {
     chatObj: function() {
       let self = this;
 
-
       self.messageList = [];
 
       // 从内存中取聊天信息
-      
+
       // 每次滚动到最底部
       this.$nextTick(() => {
         imageLoad("message-box");
       });
-      
+
       self.initGroupChat();
     }
   },

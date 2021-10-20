@@ -44,9 +44,6 @@
 </template>
 <script>
 import Top from "../components/top.vue";
-import conf from "../conf";
-import RequestUtils from "../../../utils/RequestUtils";
-import Tools from "../../../utils/Tools";
 import UserModal from "../components/userModal.vue";
 import { ChatListUtils, MessageTargetType } from "@/utils/ChatUtils";
 export default {
@@ -59,7 +56,6 @@ export default {
     return {
       user: {},
       model: false,
-      host: conf.getHostUrl(),
       treeData: [],
       userList: []
     };
@@ -79,7 +75,6 @@ export default {
           chat: ChatListUtils.resetChatList(
             self,
             user,
-            conf.getHostUrl(),
             MessageTargetType.FRIEND
           )
         }
@@ -90,13 +85,6 @@ export default {
       if (data[0]) {
         let param = new FormData();
         param.set("deptId", data[0].id);
-        RequestUtils.request(conf.getHostUrl() + "/api/dept/users", param)
-          .then(json => {
-            self.userList = json;
-          })
-          .catch(err => {
-            console.error(err);
-          });
       }
     }
   },
@@ -131,14 +119,6 @@ export default {
         ]
       );
     };
-
-    RequestUtils.request(conf.getHostUrl() + "/api/dept/list", param)
-      .then(json => {
-        self.treeData = Tools.list2tree(json, "0", render);
-      })
-      .catch(err => {
-        console.error(err);
-      });
   }
 };
 </script>

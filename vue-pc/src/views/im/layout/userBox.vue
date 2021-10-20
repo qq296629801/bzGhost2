@@ -3,22 +3,27 @@
     <div class="user-box-list">
       <Search class="search-box" @showChat="showChat"></Search>
       <div class="group-box">
-              <Collapse simple>
-                <template v-for="(item, index) in userFriendList">
-                    <Panel v-if="item.members.length" :key="index" :name="`${index}`">
-                        <span class="group-head">
-                            <span>{{item.name}}</span>
-                            <span class="my-num">{{item.members.length}}</span>
-                        </span>
-                        <div slot="content" class="group-wrap">
-                            <div :class="m.id==chat.chatId?'con-item active':'con-item'" v-for="(m, n) in item.members" :key="n" @click="showUser(m)">
-                                <img class="member-img" :src="`${$url}/${m.avatar}`" />
-                                <span>{{ m.nickName }}</span>
-                            </div>
-                        </div>
-                    </Panel>
-                </template>
-            </Collapse>
+        <Collapse simple>
+          <template v-for="(item, index) in userFriendList">
+            <Panel v-if="item.members.length" :key="index" :name="`${index}`">
+              <span class="group-head">
+                <span>{{ item.name }}</span>
+                <span class="my-num">{{ item.members.length }}</span>
+              </span>
+              <div slot="content" class="group-wrap">
+                <div
+                  :class="m.id == chat.chatId ? 'con-item active' : 'con-item'"
+                  v-for="(m, n) in item.members"
+                  :key="n"
+                  @click="showUser(m)"
+                >
+                  <img class="member-img" :src="`${$url}/${m.avatar}`" />
+                  <span>{{ m.nickName }}</span>
+                </div>
+              </div>
+            </Panel>
+          </template>
+        </Collapse>
       </div>
     </div>
     <div class="chat-box">
@@ -37,9 +42,6 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
-import conf from "../conf";
-import { MessageTargetType } from "../../../utils/ChatUtils";
-const { ChatListUtils } = require("../../../utils/ChatUtils.js");
 export default {
   components: {
     Search,
@@ -47,40 +49,21 @@ export default {
     Welcome,
     UserInfo
   },
-  computed: {
-  },
+  computed: {},
   data() {
     return {
       chat: {},
       user: {},
       currentUser: {},
-      host: conf.getHostUrl(),
+      host: "",
       userFriends: [],
       first: true,
-      userFriendList:[]
+      userFriendList: []
     };
-  },
-  mounted: function(){
-    get('friend').then(list=>{
-      this.userFriendList = list
-    });
   },
   methods: {
     // 打开一个聊天对话框
-    showChat: function(user) {
-      let self = this;
-      self.$router.push({
-        path: "/index/chatBox/",
-        query: {
-          chat: ChatListUtils.resetChatList(
-            self,
-            user,
-            conf.getHostUrl(),
-            MessageTargetType.FRIEND
-          )
-        }
-      });
-    },
+    showChat: function() {},
     // 打开一个用户信息对话框
     showUser: function(user) {
       let self = this;
@@ -101,79 +84,78 @@ export default {
   height: 100%;
 }
 .group-head {
-    span {
-        margin-left: -10px;
-    }
+  span {
+    margin-left: -10px;
+  }
 }
 .my-num {
-    position: absolute;
-    right: 16px;
-    color: #959595;
+  position: absolute;
+  right: 16px;
+  color: #959595;
 }
 
 .ivu-collapse-content-box {
-    padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .member-img {
-    width: 44px;
-    height: 44px;
+  width: 44px;
+  height: 44px;
 }
 
 .search {
-    margin: 30px 20px;
-    width: calc(100% - 40px);
+  margin: 30px 20px;
+  width: calc(100% - 40px);
 }
 
 .con-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    cursor: pointer;
-    span {
-        margin-left: 10px;
-    }
-    
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  span {
+    margin-left: 10px;
+  }
 }
-.active{
-    background: #eee;
+.active {
+  background: #eee;
 }
 
 .ivu-collapse-simple {
-    background-color: #fdfdfd;
-    border: none;
+  background-color: #fdfdfd;
+  border: none;
 
-    * {
-        border: none;
-    }
+  * {
+    border: none;
+  }
 }
 
 .ivu-collapse-item {
-    border-top: none !important;
-    border: none;
+  border-top: none !important;
+  border: none;
 }
 
 .ivu-collapse-content {
-    background-color: #fdfdfd;
-    padding: 0 !important;
+  background-color: #fdfdfd;
+  padding: 0 !important;
 }
 
 .ivu-collapse-header {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .group-wrap {
-    .con-item {
-        padding: 8px 16px;
-    }
+  .con-item {
+    padding: 8px 16px;
+  }
 
-    .con-item:hover {
-        background: #eee;
-    }
+  .con-item:hover {
+    background: #eee;
+  }
 
-    .con-item:last-child {
-        margin-bottom: 0;
-    }
+  .con-item:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .user-box {

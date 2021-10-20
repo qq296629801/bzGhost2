@@ -8,7 +8,11 @@
             <a
               href="javascript:"
               @click="showChat(chat)"
-              :class="currentChat && currentChat.chatId === chat.chatId ? 'active' : ''"
+              :class="
+                currentChat && currentChat.chatId === chat.chatId
+                  ? 'active'
+                  : ''
+              "
             >
               <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
               <img :src="chat.imgUrl" alt="头像" />
@@ -32,7 +36,7 @@ import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
 
-import { mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     Search,
@@ -41,20 +45,20 @@ export default {
   },
   data() {
     return {
-      currentChat:{},
-      chatList:[],
-      contontType:["文本","语音","图片","红包"]
+      currentChat: {},
+      chatList: [],
+      contontType: ["文本", "语音", "图片", "红包"]
     };
   },
   computed: {
-   ...mapState(["userData"])
+    ...mapState(["userData"])
   },
   methods: {
     showChat: function(chat) {
       let self = this;
-      
+
       //self.$store.commit("resetUnRead");
-      
+
       self.currentChat = chat;
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -63,7 +67,7 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-     // self.$store.commit("resetUnRead");
+      // self.$store.commit("resetUnRead");
       self.currentChat = chat;
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -71,7 +75,7 @@ export default {
       });
     },
     delChat(chat) {
-     // this.$store.commit("delChat", chat);
+      // this.$store.commit("delChat", chat);
     }
   },
   activated: function() {
@@ -79,7 +83,7 @@ export default {
 
     // 当前聊天室
 
-    self.currentChat = {}
+    self.currentChat = {};
 
     // 每次滚动到最底部
     self.$nextTick(() => {
@@ -87,8 +91,8 @@ export default {
     });
   },
   mounted: function() {
-    get('conversation').then(list=>{
-      this.chatList = list
+    get("conversation").then(list => {
+      this.chatList = list;
     });
   }
 };

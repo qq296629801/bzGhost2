@@ -21,15 +21,12 @@
 </template>
 
 <script>
-import RequestUtils from "../../../utils/RequestUtils";
-import conf from "../conf";
 export default {
   name: "userModal",
   props: ["userId"],
   data() {
     return {
       title: "",
-      host: conf.getHostUrl(),
       user: {}
     };
   },
@@ -46,15 +43,6 @@ export default {
       let self = this;
       let param = new FormData();
       param.set("id", id);
-
-      RequestUtils.request(conf.getHostUrl() + "/api/user/get", param)
-        .then(json => {
-          self.user = json;
-        })
-        .catch(err => {
-          self.user = {};
-          console.error(err);
-        });
     }
   }
 };

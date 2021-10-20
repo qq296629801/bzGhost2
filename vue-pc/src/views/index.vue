@@ -64,8 +64,6 @@
 </template>
 <script>
 import { logout } from "../utils/ChatUtils";
-import RequestUtils from "@/utils/RequestUtils";
-
 export default {
   data() {
     return {
@@ -80,13 +78,9 @@ export default {
     }
   },
   created: function() {
-    //RequestUtils.webSocketOperation(this);
-    //this.user = this.$store.state.user;
     this.$socket.initWebIM();
   },
-  mounted: function() {
-     
-  }
+  mounted: function() {}
 };
 </script>
 <style lang="scss">

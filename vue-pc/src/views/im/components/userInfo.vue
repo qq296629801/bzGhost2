@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import conf from "../conf";
 import { MessageTargetType } from "../../../utils/ChatUtils";
 const { ChatListUtils } = require("../../../utils/ChatUtils.js");
 
