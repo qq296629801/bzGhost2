@@ -239,7 +239,18 @@ export default {
 		sendMsg(data) {
 			const params = {
 				content: this.formData.content,
-				contentType: 0,				
+				contentType: 0,
+				createTime: Date.now(),
+				hasBeenSentId: Date.now(),
+				fromUserId:this.userData.user.operId,
+				fromUserName:this.userData.user.username,
+				fromUserHeadImg: '/static/logo.png',
+				userId:this.userData.user.operId,
+				toUserId:this.chatObj.chatId,
+				toUserName:this.chatObj.chatName,
+				toUserHeadImg:'/static/logo.png',
+				chatType:this.chatObj.chatType,
+				isItMe:true
 			};
 
 			if (data) {
@@ -258,11 +269,11 @@ export default {
 				//验证输入框书否为空字符传
 				return;
 			}
-			//本地缓存
-			dbMessage.commit(params,this.chatObj.chatId);
 			
 			//本地内存
 			this.messageList.push(params);
+			//本地缓存
+			dbMessage.commit(params,this.chatObj.chatId);
 			
 			// 服务器入库
 			api.messageCreate(this.formData.content);
