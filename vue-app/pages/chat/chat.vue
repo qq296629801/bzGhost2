@@ -584,6 +584,7 @@ export default {
 		
 		// 绑定通道
 		this.$socket.joinGroup(a=>{
+			this.sendMsg(null)
 		});
 		
 		uni.getSystemInfo({
