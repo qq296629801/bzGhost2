@@ -14,21 +14,43 @@ export const state = {
   	areaName: "请选择",
   	areaId: ''
   },
+  chatObj:{},
+  packet:{},
+  newsPush:{}
 };
 //缓存浏览器的数据名称
 const cacheNameList = ["userData", "webViewUrl"];
 let clearTime;
 export const mutations = {
+	// 
+	setNewsPush(state, data){
+		if(data){
+			state.newsPush = data
+		}
+	},
+	// 
+	setChatObj(state, data){
+		if(data){
+			state.chatObj = data
+		}
+	},
   //取出缓存数据（打开APP就取出）
   setCacheData(state) {
   	for (let name of cacheNameList) {
 		let data;
+  		// #ifndef H5
+  		data = uni.getStorageSync(name);
+  		// #endif
+  		// #ifdef H5
   		data = sessionStorage.getItem(name) || localStorage.getItem(name);
+  		// #endif
   		if (data) {
+  			// #ifdef H5
   			try {
   				data = JSON.parse(data);
   			} catch (e) {
   			}
+  			// #endif
   			state[name] = data;
   		}
   	}
@@ -37,7 +59,9 @@ export const mutations = {
   setWebViewUrl(state, data) {
   	if (data) {
   		state.webViewUrl = data;
+  		// #ifdef H5
   		window.sessionStorage.setItem('webViewUrl', data);
+  		// #endif
   	}
   },
   //数据加载状态
