@@ -130,6 +130,7 @@ export default {
 	data() {
 		return {
 			downOption:{
+				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
 				textColor: "#FF8095" // 下拉刷新的文本颜色
 			},
@@ -147,7 +148,7 @@ export default {
 			formData: {
 				content: '',
 				limit: 10,
-				index: 1
+				index: 2
 			},
 			messageList: [],
 			message:{},
@@ -179,55 +180,34 @@ export default {
 	},
 	methods: {
 		downCallback(){
-			// 第1种: 请求具体接口
 			let httpReqData = {
-				toGroupId:this.chatObj.chatId,
-				userId:this.userData.user.operId,
+				toGroupId: this.chatObj.chatId,
+				userId: this.userData.user.operId,
 				condition:'',
-				pageNum:this.formData.index,
-				pageSize:10
+				pageNum: this.formData.index,
+				pageSize: 10
 			}
 			this.$http.post('app/group/msg/list', httpReqData).then(res=>{
-				console.log(res,'-------------', this.formData.index);
-				const { index } = this.formData;
+				this.formData.index++;
 				this.mescroll.endSuccess();
-				if(index==1){
-					this.mescroll.scrollTo(99999, 0);
-				}
-				
-				let data = res.list;
-				let length = res.totalSize/10;
-				
-				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
-				this.messageList = [...data, ...this.messageList];
+				let data = res.list.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
+				let topMsg = this.messageList[0];
+				this.messageList = data.concat(this.messageList);
 				this.$nextTick(() => {
-					// 保持顶部消息的位置
-					let view = uni.createSelectorQuery().select(sel);
-					view.boundingClientRect(v => {
-						console.log("节点离页面顶部的距离=" + v.top);
-						this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
-					}).exec();
-					
-					
-					//如果还有数据
-					if (this.formData.limit >= length) {
-						this.formData.index++;
-						this.loading = true;
-						
+					if(this.formData.index<=3){
+						this.mescroll.scrollTo(99999, 0);
+					} else if(topMsg){
+						let view = uni.createSelectorQuery().select('#msg-'+ topMsg.hasBeenSentId);
+						view.boundingClientRect(v => {
+							console.log("节点离页面顶部的距离=" + v.top);
+							this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
+						}).exec();
 					}
 				});
+			}).catch(e=>{
+				//this.formData.index--; // 联网失败,必须回减页码
+				//this.mescroll.endErr(); // 隐藏下拉刷新的状态
 			});
-			/* uni.request({
-				url: 'xxxx',
-				success: () => {
-					// 请求成功,隐藏加载状态
-					this.mescroll.endSuccess()
-				},
-				fail: () => {
-					// 请求失败,隐藏加载状态
-					this.mescroll.endErr()
-				}
-			}) */
 		},
 		tapPopup(item){
 			if(item.title=='转发'){
