@@ -233,7 +233,7 @@ export default {
 		// 初始消息数据
 		async initData() {
 			dbMessage.get(this.chatObj.chatId).then(res=>{
-				this.messageList = res;
+				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				// #ifndef MP-WEIXIN
 					uni.pageScrollTo({
 						scrollTop: 99999,
