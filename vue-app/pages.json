@@ -368,6 +368,15 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/guest/guest",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#7B8AA0",

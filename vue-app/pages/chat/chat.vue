@@ -133,7 +133,7 @@ export default {
 			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
 			formData: {
 				content: '',
-				limit: 15,
+				limit: 10,
 				index: 1
 			},
 			messageList: [],
@@ -186,14 +186,40 @@ export default {
 			this.y = e.touches[0].clientY
 			this.value = !this.value
 		},
-		//拼接消息 处理滚动
+		// 初始消息数据
+		async initData() {
+			dbMessage.get(this.chatObj.chatId).then(res=>{
+				this.messageList = res;
+				// #ifndef MP-WEIXIN
+					uni.pageScrollTo({
+						scrollTop: 99999,
+						duration: 100
+					});
+				// #endif
+				this.$nextTick(() => {
+					this.loading = true;
+				});
+			});
+		},
+		//分页数据
 		async joinData() {
 			if (!this.loading) {
-				//如果没有获取数据 即loading为false时，return 避免用户重复上拉触发加载
 				return;
 			}
 			this.loading = false;
-			dbMessage.get(this.chatObj.chatId).then(res=>{
+			let httpReqData = {
+				toGroupId:this.chatObj.chatId,
+				userId:this.userData.user.operId,
+				condition:'',
+				pageNum:this.formData.index,
+				pageSize:10
+			}
+			this.$http.post('app/group/msg/list', httpReqData).then(data=>{
+				console.log(data,'-------------', this.formData.index);
+				this.formData.index++;
+				this.loading = true;
+			});
+			/* dbMessage.get(this.chatObj.chatId).then(res=>{
 				const data = res;
 				//获取节点信息
 				const { index } = this.formData;
@@ -209,7 +235,7 @@ export default {
 						this.loading = true;
 					}
 				});
-			});
+			}); */
 		},
 		//处理滚动
 		bindScroll(sel, duration = 0) {
@@ -520,7 +546,7 @@ export default {
 	},
 	// 滑块
 	onPageScroll(e) {
-		if (e.scrollTop < 50) {
+		if (e.scrollTop < 100) {
 			//this.joinData();
 		}
 	},
@@ -588,7 +614,7 @@ export default {
 			index : 0,
 		})
 		
-		this.joinData();
+		this.initData();
 		
 		let _this = this
 		
