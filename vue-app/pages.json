@@ -30,7 +30,9 @@
 		{
 			"path": "pages/chat/chat",
 			"style": {
+				"enablePullDownRefresh" : false,
 				"app-plus": {
+					"bounce" : "none",
 					"softinputNavBar": "none",
 					"scrollIndicator":"none",
 					"softinputMode": "adjustPan",

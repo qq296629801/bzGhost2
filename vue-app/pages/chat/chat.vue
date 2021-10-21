@@ -3,8 +3,8 @@
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
 			<!-- 背景图- 定位方式 -->
 			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
-			
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
+			<mescroll-body ref="mescrollRef" bottom="50%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
@@ -40,6 +40,7 @@
 					</view>
 				</view>
 			</view> 
+			</mescroll-body>
 		</view>
 		
 		<!-- 底部聊天输入框 -->
@@ -114,18 +115,30 @@
 		<!-- //左右按键 -->
 		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
 		</chunLei-popups>
-		
+	 	
 	</view>
 </template>
 
 <script>
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
 import dbMessage from '@/util/db_message.js';
 import api from '@/util/api.js'
 export default {
+	mixins: [MescrollMixin], // 使用mixin
 	data() {
 		return {
+			downOption:{
+				autoShowLoading: true, // 显示下拉刷新的进度条
+				textColor: "#FF8095" // 下拉刷新的文本颜色
+			},
+			upOption: {
+				use: false, // 禁止上拉
+				toTop: {
+					src: '' // 不显示回到顶部按钮
+				}
+			},
 			// 右键
 			x: 0,
 			y: 0,
@@ -165,6 +178,57 @@ export default {
 		...mapState(['userData','chatObj'])
 	},
 	methods: {
+		downCallback(){
+			// 第1种: 请求具体接口
+			let httpReqData = {
+				toGroupId:this.chatObj.chatId,
+				userId:this.userData.user.operId,
+				condition:'',
+				pageNum:this.formData.index,
+				pageSize:10
+			}
+			this.$http.post('app/group/msg/list', httpReqData).then(res=>{
+				console.log(res,'-------------', this.formData.index);
+				const { index } = this.formData;
+				this.mescroll.endSuccess();
+				if(index==1){
+					this.mescroll.scrollTo(99999, 0);
+				}
+				
+				let data = res.list;
+				let length = res.totalSize/10;
+				
+				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
+				this.messageList = [...data, ...this.messageList];
+				this.$nextTick(() => {
+					// 保持顶部消息的位置
+					let view = uni.createSelectorQuery().select(sel);
+					view.boundingClientRect(v => {
+						console.log("节点离页面顶部的距离=" + v.top);
+						this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
+					}).exec();
+					
+					
+					//如果还有数据
+					if (this.formData.limit >= length) {
+						this.formData.index++;
+						this.loading = true;
+						
+					}
+				});
+			});
+			/* uni.request({
+				url: 'xxxx',
+				success: () => {
+					// 请求成功,隐藏加载状态
+					this.mescroll.endSuccess()
+				},
+				fail: () => {
+					// 请求失败,隐藏加载状态
+					this.mescroll.endErr()
+				}
+			}) */
+		},
 		tapPopup(item){
 			if(item.title=='转发'){
 				this.$u.route({
@@ -200,42 +264,6 @@ export default {
 					this.loading = true;
 				});
 			});
-		},
-		//分页数据
-		async joinData() {
-			if (!this.loading) {
-				return;
-			}
-			this.loading = false;
-			let httpReqData = {
-				toGroupId:this.chatObj.chatId,
-				userId:this.userData.user.operId,
-				condition:'',
-				pageNum:this.formData.index,
-				pageSize:10
-			}
-			this.$http.post('app/group/msg/list', httpReqData).then(data=>{
-				console.log(data,'-------------', this.formData.index);
-				this.formData.index++;
-				this.loading = true;
-			});
-			/* dbMessage.get(this.chatObj.chatId).then(res=>{
-				const data = res;
-				//获取节点信息
-				const { index } = this.formData;
-				const sel = `#msg-${index > 1 ? this.messageList[0].hasBeenSentId : data[data.length - 1].hasBeenSentId}`;
-				this.messageList = [...data, ...this.messageList];
-				
-				//填充数据后，视图会自动滚动到最上面一层然后瞬间再跳回bindScroll的指定位置 ---体验不是很好，后期优化
-				this.$nextTick(() => {
-					this.bindScroll(sel);
-					//如果还有数据
-					if (this.formData.limit >= data.length) {
-						this.formData.index++;
-						this.loading = true;
-					}
-				});
-			}); */
 		},
 		//处理滚动
 		bindScroll(sel, duration = 0) {
@@ -543,12 +571,6 @@ export default {
 				params: {}
 			});
 		},
-	},
-	// 滑块
-	onPageScroll(e) {
-		if (e.scrollTop < 100) {
-			//this.joinData();
-		}
 	},
 	//导航栏
 	onNavigationBarButtonTap({ index }) {
