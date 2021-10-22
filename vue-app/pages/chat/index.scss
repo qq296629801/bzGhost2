@@ -73,6 +73,51 @@ page {
 				font-size: 28rpx;
 			}
 			
+			//红包
+			.contentType4{
+				position: relative;
+				font-size: 0.4rem;
+				min-width: 200px;
+				box-shadow: 1px 1px 1px 2px #dfdfdf;
+				.packet {
+				  height: 60rpx;
+				  color: #fff;
+				  padding: 20rpx;
+				  display: flex;
+				  background-color: #F09D47;
+				  line-height: 60rpx;
+				  .img{
+					  margin-right: 20rpx;
+					  width: 64rpx;
+					  height: 64rpx;
+					  image{
+						  width: 100%;
+						  height: 100%;
+					  }
+				  }
+				}
+				.tag {
+				  height: 50rpx;
+				  font-size: 20rpx;
+				  background: #F09D47;
+				  border-top: 1px solid #f9b56f;
+				  padding-left: 20rpx;
+				  color: #fff;
+				}
+				.arrow {
+				  width: 10px;
+				  height: 10px;
+				  position: absolute;
+				  background: #F09D47;
+				  right: -10rpx;
+				  z-index: 999;
+				  top: 15px;
+				  transform: rotate(45deg);
+				}
+			}
+			
+			
+			
 			// 语音
 			.contentType2 {
 				display: flex;
@@ -144,9 +189,8 @@ page {
 
 			&.right {
 				flex-direction: row-reverse;
-
 				.content {
-					background-color: $uni-color-success;
+					background-color: #C6EBFE;
 					margin-right: 28rpx;
 					word-break: break-all;
 					line-height: 36rpx;
@@ -159,7 +203,7 @@ page {
 						height: 0;
 						border-top: 10rpx solid transparent;
 						border-bottom: 10rpx solid transparent;
-						border-left: 16rpx solid $uni-color-success;
+						border-left: 16rpx solid #C6EBFE;
 						position: absolute;
 						right: -16rpx;
 						top: 30rpx;
@@ -169,7 +213,7 @@ page {
 
 			&.left {
 				.content {
-					background-color: $uni-text-color-inverse;
+					background-color: #fff;
 					margin-left: 28rpx;
 					word-break: break-all;
 					line-height: 36rpx;
@@ -182,7 +226,7 @@ page {
 						height: 0;
 						border-top: 10rpx solid transparent;
 						border-bottom: 10rpx solid transparent;
-						border-right: 16rpx solid $uni-text-color-inverse;
+						border-right: 16rpx solid #fff;
 						position: absolute;
 						left: -16rpx;
 						top: 30rpx;
@@ -349,6 +393,121 @@ page {
 		}
 		.voice_an_icon #seven{
 			animation:runVoice 0.6s infinite 0.1s;
+		}
+	}
+	.windows{
+		.mask{
+			position: fixed;
+			top: 100%;
+			width: 100%;
+			height: 100%;
+			z-index: 1000;
+			background-color: rgba(0,0,0,.6);
+			opacity: 0;
+			transition: opacity .2s ease-out;
+		}
+		.layer{
+			position: fixed;
+			width: 80%;
+			height: 70%;
+			left: 10%;
+			z-index: 1001;
+			border-radius: 10rpx;
+			overflow: hidden;
+			top:100%;
+			transform: scale3d(.5,.5,1);
+			transition: all .2s ease-out;
+		}
+		&.show{
+			display: block;
+			.mask{
+				top: 0;
+				opacity: 1;
+			}
+			.layer{
+				transform: translate3d(0,-85vh,0) scale3d(1,1,1);
+			}
+		}
+		&.hide{
+			display: block;
+			.mask{
+				top: 0;
+				opacity: 0;
+			}
+			.layer{
+				transform: translate3d(0,-85vh,0) scale3d(.5,.5,1);
+			}
+		}
+	}
+	.redenvelope{
+		width: 100%;
+		height: 70vh;
+		background-color: #EC624F; 
+		position: relative;
+		padding-top: 150rpx;
+		.to{
+			position: fixed;
+			bottom: 100rpx;
+			width: 100%;
+			background-color: #EC624F;
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			border-radius: 0 0 100% 100%;
+			box-shadow: inset 0 -8upx 0 #DE4129;
+			.close-btn{
+				width: 100%;
+				height: 80upx;
+				display: flex;
+				justify-content: flex-end;
+				.icon{
+					color: #EE5B49;
+					margin-top: 10upx;
+					margin-right: 10upx;
+				}
+			}
+			.img{
+				width: 150rpx;
+				height: 150rpx;
+				background-color: #E7CB9B;
+				border-radius: 100%;
+				font-size: 25px;
+				text-align: center;
+				padding-top: 20px;
+				margin-bottom: -65upx;
+			}
+			margin-bottom: 65upx;
+		}
+		.from,.blessing,.money,.showDetails{
+			width: 100%;
+			padding: 5upx 5%;
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			font-size: 32upx;
+			color: #E7CB9B;
+			image{
+				width: 100rpx;
+				height: 100rpx;
+				border-radius: 80rpx;
+			}
+		}
+		.money{
+			font-size: 100upx;
+			color: #E7CB9B;
+			display: flex;
+			padding-top: 20upx;
+		}
+		.showDetails{
+			position: absolute;
+			bottom: 20upx;
+			text-align: center;
+			font-size: 28upx;
+			color: #E7CB9B;
+			.icon{
+				font-size: 26upx;
+				color: #E7CB9B;
+			}
 		}
 	}
 }

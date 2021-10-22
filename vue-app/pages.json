@@ -378,7 +378,17 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+		    "path" : "pages/chat/detail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		    
+		}
     ],
 	"tabBar": {
 		"color": "#7B8AA0",

@@ -3,28 +3,21 @@
 		<!-- 红包弹窗 -->
 		<view class="windows" :class="winState">
 			<!-- 遮罩层 -->
-			<view class="mask" @touchmove.stop.prevent="discard" @tap="closeRed"></view>
+			<view class="mask" @touchmove.stop.prevent="discard" @tap="hiddenCard"></view>
 			<view class="layer" @touchmove.stop.prevent="discard">
-				<view class="open-redenvelope">
+				<view class="redenvelope">
 					<view class="from">
-						<image :src="$url + packet.userAvatar"></image>  
+						<image src="/static/image/huge.jpg"></image>  
 					</view>
-					<template v-if="packet.Records">
-						<template v-for="(r,index) in packet.Records">
-							<view class="money" v-if="r.robUid===userData.user.operId">
-								{{r.money}}
-							</view>
-						</template>
-					</template>
-					<view class="blessing">{{ packet.nickName || packet.userName }} 的红包</view>
-					<view class="top">
+					<view class="blessing">{{ packet.nickName }}发的红包</view>
+					<view class="money">
+						{{packet.money}}
+					</view>
+					<view class="to">
 						<view class="close-btn">
-							<view class="icon close" @tap="closeRed"></view>
+							<view class="icon close"></view>
 						</view>
-						<template v-if="packet.Records">
-							<view v-if="!isRob()" class="img" @tap="robRed">开</view>
-							<view v-else-if="packet.Records.length===0" class="img" @tap="robRed">开</view>
-						</template>
+						<view class="img" @tap="openCard">开</view>
 					</view>
 					<view class="showDetails" @tap="toDetails">
 						查看领取详情
@@ -40,6 +33,11 @@
 		name:'red-card',
 		data() {
 			return {
+				packet:{
+					Records:[],
+					nickName:'测试',
+					money:3.5
+				}
 			};
 		},
 		props: {
@@ -49,34 +47,24 @@
 			},
 		},
 		methods:{
-			isRob(){
-				let isRob = false;
-				for(var i in this.packet.Records){
-					if(this.packet.Records[i].robUid === this.userData.user.operId){
-						isRob = true;
-					}
-				}
-				return isRob;
-			},
 			discard(){
 				return;
 			},
+			openCard:function(){
+				this.$emit('openCard')
+			},
+			hiddenCard: function(){
+				this.$emit('hiddenCard')
+			},
 			toDetails(){
-				this.$u.vuex('packet',this.packet)
 				uni.navigateTo({
-					url:'./detail'
+					url:'/pages/chat/detail'
 				})
-			},
-			robRed(){
-				this.$emit('robRed',true);
-			},
-			closeRed(){
-				this.$emit("closeRed", true)
-			},
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-@import "@/pages/chat/style.scss";
+@import "@/pages/chat/index.scss";
 </style>

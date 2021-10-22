@@ -2,19 +2,16 @@
 	<view>
 		<view class="top">
 			<view class="blessing">
-				{{packet.description}}
+				{{ packet.userName}}的红包
 			</view>
 			<view class="money">
 				{{packet.robMoney}}
 			</view>
 			<view class="face" :style="{'border-radius':radius}">
-				<image :src="$url + packet.userAvatar"></image>
+				<image src="/static/image/huge.jpg"></image>
 			</view>
 			<view class="desc">
-				{{ packet.userName}} 的红包
-			</view>
-			<view class="desc">
-				{{ packet.description }}
+				{{packet.description}}
 			</view>
 		</view>
 		<view class="info">
@@ -23,7 +20,7 @@
 		<view class="list">
 			<view class="row" v-for="(row,index) in packet.Records" :key="index">
 				<view class="left">
-					<image :src="$url + row.userAvatar"></image>
+					<image src="/static/image/huge.jpg"></image>
 				</view>
 				<view class="right">
 					<view class="r1">
@@ -52,7 +49,70 @@
 	export default {
 		data() {
 			return {
-				radius:'100% 100% 0 0'
+				radius:'100% 100% 0 0',
+				packet:{
+					description:'大吉大利,今晚吃鸡!',
+					robMoney:3.5,
+					userName:'测试',
+					surplusNumber:2,
+					number:10,
+					Records:[
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:true
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						},
+						{
+							userName:'admin',
+							money:2.6,
+							lastUpdateTime:'2021-10-26',
+							isLucky:false
+						}
+					]
+				}
 			};
 		},
 		onShow() {
@@ -78,7 +138,7 @@
 		.blessing,.money{
 			width: 100%;
 			color: #f8d757;
-			padding: 20upx 0;
+			//padding: 20upx 0;
 			justify-content: center;
 			font-size: 34upx;
 			background: #EC624F;

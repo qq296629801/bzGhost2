@@ -38,6 +38,22 @@
 					>
 						<image :src="item.content" class="img" mode="widthFix"></image>
 					</view>
+					<!-- contentType = 4 红包 -->
+					<view
+						class="contentType4" 	
+						v-if="item.contentType == 4"
+						@tap="showCard"
+					>
+						<div class="packet">
+						  <view class="img">
+							  <image src="/static/img/red.png"></image>
+						  </view>
+						  <span class="title">恭喜发财，大吉大利</span>
+						</div>
+						<div class="tag">红包</div>
+						<div class="arrow"></div>
+					</view>
+					
 				</view>
 			</view> 
 			</mescroll-body>
@@ -115,7 +131,9 @@
 		<!-- //左右按键 -->
 		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
 		</chunLei-popups>
-	 	
+		
+		<!-- 红包卡片 -->
+		<red-card :winState="winState" @hiddenCard="hiddenCard"></red-card>
 	</view>
 </template>
 
@@ -125,10 +143,13 @@ import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
 import dbMessage from '@/util/db_message.js';
 import api from '@/util/api.js'
+import RedCard from '@/components/chat/red-card.vue'
 export default {
 	mixins: [MescrollMixin], // 使用mixin
+	components:{RedCard},
 	data() {
 		return {
+			winState:'',
 			downOption:{
 				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
@@ -140,7 +161,6 @@ export default {
 					src: '' // 不显示回到顶部按钮
 				}
 			},
-			// 右键
 			x: 0,
 			y: 0,
 			value: false,
@@ -179,6 +199,15 @@ export default {
 		...mapState(['userData','chatObj'])
 	},
 	methods: {
+		showCard(){
+			this.winState = 'show';
+		},
+		hiddenCard(){
+			this.winState = 'hide';
+			setTimeout(()=>{
+				this.winState = '';
+			},200)
+		},
 		downCallback(){
 			let httpReqData = {
 				toGroupId: this.chatObj.chatId,
@@ -276,14 +305,14 @@ export default {
 				contentType: 0,
 				createTime: Date.now(),
 				hasBeenSentId: Date.now(),
-				fromUserId:this.userData.user.operId,
-				fromUserName:this.userData.user.username,
+				fromUserId: this.userData.user.operId,
+				fromUserName: this.userData.user.username,
 				fromUserHeadImg: '/static/logo.png',
-				userId:this.userData.user.operId,
-				toUserId:this.chatObj.chatId,
-				toUserName:this.chatObj.chatName,
+				userId: this.userData.user.operId,
+				toUserId: this.chatObj.chatId,
+				toUserName: this.chatObj.chatName,
 				toUserHeadImg:'/static/logo.png',
-				chatType:this.chatObj.chatType,
+				chatType: this.chatObj.chatType,
 				isItMe:true
 			};
 
@@ -297,6 +326,9 @@ export default {
 				}else if(data.contentType == 3){
 					//发送图片
 					params.content = data.content;
+					params.contentType = data.contentType;
+				} else if(data.contentType == 4){
+					params.content = '红包参数';
 					params.contentType = data.contentType;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
@@ -513,10 +545,11 @@ export default {
 			}else if(index == 1){
 				this.chooseImage(['camera'])
 			}else if(index==2){
-				uni.showToast({
-					title:'敬请期待',
-					icon:'success',
-				});
+				const params = {
+					contentType: 4,
+					content: '红包',
+				};
+				this.sendMsg(params);
 			}
 		},
 		//发送图片
