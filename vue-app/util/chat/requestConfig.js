@@ -5,7 +5,7 @@ let version_code = '';
 // #ifdef APP-PLUS
 import {
 	getCurrentNo
-} from '@/chat/APPUpdate';
+} from '@/util/APPUpdate';
 setTimeout(() => {
 	getCurrentNo(function(res) {
 		console.log("版本号", res);

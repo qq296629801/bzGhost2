@@ -135,7 +135,7 @@
 		<!-- 红包卡片 -->
 		<red-card :winState="winState" @hiddenCard="hiddenCard"></red-card>
 		
-		<packet :pStatus="pStatus" @packet="packet" @close="close"></packet>
+		<packet :pStatus="pStatus" @packet="packetTap" @close="close"></packet>
 	</view>
 </template>
 
@@ -205,6 +205,8 @@ export default {
 	methods: {
 		close(){
 			this.pStatus = false;
+		},
+		packetTap(){
 		},
 		showCard(){
 			this.winState = 'show';

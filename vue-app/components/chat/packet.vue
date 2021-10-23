@@ -1,14 +1,7 @@
 <template>
 	<view>
 		<u-popup v-model="pStatus" :mask-close-able="false">
-			<u-navbar :is-back="false">
-				<view class="slot-wrap" @click="close">
-					<u-icon name="arrow-left"></u-icon>
-					返回
-				</view>
-			</u-navbar>
-			<view style="height: 300rpx;">
-			</view>
+			<view style="height: 300rpx;"></view>
 			<view class="content">
 				<view class="luck">
 					<view class="row">
@@ -16,7 +9,7 @@
 							红包个数
 						</view>
 						<view class="input">
-							<input type="number" v-model="packet.number" placeholder="输入红包个数"  /> 个
+							<u-input v-model="packet.number" type="number" />
 						</view>
 					</view>
 					<view class="row">
@@ -24,15 +17,14 @@
 							总金额
 						</view>
 						<view class="input">
-							<input type="number" v-model="packet.money" placeholder="输入金额" /> 元
+							<u-input v-model="packet.money" type="number" /> 元
 						</view>
 					</view>
 					<view class="blessing">
-						<input type="text" maxlength="12" placeholder="" v-model="packet.blessing"  />
+						<u-input v-model="packet.blessing" type="text" />
 					</view>
-					<view class="hand" @tap="hand">
-						发红包
-					</view>
+					<u-button type="success" @tap="close">返回</u-button>
+					<u-button type="error" @tap="hand">发送</u-button>
 				</view>
 			</view>
 		</u-popup>
@@ -55,10 +47,17 @@
 					money: 100.00,
 					number: 5,
 					status: 0
-				}
+				},
+				typeClass:''
 			};
 		},
 		methods:{
+			tt(){
+				this.typeClass ='normal'
+			},
+			ttt(){
+				this.typeClass =''
+			},
 			close(){
 				this.$emit('close',false)
 			},
@@ -78,38 +77,7 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.tabr{
-		width: 94%;
-		height: 100upx;
-		padding: 0 5%;
-		border-bottom: solid 1upx #dedede;
-		view{
-			width: 50%;
-			height: 100upx;
-			justify-content: center;
-			align-items: center;
-			font-size: 16px;
-			font-weight: 600;
-			color: #171717;
-		}
-		.on{
-			color: #E3653E;
-			font-size: 16px;
-			font-weight: 600;
-		}
-		.border{
-			height: 4px;
-			background-color: #E3653E;
-			-webkit-transition: all .3s ease-out;
-			transition: all .3s ease-out;
-			margin-top: -3px;
-			border-radius: 10px;
-			&.normal{
-				transform: translate3d(100%,0,0);
-			}
-		}
-		
-	}
+
 	.content{
 		width: 100%;
 		height: 550rpx;
@@ -123,7 +91,6 @@
 			}
 		}
 		.luck,.normal{
-			
 			transition: all .3s ease-out;
 		}
 		.luck{
@@ -149,26 +116,19 @@
 		.row{
 			font-size: 25rpx;
 			font-weight: 600;
-			color: #000000;
 			justify-content: space-between;
 			flex-wrap: nowrap;
-			.term,.input{
-				width: 50%;
+			.term{
+				width: 30%;
+			}
+			.input{
+				width: 70%;
 			}
 			.input{
 				flex-shrink: 0;
 				flex-wrap: nowrap;
 				justify-content: flex-end;
 				align-items: center;
-				input{
-					height: 50upx;
-					display: flex;
-					justify-content: flex-end;
-					align-items: center;
-					text-align: right;
-					margin-right: 100upx;
-					font-size: 30upx;
-				}
 			}
 		}
 		.tis{

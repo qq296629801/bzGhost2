@@ -8,7 +8,8 @@
 			{
 				"path": "my/chat/chat",
 				"style": {
-					"navigationBarTitleText": "客服"
+					"navigationBarTitleText": "客服",
+					"navigationStyle":"custom"
 				}
 			},
 			{
