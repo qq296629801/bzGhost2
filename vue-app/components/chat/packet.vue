@@ -1,10 +1,14 @@
 <template>
 	<view>
 		<u-popup v-model="pStatus" :mask-close-able="false">
-			<u-navbar>
-				<view @click="close">关闭</view>
+			<u-navbar :is-back="false">
+				<view class="slot-wrap" @click="close">
+					<u-icon name="arrow-left"></u-icon>
+					返回
+				</view>
 			</u-navbar>
-			<view style="height: 300rpx;"></view>
+			<view style="height: 300rpx;">
+			</view>
 			<view class="content">
 				<view class="luck">
 					<view class="row">
@@ -66,6 +70,10 @@
 </script>
 
 <style lang="scss">
+	.slot-wrap {
+		display: flex;
+		align-items: center;
+	}
 	view{
 		display: flex;
 		flex-wrap: wrap;
