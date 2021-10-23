@@ -23,7 +23,7 @@
 						</view>
 					</view>
 					<view class="blessing">
-						<u-input v-model="packet.blessing" placeholder="恭喜发财,大吉大利！" type="textarea" />
+						<u-input v-model="packet.description" placeholder="恭喜发财,大吉大利！" type="textarea" />
 					</view>
 					<u-button @tap="close">返回</u-button>
 					<u-button type="error"@tap="hand">塞钱进红包</u-button>
@@ -45,7 +45,7 @@
 		data() {
 			return {
 				packet: {
-					blessing: null,
+					description: null,
 					money: null,
 					number: null,
 					status: 0
@@ -102,12 +102,12 @@
 			transform: translate3d(100%,-100%,0);
 		}
 		.row,.tis,.blessing,.hand{
-			
 			width: 90%;
 		}
 		.row,.tis,.blessing{
-			
 			border-bottom: #e2e2e2 solid 3upx;
+			border-radius: 10rpx;
+			background-color: #fdfeff;
 		}
 		.row,.blessing{
 			padding: 0 3%;
@@ -117,7 +117,6 @@
 			align-items: center;
 		}
 		.row{
-			background-color: #F6F7F8;
 			font-size: 25rpx;
 			font-weight: 600;
 			justify-content: space-between;
@@ -143,12 +142,6 @@
 		}
 		.blessing{
 			color: #fff;
-			input{
-				width: 100%;
-				height: 50upx;
-				font-size: 30upx;
-				font-weight: 600;
-			}
 		}	
 	}
 </style>

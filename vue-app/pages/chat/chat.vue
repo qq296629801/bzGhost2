@@ -134,7 +134,6 @@
 		
 		<!-- 红包卡片 -->
 		<red-card :winState="winState" @hiddenCard="hiddenCard"></red-card>
-		
 		<packet :pStatus="pStatus" @packet="packetTap" @close="close"></packet>
 	</view>
 </template>
@@ -206,7 +205,21 @@ export default {
 		close(){
 			this.pStatus = false;
 		},
-		packetTap(){
+		packetTap(packet){
+			let reqData = {
+				groupId: this.chatObj.chatId,
+				userId: this.userData.user.operId,
+				msgType: 4,
+				message: JSON.stringify(packet),
+			}
+			this.$http.post('app/packet/createPacket',reqData).then(res=>{
+				let params = {
+					contentType: 4,
+					content:res
+				}
+				this.sendMsg(params);
+				this.pStatus = false;
+			});
 		},
 		showCard(){
 			this.winState = 'show';
@@ -328,17 +341,17 @@ export default {
 			if (data) {
 				if(data.contentType == 2){
 					//说明是发送语音
-					params.content = data.content;
-					params.contentType = data.contentType;
-					params.contentDuration = data.contentDuration;
+					params.contentType = 2;
 					params.anmitionPlay = false;
+					params.content = data.content;
+					params.contentDuration = data.contentDuration;
 				}else if(data.contentType == 3){
 					//发送图片
 					params.content = data.content;
-					params.contentType = data.contentType;
+					params.contentType = 3;
 				} else if(data.contentType == 4){
-					params.content = '红包参数';
-					params.contentType = data.contentType;
+					params.content = data.content;
+					params.contentType = 4;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
 				//验证输入框书否为空字符传
