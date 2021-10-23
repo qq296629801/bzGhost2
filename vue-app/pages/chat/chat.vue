@@ -42,7 +42,7 @@
 					<view
 						class="contentType4" 	
 						v-if="item.contentType == 4"
-						@tap="showCard"
+						@tap="showCard(item)"
 					>
 						<div class="packet">
 						  <view class="img">
@@ -133,7 +133,7 @@
 		</chunLei-popups>
 		
 		<!-- 红包卡片 -->
-		<red-card :winState="winState" @hiddenCard="hiddenCard"></red-card>
+		<red-card :packet="packet" :winState="winState" @hiddenCard="hiddenCard" @openCard="openCard"></red-card>
 		<packet :pStatus="pStatus" @packet="packetTap" @close="close"></packet>
 	</view>
 </template>
@@ -167,6 +167,7 @@ export default {
 			x: 0,
 			y: 0,
 			value: false,
+			packet:{},
 			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
 			formData: {
 				content: '',
@@ -221,7 +222,27 @@ export default {
 				this.pStatus = false;
 			});
 		},
-		showCard(){
+		openCard: function(){
+			let reqData = {
+				groupId:this.chatObj.chatId,
+				msgId: this.message.hasBeenSentId,
+				userId: this.userData.user.operId,
+			}
+			this.$http.post('app/packet/robPacket', reqData).then(res=>{
+				this.packet = JSON.parse(res).Packets[0];
+				let params = {
+					contentType: 5,
+					content:res
+				}
+				this.sendMsg(params);
+				console.log(JSON.stringify(this.packet));
+			});
+		},
+		showCard(item){
+			let content = item.content;
+			let res = JSON.parse(content);
+			this.packet = res.Packets[0];
+			this.message = item
 			this.winState = 'show';
 		},
 		hiddenCard(){

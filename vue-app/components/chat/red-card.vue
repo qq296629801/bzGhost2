@@ -9,9 +9,9 @@
 					<view class="from">
 						<image src="/static/image/huge.jpg"></image>  
 					</view>
-					<view class="blessing">{{ packet.nickName }}发的红包</view>
+					<view class="blessing">{{ packet.userName }}发的红包</view>
 					<view class="money">
-						{{packet.money}}
+						{{packet.money}}元
 					</view>
 					<view class="to">
 						<view class="close-btn">
@@ -33,11 +33,6 @@
 		name:'red-card',
 		data() {
 			return {
-				packet:{
-					Records:[],
-					nickName:'测试',
-					money:3.5
-				}
 			};
 		},
 		props: {
@@ -45,6 +40,12 @@
 				type: String,
 				default: ''
 			},
+			packet:{
+				type:Object,
+				default() {
+					return {};
+				}
+			}
 		},
 		methods:{
 			discard(){
