@@ -1,8 +1,6 @@
 <template>
 	<view class="content">
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
-			<!-- 背景图- 定位方式 -->
-			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">

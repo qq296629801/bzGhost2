@@ -41,8 +41,8 @@
 	let my;
 	import wInput from '@/components/watch-login/watch-input.vue' 
 	import wButton from '@/components/watch-login/watch-button.vue'
-	import dbMessage from '@/util/db_message.js'
-	import dbCommon from '@/util/db_common.js'
+	import dbMessage from '@/util/chat/db_message.js'
+	import dbCommon from '@/util/chat/db_common.js'
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {

@@ -1,7 +1,7 @@
-import packetCode from './PacketCodeC.js'
-import store from './store/index.js'
-import SKIMSDK from './websocket_sdk.js'
-import base from '@/config/baseUrl';
+import packetCode from '@/util/chat/PacketCodeC.js'
+import store from '@/store/index.js'
+import SKIMSDK from '@/util/chat/websocket_sdk.js'
+import base from '@/util/chat/baseUrl';
 const EventDispatcher = function() {
 	this.listeners = {}
 }

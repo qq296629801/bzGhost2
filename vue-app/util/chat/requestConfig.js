@@ -1,11 +1,11 @@
-import request from "@/plugins/request";
+import request from "@/util/request";
 import store from '@/store';
-import base from '@/config/baseUrl';
+import base from '@/util/chat/baseUrl';
 let version_code = '';
 // #ifdef APP-PLUS
 import {
 	getCurrentNo
-} from '@/plugins/APPUpdate';
+} from '@/chat/APPUpdate';
 setTimeout(() => {
 	getCurrentNo(function(res) {
 		console.log("版本号", res);

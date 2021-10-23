@@ -23,7 +23,7 @@
 	</view>
 </template>
 <script>
-	import dbCommon from '@/util/db_common.js'
+	import dbCommon from '@/util/chat/db_common.js'
 	export default {
 		components: {
 		},

@@ -2,7 +2,13 @@ import Vue from "vue";
 
 export const state = {
   //用户数据
-  userData: {},
+  userData: {
+	  user:{
+		  operId:'220e805b8521444e9f27d78e45633b44',
+		  username:'test'
+	  },
+	  token:''
+  },
 };
 export const mutations = {
   //储存用户信息

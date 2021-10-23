@@ -1,8 +1,7 @@
 // 获取微信公众号SDK权限
 //接口请求方法
-import $http from '@/config/requestConfig';
-import base from '@/config/baseUrl';
-import { publicShareFun } from '@/config/html5Utils';
+import $http from '@/util/chat/requestConfig';
+import base from '@/util/chat/baseUrl';
 //获取地理位置
 export const getLocation = () => {
 	return new Promise((resolve, reject) => {

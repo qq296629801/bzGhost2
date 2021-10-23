@@ -14,7 +14,12 @@ export const state = {
   	areaName: "请选择",
   	areaId: ''
   },
-  chatObj:{},
+  chatObj:{
+	  chatId:'10b371b3518e4c87bc553b028c1a8d38',
+	  chatName:'商家A',
+	  avatar:'/static/image/huge.jpg',
+	  chatType:0
+  },
   packet:{},
   newsPush:{}
 };

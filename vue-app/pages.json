@@ -2,6 +2,29 @@
 	"easycom": {
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
+	"subPackages": [{
+	    "root": "pagesYiqun",
+	    "pages": [
+			{
+				"path": "my/chat/chat",
+				"style": {
+					"navigationBarTitleText": "客服"
+				}
+			},
+			{
+				"path": "my/find/firendCircle",
+				"style": {
+					"navigationBarTitleText": "朋友圈"
+				}
+			},
+			{
+				"path": "my/home/home",
+				"style": {
+					"navigationBarTitleText": "消息"
+				}
+			}
+		]
+	}],
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/home/home",

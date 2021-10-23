@@ -1,4 +1,4 @@
-import packetCode from './PacketCodeC.js'
+import packetCode from '@/util/chat/PacketCodeC.js'
 export default class Websocket {
     constructor({
         heartCheck,

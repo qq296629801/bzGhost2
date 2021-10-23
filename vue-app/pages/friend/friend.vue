@@ -6,7 +6,7 @@
 <script>
 import addressBook from '@/components/addressBook.vue'
 import { mapState, mapMutations} from 'vuex';
-import dbCommon from '@/util/db_common.js'
+import dbCommon from '@/util/chat/db_common.js'
 export default {
 	components:{ addressBook },
 	data() {

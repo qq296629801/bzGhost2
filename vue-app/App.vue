@@ -1,6 +1,6 @@
 <script>
 	// #ifdef APP-PLUS
-	import APPUpdate from "@/plugins/APPUpdate";
+	import APPUpdate from "@/chat/APPUpdate";
 	// #endif
 	import store from '@/store/index.js'
 	export default {
@@ -8,15 +8,16 @@
 			// #ifdef APP-PLUS
 			APPUpdate();
 			// #endif
+			
 			this.$socket.initWebIM();
 		},
 		onShow: function() {
-			let storeUserData = store.state.userData;
-			if(!storeUserData.token){
-				uni.navigateTo({
-					url: "pages/login/login"
-				});
-			}
+			// let storeUserData = store.state.userData;
+			// if(!storeUserData.token){
+			// 	uni.navigateTo({
+			// 		url: "pages/login/login"
+			// 	});
+			// }
 		},
 		onHide: function() {
 		}
