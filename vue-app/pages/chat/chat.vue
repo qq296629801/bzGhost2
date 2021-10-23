@@ -134,6 +134,8 @@
 		
 		<!-- 红包卡片 -->
 		<red-card :winState="winState" @hiddenCard="hiddenCard"></red-card>
+		
+		<packet :pStatus="pStatus" @packet="packet" @close="close"></packet>
 	</view>
 </template>
 
@@ -144,9 +146,10 @@ import { mapState, mapMutations } from 'vuex';
 import dbMessage from '@/util/chat/db_message.js';
 import api from '@/util/chat/api.js'
 import RedCard from '@/components/chat/red-card.vue'
+import packet from '@/components/chat/packet.vue'
 export default {
 	mixins: [MescrollMixin], // 使用mixin
-	components:{RedCard},
+	components:{ RedCard, packet },
 	data() {
 		return {
 			winState:'',
@@ -155,6 +158,7 @@ export default {
 				autoShowLoading: true, // 显示下拉刷新的进度条
 				textColor: "#FF8095" // 下拉刷新的文本颜色
 			},
+			pStatus:false,
 			upOption: {
 				use: false, // 禁止上拉
 				toTop: {
@@ -199,6 +203,9 @@ export default {
 		...mapState(['userData','chatObj'])
 	},
 	methods: {
+		close(){
+			this.pStatus = false;
+		},
 		showCard(){
 			this.winState = 'show';
 		},
@@ -540,16 +547,13 @@ export default {
 		},
 		//点击宫格时触发
 		clickGrid(index){
+			console.log(index,'------------------')
 			if(index == 0){
 				this.chooseImage(['album'])
 			}else if(index == 1){
 				this.chooseImage(['camera'])
-			}else if(index==2){
-				const params = {
-					contentType: 4,
-					content: '红包',
-				};
-				this.sendMsg(params);
+			}else if(index == 2){
+				this.pStatus = true;
 			}
 		},
 		//发送图片

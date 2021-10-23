@@ -382,16 +382,6 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
-		},
-		{
-		    "path" : "pages/chat/forward",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		    
 		}
         ,{
             "path" : "pages/guest/guest",

@@ -1,51 +1,53 @@
 <template>
 	<view>
-		<view class="tabr">
-			<view :class="{on:typeClass=='luck'}" @tap="switchType('luck')">拼手气红包</view>
-			<view :class="{on:typeClass=='normal'}"  @tap="switchType('normal')">普通红包</view>
-			<view class="border" :class="typeClass"></view>
-		</view>
-		<view class="content" :class="typeClass">
-			<view class="luck">
-				<view class="row">
-					<view class="term">
-						红包个数
+		<u-popup v-model="pStatus" :mask-close-able="false">
+			<u-navbar>
+				<view @click="close">关闭</view>
+			</u-navbar>
+			<view style="height: 300rpx;"></view>
+			<view class="content">
+				<view class="luck">
+					<view class="row">
+						<view class="term">
+							红包个数
+						</view>
+						<view class="input">
+							<input type="number" v-model="packet.number" placeholder="输入红包个数"  /> 个
+						</view>
 					</view>
-					<view class="input">
-						<input type="number" v-model="redPacket.number" placeholder="输入红包个数"  /> 个
+					<view class="row">
+						<view class="term">
+							总金额
+						</view>
+						<view class="input">
+							<input type="number" v-model="packet.money" placeholder="输入金额" /> 元
+						</view>
 					</view>
-				</view>
-				<view class="row">
-					<view class="term">
-						总金额
+					<view class="blessing">
+						<input type="text" maxlength="12" placeholder="" v-model="packet.blessing"  />
 					</view>
-					<view class="input">
-						<input type="number" v-model="redPacket.money" placeholder="输入金额" /> 元
+					<view class="hand" @tap="hand">
+						发红包
 					</view>
-				</view>
-				<view class="blessing">
-					<input type="text" maxlength="12" placeholder="" v-model="redPacket.title"  />
-				</view>
-				<view class="hand" @tap="hand('luck')">
-					发红包
 				</view>
 			</view>
-			<view class="normal">
-			</view>
-		</view>
+		</u-popup>
 	</view>
 </template>
 
 <script>
 	export default {
-		name:'red-envelope',
+		name:'packet',
 		props: {
+			pStatus: {
+				type: Boolean,
+				default: false
+			}
 		},
 		data() {
 			return {
-				typeClass:'luck',
-				redPacket: {
-					title: '恭喜发财,大吉大利！',
+				packet: {
+					blessing: '恭喜发财,大吉大利！',
 					money: 100.00,
 					number: 5,
 					status: 0
@@ -53,29 +55,17 @@
 			};
 		},
 		methods:{
-			switchType(type){
-				this.typeClass = type;
+			close(){
+				this.$emit('close',false)
 			},
-			hand(type){
-				//判断数据有效性
-				if((!this.redPacket.money)||this.redPacket.money<=0)
-				{
-					return uni.showToast({title:"金额不能为空",icon:'none'});
-				}
-				if(this.redPacket.number!=Math.abs(parseInt(this.redPacket.number))){
-					return uni.showToast({title:"数量填写大于0的整数",icon:'none'});
-				}
-				this.redPacket.title = this.redPacket.title ||'恭喜发财';
-				this.$emit('sendRedPacket',this.redPacket)
+			hand(){
+				this.$emit('packet',this.packet)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	page{
-		background-color: #F6F7F8;
-	}
 	view{
 		display: flex;
 		flex-wrap: wrap;
