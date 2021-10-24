@@ -142,7 +142,7 @@
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import { mapState, mapMutations } from 'vuex';
-import dbMessage from '@/util/chat/db_message.js';
+import db from '@/util/chat/db_message.js';
 import api from '@/util/chat/api.js'
 import RedCard from '@/components/chat/red-card.vue'
 import packet from '@/components/chat/packet.vue'
@@ -213,13 +213,14 @@ export default {
 				msgType: 4,
 				message: JSON.stringify(packet),
 			}
-			this.$http.post('app/packet/createPacket',reqData).then(res=>{
-				let params = {
-					contentType: 4,
-					content:res
-				}
-				this.sendMsg(params);
-				this.pStatus = false;
+			this.$http.post('app/packet/createPacket', reqData).then(res=>{
+				console.log(JSON.stringify(res));
+				// let params = {
+				// 	contentType: 4,
+				// 	content:res
+				// }
+				// this.sendMsg(params);
+				// this.pStatus = false;
 			});
 		},
 		openCard: function(){
@@ -229,19 +230,19 @@ export default {
 				userId: this.userData.user.operId,
 			}
 			this.$http.post('app/packet/robPacket', reqData).then(res=>{
-				this.packet = JSON.parse(res).Packets[0];
-				let params = {
-					contentType: 5,
-					content:res
-				}
-				this.sendMsg(params);
-				console.log(JSON.stringify(this.packet));
+				//let content = JSON.parse(res);
+				//this.packet = content.Packets[0];
+				// let params = {
+				// 	contentType: 5,
+				// 	content:res
+				// }
+				// this.sendMsg(params);
+				//console.log(JSON.stringify(res));
 			});
 		},
 		showCard(item){
-			let content = item.content;
-			let res = JSON.parse(content);
-			this.packet = res.Packets[0];
+			let content = JSON.parse(item.content);
+			this.packet = content.Packets[0];
 			this.message = item
 			this.winState = 'show';
 		},
@@ -304,7 +305,7 @@ export default {
 		},
 		// 初始消息数据
 		async initData() {
-			dbMessage.get(this.chatObj.chatId).then(res=>{
+			db.get(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				// #ifndef MP-WEIXIN
 					uni.pageScrollTo({
@@ -344,8 +345,9 @@ export default {
 		//发送消息
 		sendMsg(data) {
 			const params = {
-				content: this.formData.content,
+				isItMe:true,
 				contentType: 0,
+				content: this.formData.content,
 				createTime: Date.now(),
 				hasBeenSentId: Date.now(),
 				fromUserId: this.userData.user.operId,
@@ -356,7 +358,6 @@ export default {
 				toUserName: this.chatObj.chatName,
 				toUserHeadImg:'/static/logo.png',
 				chatType: this.chatObj.chatType,
-				isItMe:true
 			};
 
 			if (data) {
@@ -372,6 +373,7 @@ export default {
 					params.contentType = 3;
 				} else if(data.contentType == 4){
 					params.content = data.content;
+					params.hasBeenSentId = data.id;
 					params.contentType = 4;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
@@ -382,10 +384,10 @@ export default {
 			//本地内存
 			this.messageList.push(params);
 			//本地缓存
-			dbMessage.commit(params,this.chatObj.chatId);
+			db.commit(params,this.chatObj.chatId);
 			
 			// 服务器入库
-			api.messageCreate(this.formData.content);
+			api.messageCreate(this.formData.content, params.contentType);
 			
 			// 发送消息到服务器转发
 			this.$socket.sendMessage(params, res=>{
@@ -398,7 +400,7 @@ export default {
 							// 本地内存
 							this.messageList.push(res);
 							// 本地缓存
-							dbMessage.commit(res,this.chatObj.chatId);
+							db.commit(res,this.chatObj.chatId);
 							// 页面置底
 							// #ifndef MP-WEIXIN
 								uni.pageScrollTo({
@@ -583,7 +585,6 @@ export default {
 		},
 		//点击宫格时触发
 		clickGrid(index){
-			console.log(index,'------------------')
 			if(index == 0){
 				this.chooseImage(['album'])
 			}else if(index == 1){
@@ -646,10 +647,6 @@ export default {
 	},
 	//返回按钮事件
 	onBackPress(e) {
-		// uni.navigateBack({
-		// 	delta: 0,
-		// 	animationDuration: 0
-		// })
 	},
 	onLoad(info) {
 

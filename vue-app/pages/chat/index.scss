@@ -78,7 +78,6 @@ page {
 				position: relative;
 				font-size: 0.4rem;
 				min-width: 200px;
-				z-index: 999;
 				.packet {
 				  height: 80rpx;
 				  color: #fff;
@@ -110,9 +109,7 @@ page {
 				  height: 10px;
 				  position: absolute;
 				  background: #F09D47;
-				  z-index: -1;
 				  right: -10rpx;
-				  z-index: 999;
 				  top: 15px;
 				  transform: rotate(45deg);
 				}

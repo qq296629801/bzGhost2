@@ -81,6 +81,7 @@
 		
 	}
 	.content{
+		z-index: 999;
 		height: 550rpx;
 		margin: 20rpx;
 		border-radius: 10rpx;
