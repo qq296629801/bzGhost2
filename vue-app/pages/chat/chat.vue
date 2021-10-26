@@ -214,13 +214,12 @@ export default {
 				message: JSON.stringify(packet),
 			}
 			this.$http.post('app/packet/createPacket', reqData).then(res=>{
-				console.log(JSON.stringify(res));
-				// let params = {
-				// 	contentType: 4,
-				// 	content:res
-				// }
-				// this.sendMsg(params);
-				// this.pStatus = false;
+				let params = {
+					contentType: 4,
+					content: res
+				}
+				this.sendMsg(params);
+				this.pStatus = false;
 			});
 		},
 		openCard: function(){
@@ -372,8 +371,8 @@ export default {
 					params.content = data.content;
 					params.contentType = 3;
 				} else if(data.contentType == 4){
-					params.content = data.content;
-					params.hasBeenSentId = data.id;
+					params.hasBeenSentId = data.content.id;
+					params.content = data.content.msgContext;
 					params.contentType = 4;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
