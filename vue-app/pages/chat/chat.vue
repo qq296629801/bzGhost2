@@ -134,6 +134,8 @@
 		
 		<!-- 红包卡片 -->
 		<red-card :packet="packet" :winState="winState" @hiddenCard="hiddenCard" @openCard="openCard"></red-card>
+		
+		<!-- 发包-->
 		<packet :pStatus="pStatus" @packet="packetTap" @close="close"></packet>
 	</view>
 </template>
@@ -214,10 +216,14 @@ export default {
 				message: JSON.stringify(packet),
 			}
 			this.$http.post('app/packet/createPacket', reqData).then(res=>{
+				console.log(JSON.stringify(res));
+				
 				let params = {
 					contentType: 4,
 					content: res
 				}
+				
+				// 告诉大家我发了红包
 				this.sendMsg(params);
 				this.pStatus = false;
 			});
@@ -228,18 +234,22 @@ export default {
 				msgId: this.message.hasBeenSentId,
 				userId: this.userData.user.operId,
 			}
+			
 			this.$http.post('app/packet/robPacket', reqData).then(res=>{
-				//let content = JSON.parse(res);
-				//this.packet = content.Packets[0];
-				// let params = {
-				// 	contentType: 5,
-				// 	content:res
-				// }
-				// this.sendMsg(params);
-				//console.log(JSON.stringify(res));
+				// 更新自己的
+				
+				
+				// 并且广播更新别人的
+				console.log(JSON.stringify(res));
+				let params = {
+					contentType: 5,
+					content:res
+				}
+				this.sendMsg(params);
 			});
 		},
 		showCard(item){
+			console.log(JSON.stringify(item))
 			let content = JSON.parse(item.content);
 			this.packet = content.Packets[0];
 			this.message = item
@@ -371,9 +381,15 @@ export default {
 					params.content = data.content;
 					params.contentType = 3;
 				} else if(data.contentType == 4){
+					// 发送红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
 					params.contentType = 4;
+				} else if (data.contentType == 5){
+					// 抢红包
+					params.hasBeenSentId = data.content.id;
+					params.content = data.content.msgContext;
+					params.contentType = 5;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
 				//验证输入框书否为空字符传

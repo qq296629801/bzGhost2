@@ -11,7 +11,7 @@
 					</view>
 					<view class="blessing">{{ packet.userName }}发的红包</view>
 					<view class="money">
-						{{packet.money}}元
+						
 					</view>
 					<view class="to">
 						<view class="close-btn">
