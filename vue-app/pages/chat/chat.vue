@@ -220,14 +220,14 @@ export default {
 			let reqData = {
 				groupId: this.chatObj.chatId,
 				userId: this.userData.user.operId,
-				msgType: 4,
+				msgType: this.messageType.createPacket,
 				message: JSON.stringify(packet),
 			}
 			this.$http.post('app/packet/createPacket', reqData).then(res=>{
 				console.log(JSON.stringify(res));
 				
 				let params = {
-					contentType: 4,
+					contentType: this.messageType.createPacket,
 					content: res
 				}
 				
@@ -247,7 +247,7 @@ export default {
 				// 并且广播更新别人的
 				console.log(JSON.stringify(res));
 				let params = {
-					contentType: 5,
+					contentType: this.messageType.robPacket,
 					content:res
 				}
 				this.sendMsg(params);
@@ -375,26 +375,26 @@ export default {
 			};
 
 			if (data) {
-				if(data.contentType == messageType.audio){
+				if(data.contentType == this.messageType.audio){
 					//说明是发送语音
-					params.contentType = messageType.audio;
+					params.contentType = this.messageType.audio;
 					params.anmitionPlay = false;
 					params.content = data.content;
 					params.contentDuration = data.contentDuration;
-				}else if(data.contentType == messageType.image){
+				}else if(data.contentType == this.messageType.image){
 					//发送图片
 					params.content = data.content;
-					params.contentType = messageType.image;
-				} else if(data.contentType == messageType.createPacket){
+					params.contentType = this.messageType.image;
+				} else if(data.contentType == this.messageType.createPacket){
 					// 发送红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = messageType.createPacket;
-				} else if (data.contentType == messageType.robPacket){
+					params.contentType = this.messageType.createPacket;
+				} else if (data.contentType == this.messageType.robPacket){
 					// 抢红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = messageType.robPacket;
+					params.contentType = this.messageType.robPacket;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
 				//验证输入框书否为空字符传
@@ -402,7 +402,7 @@ export default {
 			}
 			
 			// 抢红包不需要存储只需要广播 
-			if(data.contentType == messageType.robPacket){
+			if(data.contentType == this.messageType.robPacket){
 				// 本地内存更改
 				for(var a in this.messageList){
 					if(this.messageList[a].hasBeenSentId==params.hasBeenSentId){
@@ -418,7 +418,7 @@ export default {
 				db.commit(params,this.chatObj.chatId);
 				
 				// 创建红包不需要入库
-				if(data.contentType != messageType.createPacket){
+				if(data.contentType != this.messageType.createPacket){
 					// 服务器入库
 					api.messageCreate(this.formData.content, params.contentType);
 				}
@@ -433,7 +433,7 @@ export default {
 						if(res.content!=''){
 							res.isItMe = false;
 							// 红包广播
-							if(res.contentType==messageType.robPacket){
+							if(res.contentType == this.messageType.robPacket){
 								for(var a in this.messageList){
 									if(this.messageList[a].hasBeenSentId == res.hasBeenSentId){
 										this.messageList[a].content = res.content;
