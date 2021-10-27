@@ -31,6 +31,7 @@
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		name:'red-card',
 		data() {
@@ -48,6 +49,9 @@
 					return {};
 				}
 			}
+		},
+		computed:{
+			...mapState(['userData'])
 		},
 		methods:{
 			discard(){
