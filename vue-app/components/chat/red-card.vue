@@ -10,8 +10,10 @@
 						<image src="/static/image/huge.jpg"></image>  
 					</view>
 					<view class="blessing">{{ packet.userName }}发的红包</view>
-					<view class="money">
-						
+					<view class="money" v-for="(item,index) in packet.Records">
+						<view v-if="item.userName==userData.user.operId">
+							{{item.money}}
+						</view>
 					</view>
 					<view class="to">
 						<view class="close-btn">

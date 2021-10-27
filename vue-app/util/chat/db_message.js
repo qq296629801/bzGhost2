@@ -62,25 +62,26 @@ function del(id,gid,obj){
 	}
 	$local.set(postfix+gid,list)
 }
-	/**
-	 * @param {Object} id
-	 * @param {Object} gid
-	 * @param {Object} msgContext
-	 */
- function upPacket(id,gid,msgContext){
-	let list = $local.get(postfix+gid);
+
+/**
+ * @param {Object} hasBeenSentId 消息id
+ * @param {Object} chatId 群组id
+ * @param {Object} content 红包内容
+ */
+ function upPacket(hasBeenSentId, chatId, content){
+	let list = $local.get(postfix+chatId);
 	if(list==""){
 		let tempItem = [];
 		tempItem.push(obj);
-		$local.set(postfix+gid,tempItem)
+		$local.set(postfix+chatId,tempItem)
 		return;
 	}
 	for(var i in list){
-		if(list[i].id===id){
-			list[i].msgContext = msgContext;
+		if(list[i].hasBeenSentId===hasBeenSentId){
+			list[i].content = content;
 		}
 	}
-	$local.set(postfix+gid,list)
+	$local.set(postfix+chatId,list)
 }
 	
 /**

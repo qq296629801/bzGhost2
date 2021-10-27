@@ -199,6 +199,14 @@ export default {
 				{ icon:"camera-fill",title:"拍摄",uploadType:["camera"] },
 				{ icon:"red-packet-fill",title:"红包",uploadType:["camera"] },
 			],
+			messageType:{
+				text:0,
+				video:1,
+				audio:2,
+				image:3,
+				createPacket:4,
+				robPacket:5
+			}
 		};
 	},
 	computed:{
@@ -236,9 +244,6 @@ export default {
 			}
 			
 			this.$http.post('app/packet/robPacket', reqData).then(res=>{
-				// 更新自己的
-				
-				
 				// 并且广播更新别人的
 				console.log(JSON.stringify(res));
 				let params = {
@@ -249,9 +254,9 @@ export default {
 			});
 		},
 		showCard(item){
-			console.log(JSON.stringify(item))
 			let content = JSON.parse(item.content);
 			this.packet = content.Packets[0];
+			console.log(JSON.stringify(this.packet))
 			this.message = item
 			this.winState = 'show';
 		},
@@ -370,39 +375,54 @@ export default {
 			};
 
 			if (data) {
-				if(data.contentType == 2){
+				if(data.contentType == messageType.audio){
 					//说明是发送语音
-					params.contentType = 2;
+					params.contentType = messageType.audio;
 					params.anmitionPlay = false;
 					params.content = data.content;
 					params.contentDuration = data.contentDuration;
-				}else if(data.contentType == 3){
+				}else if(data.contentType == messageType.image){
 					//发送图片
 					params.content = data.content;
-					params.contentType = 3;
-				} else if(data.contentType == 4){
+					params.contentType = messageType.image;
+				} else if(data.contentType == messageType.createPacket){
 					// 发送红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = 4;
-				} else if (data.contentType == 5){
+					params.contentType = messageType.createPacket;
+				} else if (data.contentType == messageType.robPacket){
 					// 抢红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = 5;
+					params.contentType = messageType.robPacket;
 				}
 			} else if (!this.$u.trim(this.formData.content)) {
 				//验证输入框书否为空字符传
 				return;
 			}
 			
-			//本地内存
-			this.messageList.push(params);
-			//本地缓存
-			db.commit(params,this.chatObj.chatId);
-			
-			// 服务器入库
-			api.messageCreate(this.formData.content, params.contentType);
+			// 抢红包不需要存储只需要广播 
+			if(data.contentType == messageType.robPacket){
+				// 本地内存更改
+				for(var a in this.messageList){
+					if(this.messageList[a].hasBeenSentId==params.hasBeenSentId){
+						this.messageList[a].content = params.content;
+					}
+				}
+				// 本地缓存更改
+				db.upPacket(res.hasBeenSentId, this.chatObj.chatId, res.content);
+			}else {
+				//本地内存
+				this.messageList.push(params);
+				//本地缓存
+				db.commit(params,this.chatObj.chatId);
+				
+				// 创建红包不需要入库
+				if(data.contentType != messageType.createPacket){
+					// 服务器入库
+					api.messageCreate(this.formData.content, params.contentType);
+				}
+			}
 			
 			// 发送消息到服务器转发
 			this.$socket.sendMessage(params, res=>{
@@ -412,21 +432,31 @@ export default {
 					if(res.fromUserId!=this.userData.user.operId){
 						if(res.content!=''){
 							res.isItMe = false;
-							// 本地内存
-							this.messageList.push(res);
-							// 本地缓存
-							db.commit(res,this.chatObj.chatId);
-							// 页面置底
-							// #ifndef MP-WEIXIN
-								uni.pageScrollTo({
-									scrollTop: 99999,
-									duration: 100
+							// 红包广播
+							if(res.contentType==messageType.robPacket){
+								for(var a in this.messageList){
+									if(this.messageList[a].hasBeenSentId == res.hasBeenSentId){
+										this.messageList[a].content = res.content;
+									}
+								}
+								db.upPacket(res.hasBeenSentId, this.chatObj.chatId, res.content);
+							}else {
+								// 本地内存
+								this.messageList.push(res);
+								// 本地缓存
+								db.commit(res, this.chatObj.chatId);
+								// 页面置底
+								// #ifndef MP-WEIXIN
+									uni.pageScrollTo({
+										scrollTop: 99999,
+										duration: 100
+									});
+								// #endif
+								// 页面红点
+								uni.showTabBarRedDot({
+									index: 0
 								});
-							// #endif
-							// 页面红点
-							uni.showTabBarRedDot({
-								index: 0
-							});
+							}
 						}
 					}
 				}
