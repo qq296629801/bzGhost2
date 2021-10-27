@@ -401,7 +401,7 @@ export default {
 					}
 				}
 				// 本地缓存更改
-				db.upPacket(res.hasBeenSentId, this.chatObj.chatId, res.content);
+				db.upPacket(res.hasBeenSentId, this.chatObj.chatId, params.content);
 			}else {
 				//本地内存
 				this.messageList.push(params);
