@@ -407,7 +407,7 @@ export default {
 					}
 				}
 				// 本地缓存更改
-				db.upPacket(res.hasBeenSentId, _t.chatObj.chatId, params.content);
+				db.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
 			}else {
 				//本地内存
 				_t.messageList.push(params);
