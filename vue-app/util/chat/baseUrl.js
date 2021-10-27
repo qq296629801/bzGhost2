@@ -3,8 +3,8 @@ let socketUrl = "";
 let projectToken = "yiqun";
 if (process.env.NODE_ENV === 'development') {
 	// 开发环境
-	baseUrl = "http://127.0.0.1:9998/";
-	socketUrl = "ws://127.0.0.1:9999/chat";
+	baseUrl = "http://192.168.0.100:9998/";
+	socketUrl = "ws://192.168.0.100:9999/chat";
 } else if (process.env.NODE_ENV === 'production') {
 	// 生产环境
 	baseUrl = "http://42.193.146.14:9998/";
