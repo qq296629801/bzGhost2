@@ -284,11 +284,7 @@ export default {
 					if(this.formData.index<=3){
 						this.mescroll.scrollTo(99999, 0);
 					} else if(topMsg){
-						let view = uni.createSelectorQuery().select('#msg-'+ topMsg.hasBeenSentId);
-						view.boundingClientRect(v => {
-							console.log("节点离页面顶部的距离=" + v.top);
-							this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
-						}).exec();
+						this.bindScroll(topMsg.hasBeenSentId);
 					}
 				});
 			}).catch(e=>{
@@ -333,17 +329,12 @@ export default {
 			});
 		},
 		//处理滚动
-		bindScroll(sel, duration = 0) {
-			const query = uni.createSelectorQuery().in(this);
-			query
-				.select(sel)
-				.boundingClientRect(data => {
-					uni.pageScrollTo({
-						scrollTop: data && data.top - 40,
-						duration
-					});
-				})
-				.exec();
+		bindScroll(hasBeenSentId, duration = 0) {
+			let view = uni.createSelectorQuery().select('#msg-'+ hasBeenSentId);
+			view.boundingClientRect(v => {
+				console.log("节点离页面顶部的距离=" + v.top);
+				this.mescroll.scrollTo(v.top - 100, 0) // 减去上偏移量100
+			}).exec();
 		},
 		//切换语音或者键盘方式
 		switchChatType(type) {
@@ -446,12 +437,7 @@ export default {
 								// 本地缓存
 								db.commit(res, this.chatObj.chatId);
 								// 页面置底
-								// #ifndef MP-WEIXIN
-									uni.pageScrollTo({
-										scrollTop: 99999,
-										duration: 100
-									});
-								// #endif
+								this.mescroll.scrollTo(99999, 0);
 								// 页面红点
 								uni.showTabBarRedDot({
 									index: 0
@@ -462,31 +448,11 @@ export default {
 				}
 			});
 			
-
+				
 			this.$nextTick(() => {
 				this.formData.content = '';
-				// #ifdef MP-WEIXIN
-					if(params.contentType == 1){
-						uni.pageScrollTo({
-							scrollTop: 99999,
-							duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
-						});
-					}else{
-						setTimeout(()=>{
-							uni.pageScrollTo({
-								scrollTop: 99999,
-								duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
-							});
-						},150)
-					}
-				// #endif
 					
-				// #ifndef MP-WEIXIN
-					uni.pageScrollTo({
-						scrollTop: 99999,
-						duration: 100
-					});
-				// #endif
+				this.mescroll.scrollTo(99999, 0);
 				
 				if(this.showFunBtn){
 					this.showFunBtn = false;
