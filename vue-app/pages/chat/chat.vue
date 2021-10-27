@@ -8,8 +8,10 @@
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
+					
 					<!-- contentType = 1 文本 -->
 					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ item.content }}</view>
+					
 					<!-- contentType = 2 语音 -->
 					<view
 						class="content contentType2"
@@ -30,6 +32,7 @@
 						></view>
 						<view class="">{{ item.contentDuration }}''</view>
 					</view>
+					
 					<!-- contentType = 3 图片 -->
 					<view 
 						class="content contentType3" 	
@@ -38,6 +41,7 @@
 					>
 						<image :src="item.content" class="img" mode="widthFix"></image>
 					</view>
+					
 					<!-- contentType = 4 红包 -->
 					<view
 						class="contentType4" 	
@@ -48,10 +52,9 @@
 						  <view class="img">
 							  <image src="/static/img/red.png"></image>
 						  </view>
-						  <span class="title">恭喜发财，大吉大利</span>
+						  <span>恭喜发财，大吉大利</span>
 						</div>
 						<div class="tag">红包</div>
-						<div class="arrow"></div>
 					</view>
 					
 				</view>
