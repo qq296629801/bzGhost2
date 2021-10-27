@@ -26,7 +26,7 @@
 
 <script>
 // #ifdef APP-PLUS
-import APPUpdate, { getCurrentNo } from "@/plugins/APPUpdate";
+import APPUpdate, { getCurrentNo } from "@/util/APPUpdate";
 // #endif
 import { mapState } from 'vuex';	
 export default {
