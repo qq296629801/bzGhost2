@@ -20,13 +20,18 @@ export const state = {
 	  avatar:'/static/image/huge.jpg',
 	  chatType:0
   },
-  packet:{},
+  packetData:{},
   newsPush:{}
 };
 //缓存浏览器的数据名称
 const cacheNameList = ["userData", "webViewUrl"];
 let clearTime;
 export const mutations = {
+	setPacketData(state, data){
+		if(data){
+			state.packetData = data
+		}
+	},
 	// 
 	setNewsPush(state, data){
 		if(data){

@@ -215,9 +215,10 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['userData','chatObj'])
+		...mapState(['userData','chatObj','packetData'])
 	},
 	methods: {
+		...mapMutations(['setPacketData']),
 		close(){
 			this.pStatus = false;
 		},
@@ -233,8 +234,6 @@ export default {
 			}
 			
 			_t.$http.post('app/packet/createPacket', reqData).then(res=>{
-				console.log(JSON.stringify(res));
-				
 				let params = {
 					contentType: _t.messageType.createPacket,
 					content: res
@@ -257,7 +256,6 @@ export default {
 			
 			_t.$http.post('app/packet/robPacket', reqData).then(res=>{
 				// 并且广播更新别人的
-				console.log(JSON.stringify(res));
 				let params = {
 					contentType: _t.messageType.robPacket,
 					content:res
@@ -270,7 +268,7 @@ export default {
 			let _t = this;
 			let content = JSON.parse(item.content);
 			_t.packet = content.Packets[0];
-			console.log(JSON.stringify(_t.packet))
+			_t.setPacketData(_t.packet);
 			_t.message = item
 			_t.winState = 'show';
 		},
@@ -417,6 +415,7 @@ export default {
 							_t.message = _t.messageList[a];
 							let content = JSON.parse(params.content);
 							_t.packet = content.Packets[0];
+							_t.setPacketData(_t.packet);
 						}
 					}
 				}
@@ -454,6 +453,7 @@ export default {
 											_t.message = _t.messageList[a];
 											let content = JSON.parse(params.content);
 											_t.packet = content.Packets[0];
+											_t.setPacketData(_t.packet);
 										}
 									}
 								}

@@ -2,23 +2,23 @@
 	<view>
 		<view class="top">
 			<view class="blessing">
-				{{ packet.userName}}的红包
+				{{ packetData.userName}}的红包
 			</view>
 			<view class="money">
-				{{packet.robMoney}}
+				{{packetData.robMoney}}
 			</view>
 			<view class="face" :style="{'border-radius':radius}">
 				<image src="/static/image/huge.jpg"></image>
 			</view>
 			<view class="desc">
-				{{packet.description}}
+				{{packetData.description}}
 			</view>
 		</view>
 		<view class="info">
-			剩余 {{ packet.surplusNumber }}个，共{{ packet.number }} 个
+			剩余 {{ packetData.surplusNumber }}个，共{{ packetData.number }} 个
 		</view>
 		<view class="list">
-			<view class="row" v-for="(row,index) in packet.Records" :key="index">
+			<view class="row" v-for="(row,index) in packetData.Records" :key="index">
 				<view class="left">
 					<image src="/static/image/huge.jpg"></image>
 				</view>
@@ -46,76 +46,15 @@
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
 			return {
-				radius:'100% 100% 0 0',
-				packet:{
-					description:'大吉大利,今晚吃鸡!',
-					robMoney:3.5,
-					userName:'测试',
-					surplusNumber:2,
-					number:10,
-					Records:[
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:true
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						},
-						{
-							userName:'admin',
-							money:2.6,
-							lastUpdateTime:'2021-10-26',
-							isLucky:false
-						}
-					]
-				}
+				radius:'100% 100% 0 0'
 			};
 		},
-		onShow() {
+		computed:{
+			...mapState(['packetData'])
 		},
 		onPageScroll(e) {
 			if(e.scrollTop>100){return;}
@@ -138,7 +77,7 @@
 		.blessing,.money{
 			width: 100%;
 			color: #f8d757;
-			//padding: 20upx 0;
+			padding: 50upx 0;
 			justify-content: center;
 			font-size: 34upx;
 			background: #EC624F;

@@ -373,9 +373,9 @@
 		    "path" : "pages/chat/detail",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+		        "navigationBarTitleText": "红包",
+				"navigationBarTextStyle":"black",
+		        "enablePullDownRefresh": false
 		    }
 		    
 		}
