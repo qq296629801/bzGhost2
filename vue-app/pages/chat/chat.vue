@@ -395,6 +395,7 @@ export default {
 					params.contentType = _t.messageType.createPacket;
 				} else if (data.contentType == _t.messageType.robPacket){
 					// 抢红包
+					console.log(JSON.stringify(data))
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
 					params.contentType = _t.messageType.robPacket;
