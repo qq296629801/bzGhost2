@@ -407,7 +407,7 @@ export default {
 			}
 			
 			// 抢红包不需要存储只需要广播 
-			if(data.contentType == _t.messageType.robPacket){
+			if(params.contentType == _t.messageType.robPacket){
 				// 本地内存更改
 				for(var a in _t.messageList){
 					if(_t.messageList[a].hasBeenSentId == params.hasBeenSentId){
@@ -429,7 +429,7 @@ export default {
 				db.commit(params,_t.chatObj.chatId);
 				
 				// 创建红包不需要入库
-				if(data.contentType != _t.messageType.createPacket){
+				if(params.contentType != _t.messageType.createPacket){
 					// 服务器入库
 					api.messageCreate(_t.formData.content, params.contentType);
 				}
