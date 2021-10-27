@@ -9,12 +9,12 @@
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
 					<!-- contentType = 1 文本 -->
-					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == 0">{{ item.content }}</view>
+					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ item.content }}</view>
 					<!-- contentType = 2 语音 -->
 					<view
 						class="content contentType2"
 						:class="[{ 'content-type-right': item.isItMe }]"
-						v-if="item.contentType == 2"
+						v-if="item.contentType == messageType.audio"
 						@tap="handleAudio(item)"
 						hover-class="contentType2-hover-class"
 						:style="{width:`${130+(item.contentDuration*2)}rpx`}"
@@ -33,7 +33,7 @@
 					<!-- contentType = 3 图片 -->
 					<view 
 						class="content contentType3" 	
-						v-if="item.contentType == 3"
+						v-if="item.contentType == messageType.image"
 						@tap="viewImg([item.content])"
 					>
 						<image :src="item.content" class="img" mode="widthFix"></image>
@@ -41,7 +41,7 @@
 					<!-- contentType = 4 红包 -->
 					<view
 						class="contentType4" 	
-						v-if="item.contentType == 4"
+						v-if="item.contentType == messageType.createPacket"
 						@tap="showCard(item)"
 					>
 						<div class="packet">
@@ -217,48 +217,54 @@ export default {
 			this.pStatus = false;
 		},
 		packetTap(packet){
+			let _t = this;
+			
 			let reqData = {
-				groupId: this.chatObj.chatId,
-				userId: this.userData.user.operId,
-				msgType: this.messageType.createPacket,
+				groupId: _t.chatObj.chatId,
+				userId: _t.userData.user.operId,
+				msgType: _t.messageType.createPacket,
 				message: JSON.stringify(packet),
 			}
-			this.$http.post('app/packet/createPacket', reqData).then(res=>{
+			
+			_t.$http.post('app/packet/createPacket', reqData).then(res=>{
 				console.log(JSON.stringify(res));
 				
 				let params = {
-					contentType: this.messageType.createPacket,
+					contentType: _t.messageType.createPacket,
 					content: res
 				}
 				
 				// 告诉大家我发了红包
-				this.sendMsg(params);
-				this.pStatus = false;
+				_t.sendMsg(params);
+				_t.pStatus = false;
 			});
 		},
 		openCard: function(){
+			let _t = this;
+			
 			let reqData = {
-				groupId:this.chatObj.chatId,
-				msgId: this.message.hasBeenSentId,
-				userId: this.userData.user.operId,
+				groupId:_t.chatObj.chatId,
+				msgId: _t.message.hasBeenSentId,
+				userId: _t.userData.user.operId,
 			}
 			
-			this.$http.post('app/packet/robPacket', reqData).then(res=>{
+			_t.$http.post('app/packet/robPacket', reqData).then(res=>{
 				// 并且广播更新别人的
 				console.log(JSON.stringify(res));
 				let params = {
-					contentType: this.messageType.robPacket,
+					contentType: _t.messageType.robPacket,
 					content:res
 				}
-				this.sendMsg(params);
+				_t.sendMsg(params);
 			});
 		},
 		showCard(item){
+			let _t = this;
 			let content = JSON.parse(item.content);
-			this.packet = content.Packets[0];
-			console.log(JSON.stringify(this.packet))
-			this.message = item
-			this.winState = 'show';
+			_t.packet = content.Packets[0];
+			console.log(JSON.stringify(_t.packet))
+			_t.message = item
+			_t.winState = 'show';
 		},
 		hiddenCard(){
 			this.winState = 'hide';
@@ -267,24 +273,27 @@ export default {
 			},200)
 		},
 		downCallback(){
+			let _t = this;
+			
 			let httpReqData = {
-				toGroupId: this.chatObj.chatId,
-				userId: this.userData.user.operId,
+				toGroupId: _t.chatObj.chatId,
+				userId: _t.userData.user.operId,
 				condition:'',
-				pageNum: this.formData.index,
+				pageNum: _t.formData.index,
 				pageSize: 10
 			}
-			this.$http.post('app/group/msg/list', httpReqData).then(res=>{
-				this.formData.index++;
-				this.mescroll.endSuccess();
+			
+			_t.$http.post('app/group/msg/list', httpReqData).then(res=>{
+				_t.formData.index++;
+				_t.mescroll.endSuccess();
 				let data = res.list.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
-				let topMsg = this.messageList[0];
-				this.messageList = data.concat(this.messageList);
-				this.$nextTick(() => {
-					if(this.formData.index<=3){
-						this.mescroll.scrollTo(99999, 0);
+				let topMsg = _t.messageList[0];
+				_t.messageList = data.concat(_t.messageList);
+				_t.$nextTick(() => {
+					if(_t.formData.index<=3){
+						_t.mescroll.scrollTo(99999, 0);
 					} else if(topMsg){
-						this.bindScroll(topMsg.hasBeenSentId);
+						_t.bindScroll(topMsg.hasBeenSentId);
 					}
 				});
 			}).catch(e=>{
@@ -317,13 +326,8 @@ export default {
 		async initData() {
 			db.get(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
-				// #ifndef MP-WEIXIN
-					uni.pageScrollTo({
-						scrollTop: 99999,
-						duration: 100
-					});
-				// #endif
 				this.$nextTick(() => {
+					this.mescroll.scrollTo(99999, 0);
 					this.loading = true;
 				});
 			});
@@ -349,95 +353,97 @@ export default {
 		},
 		//发送消息
 		sendMsg(data) {
+			let _t = this
+			
 			const params = {
 				isItMe:true,
-				contentType: 0,
-				content: this.formData.content,
+				contentType: _t.messageType.text,
+				content: _t.formData.content,
 				createTime: Date.now(),
 				hasBeenSentId: Date.now(),
-				fromUserId: this.userData.user.operId,
-				fromUserName: this.userData.user.username,
-				fromUserHeadImg: '/static/logo.png',
-				userId: this.userData.user.operId,
-				toUserId: this.chatObj.chatId,
-				toUserName: this.chatObj.chatName,
-				toUserHeadImg:'/static/logo.png',
-				chatType: this.chatObj.chatType,
+				fromUserId: _t.userData.user.operId,
+				fromUserName: _t.userData.user.username,
+				fromUserHeadImg: '/static/image/huge.jpg',
+				userId: _t.userData.user.operId,
+				toUserId: _t.chatObj.chatId,
+				toUserName: _t.chatObj.chatName,
+				toUserHeadImg:'/static/image/huge.jpg',
+				chatType: _t.chatObj.chatType,
 			};
 
 			if (data) {
-				if(data.contentType == this.messageType.audio){
+				if(data.contentType == _t.messageType.audio){
 					//说明是发送语音
-					params.contentType = this.messageType.audio;
+					params.contentType = _t.messageType.audio;
 					params.anmitionPlay = false;
 					params.content = data.content;
 					params.contentDuration = data.contentDuration;
-				}else if(data.contentType == this.messageType.image){
+				}else if(data.contentType == _t.messageType.image){
 					//发送图片
 					params.content = data.content;
-					params.contentType = this.messageType.image;
-				} else if(data.contentType == this.messageType.createPacket){
+					params.contentType = _t.messageType.image;
+				} else if(data.contentType == _t.messageType.createPacket){
 					// 发送红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = this.messageType.createPacket;
-				} else if (data.contentType == this.messageType.robPacket){
+					params.contentType = _t.messageType.createPacket;
+				} else if (data.contentType == _t.messageType.robPacket){
 					// 抢红包
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
-					params.contentType = this.messageType.robPacket;
+					params.contentType = _t.messageType.robPacket;
 				}
-			} else if (!this.$u.trim(this.formData.content)) {
+			} else if (!_t.$u.trim(_t.formData.content)) {
 				//验证输入框书否为空字符传
 				return;
 			}
 			
 			// 抢红包不需要存储只需要广播 
-			if(data.contentType == this.messageType.robPacket){
+			if(data.contentType == _t.messageType.robPacket){
 				// 本地内存更改
-				for(var a in this.messageList){
-					if(this.messageList[a].hasBeenSentId==params.hasBeenSentId){
-						this.messageList[a].content = params.content;
+				for(var a in _t.messageList){
+					if(_t.messageList[a].hasBeenSentId==params.hasBeenSentId){
+						_t.messageList[a].content = params.content;
 					}
 				}
 				// 本地缓存更改
-				db.upPacket(res.hasBeenSentId, this.chatObj.chatId, params.content);
+				db.upPacket(res.hasBeenSentId, _t.chatObj.chatId, params.content);
 			}else {
 				//本地内存
-				this.messageList.push(params);
+				_t.messageList.push(params);
 				//本地缓存
-				db.commit(params,this.chatObj.chatId);
+				db.commit(params,_t.chatObj.chatId);
 				
 				// 创建红包不需要入库
-				if(data.contentType != this.messageType.createPacket){
+				if(data.contentType != _t.messageType.createPacket){
 					// 服务器入库
-					api.messageCreate(this.formData.content, params.contentType);
+					api.messageCreate(_t.formData.content, params.contentType);
 				}
 			}
 			
 			// 发送消息到服务器转发
-			this.$socket.sendMessage(params, res=>{
+			_t.$socket.sendMessage(params, res=>{
 				// 判断是否当前群组
-				if(res.toUserId==this.chatObj.chatId){
+				if(res.toUserId==_t.chatObj.chatId){
 					// 判断发送人是不是自己
-					if(res.fromUserId!=this.userData.user.operId){
+					if(res.fromUserId!=_t.userData.user.operId){
 						if(res.content!=''){
 							res.isItMe = false;
 							// 红包广播
-							if(res.contentType == this.messageType.robPacket){
-								for(var a in this.messageList){
-									if(this.messageList[a].hasBeenSentId == res.hasBeenSentId){
-										this.messageList[a].content = res.content;
+							if(res.contentType == _t.messageType.robPacket){
+								for(var a in _t.messageList){
+									if(_t.messageList[a].hasBeenSentId == res.hasBeenSentId){
+										_t.messageList[a].content = res.content;
 									}
 								}
-								db.upPacket(res.hasBeenSentId, this.chatObj.chatId, res.content);
+								db.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
 							}else {
 								// 本地内存
-								this.messageList.push(res);
+								_t.messageList.push(res);
 								// 本地缓存
-								db.commit(res, this.chatObj.chatId);
+								db.commit(res, _t.chatObj.chatId);
 								// 页面置底
-								this.mescroll.scrollTo(99999, 0);
+								_t.mescroll.scrollTo(99999, 0);
 								// 页面红点
 								uni.showTabBarRedDot({
 									index: 0
@@ -449,18 +455,18 @@ export default {
 			});
 			
 				
-			this.$nextTick(() => {
-				this.formData.content = '';
+			_t.$nextTick(() => {
+				_t.formData.content = '';
 					
-				this.mescroll.scrollTo(99999, 0);
+				_t.mescroll.scrollTo(99999, 0);
 				
-				if(this.showFunBtn){
-					this.showFunBtn = false;
+				if(_t.showFunBtn){
+					_t.showFunBtn = false;
 				}
 				
 				// #ifdef MP-WEIXIN 
 				if (params.contentType == 1) {
-					this.mpInputMargin = true;
+					_t.mpInputMargin = true;
 				} 
 				// #endif
 				//h5浏览器并没有很好的办法控制键盘一直处于唤起状态 而且会有样式性的问题
