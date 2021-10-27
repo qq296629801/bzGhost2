@@ -177,7 +177,9 @@ export default {
 				index: 2
 			},
 			messageList: [],
-			message:{},
+			message:{
+				hasBeenSentId:0
+			},
 			loading: true, //标识是否正在获取数据
 			imgHeight: '1000px',
 			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
@@ -216,6 +218,7 @@ export default {
 		close(){
 			this.pStatus = false;
 		},
+		// 发红包
 		packetTap(packet){
 			let _t = this;
 			
@@ -239,6 +242,7 @@ export default {
 				_t.pStatus = false;
 			});
 		},
+		// 开红包
 		openCard: function(){
 			let _t = this;
 			
@@ -258,6 +262,7 @@ export default {
 				_t.sendMsg(params);
 			});
 		},
+		// 展示红包
 		showCard(item){
 			let _t = this;
 			let content = JSON.parse(item.content);
@@ -402,8 +407,14 @@ export default {
 			if(data.contentType == _t.messageType.robPacket){
 				// 本地内存更改
 				for(var a in _t.messageList){
-					if(_t.messageList[a].hasBeenSentId==params.hasBeenSentId){
+					if(_t.messageList[a].hasBeenSentId == params.hasBeenSentId){
 						_t.messageList[a].content = params.content;
+						// 当前正在看的红包 才更新
+						if(_t.message.hasBeenSentId == params.hasBeenSentId){
+							_t.message = _t.messageList[a];
+							let content = JSON.parse(params.content);
+							_t.packet = content.Packets[0];
+						}
 					}
 				}
 				// 本地缓存更改
@@ -431,9 +442,16 @@ export default {
 							res.isItMe = false;
 							// 红包广播
 							if(res.contentType == _t.messageType.robPacket){
+								// 修改红包内容
 								for(var a in _t.messageList){
 									if(_t.messageList[a].hasBeenSentId == res.hasBeenSentId){
 										_t.messageList[a].content = res.content;
+										// 当前正在看的红包 才更新
+										if(_t.message.hasBeenSentId == res.hasBeenSentId){
+											_t.message = _t.messageList[a];
+											let content = JSON.parse(params.content);
+											_t.packet = content.Packets[0];
+										}
 									}
 								}
 								db.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);

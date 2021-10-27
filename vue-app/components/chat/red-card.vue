@@ -11,8 +11,8 @@
 					</view>
 					<view class="blessing">{{ packet.userName }}发的红包</view>
 					<view class="money" v-for="(item,index) in packet.Records">
-						<view v-if="item.userName==userData.user.operId">
-							{{item.money}}
+						<view v-if="item.userName == userData.user.operId">
+							{{ item.money }}
 						</view>
 					</view>
 					<view class="to">
