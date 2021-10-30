@@ -30,12 +30,22 @@
                   </i>
                 </div>
               </div>
-              <div class="im-chat-text">
+
+              <div class="im-chat-text" v-if="item.contentType == 0">
                 <pre
                   v-html="item.content"
                   v-on:click="openImageProxy($event)"
                 ></pre>
               </div>
+
+              <div class="im-chat-packet" v-if="item.contentType == 4">
+                <div class="packet">
+                  <img src="@/static/img/red.png" alt="头像" />
+                  <span>恭喜发财，大吉大利</span>
+                </div>
+                <div class="tag">红包</div>
+              </div>
+
             </li>
           </ul>
         </div>
@@ -228,11 +238,14 @@ export default {
             isItMe:true
           };
           //本地缓存
-          commit(params, self.chatObj.chatId);
+          //commit(params, self.chatObj.chatId);
            //本地内存
           self.messageList.push(params);
+          self.messageContent = '';
+
+
           // 服务器入库
-          messageCreate(self.messageContent);
+         // messageCreate(self.messageContent);
           // 发送消息到服务器转发
           self.$socket.sendMessage(params, res => {
             // 判断是否当前群组
@@ -244,8 +257,12 @@ export default {
                   // 本地内存
                   self.messageList.push(res);
                   // 本地缓存
-                  commit(res, self.chatObj.chatId);
+                 // commit(res, self.chatObj.chatId);
                   // 页面置底
+                  // 每次滚动到最底部
+                  self.$nextTick(() => {
+                    imageLoad("message-box");
+                  });
                  
                 }
               }
@@ -263,7 +280,6 @@ export default {
       });
       // 绑定通道
       self.$socket.joinGroup(a=>{
-        console.log(a);
         self.send();
       });
     },
@@ -440,6 +456,36 @@ export default {
         margin-bottom: 10px;
         padding-left: 60px;
         min-height: 68px;
+
+
+        .im-chat-packet {
+            position: relative;
+            line-height: 22px;
+            margin-top: 25px;
+            border-radius: 3px;
+            color: #333;
+            word-break: break-all;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 14px;
+            .packet {
+              height: 80rpx;
+              color: #fff;
+              padding: 20rpx;
+              display: flex;
+              background-color: #F09D47;
+              line-height: 60rpx;
+            }
+            .tag {
+              height: 50rpx;
+              line-height: 50rpx;
+              font-size: 20rpx;
+              background: #F09D47;
+              border-top: 1px solid #f9b56f;
+              padding-left: 20rpx;
+              color: #fff;
+            }
+        }
 
         .im-chat-text {
           position: relative;

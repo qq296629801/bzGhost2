@@ -106,17 +106,6 @@ const WEBIM = {
   sendMessage: (params, func) => {
     params.version = 1;
     params.command = 3;
-    params.createTime = Date.now();
-    params.hasBeenSentId = Date.now();
-    params.fromUserId = store.state.userData.user.operId;
-    params.fromUserName = store.state.userData.user.username;
-    params.fromUserHeadImg = "/static/logo.png";
-    params.userId = store.state.userData.user.operId;
-    params.toUserId = store.state.chatObj.chatId;
-    params.toUserName = store.state.chatObj.chatName;
-    params.toUserHeadImg = "/static/logo.png";
-    params.chatType = store.state.chatObj.chatType;
-    params.isItMe = true;
     send(params);
     eventDispatcher.addListener("4", func);
   },
