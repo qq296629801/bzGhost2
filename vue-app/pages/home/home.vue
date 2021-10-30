@@ -33,9 +33,8 @@ export default {
 			show: false,
 			selectShow: false,
 			selectList: [
-			{ id: '1', name: '添加好友', icon: 'man-add' },
-			{ id: '2', name: '扫一扫', icon: 'scan' },
-			{ id: '3', name: '发起群聊', icon: 'chat' }
+			{ id: '1', name: '发起群聊', icon: 'chat' },
+			{ id: '2', name: '扫一扫', icon: 'scan' }
 			],
 			list:{}
 		};
@@ -100,12 +99,9 @@ export default {
 				params: {}
 			});
 		},
-		showSelect(){
-			this.selectShow = !this.selectShow;
-		},
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
-				this.showSelect()
+				this.selectShow = !this.selectShow;
 			}else {
 				this.$u.route({
 					url: 'pages/search/search'
@@ -117,26 +113,21 @@ export default {
 		},
 		checkSelect(index) {
 			if (index == 0) {
-				this.onPageJump('/pages/search/search');
-			}
-			else if (index == 1) {
-				const t = this
-				uni.scanCode({
-					success: function(res) {
-						let result = res.result
-						if (result==t.userData.user.operId){
-						} else {
-							t.$u.route({
-								url: 'pages/friend/businessCard',
-								params:{ userId: result,nickName:'', source: 1}
-							})
-						}
-					}
-				});
-			}else {
 				this.$u.route({
 					url: 'pages/group/groupCreate'
 				})
+				
+			} else {
+				// const _t = this
+				// uni.scanCode({
+				// 	success: function(res) {
+				// 		let result = res.result
+				// 		_t.$u.route({
+				// 			url: 'pages/friend/businessCard',
+				// 			params:{ userId: result, nickName:'', source: 1}
+				// 		})
+				// 	}
+				// });
 			}
 		},
 	},
