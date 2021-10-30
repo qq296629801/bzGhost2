@@ -111,7 +111,7 @@ export default {
 	right: 40rpx;
 	/* #endif */
 	box-sizing: border-box;
-	width: 28%; // 下拉框宽度
+	width: 40%; // 下拉框宽度
 	background-color: $u-main-color;
 	border-radius: 3px;
 	box-shadow: #dddddd 2px 2px 4px, #dddddd -2px -2px 4px;
@@ -143,7 +143,7 @@ export default {
 	/* #ifdef APP-NVUE || MP-WEIXIN */
 	display: flex;
 	/* #endif */
-	font-size: 24rpx;
+	font-size: 28rpx;
 	padding: 30rpx ;
 	color: #ffffff;
 	border-bottom: 1rpx solid $u-type-info;
