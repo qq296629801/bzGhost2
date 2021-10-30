@@ -3,7 +3,7 @@
 		<u-navbar :is-back="true" title="成员" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="saveGroupMember">增加</u-button>
+				<u-button size="mini" type="success" @click="saveGroupMember">保存</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
@@ -46,7 +46,9 @@
 				this.firendItem = res
 				let indexList = []
 				this.list.forEach(item => {
-					indexList.push(item.name)
+					if(item.members.length>0){
+						indexList.push(item.name)
+					}
 				})
 				this.indexList = indexList
 			});

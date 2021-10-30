@@ -3,7 +3,7 @@
 		<u-navbar :is-back="true" title="成员" :border-bottom="false"
 		 z-index="1001">
 			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="delGroupMember">移除</u-button>
+				<u-button size="mini" type="success" @click="delGroupMember">保存</u-button>
 			</view>
 		</u-navbar>
 		<view class="list-search">
@@ -23,7 +23,7 @@
 	</view>
 </template>
 <script>
-	import dbCommon from '@/util/chat/db_common.js'
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		components: {
 		},
@@ -40,15 +40,10 @@
 			}
 		},
 		onShow() {
-			dbCommon.get('friend').then(res=>{
-				this.list = res
-				this.firendItem = res
-				let indexList = []
-				this.list.forEach(item => {
-					indexList.push(item.name)
-				})
-				this.indexList = indexList
-			});
+			this.groupMember();
+		},
+		computed:{
+			...mapState(['userData'])
 		},
 		onLoad({groupId}) {this.groupId=groupId},
 		watch: {
@@ -72,6 +67,22 @@
 			}
 		},
 		methods: {
+			groupMember(){
+				let reqData = {
+					groupId: this.groupId,
+					userId: this.userData.user.operId
+				}
+				this.$http.post('app/group/member', reqData).then(res=>{
+					this.list = res.memberResponse
+					let indexList = []
+					this.list.forEach(item => {
+						if(item.members.length>0){
+							indexList.push(item.name)
+						}
+					})
+					this.indexList = indexList
+				});
+			},
 			chechMem(user) {
 				if (user.checked==undefined || user.checked==false) {
 					this.ids.push(user.id);
