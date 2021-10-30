@@ -109,7 +109,7 @@
 
 <style lang="scss">
 .item {
-		background-color: #fff;
+		background-color: #fafafa;
 		width: 750rpx;
 		height: 140rpx;
 		display: flex;
