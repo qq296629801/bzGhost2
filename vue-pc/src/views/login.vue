@@ -187,7 +187,7 @@ export default {
         textarea: ""
       },
       requestData: {
-        username: "admin",
+        username: "test",
         password: "123456"
       }
     };

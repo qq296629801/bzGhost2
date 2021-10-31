@@ -24,7 +24,7 @@ const WEBIM = {
   isReconnection: true,
   options: null,
   /*初始化*/
-  initWebIM: function() {
+  initSocket: function() {
     return new Promise((resolve, reject) => {
       WEBIM.options = {
         url: WEBIM.serverUrl,

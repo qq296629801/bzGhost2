@@ -77,10 +77,9 @@ export default {
       logout(self);
     }
   },
-  created: function() {
-    this.$socket.initWebIM();
-  },
-  mounted: function() {}
+  mounted: function() {
+    this.$socket.initSocket();
+  }
 };
 </script>
 <style lang="scss">

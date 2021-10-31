@@ -146,8 +146,6 @@ import HistoryMessage from "./historyMessage.vue";
 import { mapState } from "vuex";
 import { imageLoad } from "../../../utils/ChatUtils";
 import { get } from "@/utils/db_message.js";
-import { commit } from "@/utils/db_message.js";
-import { messageCreate } from "@/utils/api.js";
 export default {
   components: {
     Faces,
@@ -171,7 +169,15 @@ export default {
       showFace: false,
       showHistory: false,
       userList: [],
-      isGroup: false
+      isGroup: false,
+      messageType:{
+				text:0,
+				video:1,
+				audio:2,
+				image:3,
+				createPacket:4,
+				robPacket:5
+			}
     };
   },
   props: ["chatObj"],
@@ -220,67 +226,65 @@ export default {
         }
       }
     },
-    send(){
-          let self = this
+    send(data){
+          let _t = this
+
           const params = {
-            content: self.messageContent,
-            contentType: 0,
+            isItMe:true,
+            contentType: _t.messageType.text,
+            content:  _t.messageContent,
             createTime: Date.now(),
             hasBeenSentId: Date.now(),
-            fromUserId:self.userData.user.operId,
-            fromUserName:self.userData.user.username,
+            fromUserId: _t.userData.user.operId,
+            fromUserName: _t.userData.user.username,
             fromUserHeadImg: '/static/logo.png',
-            userId:self.userData.user.operId,
-            toUserId:self.chatObj.chatId,
-            toUserName:self.chatObj.chatName,
+            userId: _t.userData.user.operId,
+            toUserId: _t.chatObj.chatId,
+            toUserName: _t.chatObj.chatName,
             toUserHeadImg:'/static/logo.png',
-            chatType:self.chatObj.chatType,
-            isItMe:true
+            chatType: _t.chatObj.chatType
           };
-          //本地缓存
-          //commit(params, self.chatObj.chatId);
+
+
+
            //本地内存
-          self.messageList.push(params);
-          self.messageContent = '';
+          _t.messageList.push(params);
+          _t.messageContent = '';
+          this.$nextTick(() => {
+            imageLoad("message-box");
+          });
 
-
-          // 服务器入库
-         // messageCreate(self.messageContent);
           // 发送消息到服务器转发
-          self.$socket.sendMessage(params, res => {
-            // 判断是否当前群组
-            if (res.toUserId == self.chatObj.chatId) {
-              // 判断发送人是不是自己
-              if (res.fromUserId != self.userData.user.operId) {
-                if (res.content != "") {
-                  res.isItMe = false;
-                  // 本地内存
-                  self.messageList.push(res);
-                  // 本地缓存
-                 // commit(res, self.chatObj.chatId);
-                  // 页面置底
-                  // 每次滚动到最底部
-                  self.$nextTick(() => {
-                    imageLoad("message-box");
-                  });
-                 
+          this.$socket.sendMessage(params, res => {
+              console.log(res)
+              // 判断是否当前群组
+              if(res.toUserId==_t.chatObj.chatId){
+                // 判断发送人是不是自己
+                if(res.fromUserId!=_t.userData.user.operId){
+                  if(res.content!=''){
+                    res.isItMe = false;
+                    _t.messageList.push(params);
+                    this.$nextTick(() => {
+                      imageLoad("message-box");
+                    });
+                  }
                 }
               }
-            }
-             // 每次滚动到最底部
-              self.$nextTick(() => {
-                imageLoad("message-box");
-              });
+
+
           });
     },
     initChat() {
-      let self = this;
-      get(self.chatObj.chatId).then(res => {
-        self.messageList = res;
-      });
-      // 绑定通道
-      self.$socket.joinGroup(a=>{
-        self.send();
+
+      get(this.chatObj.chatId).then(res=>{
+				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
+				this.$nextTick(() => {
+           imageLoad("message-box");
+				});
+			});
+
+      this.$socket.joinGroup(() =>{
+         this.send(null);
       });
     },
     getHistoryMessage(pageNo) {
@@ -294,30 +298,18 @@ export default {
       param.set("fromId", self.$store.state.user.id);
       param.set("pageNo", pageNo);
 
-      //   self.$nextTick(() => {
-      //     imageLoad("message-box");
-      //   });
-    }
-  },
-  watch: {
-    // 监听每次 chatObj 的变化
-    chatObj: function() {
-      let self = this;
-      self.initChat();
-      // 每次滚动到最底部
-      self.$nextTick(() => {
+      this.$nextTick(() => {
         imageLoad("message-box");
       });
     }
   },
+  watch: {
+    chatObj: function() {
+      this.initChat();
+    }
+  },
   mounted: function() {
-    let self = this;
-    self.initChat();
-
-    // 每次滚动到最底部
-    self.$nextTick(() => {
-      imageLoad("message-box");
-    });
+    this.initChat();
   }
 };
 </script>
