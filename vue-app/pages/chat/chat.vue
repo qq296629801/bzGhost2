@@ -107,8 +107,8 @@
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
 				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
-					<u-grid-item v-for="(item, index) in funList" :index="index" :key="index" bg-color="#eaeaea">
-						<u-icon :name="item.icon" :size="52"></u-icon>
+					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#eaeaea">
+						<image style="width: 120rpx;height: 120rpx;" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
 					</u-grid-item>
 				</u-grid>
@@ -201,10 +201,15 @@ export default {
 			voiceIconText:"正在录音...",
 			showFunBtn:false, //是否展示功能型按钮
 			AudioExam:null, //正在播放音频的实例
-			funList: [
-				{ icon:"photo-fill",title:"照片",uploadType:["album"] },
-				{ icon:"camera-fill",title:"拍摄",uploadType:["camera"] },
-				{ icon:"red-packet-fill",title:"红包",uploadType:["camera"] },
+			btns: [
+				{ url:"/static/img/more/tupian.png",title:"照片"},
+				{ url:"/static/img/more/paizhao.png",title:"拍摄"},
+				{ url:"/static/img/more/hongbao.png",title:"红包"},
+				{ url:"/static/img/more/userinfo.png",title:"个人"},
+				{ url:"/static/img/more/weizhi.png",title:"定位"},
+				{ url:"/static/img/more/yuyinshuru.png",title:"语音"},
+				{ url:"/static/img/more/yuyintonghua.png",title:"视频"},
+				{ url:"/static/img/more/me-shouchang.png",title:"收藏"},
 			],
 			messageType:{
 				text:0,
