@@ -21,7 +21,7 @@ let $http = new request({
 	//服务器本地上传文件地址
 	fileUrl: base.baseUrl,
 	// 服务器上传图片默认url
-	// defaultUploadUrl: "api/open/v1/upload_image",
+	defaultUploadUrl: "file/upload",
 	//设置请求头（如果使用报错跨域问题，可能是content-type请求类型和后台那边设置的不一致）
 	header: {
 		'Content-Type': 'application/json;charset=UTF-8',

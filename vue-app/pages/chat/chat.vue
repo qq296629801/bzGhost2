@@ -37,9 +37,9 @@
 					<view 
 						class="content contentType3" 	
 						v-if="item.contentType == messageType.image"
-						@tap="viewImg([item.content])"
+						@tap="viewImg([baseUrl + item.content])"
 					>
-						<image :src="item.content" class="img" mode="widthFix"></image>
+						<image :src="baseUrl + item.content" class="img" mode="widthFix"></image>
 					</view>
 					
 					<!-- contentType = 4 红包 -->
@@ -151,12 +151,14 @@ import db from '@/util/chat/db_message.js';
 import api from '@/util/chat/api.js'
 import RedCard from '@/components/chat/red-card.vue'
 import packet from '@/components/chat/packet.vue'
+import base from '@/util/chat/baseUrl';
 export default {
 	mixins: [MescrollMixin], // 使用mixin
 	components:{ RedCard, packet },
 	data() {
 		return {
 			winState:'',
+			baseUrl:'',
 			downOption:{
 				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
@@ -591,6 +593,13 @@ export default {
 			// #endif
 			
 			this.recording = false;
+			
+			// this.$http.urlFileUpload({
+			// 	files: [{path:'test.mp3'}], // 必填 临时文件路径 格式: [{path: "图片地址"}]
+			// }).then(res=>{
+			// 	console.log(res);
+			// });
+			
 			const params = {
 				contentType: 2,
 				content: tempFilePath,
@@ -634,20 +643,32 @@ export default {
 		},
 		//发送图片
 		chooseImage(sourceType){
-			uni.chooseImage({
-				sourceType,
-				sizeType:['compressed'], 
-				success:res=>{ 
-					this.showFunBtn = false;
-					for(let i = 0;i<res.tempFilePaths.length;i++){
-						const params = {
-							contentType: 3,
-							content: res.tempFilePaths[i],
-						};
-						this.sendMsg(params)
-					}
-				}
-			})
+			
+			this.$http.urlImgUpload({
+				sourceType:sourceType
+			}).then(res=>{
+				const params = {
+					contentType: 3,
+					content: res,
+				};
+				this.sendMsg(params)
+			});
+			
+			// uni.chooseImage({
+			// 	sourceType,
+			// 	sizeType:['compressed'], 
+			// 	success:res=>{ 
+			// 		this.showFunBtn = false;
+			// 		for(let i = 0;i<res.tempFilePaths.length;i++){
+			// 			const params = {
+			// 				contentType: 3,
+			// 				content: res.tempFilePaths[i],
+			// 			};
+			// 			console.log(JSON.stringify(params))
+			// 			this.sendMsg(params)
+			// 		}
+			// 	}
+			// })
 		},
 		//查看大图
 		viewImg(imgList){
@@ -688,6 +709,7 @@ export default {
 	onBackPress(e) {
 	},
 	onLoad(info) {
+		this.baseUrl = base.baseUrl;
 
 		//录音开始事件
 		this.Recorder.onStart(e => {
