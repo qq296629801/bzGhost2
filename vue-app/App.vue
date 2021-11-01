@@ -8,8 +8,7 @@
 			// #ifdef APP-PLUS
 			APPUpdate();
 			// #endif
-			
-			this.$socket.initWebIM();
+			this.$socket.initSocket();
 		},
 		onShow: function() {
 			let storeUserData = store.state.userData;
