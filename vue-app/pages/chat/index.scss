@@ -256,6 +256,7 @@ page {
 		/* #endif */
 
 		&-flex {
+			border-bottom: 2rpx solid #eaeaea;
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
