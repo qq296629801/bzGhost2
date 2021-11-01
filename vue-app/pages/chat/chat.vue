@@ -37,9 +37,9 @@
 					<view 
 						class="content contentType3" 	
 						v-if="item.contentType == messageType.image"
-						@tap="viewImg([baseUrl + item.content])"
+						@tap="viewImg([item.content])"
 					>
-						<image :src="baseUrl + item.content" class="img" mode="widthFix"></image>
+						<image :src="webUrl + item.content" class="img" mode="widthFix"></image>
 					</view>
 					
 					<!-- contentType = 4 红包 -->
@@ -158,7 +158,7 @@ export default {
 	data() {
 		return {
 			winState:'',
-			baseUrl:'',
+			webUrl:'',
 			downOption:{
 				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
@@ -205,10 +205,10 @@ export default {
 				{ url:"/static/img/more/tupian.png",title:"照片"},
 				{ url:"/static/img/more/paizhao.png",title:"拍摄"},
 				{ url:"/static/img/more/hongbao.png",title:"红包"},
+				{ url:"/static/img/more/yuyintonghua.png",title:"视频"},
 				{ url:"/static/img/more/userinfo.png",title:"个人"},
 				{ url:"/static/img/more/weizhi.png",title:"定位"},
 				{ url:"/static/img/more/yuyinshuru.png",title:"语音"},
-				{ url:"/static/img/more/yuyintonghua.png",title:"视频"},
 				{ url:"/static/img/more/me-shouchang.png",title:"收藏"},
 			],
 			messageType:{
@@ -377,7 +377,9 @@ export default {
 				fromUserId: _t.userData.user.operId,
 				fromUserName: _t.userData.user.username,
 				fromUserHeadImg: '/static/image/huge.jpg',
+				
 				userId: _t.userData.user.operId,
+				
 				toUserId: _t.chatObj.chatId,
 				toUserName: _t.chatObj.chatName,
 				toUserHeadImg:'/static/image/huge.jpg',
@@ -385,9 +387,13 @@ export default {
 			};
 
 			if (data) {
-				if(data.contentType == _t.messageType.audio){
+				if(ata.contentType == _t.messageType.video){
+					params.content = data.content;
+					params.contentType = _t.messageType.video;
+				}else if(data.contentType == _t.messageType.audio){
 					//说明是发送语音
 					params.contentType = _t.messageType.audio;
+					
 					params.anmitionPlay = false;
 					params.content = data.content;
 					params.contentDuration = data.contentDuration;
@@ -599,18 +605,16 @@ export default {
 			
 			this.recording = false;
 			
-			// this.$http.urlFileUpload({
-			// 	files: [{path:'test.mp3'}], // 必填 临时文件路径 格式: [{path: "图片地址"}]
-			// }).then(res=>{
-			// 	console.log(res);
-			// });
-			
-			const params = {
-				contentType: 2,
-				content: tempFilePath,
-				contentDuration: Math.ceil(contentDuration)
-			};
-			this.canSend && this.sendMsg(params);
+			this.$http.urlFileUpload({
+				files: [{path: tempFilePath}], // 必填 临时文件路径 格式: [{path: "图片地址"}]
+			}).then(res=>{
+				const params = {
+					contentType: 2,
+					content: res,
+					contentDuration: Math.ceil(contentDuration)
+				};
+				this.canSend && this.sendMsg(params);
+			});
 		},
 		//控制播放还是暂停音频文件
 		handleAudio(item) {
@@ -619,7 +623,7 @@ export default {
 		},
 		//播放音频
 		playAudio(item) {
-			this.Audio.src = item.content;
+			this.Audio.src = this.webUrl + item.content;
 			this.Audio.hasBeenSentId = item.hasBeenSentId;
 			this.Audio.play();
 			item.anmitionPlay = true;
@@ -644,46 +648,42 @@ export default {
 				this.chooseImage(['camera'])
 			}else if(index == 2){
 				this.pStatus = true;
+			} else if(index == 3){
+				// 上传可以不用传递url（使用全局的上传图片url）
+				this.$http.urlVideoUpload({
+				}).then(res=>{
+					this.showFunBtn = false;
+					const params = {
+						contentType: this.messageType.video,
+						content: res,
+					};
+					this.sendMsg(params);
+				});
 			}
 		},
 		//发送图片
 		chooseImage(sourceType){
-			
 			this.$http.urlImgUpload({
 				sourceType:sourceType
 			}).then(res=>{
+				this.showFunBtn = false;
 				const params = {
 					contentType: 3,
 					content: res,
 				};
 				this.sendMsg(params)
 			});
-			
-			// uni.chooseImage({
-			// 	sourceType,
-			// 	sizeType:['compressed'], 
-			// 	success:res=>{ 
-			// 		this.showFunBtn = false;
-			// 		for(let i = 0;i<res.tempFilePaths.length;i++){
-			// 			const params = {
-			// 				contentType: 3,
-			// 				content: res.tempFilePaths[i],
-			// 			};
-			// 			console.log(JSON.stringify(params))
-			// 			this.sendMsg(params)
-			// 		}
-			// 	}
-			// })
 		},
 		//查看大图
 		viewImg(imgList){
 			uni.previewImage({
-				urls: imgList,
+				urls: this.webUrl + imgList,
 				// #ifndef MP-WEIXIN
 				indicator: 'number'
 				// #endif
 			});
 		},
+		// 跳转
 		onPageJump(url){
 			this.$u.route({
 				url: url,
@@ -714,7 +714,7 @@ export default {
 	onBackPress(e) {
 	},
 	onLoad(info) {
-		this.baseUrl = base.baseUrl;
+		this.webUrl = base.webUrl;
 
 		//录音开始事件
 		this.Recorder.onStart(e => {
