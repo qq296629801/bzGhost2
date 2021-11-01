@@ -4,9 +4,9 @@ let webUrl = ""
 let projectToken = "yiqun";
 if (process.env.NODE_ENV === 'development') {
 	// 开发环境
-	baseUrl = "http://192.168.0.100:9998/";
-	socketUrl = "ws://192.168.0.100:9999/chat";
-	webUrl = "http://192.168.0.100:8089/";
+	baseUrl = "http://42.193.146.14:9998/";
+	socketUrl = "ws://42.193.146.14:9999/chat";
+	webUrl = "http://42.193.146.14:8089/";
 } else if (process.env.NODE_ENV === 'production') {
 	// 生产环境
 	baseUrl = "http://42.193.146.14:9998/";

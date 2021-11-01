@@ -37,7 +37,7 @@
 					<view 
 						class="content contentType3" 	
 						v-if="item.contentType == messageType.image"
-						@tap="viewImg([item.content])"
+						@tap="viewImg([webUrl + item.content])"
 					>
 						<image :src="webUrl + item.content" class="img" mode="widthFix"></image>
 					</view>
@@ -107,7 +107,7 @@
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
 				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
-					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#eaeaea">
+					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
 						<image style="width: 120rpx;height: 120rpx;" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
 					</u-grid-item>
@@ -387,13 +387,12 @@ export default {
 			};
 
 			if (data) {
-				if(ata.contentType == _t.messageType.video){
+				if(data.contentType == _t.messageType.video){
 					params.content = data.content;
 					params.contentType = _t.messageType.video;
 				}else if(data.contentType == _t.messageType.audio){
 					//说明是发送语音
 					params.contentType = _t.messageType.audio;
-					
 					params.anmitionPlay = false;
 					params.content = data.content;
 					params.contentDuration = data.contentDuration;
@@ -671,13 +670,13 @@ export default {
 					contentType: 3,
 					content: res,
 				};
-				this.sendMsg(params)
+				this.sendMsg(params);
 			});
 		},
 		//查看大图
 		viewImg(imgList){
 			uni.previewImage({
-				urls: this.webUrl + imgList,
+				urls: imgList,
 				// #ifndef MP-WEIXIN
 				indicator: 'number'
 				// #endif
