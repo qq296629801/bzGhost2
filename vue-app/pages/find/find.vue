@@ -32,7 +32,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
 	data() {
 		return {
-			titleStyle: {marginLeft:'20rpx',fontWeight:'800'},
+			titleStyle: {marginLeft:'20rpx',fontWeight:'400'},
 			links:[]
 		};
 	},

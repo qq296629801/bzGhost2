@@ -7,12 +7,12 @@
 				<view class="right_top_name u-line-1">
 					{{ value.chatName || value.nickName }}
 				</view>
-				<view class="right_top_time ">
+				<view class="right_top_time">
 					<u-badge v-show="badgeIcon" :count="value.unreadNumber"  type="error" ></u-badge>
 				</view>
 			</view>
 			<view class="right_btm">
-				<view class="u-line-1">
+				<view class="u-line-1 ">
 					{{value.msgType==0?value.content:message[value.msgType]}}
 				</view>
 				<view class="" v-show="timeIcon">
@@ -129,24 +129,26 @@
 				display: flex;
 				justify-content: space-between;
 				&_name {
-					font-size: 28rpx;
-					font-weight: 800;
 					color: $u-main-color;
 					flex: 0 0 450rpx;
+					font-size: 28rpx;
+					font-weight: 400;
 					overflow: hidden;
 				}
 				&_time {
-					font-size: 22rpx;
 					color: $u-light-color;
+					font-size: 28rpx;
+					font-weight: 400;
 				}
 			}
 			&_btm {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				font-size: 22rpx;
 				color: $u-tips-color;
 				padding-top: 10rpx;
+				font-size: 25rpx;
+				font-weight: 400;
 			}
 		}
 	}

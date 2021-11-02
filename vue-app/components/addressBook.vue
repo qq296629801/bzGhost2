@@ -5,11 +5,11 @@
 				<u-index-anchor active-color="#1fb6f1" index="#" />
 				<view class="list-cell" hover-class="message-hover-class" @tap="linkToNewFriend">
 					<u-image width="70rpx" height="70rpx" src="/static/image/friend_1.png"></u-image>
-					<view class="list-cell-name">新的朋友</view>
+					<view class="list-cell-name u-font-16">新的朋友</view>
 				</view>
 				<view class="list-cell " hover-class="message-hover-class"  @tap="linkToGroupItem">
 					<u-image width="70rpx" height="70rpx" src="/static/image/group_1.png"></u-image>
-					<view  class="list-cell-name">我的群聊</view>
+					<view  class="list-cell-name u-font-16">我的群聊</view>
 				</view>
 			</view>
 			
@@ -17,7 +17,7 @@
 				<u-index-anchor :index="item.name" v-if="item.members&&item.members.length"/>
 				<view v-for="user in item.members" :key="user.id"  class="list-cell " @tap="toCard(user)" hover-class="message-hover-class">
 					<img-cache src="/static/image/huge.jpg"></img-cache>
-					<view  class="list-cell-name">{{user.nickName}}</view>
+					<view  class="list-cell-name u-font-16">{{user.nickName}}</view>
 				</view>
 			</view>
 		</u-index-list>
@@ -108,8 +108,6 @@
 	padding: 10px 24rpx;
 	overflow: hidden;
 	color: #323233;
-	font-size: 28rpx;
-	font-weight: 800;
 	line-height: 48rpx;
 	background-color: #fff;
 	border-bottom: solid 3rpx #eeeeee;
