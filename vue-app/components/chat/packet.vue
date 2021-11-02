@@ -1,32 +1,33 @@
 <template>
 	<view>
 		<u-popup :mask="false" v-model="pStatus" :mask-close-able="false">
-			<view class="top">
-				拼手气红包 :(
-			</view>
-			<view class="content">
-				<view class="luck">
-					<view class="row">
-						<view class="term">
-							红包个数
+			<view style="background-color: #f1f1f1;height: 100%;">
+				<view class="content">
+					<view>发红包</view>
+					<view class="luck">
+						<view class="row">
+							<view class="term">
+								红包个数
+							</view>
+							<view class="input">
+								<u-input v-model="packet.number" placeholder="填写个数" type="number" /> 个
+							</view>
 						</view>
-						<view class="input">
-							<u-input v-model="packet.number" placeholder="填写个数" type="number" />
+						<view class="row">
+							<view class="term">
+								总金额
+							</view>
+							<view class="input">
+								<u-input v-model="packet.money" placeholder="0.00" type="number" /> 元
+							</view>
 						</view>
+						<view class="blessing">
+							<u-input v-model="packet.description" placeholder="恭喜发财,大吉大利！" type="textarea" />
+						</view>
+						<u-button type="error"@tap="hand">塞钱进红包</u-button>
+						<u-button @tap="close">返回</u-button>
 					</view>
-					<view class="row">
-						<view class="term">
-							总金额
-						</view>
-						<view class="input">
-							<u-input v-model="packet.money" placeholder="0.00" type="number" /> 元
-						</view>
-					</view>
-					<view class="blessing">
-						<u-input v-model="packet.description" placeholder="恭喜发财,大吉大利！" type="textarea" />
-					</view>
-					<u-button @tap="close">返回</u-button>
-					<u-button type="error"@tap="hand">塞钱进红包</u-button>
+					<view>未领取的红包，系统将于24小时后自动丢失</view>
 				</view>
 			</view>
 		</u-popup>
@@ -65,7 +66,6 @@
 </script>
 
 <style lang="scss">
-	// background-color: #F6F7F8;
 	.slot-wrap {
 		display: flex;
 		align-items: center;

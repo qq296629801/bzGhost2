@@ -25,12 +25,12 @@
 		<view style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell-item>
-			<u-cell-item title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item @tap="show = true" title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell-item>
+			<u-cell-item @tap="xxShow = true" title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell-item>
 			<u-cell-item title="二维码" :title-style="titleStyle">
 				<view class="iconfont iconxingzhuangjiehe erweima"></view>
 			</u-cell-item>
-			<u-cell-item
+			<u-cell-item @tap="xxxShow = true"
 				title="群昵称"
 				:value="group.groupUser.groupNickName"
 				:title-style="titleStyle"
@@ -52,6 +52,38 @@
 				<view class="btn-red">删除并退出</view>
 			</u-cell-item>
 		</u-cell-group>
+		
+		
+		<u-popup v-model="show" mode="bottom">
+			<view class="xx">
+				<view class="xx-t">
+					群名称
+				</view>
+				<u-input class="textarea" height="200" v-model="group.group.groupName" />
+				<u-button type="success" @tap="tapGroupName">保存</u-button>
+			</view>
+		</u-popup>
+		
+		<u-popup v-model="xxShow" mode="bottom">
+			<view class="xx">
+				<view class="xx-t">
+					群公告
+				</view>
+				<u-input class="textarea" height="200" v-model="group.group.gContext" />
+				<u-button type="success" @tap="tapGroupNotice">保存</u-button>
+			</view>
+		</u-popup>
+		
+		
+		<u-popup v-model="xxxShow" mode="bottom">
+			<view class="xx">
+				<view class="xx-t">
+					群昵称
+				</view>
+				<u-input class="textarea" height="200" v-model="group.group.gContext" />
+				<u-button type="success" @tap="tapGroupNick">保存</u-button>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -71,10 +103,50 @@ export default {
 				groupUser:{},
 				members:[],
 				gContext:''
-			}
+			},
+			show:false,
+			xxShow:false,
+			xxxShow:false,
+			context:''
 		};
 	},
 	methods: {
+		tapGroupName(){
+			let reqData = {
+				groupName: this.group.group.groupName,
+				groupId: this.group.group.id
+			}
+			this.$http.post("app/group/upGroupName",reqData).then(res=>{
+				uni.showToast({
+					title:'修改成功',
+					icon:'success'
+				})
+			});
+		},
+		tapGroupNick(){
+			let reqData = {
+				groupName: this.group.group.groupName,
+				groupId: this.group.group.id
+			}
+			this.$http.post("app/group/upGroupName",reqData).then(res=>{
+				uni.showToast({
+					title:'修改成功',
+					icon:'success'
+				})
+			});
+		},
+		tapGroupNotice(){
+			let reqData = {
+				groupName: this.group.group.groupName,
+				groupId: this.group.group.id
+			}
+			this.$http.post("app/group/upGroupName",reqData).then(res=>{
+				uni.showToast({
+					title:'修改成功',
+					icon:'success'
+				})
+			});
+		},
 		linkMore(){
 			this.$u.route({
 				url: 'pages/group/moreMem'
@@ -155,6 +227,16 @@ export default {
 
 <style lang="scss">
 	.content{
+		.xx{
+			height: 500rpx;
+			padding-left: 20rpx;
+			padding-right: 20rpx;
+			.xx-t{
+				height: 80rpx;
+				line-height: 80rpx;
+				border-bottom: 2rpx solid #ebebeb;
+			}
+		}
 		.btn-red{
 			text-align: center; color: red;
 		}

@@ -363,6 +363,9 @@ export default {
 			this.chatType = 'keyboard'
 			this.showFunBtn = !this.showFunBtn;
 			uni.hideKeyboard()
+			this.$nextTick(() => {
+				this.mescroll.scrollTo(999999, 0);
+			});
 		},
 		//发送消息
 		sendMsg(data) {
