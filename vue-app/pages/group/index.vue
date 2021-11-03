@@ -229,8 +229,7 @@ export default {
 	.content{
 		.xx{
 			height: 500rpx;
-			padding-left: 20rpx;
-			padding-right: 20rpx;
+			padding: 50rpx;
 			.xx-t{
 				height: 80rpx;
 				line-height: 80rpx;
