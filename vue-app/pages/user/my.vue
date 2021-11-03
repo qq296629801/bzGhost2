@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import base from '@/util/chat/baseUrl.js'
+	import base from '@/util/baseUrl.js'
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {

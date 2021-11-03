@@ -125,7 +125,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import dbCommon from '@/util/chat/db_common.js'
+import localStorage from '@/util/api/localStorage.js';
 import { mapState, mapMutations } from 'vuex';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
@@ -196,7 +196,7 @@ export default {
 	},
 	methods: {
 		a(){
-			dbCommon.get('post').then(res=>{
+			localStorage.getItem('post').then(res=>{
 				this.circleData = res
 				this.mescroll.endSuccess(res.length);
 			}).catch(e=>{

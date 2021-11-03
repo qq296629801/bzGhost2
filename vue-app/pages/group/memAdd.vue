@@ -24,7 +24,7 @@
 	</view>
 </template>
 <script>
-	import dbCommon from '@/util/chat/db_common.js'
+	import localStorage from '@/util/api/localStorage.js';
 	export default {
 		components: {
 		},
@@ -41,7 +41,7 @@
 			}
 		},
 		onShow() {
-			dbCommon.get('friend').then(res=>{
+			localStorage.getItem('friend').then(res=>{
 				this.list = res
 				this.firendItem = res
 				let indexList = []

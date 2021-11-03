@@ -18,7 +18,7 @@
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
-import dbCommon from '@/util/chat/db_common.js'
+import localStorage from '@/util/api/localStorage.js';
 import { mapState, mapMutations} from 'vuex';
 export default {
 	components: { selectInput, message },
@@ -41,7 +41,7 @@ export default {
 	},
 	watch:{
         newsPush: function(value){
-			dbCommon.put('conversation').then(res=>{
+			localStorage.setItem('conversation').then(res=>{
 				this.list = res
 			});
 		}
@@ -52,7 +52,7 @@ export default {
 	onLoad() {
 	},
 	onPullDownRefresh() {
-		dbCommon.put('conversation').then(res=>{
+		localStorage.setItem('conversation').then(res=>{
 			this.list = res
 			uni.stopPullDownRefresh()
 		});
@@ -61,7 +61,7 @@ export default {
 		if(this.userData.user==undefined){
 			return;
 		}
-		dbCommon.put('conversation').then(res=>{
+		localStorage.setItem('conversation').then(res=>{
 			this.list = res
 		});
 	},

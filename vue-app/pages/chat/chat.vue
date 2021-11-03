@@ -145,13 +145,12 @@
 
 <script>
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
+import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue';
 import { mapState, mapMutations } from 'vuex';
-import db from '@/util/chat/db_message.js';
-import api from '@/util/chat/api.js'
-import RedCard from '@/components/chat/red-card.vue'
-import packet from '@/components/chat/packet.vue'
-import base from '@/util/chat/baseUrl';
+import messageMap from '@/util/api/messageMap.js';
+import base from '@/util/baseUrl.js';
+import RedCard from '@/components/chat/red-card.vue';
+import packet from '@/components/chat/packet.vue';
 export default {
 	mixins: [MescrollMixin], // 使用mixin
 	components:{ RedCard, packet },
@@ -337,7 +336,7 @@ export default {
 		},
 		// 初始消息数据
 		async initData() {
-			db.get(this.chatObj.chatId).then(res=>{
+			messageMap.getItem(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
 					this.mescroll.scrollTo(99999, 0);
@@ -410,7 +409,6 @@ export default {
 					params.contentType = _t.messageType.createPacket;
 				} else if (data.contentType == _t.messageType.robPacket){
 					// 抢红包
-					console.log(JSON.stringify(data))
 					params.hasBeenSentId = data.content.id;
 					params.content = data.content.msgContext;
 					params.contentType = _t.messageType.robPacket;
@@ -436,17 +434,23 @@ export default {
 					}
 				}
 				// 本地缓存更改
-				db.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
+				messageMap.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
 			}else {
 				//本地内存
 				_t.messageList.push(params);
 				//本地缓存
-				db.commit(params,_t.chatObj.chatId);
+				messageMap.commit(params,_t.chatObj.chatId);
 				
 				// 创建红包不需要入库
 				if(params.contentType != _t.messageType.createPacket){
 					// 服务器入库
-					api.messageCreate(_t.formData.content, params.contentType);
+					_t.$http.post('app/msg/add',{
+						chatId: _t.chatObj.chatId,
+						chatType:_t.chatObj.chatType,
+						userId: _t.userData.user.operId,
+						message:_t.formData.content,
+						msgType: params.contentType
+					});
 				}
 			}
 			
@@ -473,12 +477,12 @@ export default {
 										}
 									}
 								}
-								db.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
+								messageMap.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
 							}else {
 								// 本地内存
 								_t.messageList.push(res);
 								// 本地缓存
-								db.commit(res, _t.chatObj.chatId);
+								messageMap.commit(res, _t.chatObj.chatId);
 								// 页面置底
 								_t.mescroll.scrollTo(99999, 0);
 								// 页面红点

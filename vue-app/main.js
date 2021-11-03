@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App'
 import uView from "uview-ui";
-import webim from '@/util/chat/webim.js';
+import webim from '@/util/socket/webim.js';
 //数据管理中心
 import store from '@/store/index.js'
 Vue.prototype.$store = store;
 //权限配置中心
-import base from '@/util/chat/baseUrl.js'
+import base from '@/util/baseUrl.js'
 Vue.prototype.$base = base;
 //挂载全局http请求
-import $http from '@/util/chat/requestConfig'
+import $http from '@/util/requestConfig'
 Vue.prototype.$http = $http;
 
 import publicModule from "@/components/common/public_module.vue";
