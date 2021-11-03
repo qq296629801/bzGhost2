@@ -20,6 +20,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import localStorage from '@/util/api/localStorage.js';
 export default {
 	components: {
 	},
@@ -46,8 +47,8 @@ export default {
 			});
 		},
 		getGroups() {
-			this.$http.post('app/group/list', {userId:this.userData.user.operId}).then(res=>{
-				this.list = res.data
+			localStorage.getItem('group').then(res=>{
+				this.list = res.data;
 			});
 		}
 	},
@@ -115,7 +116,7 @@ export default {
 					justify-content: space-between;
 					&_name {
 						font-size: 28rpx;
-						font-weight: 800;
+						font-weight: 400;
 						color: $u-main-color;
 						flex: 0 0 450rpx;
 						overflow: hidden;

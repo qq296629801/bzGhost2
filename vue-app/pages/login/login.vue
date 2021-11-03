@@ -82,6 +82,7 @@
 						
 						localStorage.setItem('post');
 						localStorage.setItem('friend');
+						localStorage.setItem('group');
 						localStorage.setItem('conversation');
 						
 						my.loading=false;
