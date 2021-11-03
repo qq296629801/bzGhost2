@@ -7,13 +7,14 @@
 		<!-- #endif -->
 		
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
+		
 		<view class="content-imgbox">
-			<image class="bgimg" :src="userInfo.pictureBanner" mode="scaleToFill" @tap="showSheet"></image>
-			<image class="headimg" :src="userInfo.headImg" @tap="jump(userInfo.id)"></image>
-			<text class="nickname">{{ userData.user.username }}</text>
+			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
+			<image class="headimg" src="/static/image/huge.jpg"></image>
+			<text class="nickname"></text>
 		</view>
 		<view class="signature">
-			<view class="">个性签名</view>
+			<view class="">{{ userData.user.username }}</view>
 		</view>
 
 		<!-- 朋友圈列表 -->
@@ -134,10 +135,8 @@ export default {
 	data() {
 		return {
 			upOption: {
-				auto: false 
 			},
 			downOption:{
-				auto: true
 			},
 			show: false, //u-action-sheet  show
 			list: [{ text: '更换相册封面', fontSize: '28' }],
@@ -150,17 +149,6 @@ export default {
 			inputOffsetBottom: 0, //键盘的高度
 			viewOffsetBottom: 0, //视窗距离页面的距离
 			sel: '', //选中的节点
-			userInfo:  {
-				headImg: require('@/static/image/huge.jpg'), //头像
-				id: 1, //id
-				userName: 'DR', //昵称
-				wechatNumber: 'October', //微信号
-				signature: 'who do you want to meet.', //个性签名
-				phone: '13535351112', //手机号
-				pictureBanner: require('@/static/image/circleBanner/3.jpg'), //相册背景图
-				chatBgImg: require('@/static/image/Ran.jpg'), //聊天背景图
-				address: "河南郑州"
-			},
 			//朋友圈展示信息
 			circleData: [
 			],
@@ -196,7 +184,8 @@ export default {
 	},
 	methods: {
 		a(){
-			localStorage.getItem('post').then(res=>{
+			localStorage.setItem('post').then(res=>{
+				console.log(JSON.stringify(res))
 				this.circleData = res
 				this.mescroll.endSuccess(res.length);
 			}).catch(e=>{
@@ -221,14 +210,13 @@ export default {
 		clickThumb(item) {
 			item.isPraise = !item.isPraise;
 			if (item.isPraise) {
-				item.praise.push({ id: this.userInfo.id, userName: this.userInfo.userName });
+				item.praise.push({ id: this.userData.user.operIdid, userName: this.userData.user.username });
+				this.$http.post("app/fabulous/add",{userId:this.userData.user.operId,postId:item.circleMegId});
 			} else {
-				const index = item.praise.findIndex(i => i.id == this.userInfo.id);
+				const index = item.praise.findIndex(i => i.id == this.userData.user.operIdid);
 				item.praise.splice(index, 1);
+				this.$http.post("app/fabulous/delete",{userId:this.userData.user.operId,postId:item.circleMegId});
 			}
-			this.$socket.toFabulousRes(this.userData.user.operId,item.circleMegId,r=>{
-				console.log(r,'-------------------')
-			});
 		},
 		//跳转到名片
 		jump(userId) {
@@ -249,7 +237,7 @@ export default {
 					//xxx回复xxx ...
 					this.placeholder = `回复${comment.replyUserName}:`;
 				} else {
-					if (comment.userId == this.userInfo.id) {
+					if (comment.userId == this.userData.user.operId) {
 						//如果是回复自己
 						this.placeholder = `评论：`;
 					} else {
@@ -269,15 +257,14 @@ export default {
 			}
 			this.circleData.forEach(item => {
 				if (item.circleMegId == this.circleMegId) {
-					const { id, userName } = this.userInfo;
+					const { operId, username } = this.userData.user;
 					const { replyUserId, replyUserName } = this.commentInfo;
+					
 					const params = {
-						userId: this.userData.user.operId,
-						userName:this.userData.user.username,
+						userId:operId,
+						userName:username,
 						content: this.content,
 						postId:this.circleMegId,
-						version: 1,
-						command: 104
 					};
 					//如果是回复别人的话
 					if (Object.keys(this.commentInfo).length) {
@@ -286,7 +273,7 @@ export default {
 							params.replyUserId = replyUserId;
 							params.replyUserName = replyUserName;
 						} else {
-							if (this.commentInfo.userId !== this.userInfo.id) {
+							if (this.commentInfo.userId !== operId) {
 								//点击了 xxx评论...
 								params.replyUserId = this.commentInfo.userId;
 								params.replyUserName = this.commentInfo.userName;
@@ -297,9 +284,12 @@ export default {
 						}
 					}
 					item.comment.push(params);
-					this.$socket.toCommentReqPacket(params, p=>{
-						console.log(p,'-----------------');
+					this.$http.post("app/comment/add",params).then(res=>{
+						localStorage.setItem("post").then(res=>{
+							this.circleData = res
+						});
 					});
+					
 				}
 			});
 			this.closeInputModel();
