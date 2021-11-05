@@ -1,6 +1,6 @@
 import store from "@/store/index.js";
-import packetCode from "./PacketCodeC.js";
-import SKIMSDK from "./websocket_sdk.js";
+import packetCode from "./webPacketCode.js";
+import SKIMSDK from "./webSocket.js";
 import base from "./baseUrl.js";
 const EventDispatcher = function() {
   this.listeners = {};

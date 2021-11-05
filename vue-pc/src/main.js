@@ -14,7 +14,7 @@ import {
   formDataType2
 } from "./utils/request";
 import { dateStr, formatDateTime } from "./utils/ChatUtils.js";
-import webim from "./utils/webim";
+import webim from "./utils/socket/webim";
 import "./utils/directives";
 Vue.config.productionTip = false;
 Vue.use(ViewUI);

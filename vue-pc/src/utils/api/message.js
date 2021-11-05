@@ -1,10 +1,10 @@
-import $local from "@/utils/local.js";
+import cache from "@/utils/cache.js";
 import { post } from "@/utils/request.js";
-import $store from "@/store/index.js";
+import store from "@/store/index.js";
 var postfix = "msgItem_";
 
-function get(gid) {
-  let list = $local.get(postfix + gid);
+function getItem(gid) {
+  let list = cache.get(postfix + gid);
   return new Promise((resolve, reject) => {
     try {
       if (list == "") {
@@ -21,8 +21,8 @@ function get(gid) {
   });
 }
 
-function pull() {
-  let userData = $store.state.userData;
+function online() {
+  let userData = store.state.userData;
   if (!userData.token) {
     userData = localStorage.getItem("userData");
   }
@@ -31,22 +31,22 @@ function pull() {
     userId
   }).then(res => {
     res.forEach(r => {
-      $local.set(postfix + r.groupInfo.chatId, r.groupMsg.list);
+      cache.set(postfix + r.groupInfo.chatId, r.groupMsg.list);
     });
   });
   post("app/friend/msg/online", { userId, condition: "" }).then(res => {
     res.forEach(r => {
-      $local.set(postfix + r.friendInfo.id, r.friendMsg);
+      cache.set(postfix + r.friendInfo.id, r.friendMsg);
     });
   });
 }
 
 function del(id, gid, obj) {
-  let list = $local.get(postfix + gid);
+  let list = cache.get(postfix + gid);
   if (list == "") {
     let tempItem = [];
     tempItem.push(obj);
-    $local.set(postfix + gid, tempItem);
+    cache.set(postfix + gid, tempItem);
     return;
   }
   for (var i in list) {
@@ -54,11 +54,11 @@ function del(id, gid, obj) {
       list.splice(i, 1);
     }
   }
-  $local.set(postfix + gid, list);
+  cache.set(postfix + gid, list);
 }
 
 function upPacket(id, gid, msgContext) {
-  let list = $local.get(postfix + gid);
+  let list = cache.get(postfix + gid);
   if (list == "") {
     return;
   }
@@ -67,21 +67,21 @@ function upPacket(id, gid, msgContext) {
       list[i].msgContext = msgContext;
     }
   }
-  $local.set(postfix + gid, list);
+  cache.set(postfix + gid, list);
 }
 
 function commit(obj, gid) {
-  let list = $local.get(postfix + gid);
+  let list = cache.get(postfix + gid);
   if (list == "") {
     let tempItem = [];
     tempItem.push(obj);
-    $local.set(postfix + gid, tempItem);
+    cache.set(postfix + gid, tempItem);
     return;
   }
   if (list.length >= 10) {
     list.splice(0, 1);
   }
   list.push(obj);
-  $local.set(postfix + gid, list);
+  cache.set(postfix + gid, list);
 }
-export { commit, get, pull, del, upPacket };
+export { commit, getItem, online, del, upPacket };

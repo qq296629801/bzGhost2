@@ -1,9 +1,6 @@
-// noinspection JSAnnotator
 /**
  * WebSocket数据包编解码器
  *
- * @author yemao
- * @date 2019-04-21
  */
 const PacketCodeC = {
   encode(packet) {

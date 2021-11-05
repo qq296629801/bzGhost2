@@ -1,18 +1,12 @@
-/*
-使用方法
-	import db_common from '@/util/db_common.js'
-	db_common.put('post');
-	db_common.get('post').then();
-*/
-import $local from "@/utils/local.js";
+import cache from "@/utils/cache.js";
 import { post } from "@/utils/request.js";
-import $store from "@/store/index.js";
+import store from "@/store/index.js";
 
 /**
  * @param {Object} key
  */
 function put(key) {
-  let userData = $store.state.userData;
+  let userData = store.state.userData;
   if (!userData.token) {
     userData = uni.getStorageSync("userData");
   }
@@ -26,7 +20,7 @@ function put(key) {
     };
     post("app/" + key + "/list", httpData)
       .then(res => {
-        $local.set(key + "_" + userId, res);
+        cache.set(key + "_" + userId, res);
         resolve(res);
       })
       .catch(e => {
@@ -39,7 +33,7 @@ function put(key) {
  * @param {Object} key
  */
 function get(key) {
-  let userData = $store.state.userData;
+  let userData = store.state.userData;
   if (!userData.token) {
     userData = uni.getStorageSync("userData");
   }
@@ -49,7 +43,7 @@ function get(key) {
   let userId = userData.user.operId;
   return new Promise((resolve, reject) => {
     try {
-      resolve($local.get(key + "_" + userId));
+      resolve(cache.get(key + "_" + userId));
     } catch (e) {
       reject(e);
     }

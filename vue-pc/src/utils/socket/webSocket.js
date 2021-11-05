@@ -1,4 +1,4 @@
-import packetCode from "./PacketCodeC.js";
+import packetCode from "./webPacketCode.js";
 import webim from "./webim";
 let socket;
 export default class Websocket {
