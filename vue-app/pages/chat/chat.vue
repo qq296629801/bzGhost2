@@ -147,7 +147,7 @@
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue';
 import { mapState, mapMutations } from 'vuex';
-import messageMap from '@/util/api/messageMap.js';
+import messageMap from '@/util/api/message.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
