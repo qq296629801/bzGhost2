@@ -21,7 +21,7 @@
 	</view>
 </template>
 <script>
-	import localStorage from '@/util/api/localStorage.js';
+	import common_api from '@/util/api/common.js';
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		components: {
@@ -38,7 +38,7 @@
 			}
 		},
 		onShow() {
-			localStorage.getItem('friend').then(res=>{
+			common_api.getItem('friend').then(res=>{
 				this.list = res
 				this.firendItem = res
 				let indexList = []

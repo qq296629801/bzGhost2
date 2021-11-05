@@ -126,7 +126,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import localStorage from '@/util/api/localStorage.js';
+import common_api from '@/util/api/common.js'
 import { mapState, mapMutations } from 'vuex';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
@@ -184,7 +184,7 @@ export default {
 	},
 	methods: {
 		a(){
-			localStorage.setItem('post').then(res=>{
+			common_api.setItem('post').then(res=>{
 				console.log(JSON.stringify(res))
 				this.circleData = res
 				this.mescroll.endSuccess(res.length);
@@ -285,7 +285,7 @@ export default {
 					}
 					item.comment.push(params);
 					this.$http.post("app/comment/add",params).then(res=>{
-						localStorage.setItem("post").then(res=>{
+						common_api.setItem("post").then(res=>{
 							this.circleData = res
 						});
 					});

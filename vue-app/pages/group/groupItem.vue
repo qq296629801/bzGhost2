@@ -20,7 +20,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import localStorage from '@/util/api/localStorage.js';
+import common_api from '@/util/api/common.js';
 export default {
 	components: {
 	},
@@ -47,7 +47,7 @@ export default {
 			});
 		},
 		getGroups() {
-			localStorage.getItem('group').then(res=>{
+			common_api.getItem('group').then(res=>{
 				this.list = res.data;
 			});
 		}

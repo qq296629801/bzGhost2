@@ -6,7 +6,7 @@
 <script>
 import addressBook from '@/components/addressBook.vue';
 import { mapState, mapMutations} from 'vuex';
-import localStorage from '@/util/api/localStorage.js';
+import common_api from '@/util/api/common.js';
 export default {
 	components:{ addressBook },
 	data() {
@@ -26,7 +26,7 @@ export default {
 	},
 	methods: {
 		a(){
-			localStorage.getItem('friend').then(res=>{
+			common_api.getItem('friend').then(res=>{
 				this.list = res
 			});
 		},
