@@ -17,7 +17,7 @@
                   :key="n"
                   @click="showUser(m)"
                 >
-                  <img class="member-img" :src="`${$url}/${m.avatar}`" />
+                  <img class="member-img" :src="[host + m.avatar]" />
                   <span>{{ m.nickName }}</span>
                 </div>
               </div>
@@ -43,6 +43,7 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
 import apiCommon from "@/utils/api/common.js";
+import base from "@/utils/baseUrl.js";
 export default {
   components: {
     Search,
@@ -64,8 +65,10 @@ export default {
   },
   mounted: function() {
     apiCommon.get('friend').then(res=>{
-				this.userFriendList = res.data;
+        console.log(res)
+				this.userFriendList = res;
     });
+    this.host = base.webUrl
   },
   methods: {
     // 打开一个聊天对话框

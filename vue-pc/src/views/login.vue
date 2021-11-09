@@ -239,7 +239,7 @@ export default {
 
           apiMessage.online();
 
-
+          apiCommon.post("group");
           apiCommon.post("post");
           apiCommon.post("friend");
           apiCommon.post("conversation");

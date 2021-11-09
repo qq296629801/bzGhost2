@@ -3,7 +3,7 @@
     <div class="left-bar" style="-webkit-app-region: drag">
       <ul>
         <li class="userPhoto" @click="modal = true">
-          <img :src="user.avatar" />
+          <img :src="[host + userData.user.avatar]" />
         </li>
         <li title="会话">
           <router-link v-bind:to="'/index/chatBox'">
@@ -45,16 +45,16 @@
         <img :src="user.avatar" class="img" />
       </p>
       <p class="user-model-item">
-        <label>姓名：</label>
-        <span>{{ user.name }}</span>
+        <label>昵称</label>
+        <span>{{ userData.user.nickName }}</span>
       </p>
       <p class="user-model-item">
-        <label>手机：</label>
-        <span>{{ user.mobile }}</span>
+        <label>账号</label>
+        <span>{{ userData.user.username }}</span>
       </p>
       <p class="user-model-item">
         <label>邮箱：</label>
-        <span>{{ user.email }}</span>
+        <span>{{ userData.user.email }}</span>
       </p>
       <p>
         <Button type="error" long @click="myLogout">退出</Button>
@@ -64,13 +64,19 @@
 </template>
 <script>
 import { logout } from "../utils/ChatUtils";
+import { mapState, mapMutations } from 'vuex';
+import base from "@/utils/baseUrl.js";
 export default {
   data() {
     return {
       user: {},
-      modal: false
+      modal: false,
+      host:''
     };
   },
+  computed:{
+		...mapState(['userData'])
+	},
   methods: {
     myLogout() {
       let self = this;
@@ -78,6 +84,7 @@ export default {
     }
   },
   mounted: function() {
+    this.host = base.webUrl
     this.$socket.initSocket();
   }
 };

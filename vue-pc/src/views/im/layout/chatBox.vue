@@ -15,7 +15,7 @@
               "
             >
               <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
-              <img :src="chat.imgUrl" alt="头像" />
+              <img :src="[host + chat.imgUrl]" alt="头像" />
               <b>{{ chat.chatName }}</b>
               <p>{{ contontType[chat.chatType] }}</p>
             </a>
@@ -37,6 +37,7 @@ import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
 import apiCommon from "@/utils/api/common.js";
 import { mapState, mapMutations} from 'vuex';
+import base from "@/utils/baseUrl.js";
 export default {
   components: {
     Search,
@@ -47,7 +48,8 @@ export default {
     return {
       currentChat: {},
       chatList: [],
-      contontType: ["文本", "语音", "图片", "红包"]
+      contontType: ["文本", "语音", "图片", "红包"],
+      host:''
     };
   },
   computed: {
@@ -88,6 +90,7 @@ export default {
     apiCommon.get("conversation").then(list => {
       this.chatList = list;
     });
+    this.host = base.webUrl;
   }
 };
 </script>

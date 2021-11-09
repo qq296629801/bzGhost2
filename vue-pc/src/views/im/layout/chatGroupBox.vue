@@ -8,7 +8,7 @@
             <a href="javascript:" @click="showChat(chatGroup)">
               <img :src="[host + chatGroup.avatar]" />
               <b>{{ chatGroup.chatName }}</b>
-              <p>{{ chatGroup.chatName }}</p>
+              <p>{{ chatGroup.lastOperTime }}</p>
             </a>
           </li>
         </ul>
@@ -43,6 +43,7 @@ export default {
   },
   mounted: function() {
     apiCommon.get('group').then(res=>{
+      console.log(res.data)
 				this.list = res.data;
     });
   },

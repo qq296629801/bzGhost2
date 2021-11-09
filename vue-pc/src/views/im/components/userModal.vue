@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       title: "",
-      user: {}
+      user: {},
+      host:''
     };
   },
   watch: {

@@ -153,7 +153,7 @@ export default {
     HistoryMessage,
    // UploadTool
   },
-  name: "userChat",
+  name: "UserChat",
   computed: {
     ...mapState(["userData"])
   },
@@ -284,9 +284,9 @@ export default {
 			});
 
       // 加入群通道
-      this.$socket.joinGroup(() =>{
-         this.send(null);
-      });
+      // this.$socket.joinGroup(() =>{
+      //    this.send(null);
+      // });
     }
   },
   watch: {
