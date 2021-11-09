@@ -37,11 +37,14 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      host:''
     };
   },
   mounted: function() {
-    
+    apiCommon.get('group').then(res=>{
+				this.list = res.data;
+    });
   },
   methods: {
     // 打开一个聊天对话框

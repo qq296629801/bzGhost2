@@ -143,7 +143,7 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 //import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from 'vuex';
 import { imageLoad } from "../../../utils/ChatUtils";
 import apiMessage from "@/utils/api/message.js";
 export default {
@@ -229,6 +229,7 @@ export default {
     send(data){
           let _t = this
 
+          // 构造参数
           const params = {
             isItMe:true,
             contentType: _t.messageType.text,
@@ -245,8 +246,6 @@ export default {
             chatType: _t.chatObj.chatType
           };
 
-
-
            //本地内存
           _t.messageList.push(params);
           _t.messageContent = '';
@@ -256,60 +255,47 @@ export default {
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
-              console.log(res)
+
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
+
                 // 判断发送人是不是自己
                 if(res.fromUserId!=_t.userData.user.operId){
+
                   if(res.content!=''){
                     res.isItMe = false;
                     _t.messageList.push(params);
+                    
                     this.$nextTick(() => {
                       imageLoad("message-box");
                     });
                   }
                 }
               }
-
-
           });
     },
-    initChat() {
-
-      get(this.chatObj.chatId).then(res=>{
+    loadHistory() {
+      // 从本地获取最新历史记录
+      apiMessage.getItem(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
            imageLoad("message-box");
 				});
 			});
 
+      // 加入群通道
       this.$socket.joinGroup(() =>{
          this.send(null);
-      });
-    },
-    getHistoryMessage(pageNo) {
-      let self = this;
-      if (!pageNo) {
-        pageNo = 1;
-      }
-      let param = new FormData();
-      param.set("chatId", self.chatObj.id);
-      param.set("chatType", self.chatObj.type);
-      param.set("fromId", self.$store.state.user.id);
-      param.set("pageNo", pageNo);
-
-      this.$nextTick(() => {
-        imageLoad("message-box");
       });
     }
   },
   watch: {
     chatObj: function() {
-      this.initChat();
+      this.loadHistory();
     }
   },
   mounted: function() {
-    this.initChat();
+    this.loadHistory();
   }
 };
 </script>

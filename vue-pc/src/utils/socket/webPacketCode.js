@@ -2,7 +2,7 @@
  * WebSocket数据包编解码器
  *
  */
-const PacketCodeC = {
+const packetCode = {
   encode(packet) {
     let bytes = stringToBytes(JSON.stringify(packet));
     let buffer = new ArrayBuffer(11 + bytes.length);
@@ -81,4 +81,4 @@ var bytesToString = bytes => {
   }
   return str;
 };
-export default PacketCodeC;
+export default packetCode;

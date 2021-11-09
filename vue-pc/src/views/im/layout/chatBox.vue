@@ -36,7 +36,7 @@ import Top from "../components/top.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
 import apiCommon from "@/utils/api/common.js";
-import { mapState } from "vuex";
+import { mapState, mapMutations} from 'vuex';
 export default {
   components: {
     Search,
@@ -54,11 +54,13 @@ export default {
     ...mapState(["userData"])
   },
   methods: {
+    ...mapMutations(['setChatObj']),
     showChat: function(chat) {
-      let self = this;
-      self.currentChat = chat;
+      this.currentChat = chat;
+      this.setChatObj(chat);
+
       // 每次滚动到最底部
-      self.$nextTick(() => {
+      this.$nextTick(() => {
         imageLoad("message-box");
       });
     },

@@ -91,7 +91,7 @@ export default {
   flex-direction: row;
 
   .left-bar {
-    background-color: #1c2438;
+    background-color: #2b2b2b;
     width: 6rem;
     height: 100%;
 

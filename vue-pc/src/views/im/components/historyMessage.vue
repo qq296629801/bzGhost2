@@ -19,7 +19,7 @@
                 <i>{{ item.timestamp }}</i>
               </div>
             </div>
-            <div class="im-chat-text">
+            <div class="im-chat-text" v-if="item.contentType == 0">
               <pre
                 v-html="item.content"
                 v-on:click="openImageProxy($event)"
@@ -42,7 +42,7 @@
 
 <script>
 import { transform, imageLoad } from "../../../utils/ChatUtils";
-
+import { mapState, mapMutations } from 'vuex';
 export default {
   name: "history-message",
   props: {
@@ -62,6 +62,9 @@ export default {
       hisMessageList: []
     };
   },
+  computed:{
+		...mapState(['userData','chatObj'])
+	},
   watch: {
     showHistory: function(show) {
       console.log("show", show);
@@ -87,16 +90,22 @@ export default {
       }
     },
     getHistoryMessage(pageNo) {
-      let self = this;
-      if (!pageNo) {
-        pageNo = 1;
-      }
-      let param = new FormData();
-      param.set("chatId", self.chat.id);
-      param.set("chatType", self.chat.type);
-      param.set("fromId", self.$store.state.user.id);
-      param.set("pageNo", pageNo);
-    }
+
+			let httpReqData = {
+				toGroupId: this.chatObj.chatId,
+				userId: this.userData.user.operId,
+				condition:'',
+				pageNum: pageNo,
+				pageSize: 10
+			}
+			
+			this.$post('app/group/msg/list', httpReqData).then(res=>{
+				let data = res.list;
+				this.hisMessageList = data.concat(this.hisMessageList);
+			}).catch(e=>{
+			});
+      
+  }
   }
 };
 </script>

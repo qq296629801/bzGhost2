@@ -66,7 +66,7 @@ export default class Websocket {
   }
   // 接收服务器返回的消息
   onReceivedMsg(callBack) {
-    socket.onmessage = function() {
+    socket.onmessage = function(event) {
       if (typeof callBack == "function") {
         callBack(event);
       }

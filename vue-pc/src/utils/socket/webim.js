@@ -31,7 +31,6 @@ const WEBIM = {
         isReconnection: true
       });
       WEBIM.server.initWebSocket(WEBIM.options);
-
       WEBIM.server.onReceivedMsg(event => {
         let packet = packetCode.decode(event.data);
         let command = packet.command;
@@ -41,7 +40,6 @@ const WEBIM = {
           store.commit("setNewsPush", packet);
         }
       });
-      WEBIM.server.onNetworkChange(WEBIM.options);
       WEBIM.server.onSocketClosed(WEBIM.options);
     });
   },

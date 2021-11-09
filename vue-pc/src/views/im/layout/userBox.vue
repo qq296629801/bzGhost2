@@ -62,9 +62,15 @@ export default {
       userFriendList: []
     };
   },
+  mounted: function() {
+    apiCommon.get('friend').then(res=>{
+				this.userFriendList = res.data;
+    });
+  },
   methods: {
     // 打开一个聊天对话框
-    showChat: function() {},
+    showChat: function() {
+    },
     // 打开一个用户信息对话框
     showUser: function(user) {
       let self = this;
