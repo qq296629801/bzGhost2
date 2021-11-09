@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import { emojiList } from "@/util/emoji.js"
+	//import { emojiList } from "@/util/emoji.js"
 	export default {
 		name:'u-emotion',
 		data() {
