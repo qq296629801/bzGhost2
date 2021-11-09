@@ -21,7 +21,7 @@
 	</view>
 </template>
 <script>
-	import common_api from '@/util/api/common.js';
+	import apiCommon from '@/util/api/common.js';
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		components: {
@@ -38,7 +38,7 @@
 			}
 		},
 		onShow() {
-			common_api.getItem('friend').then(res=>{
+			apiCommon.getItem('friend').then(res=>{
 				this.list = res
 				this.firendItem = res
 				let indexList = []

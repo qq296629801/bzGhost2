@@ -41,8 +41,8 @@
 	let my;
 	import wInput from '@/components/watch-login/watch-input.vue' 
 	import wButton from '@/components/watch-login/watch-button.vue'
-	import common_api from '@/util/api/common.js'
-	import message_api from '@/util/api/message.js'
+	import apiCommon from '@/util/api/common.js'
+	import apiMessage from '@/util/api/message.js'
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		data() {
@@ -78,12 +78,12 @@
 				this.$http.get('/login',this.formData).then(a=>{
 					my.setUserData(a);
 					this.$socket.login(b=>{
-						message_api.online();
+						apiMessage.online();
 						
-						common_api.setItem('post');
-						common_api.setItem('friend');
-						common_api.setItem('group');
-						common_api.setItem('conversation');
+						apiCommon.setItem('post');
+						apiCommon.setItem('friend');
+						apiCommon.setItem('group');
+						apiCommon.setItem('conversation');
 						
 						my.loading=false;
 						

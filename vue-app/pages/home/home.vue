@@ -18,7 +18,7 @@
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
-import common_api from '@/util/api/common.js';
+import apiCommon from '@/util/api/common.js';
 import { mapState, mapMutations} from 'vuex';
 export default {
 	components: { selectInput, message },
@@ -41,7 +41,7 @@ export default {
 	},
 	watch:{
         newsPush: function(value){
-			common_api.setItem('conversation').then(res=>{
+			apiCommon.setItem('conversation').then(res=>{
 				this.list = res
 			});
 		}
@@ -52,7 +52,7 @@ export default {
 	onLoad() {
 	},
 	onPullDownRefresh() {
-		common_api.setItem('conversation').then(res=>{
+		apiCommon.setItem('conversation').then(res=>{
 			this.list = res
 			uni.stopPullDownRefresh()
 		});
@@ -61,7 +61,7 @@ export default {
 		if(this.userData.user==undefined){
 			return;
 		}
-		common_api.setItem('conversation').then(res=>{
+		apiCommon.setItem('conversation').then(res=>{
 			this.list = res
 		});
 	},
@@ -82,7 +82,7 @@ export default {
 			if(this.userData.user==undefined){
 				return;
 			}
-			common_api.get('conversation').then(res=>{
+			apiCommon.get('conversation').then(res=>{
 				this.list = res
 				this.mescroll.endSuccess(this.list.length);
 			}).catch(e=>{

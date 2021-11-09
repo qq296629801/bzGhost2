@@ -20,7 +20,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import common_api from '@/util/api/common.js';
+import apiCommon from '@/util/api/common.js';
 export default {
 	components: {
 	},
@@ -47,7 +47,7 @@ export default {
 			});
 		},
 		getGroups() {
-			common_api.getItem('group').then(res=>{
+			apiCommon.getItem('group').then(res=>{
 				this.list = res.data;
 			});
 		}
