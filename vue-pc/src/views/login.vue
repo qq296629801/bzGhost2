@@ -115,8 +115,8 @@
 
 <script>
 import Top from "./im/components/top.vue";
-import { pull } from "@/utils/db_message.js";
-import { put } from "@/utils/db_common.js";
+import apiMessage from "@/utils/api/message.js";
+import apiCommon from "@/utils/api/common.js";
 import { mapMutations } from "vuex";
 export default {
   name: "login-page",
@@ -234,10 +234,16 @@ export default {
       this.$get("login", this.requestData).then(res => {
         if (res) {
           this.setUserData(res);
-          pull();
-          put("post");
-          put("friend");
-          put("conversation");
+
+          localStorage.setItem("userData",res);
+
+          apiMessage.online();
+
+
+          apiCommon.post("post");
+          apiCommon.post("friend");
+          apiCommon.post("conversation");
+          
           this.$router.push({
             path: "/index/chatBox",
             params: {}

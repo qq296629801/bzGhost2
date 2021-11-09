@@ -25,6 +25,7 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import { mapState, mapMutations } from "vuex";
+import apiCommon from "@/utils/api/common.js";
 export default {
   components: {
     Search,
@@ -40,11 +41,7 @@ export default {
     };
   },
   mounted: function() {
-    this.$post("app/group/list", { userId: this.userData.user.operId }).then(
-      res => {
-        this.list = res.data;
-      }
-    );
+    
   },
   methods: {
     // 打开一个聊天对话框

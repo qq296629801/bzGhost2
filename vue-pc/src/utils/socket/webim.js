@@ -1,25 +1,14 @@
 import store from "@/store/index.js";
+import base from "@/utils/baseUrl.js";
 import packetCode from "./webPacketCode.js";
 import SKIMSDK from "./webSocket.js";
-import base from "./baseUrl.js";
 const EventDispatcher = function() {
   this.listeners = {};
 };
 let eventDispatcher;
 const WEBIM = {
-  resource: "web",
-  CHAT: "chat",
-  GROUPCHAT: "groupchat",
-  token: null,
-  userId: null,
-  isReadDel: 0,
-  userIdStr: null,
   serverUrl: base.socketUrl,
   server: null,
-  /*消息超时 时间 默认 15 秒*/
-  sendTimeOut: 15,
-  /*等待消息回执的 消息Id 数组*/
-  waitReceiptMessageIds: {},
   heartCheck: true,
   isReconnection: true,
   options: null,

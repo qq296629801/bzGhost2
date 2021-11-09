@@ -46,6 +46,7 @@
 import Top from "../components/top.vue";
 import UserModal from "../components/userModal.vue";
 import { ChatListUtils, MessageTargetType } from "@/utils/ChatUtils";
+import apiCommon from "@/utils/api/common.js";
 export default {
   components: {
     Top,
@@ -68,17 +69,6 @@ export default {
     },
     showChat(user) {
       let self = this;
-      self.model = false;
-      self.$router.push({
-        path: "/index/chatBox/",
-        query: {
-          chat: ChatListUtils.resetChatList(
-            self,
-            user,
-            MessageTargetType.FRIEND
-          )
-        }
-      });
     },
     change(data) {
       let self = this;

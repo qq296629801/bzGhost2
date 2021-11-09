@@ -2,86 +2,83 @@ import cache from "@/utils/cache.js";
 import { post } from "@/utils/request.js";
 import store from "@/store/index.js";
 var postfix = "msgItem_";
-
-function getItem(gid) {
-  let list = cache.get(postfix + gid);
-  return new Promise((resolve, reject) => {
-    try {
-      if (list == "") {
-        resolve([]);
-        return;
+const message = {
+   getItem(gid) {
+    let list = cache.get(postfix + gid);
+    return new Promise((resolve, reject) => {
+      try {
+        if (list == "") {
+          resolve([]);
+          return;
+        }
+        list.sort((a, b) => {
+          return a.id - b.id;
+        });
+      } catch (e) {
+        reject(e);
       }
-      list.sort((a, b) => {
-        return a.id - b.id;
+      resolve(list);
+    });
+  },
+   online() {
+    let userData = store.state.userData;
+    if (!userData.token) {
+      userData = localStorage.getItem("userData");
+    }
+    let userId = userData.user.operId;
+    post("app/group/msg/online", {
+      userId
+    }).then(res => {
+      res.forEach(r => {
+        cache.set(postfix + r.groupInfo.chatId, r.groupMsg.list);
       });
-    } catch (e) {
-      reject(e);
-    }
-    resolve(list);
-  });
-}
-
-function online() {
-  let userData = store.state.userData;
-  if (!userData.token) {
-    userData = localStorage.getItem("userData");
-  }
-  let userId = userData.user.operId;
-  post("app/group/msg/online", {
-    userId
-  }).then(res => {
-    res.forEach(r => {
-      cache.set(postfix + r.groupInfo.chatId, r.groupMsg.list);
     });
-  });
-  post("app/friend/msg/online", { userId, condition: "" }).then(res => {
-    res.forEach(r => {
-      cache.set(postfix + r.friendInfo.id, r.friendMsg);
+    post("app/friend/msg/online", { userId, condition: "" }).then(res => {
+      res.forEach(r => {
+        cache.set(postfix + r.friendInfo.id, r.friendMsg);
+      });
     });
-  });
-}
-
-function del(id, gid, obj) {
-  let list = cache.get(postfix + gid);
-  if (list == "") {
-    let tempItem = [];
-    tempItem.push(obj);
-    cache.set(postfix + gid, tempItem);
-    return;
-  }
-  for (var i in list) {
-    if (list[i].id === id) {
-      list.splice(i, 1);
+  },
+  del(id, gid, obj) {
+    let list = cache.get(postfix + gid);
+    if (list == "") {
+      let tempItem = [];
+      tempItem.push(obj);
+      cache.set(postfix + gid, tempItem);
+      return;
     }
-  }
-  cache.set(postfix + gid, list);
-}
-
-function upPacket(id, gid, msgContext) {
-  let list = cache.get(postfix + gid);
-  if (list == "") {
-    return;
-  }
-  for (var i in list) {
-    if (list[i].id === id) {
-      list[i].msgContext = msgContext;
+    for (var i in list) {
+      if (list[i].id === id) {
+        list.splice(i, 1);
+      }
     }
+    cache.set(postfix + gid, list);
+  },
+  upPacket(id, gid, msgContext) {
+    let list = cache.get(postfix + gid);
+    if (list == "") {
+      return;
+    }
+    for (var i in list) {
+      if (list[i].id === id) {
+        list[i].msgContext = msgContext;
+      }
+    }
+    cache.set(postfix + gid, list);
+  },
+  commit(obj, gid) {
+    let list = cache.get(postfix + gid);
+    if (list == "") {
+      let tempItem = [];
+      tempItem.push(obj);
+      cache.set(postfix + gid, tempItem);
+      return;
+    }
+    if (list.length >= 10) {
+      list.splice(0, 1);
+    }
+    list.push(obj);
+    cache.set(postfix + gid, list);
   }
-  cache.set(postfix + gid, list);
 }
-
-function commit(obj, gid) {
-  let list = cache.get(postfix + gid);
-  if (list == "") {
-    let tempItem = [];
-    tempItem.push(obj);
-    cache.set(postfix + gid, tempItem);
-    return;
-  }
-  if (list.length >= 10) {
-    list.splice(0, 1);
-  }
-  list.push(obj);
-  cache.set(postfix + gid, list);
-}
-export { commit, getItem, online, del, upPacket };
+export default message;

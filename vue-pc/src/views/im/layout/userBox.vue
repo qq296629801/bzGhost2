@@ -42,6 +42,7 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
+import apiCommon from "@/utils/api/common.js";
 export default {
   components: {
     Search,

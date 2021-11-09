@@ -145,7 +145,7 @@ import UserModal from "./userModal.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState } from "vuex";
 import { imageLoad } from "../../../utils/ChatUtils";
-import { get } from "@/utils/db_message.js";
+import apiMessage from "@/utils/api/message.js";
 export default {
   components: {
     Faces,
