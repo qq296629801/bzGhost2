@@ -2,7 +2,7 @@
   <div class="user-info">
     <Row>
       <Col span="12">
-        <h5 class="username">{{ user.name }}</h5>
+        <h5 class="username">{{ user.nickName }}</h5>
       </Col>
       <Col span="12" class="text-right">
         <Avatar size="large" :src="host + user.avatar" />
@@ -10,17 +10,17 @@
     </Row>
     <Divider />
     <Row>
-      <Col span="3" class="label">手机</Col>
-      <Col span="2">&nbsp;</Col>
-      <Col span="18" class="value">{{ user.mobile }}</Col>
+      <Col span="3" class="label">账户</Col>
+      <Col span="2"></Col>
+      <Col span="18" class="value">{{ user.userName }}</Col>
     </Row>
     <Row>
-      <Col span="3" class="label">邮箱</Col>
-      <Col span="2">&nbsp;</Col>
-      <Col span="18">{{ user.email }}</Col>
+      <Col span="3" class="label">积分</Col>
+      <Col span="2"></Col>
+      <Col span="18">{{ user.money }}</Col>
     </Row>
     <Row>
-      <Col span="18">&nbsp;</Col>
+      <Col span="18"></Col>
       <Col span="6" class="text-right">
         <i-button type="primary" shape="circle" size="large" @click="showChat()"
           >发送消息</i-button
@@ -31,31 +31,30 @@
 </template>
 
 <script>
-import { MessageTargetType } from "../../../utils/ChatUtils";
-const { ChatListUtils } = require("../../../utils/ChatUtils.js");
-
+import base from "@/utils/baseUrl.js";
+import { mapState, mapMutations} from 'vuex';
 export default {
   name: "userInfo",
   props: ["user"],
   data() {
     return {
-      host: conf.getHostUrl()
+      host: base.webUrl
     };
   },
   methods: {
+    ...mapMutations(['setChatObj']),
     // 打开一个聊天对话框
     showChat: function() {
       let self = this;
-      console.log("self.user", self.user);
-      let chat = ChatListUtils.resetChatList(
-        self,
-        self.user,
-        conf.getHostUrl(),
-        MessageTargetType.FRIEND
-      );
+      let obj = {
+        chatName:self.user.nickName,
+        chatType:0,
+        chatId:self.user.id,
+        avatar:self.user.avatar
+      };
+      this.setChatObj(obj);
       self.$router.push({
-        path: "/index/chatBox/",
-        query: { chat: chat }
+        path: "/index/chatBox/"
       });
     }
   }

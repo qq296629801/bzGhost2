@@ -16,7 +16,8 @@
     </div>
     <div class="chat-box">
       <Top></Top>
-      <Welcome></Welcome>
+      <Welcome v-if="first"></Welcome>
+      <UserChat v-else :chatObj="currentChat" @showChat="showChat"></UserChat>
     </div>
   </div>
 </template>
@@ -24,14 +25,16 @@
 import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
-import { mapState, mapMutations } from "vuex";
 import apiCommon from "@/utils/api/common.js";
 import base from "@/utils/baseUrl.js";
+import UserChat from "../components/chat.vue";
+import { mapState, mapMutations} from 'vuex';
 export default {
   components: {
     Search,
     Top,
-    Welcome
+    Welcome,
+    UserChat
   },
   computed: {
     ...mapState(["userData"])
@@ -39,7 +42,9 @@ export default {
   data() {
     return {
       list: [],
-      host:''
+      host:'',
+      first: true,
+      currentChat:{}
     };
   },
   mounted: function() {
@@ -50,9 +55,13 @@ export default {
     });
   },
   methods: {
+    ...mapMutations(['setChatObj']),
     // 打开一个聊天对话框
-    showChat: function(user) {
-      let self = this;
+    showChat: function(chatGroup) {
+      this.first = false;
+      this.currentChat = chatGroup;
+      this.setChatObj(chatGroup);
+      console.log(chatGroup)
     }
   }
 };

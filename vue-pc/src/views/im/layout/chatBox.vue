@@ -9,7 +9,7 @@
               href="javascript:"
               @click="showChat(chat)"
               :class="
-                currentChat && currentChat.chatId === chat.chatId
+                chatObj && chatObj.chatId === chat.chatId
                   ? 'active'
                   : ''
               "
@@ -26,7 +26,7 @@
     </div>
     <div class="chat-box">
       <Top></Top>
-      <UserChat :chatObj="currentChat" @showChat="showChat"></UserChat>
+      <UserChat :chatObj="chatObj" @showChat="showChat"></UserChat>
     </div>
   </div>
 </template>
@@ -53,7 +53,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userData"])
+    ...mapState(["userData","chatObj"])
   },
   methods: {
     ...mapMutations(['setChatObj']),
@@ -69,7 +69,7 @@ export default {
     showSearchChat: function(chat) {
       let self = this;
       // self.$store.commit("resetUnRead");
-      self.currentChat = chat;
+      this.setChatObj(chat);
       // 每次滚动到最底部
       self.$nextTick(() => {
         imageLoad("message-box");

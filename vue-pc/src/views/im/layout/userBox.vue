@@ -60,7 +60,8 @@ export default {
       host: "",
       userFriends: [],
       first: true,
-      userFriendList: []
+      userFriendList: [],
+      host:base.webUrl
     };
   },
   mounted: function() {
@@ -77,10 +78,10 @@ export default {
     // 打开一个用户信息对话框
     showUser: function(user) {
       let self = this;
-      self.$router.push({
-        path: "/index/userBox/"
-      });
-
+      console.log(user)
+      // self.$router.push({
+      //   path: "/index/userBox/"
+      // });
       self.first = false;
       self.user = user;
     }
