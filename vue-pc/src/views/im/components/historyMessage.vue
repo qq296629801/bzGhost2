@@ -6,17 +6,17 @@
           <li
             v-for="(item, index) in hisMessageList"
             :key="index"
-            :class="{ 'im-chat-mine': item.mine }"
+            :class="{ 'im-chat-mine': item.isItMe }"
           >
             <div class="im-chat-user" id="historyMessageBox">
-              <img :src="[host + item.avatar]" />
-              <div class="message-info right" v-if="item.mine">
-                <i>{{ item.timestamp }}</i>
-                <span>{{ item.username }}</span>
+              <img :src="[host + item.fromUserHeadImg]" />
+              <div class="message-info right" v-if="item.isItMe">
+                <i>{{ item.createTime }}</i>
+                <span>{{ item.fromUserName }}</span>
               </div>
-              <div class="message-info" v-if="!item.mine">
-                <span>{{ item.username }}</span>
-                <i>{{ item.timestamp }}</i>
+              <div class="message-info" v-if="!item.isItMe">
+                <span>{{ item.fromUserName }}</span>
+                <i>{{ item.createTime }}</i>
               </div>
             </div>
             <div class="im-chat-text" v-if="item.contentType == 0">
@@ -42,6 +42,7 @@
 
 <script>
 import { transform, imageLoad } from "../../../utils/ChatUtils";
+import base from "@/utils/baseUrl.js";
 import { mapState, mapMutations } from 'vuex';
 export default {
   name: "history-message",
@@ -59,7 +60,8 @@ export default {
     return {
       count: 0,
       pageSize: 20,
-      hisMessageList: []
+      hisMessageList: [],
+      host:''
     };
   },
   computed:{
@@ -74,7 +76,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.host = base.webUrl;
+  },
   methods: {
     // 附件和图片点击展开
     openImageProxy: function(event) {
@@ -90,7 +94,7 @@ export default {
       }
     },
     getHistoryMessage(pageNo) {
-
+      
 			let httpReqData = {
 				toGroupId: this.chatObj.chatId,
 				userId: this.userData.user.operId,

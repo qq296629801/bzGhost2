@@ -1,7 +1,6 @@
 <template>
 	<view @longtap="taptext($event)" class="item" :class="value.isTop ? 'bg_view' : ''" hover-class="message-hover-class" @tap="jump(value)">
-		<!-- <img-cache :src="$url + (value.avatar|| value.imgUrl)"></img-cache> -->
-		<img-cache src="/static/image/huge.jpg"></img-cache>
+		<image :src="host + value.imgUrl"></image>
 		<view class="right title-wrap u-border-bottom">
 			<view class="right_top">
 				<view class="right_top_name u-line-1">
@@ -24,12 +23,9 @@
 </template>
 
 <script>
-	import ImgCache from '@/components/img-cache/img-cache.vue';
+	import base from '@/util/baseUrl.js';
 	export default {
-		name: 'u-message',
-		components:{
-			ImgCache
-		},
+		name: 'message',
 		props: {
 			value: {
 				type: Object,
@@ -57,7 +53,8 @@
 		data() {
 			return {
 				message:['文字', '图片', '表情', '语音', '视频',
-				 '签到', '撤销', '发红包', '抢红包','其它']
+				 '签到', '撤销', '发红包', '抢红包','其它'],
+				 host: base.webUrl
 			};
 		},
 		filters: {

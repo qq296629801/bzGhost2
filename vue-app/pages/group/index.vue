@@ -4,7 +4,7 @@
 			
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
-					<img-cache src="/static/image/huge.jpg"></img-cache>
+					<image class="img" :src="host + item.avatar"></image>
 					<view class="text">{{ item.groupNickName || item.nickName }}</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
@@ -88,14 +88,12 @@
 </template>
 
 <script>
-import ImgCache from '@/components/img-cache/img-cache.vue';
+import base from '@/util/baseUrl.js';
 import { mapState, mapMutations } from 'vuex';
 export default {
-	components:{
-		ImgCache
-	},
 	data() {
 		return {
+			host: base.webUrl,
 			disTalk: false,
 			titleStyle:{ marginLeft: '10rpx' },
 			group:{
@@ -266,6 +264,10 @@ export default {
 			overflow: hidden;
 			text-align: center;
 			color: #343434;
+		}
+		.img{
+			width: 80rpx;
+			height: 80rpx;
 		}
 		.img-cache{
 			width: 80rpx;

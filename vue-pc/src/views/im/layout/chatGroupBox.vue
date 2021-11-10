@@ -26,6 +26,7 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import { mapState, mapMutations } from "vuex";
 import apiCommon from "@/utils/api/common.js";
+import base from "@/utils/baseUrl.js";
 export default {
   components: {
     Search,
@@ -42,6 +43,7 @@ export default {
     };
   },
   mounted: function() {
+    this.host = base.webUrl;
     apiCommon.get('group').then(res=>{
       console.log(res.data)
 				this.list = res.data;

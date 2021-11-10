@@ -16,7 +16,7 @@
               :class="{ 'im-chat-mine': item.isItMe }"
             >
               <div class="im-chat-user">
-                <img :src="item.avatar" alt="头像" />
+                <img :src="[host + item.fromUserHeadImg]" alt="头像" />
                 <div class="message-info right" v-if="item.isItMe">
                   <i>
                     <!-- <Time :time="item.createTime" /> -->
@@ -146,6 +146,7 @@ import HistoryMessage from "./historyMessage.vue";
 import { mapState, mapMutations } from 'vuex';
 import { imageLoad } from "../../../utils/ChatUtils";
 import apiMessage from "@/utils/api/message.js";
+import base from "@/utils/baseUrl.js";
 export default {
   components: {
     Faces,
@@ -159,6 +160,7 @@ export default {
   },
   data() {
     return {
+      host:'',
       count: 0,
       pageSize: 20,
       modal: false,
@@ -238,17 +240,18 @@ export default {
             hasBeenSentId: Date.now(),
             fromUserId: _t.userData.user.operId,
             fromUserName: _t.userData.user.username,
-            fromUserHeadImg: '/static/logo.png',
+            fromUserHeadImg: _t.userData.user.avatar,
             userId: _t.userData.user.operId,
             toUserId: _t.chatObj.chatId,
             toUserName: _t.chatObj.chatName,
-            toUserHeadImg:'/static/logo.png',
+            toUserHeadImg:_t.chatObj.avatar,
             chatType: _t.chatObj.chatType
           };
 
            //本地内存
           _t.messageList.push(params);
           _t.messageContent = '';
+          
           this.$nextTick(() => {
             imageLoad("message-box");
           });
@@ -275,6 +278,7 @@ export default {
           });
     },
     loadHistory() {
+      this.host = base.webUrl;
       // 从本地获取最新历史记录
       apiMessage.getItem(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});

@@ -3,7 +3,7 @@
 		<view v-for="(value, index) in list">
 			<view class="item u-border-bottom" :class="currIndex ===index ? 'bg_view' : ''" hover-class="message-hover-class" 
 			@tap="link(value)">
-				<img-cache src="/static/image/huge.jpg"></img-cache>
+				<image :src="host + value.avatar"></image>
 				<view class="right title-wrap">
 					<view class="right_top">
 						<view class="right_top_name u-line-1">{{ value.chatName }}</view>
@@ -21,13 +21,15 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import apiCommon from '@/util/api/common.js';
+import base from '@/util/baseUrl.js';
 export default {
 	components: {
 	},
 	data() {
 		return {
 			list: [],
-			currIndex: -1
+			currIndex: -1,
+			host: base.webUrl
 		};
 	},
 	computed:{

@@ -7,7 +7,7 @@
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
-					<image class="img" :src="item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
+					<image class="img" :src="host + item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
 					
 					<!-- contentType = 1 文本 -->
 					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ item.content }}</view>
@@ -156,6 +156,7 @@ export default {
 	components:{ RedCard, packet },
 	data() {
 		return {
+			host: base.webUrl,
 			winState:'',
 			webUrl:'',
 			downOption:{

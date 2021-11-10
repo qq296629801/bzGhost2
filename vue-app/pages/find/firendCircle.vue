@@ -185,7 +185,6 @@ export default {
 	methods: {
 		a(){
 			apiCommon.setItem('post').then(res=>{
-				console.log(JSON.stringify(res))
 				this.circleData = res
 				this.mescroll.endSuccess(res.length);
 			}).catch(e=>{

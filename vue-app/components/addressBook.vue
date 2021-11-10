@@ -16,7 +16,7 @@
 			<view v-for="(item, index) in list" :key="index">
 				<u-index-anchor :index="item.name" v-if="item.members&&item.members.length"/>
 				<view v-for="user in item.members" :key="user.id"  class="list-cell " @tap="toCard(user)" hover-class="message-hover-class">
-					<img-cache src="/static/image/huge.jpg"></img-cache>
+					<image :src="host + user.avatar"></image>
 					<view  class="list-cell-name u-font-16">{{user.nickName}}</view>
 				</view>
 			</view>
@@ -25,10 +25,9 @@
 </template>
 
 <script>
-	import ImgCache from '@/components/img-cache/img-cache.vue';
+	import base from '@/util/baseUrl.js';
 	export default {
-		name:'u-addressBook',
-		components:{ ImgCache },
+		name:'addressBook',
 		props:{
 			list:{
 				type:Array,
@@ -77,8 +76,7 @@
 			return {
 				oldList: this.list,
 				keyword:'',
-				url1:require('@/static/image/friend_1.png'),
-				url2:require('@/static/image/group_1.png'),
+				host: base.webUrl,
 				indexList: ['#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 			};
 		},
