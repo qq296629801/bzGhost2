@@ -68,7 +68,9 @@ export default class Websocket {
   onReceivedMsg(callBack) {
     socket.onmessage = function(event) {
       if (typeof callBack == "function") {
-        callBack(event);
+          callBack(event)
+      } else {
+          console.log('参数的类型必须为函数')
       }
     };
   }

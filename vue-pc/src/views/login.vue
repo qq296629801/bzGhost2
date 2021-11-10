@@ -195,7 +195,9 @@ export default {
   components: {
     Top
   },
-  mounted() {},
+  mounted() {
+    this.$socket.initSocket();
+  },
   methods: {
     ...mapMutations(["setUserData"]),
     clickUser: function() {
@@ -234,11 +236,11 @@ export default {
       this.$get("login", this.requestData).then(res => {
         if (res) {
           this.setUserData(res);
-
           localStorage.setItem("userData",res);
+          this.$socket.login(e=>{
 
+          },);
           apiMessage.online();
-
           apiCommon.post("group");
           apiCommon.post("post");
           apiCommon.post("friend");

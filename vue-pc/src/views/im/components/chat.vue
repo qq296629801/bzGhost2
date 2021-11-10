@@ -231,7 +231,6 @@ export default {
     send(data){
           let _t = this
 
-          // 构造参数
           const params = {
             isItMe:true,
             contentType: _t.messageType.text,
@@ -248,8 +247,9 @@ export default {
             chatType: _t.chatObj.chatType
           };
 
-           //本地内存
-          _t.messageList.push(params);
+          if(!_t.messageContent==''){
+             _t.messageList.push(params);
+          }
           _t.messageContent = '';
           
           this.$nextTick(() => {
@@ -258,17 +258,14 @@ export default {
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
-
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
-
                 // 判断发送人是不是自己
                 if(res.fromUserId!=_t.userData.user.operId){
-
                   if(res.content!=''){
                     res.isItMe = false;
-                    _t.messageList.push(params);
-                    
+                    _t.messageList.push(res);
+
                     this.$nextTick(() => {
                       imageLoad("message-box");
                     });
@@ -287,10 +284,10 @@ export default {
 				});
 			});
 
-      // 加入群通道
-      // this.$socket.joinGroup(() =>{
-      //    this.send(null);
-      // });
+      //加入群通道
+      this.$socket.joinGroup(() =>{
+         this.send(null);
+      });
     }
   },
   watch: {

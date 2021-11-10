@@ -85,7 +85,6 @@ export default {
   },
   mounted: function() {
     this.host = base.webUrl
-    this.$socket.initSocket();
   }
 };
 </script>
