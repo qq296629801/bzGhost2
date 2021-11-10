@@ -471,9 +471,9 @@ export default {
           line-height: 22px;
           margin-top: 25px;
           padding: 1rem;
-          background-color: #e2e2e2;
+          background-color: #333;
           border-radius: 3px;
-          color: #333;
+          color: #e2e2e2;
           word-break: break-all;
           display: inline-block;
           vertical-align: top;
@@ -487,7 +487,7 @@ export default {
             width: 0;
             height: 0;
             border-style: solid dashed dashed;
-            border-color: #e2e2e2 transparent transparent;
+            border-color: #333 transparent transparent;
             overflow: hidden;
             border-width: 10px;
           }
@@ -546,7 +546,6 @@ export default {
       img {
         width: 4rem;
         height: 4rem;
-        border-radius: 100%;
       }
     }
 
@@ -558,8 +557,8 @@ export default {
       .im-chat-text {
         margin-left: 10px;
         text-align: left;
-        background-color: $color-message-bg;
-        color: #fff;
+        background-color: #C6EBFE;
+        color: #000;
         display: inline-block;
         vertical-align: top;
         font-size: 14px;
@@ -567,7 +566,7 @@ export default {
         &:after {
           left: auto;
           right: -10px;
-          border-top-color: $color-message-bg;
+          border-top-color: #C6EBFE;
         }
       }
 

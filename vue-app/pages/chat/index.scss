@@ -60,11 +60,17 @@ page {
 			flex-wrap: nowrap;
 			flex-direction: row;
 
+			.username{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
 			.img {
 				width: 80rpx;
 				height: 80rpx;
 				border-radius: 5rpx;
 			}
+			
 
 			.content {
 				padding: 20rpx;
@@ -215,11 +221,12 @@ page {
 
 			&.left {
 				.content {
-					background-color: #fff;
+					background-color: #333;
 					margin-left: 28rpx;
 					word-break: break-all;
 					line-height: 36rpx;
 					position: relative;
+					color: #fff;
 
 					&::after {
 						content: '';
@@ -228,7 +235,7 @@ page {
 						height: 0;
 						border-top: 10rpx solid transparent;
 						border-bottom: 10rpx solid transparent;
-						border-right: 16rpx solid #fff;
+						border-right: 16rpx solid #333;
 						position: absolute;
 						left: -16rpx;
 						top: 30rpx;
