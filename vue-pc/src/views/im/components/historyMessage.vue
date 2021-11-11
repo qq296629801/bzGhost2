@@ -19,12 +19,14 @@
                 <i>{{ item.createTime }}</i>
               </div>
             </div>
+
             <div class="im-chat-text" v-if="item.contentType == 0">
               <pre
                 v-html="item.content"
                 v-on:click="openImageProxy($event)"
               ></pre>
             </div>
+
           </li>
         </ul>
       </div>
@@ -41,7 +43,6 @@
 </template>
 
 <script>
-import { transform, imageLoad } from "../../../utils/ChatUtils";
 import base from "@/utils/baseUrl.js";
 import { mapState, mapMutations } from 'vuex';
 export default {
@@ -59,17 +60,16 @@ export default {
   data() {
     return {
       count: 0,
-      pageSize: 20,
+      pageSize: 10,
       hisMessageList: [],
       host:''
     };
   },
   computed:{
-		...mapState(['userData','chatObj'])
+		...mapState(['userData'])
 	},
   watch: {
     showHistory: function(show) {
-      console.log("show", show);
       this.showHistory = show;
       if (show) {
         this.getHistoryMessage(1);
@@ -94,21 +94,19 @@ export default {
       }
     },
     getHistoryMessage(pageNo) {
-      
 			let httpReqData = {
-				toGroupId: this.chatObj.chatId,
+        chatType: this.chat.chatType,
+				chatId: this.chat.chatId,
 				userId: this.userData.user.operId,
 				condition:'',
 				pageNum: pageNo,
-				pageSize: 10
+				pageSize: this.pageSize
 			}
-			
-			this.$post('app/group/msg/list', httpReqData).then(res=>{
-				let data = res.list;
-				this.hisMessageList = data.concat(this.hisMessageList);
+			this.$post('app/msg/list', httpReqData).then(res=>{
+        this.count = res.totalSize;
+				this.hisMessageList = res.list;
 			}).catch(e=>{
 			});
-      
   }
   }
 };

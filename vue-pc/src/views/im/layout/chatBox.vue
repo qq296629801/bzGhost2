@@ -26,13 +26,15 @@
     </div>
     <div class="chat-box">
       <Top></Top>
-      <UserChat :chatObj="chatObj" @showChat="showChat"></UserChat>
+      <Welcome v-if="first"></Welcome>
+      <UserChat v-if="!first" @showChat="showChat"></UserChat>
     </div>
   </div>
 </template>
 <script>
 import Search from "../components/search.vue";
 import Top from "../components/top.vue";
+import Welcome from "../components/welcome.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
 import apiCommon from "@/utils/api/common.js";
@@ -42,14 +44,15 @@ export default {
   components: {
     Search,
     Top,
-    UserChat
+    UserChat,
+    Welcome
   },
   data() {
     return {
-      currentChat: {},
       chatList: [],
       contontType: ["文本", "语音", "图片", "红包"],
-      host:''
+      host:'',
+      first:true
     };
   },
   computed: {
@@ -58,9 +61,8 @@ export default {
   methods: {
     ...mapMutations(['setChatObj']),
     showChat: function(chat) {
-      this.currentChat = chat;
       this.setChatObj(chat);
-
+      this.first = false;
       // 每次滚动到最底部
       this.$nextTick(() => {
         imageLoad("message-box");
@@ -68,7 +70,6 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-      // self.$store.commit("resetUnRead");
       this.setChatObj(chat);
       // 每次滚动到最底部
       self.$nextTick(() => {
@@ -78,13 +79,6 @@ export default {
     delChat() {}
   },
   activated: function() {
-    // let self = this;
-    // self.currentChat = {};
-    // self.currentChat = this.chatList[0];
-    // // 每次滚动到最底部
-    // self.$nextTick(() => {
-    //   imageLoad("message-box");
-    // });
   },
   mounted: function() {
     apiCommon.get("conversation").then(list => {

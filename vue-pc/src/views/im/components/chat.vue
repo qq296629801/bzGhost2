@@ -38,14 +38,6 @@
                 ></pre>
               </div>
 
-              <div class="im-chat-packet" v-if="item.contentType == 4">
-                <div class="packet">
-                  <img src="@/static/img/red.png" alt="头像" />
-                  <span>恭喜发财，大吉大利</span>
-                </div>
-                <div class="tag">红包</div>
-              </div>
-
             </li>
           </ul>
         </div>
@@ -73,7 +65,8 @@
           </div>
         </div>
       </div>
-      <div v-if="isGroup" class="im-chat-users">
+
+      <!-- <div v-if="chatObj.chatType==1" class="im-chat-users">
         <ul class="chat-user-list">
           <li
             v-for="(item, index) in userList"
@@ -86,7 +79,8 @@
             {{ item.name }}
           </li>
         </ul>
-      </div>
+      </div> -->
+
     </div>
     <Modal
       closable
@@ -96,16 +90,17 @@
       title="信息"
       width="300"
     >
-      <div v-if="!isGroup">
+      <div v-if="chatObj.chatType==0">
         <UserModal :userId="chatObj.chatId"></UserModal>
       </div>
-      <div v-if="isGroup">
+
+      <div v-if="chatObj.chatType==1">
         <p class="user-model-img">
-          <img :src="chatObj.avatar" class="img" />
+          <img :src="[host + chatObj.avatar]" class="img" />
         </p>
         <p class="user-model-item">
           <label>群名称：</label>
-          <span>{{ chatObj.name }}</span>
+          <span>{{ chatObj.chatName }}</span>
         </p>
       </div>
     </Modal>
@@ -141,7 +136,7 @@
 <script>
 import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
-//import UploadTool from "./uploadTool.vue";
+import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState, mapMutations } from 'vuex';
 import { imageLoad } from "../../../utils/ChatUtils";
@@ -152,11 +147,11 @@ export default {
     Faces,
     UserModal,
     HistoryMessage,
-   // UploadTool
+    UploadTool
   },
   name: "UserChat",
   computed: {
-    ...mapState(["userData"])
+    ...mapState(["userData","chatObj"])
   },
   data() {
     return {
@@ -170,8 +165,8 @@ export default {
       messageList: [],
       showFace: false,
       showHistory: false,
-      userList: [],
-      isGroup: false,
+     // userList: [],
+     // isGroup: false,
       messageType:{
 				text:0,
 				video:1,
@@ -182,7 +177,6 @@ export default {
 			}
     };
   },
-  props: ["chatObj"],
   methods: {
     history() {
       this.showHistory = !this.showHistory;
@@ -467,6 +461,7 @@ export default {
         }
 
         .im-chat-text {
+          max-width: 800px;
           position: relative;
           line-height: 22px;
           margin-top: 25px;
@@ -555,6 +550,7 @@ export default {
       padding-right: 60px;
 
       .im-chat-text {
+        max-width: 800px;
         margin-left: 10px;
         text-align: left;
         background-color: #C6EBFE;

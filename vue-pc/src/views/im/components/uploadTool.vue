@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import base from "@/utils/baseUrl.js";
 export default {
   name: "upload-tool",
   data() {
@@ -64,27 +65,28 @@ export default {
         "psd"
       ],
       tokenImg: {
-        access_token: StoreUtils.getAccessToken(),
+        access_token: '',
         type: "image"
       },
       tokenFile: {
-        access_token: StoreUtils.getAccessToken(),
+        access_token: '',
         type: "file"
       },
-      action: conf.getHostUrl() + "/api/oss/upload",
+      action: base.baseUrl + "file/upload",
       headers: {
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "*",
       }
     };
   },
   methods: {
     beforeUpload() {
       this.tokenImg = {
-        access_token: StoreUtils.getAccessToken(),
+        access_token: '',
         type: "image"
       };
       this.tokenFile = {
-        access_token: StoreUtils.getAccessToken(),
+        access_token: '',
         type: "file"
       };
       return new Promise(resolve => {

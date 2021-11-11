@@ -292,14 +292,15 @@ export default {
 			let _t = this;
 			
 			let httpReqData = {
-				toGroupId: _t.chatObj.chatId,
+				chatId: _t.chatObj.chatId,
+				chatType:_t.chatObj.chatType,
 				userId: _t.userData.user.operId,
 				condition:'',
 				pageNum: _t.formData.index,
 				pageSize: 10
 			}
 			
-			_t.$http.post('app/group/msg/list', httpReqData).then(res=>{
+			_t.$http.post('app/msg/list', httpReqData).then(res=>{
 				_t.formData.index++;
 				_t.mescroll.endSuccess();
 				let data = res.list.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
