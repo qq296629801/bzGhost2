@@ -14,7 +14,7 @@
             <Input
               clearable
               prefix="ios-contact-outline"
-              v-model="requestData.username"
+              v-model="loginParams.username"
               placeholder="手机"
               class="item-input"
             />
@@ -24,13 +24,13 @@
               clearable
               prefix="ios-lock-outline"
               type="password"
-              v-model="requestData.password"
+              v-model="loginParams.password"
               placeholder="密码"
               class="item-input"
             />
           </div>
           <div class="btn item">
-            <Button type="primary" @click="login()" icon="md-contact"
+            <Button type="primary" @click="tapLogin" icon="md-contact"
               >登录</Button
             >
           </div>
@@ -117,7 +117,7 @@
 import Top from "./im/components/top.vue";
 import apiMessage from "@/utils/api/message.js";
 import apiCommon from "@/utils/api/common.js";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "login-page",
   data() {
@@ -186,7 +186,7 @@ export default {
         slider: [20, 50],
         textarea: ""
       },
-      requestData: {
+      loginParams: {
         username: "test",
         password: "123456"
       }
@@ -199,7 +199,7 @@ export default {
     this.$socket.initSocket();
   },
   methods: {
-    ...mapMutations(["setUserData"]),
+    ...mapActions(['Login', 'Logout', 'GetInfo']),
     clickUser: function() {
       location.reload();
     },
@@ -232,14 +232,11 @@ export default {
         }
       });
     },
-    login: function() {
-      this.$get("login", this.requestData).then(res => {
-        if (res) {
-          this.setUserData(res);
-          localStorage.setItem("userData",res);
-          this.$socket.login(e=>{
-
-          },);
+    tapLogin: function() {
+      let {Login} = this
+      Login(this.loginParams).then(res=>{
+          this.$socket.login();
+          
           apiMessage.online();
           apiCommon.post("group");
           apiCommon.post("post");
@@ -250,8 +247,27 @@ export default {
             path: "/index/chatBox",
             params: {}
           });
-        }
       });
+
+      // this.$get("login", this.requestData).then(res => {
+      //   if (res) {
+      //     this.setUserData(res);
+      //     localStorage.setItem("userData",res);
+      //     this.$socket.login(e=>{
+
+      //     },);
+      //     apiMessage.online();
+      //     apiCommon.post("group");
+      //     apiCommon.post("post");
+      //     apiCommon.post("friend");
+      //     apiCommon.post("conversation");
+          
+      //     this.$router.push({
+      //       path: "/index/chatBox",
+      //       params: {}
+      //     });
+      //   }
+      // });
     }
   }
 };
