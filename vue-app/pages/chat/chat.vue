@@ -383,13 +383,11 @@ export default {
 				hasBeenSentId: Date.now(),
 				fromUserId: _t.userData.user.operId,
 				fromUserName: _t.userData.user.username,
-				fromUserHeadImg: '/static/image/huge.jpg',
-				
+				fromUserHeadImg: _t.userData.user.avatar,
 				userId: _t.userData.user.operId,
-				
 				toUserId: _t.chatObj.chatId,
 				toUserName: _t.chatObj.chatName,
-				toUserHeadImg:'/static/image/huge.jpg',
+				toUserHeadImg:_t.chatObj.avatar,
 				chatType: _t.chatObj.chatType,
 			};
 
@@ -418,9 +416,6 @@ export default {
 					params.content = data.content.msgContext;
 					params.contentType = _t.messageType.robPacket;
 				}
-			} else if (!_t.$u.trim(_t.formData.content)) {
-				//验证输入框书否为空字符传
-				return;
 			}
 			
 			// 抢红包不需要存储只需要广播 
@@ -440,12 +435,11 @@ export default {
 				}
 				// 本地缓存更改
 				messageMap.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
-			}else {
+			}else if(_t.formData.content!=''){
 				//本地内存
 				_t.messageList.push(params);
 				//本地缓存
 				messageMap.commit(params,_t.chatObj.chatId);
-				
 				// 创建红包不需要入库
 				if(params.contentType != _t.messageType.createPacket){
 					// 服务器入库
