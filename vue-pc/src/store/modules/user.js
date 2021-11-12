@@ -56,6 +56,7 @@ export const actions = {
               } else {
                 commit('SET_ROLES', ['ROLE_DEFAULT'])
               }
+            localStorage.setItem("userData",result)
             localStorage.setItem('token', result.token)
           }
           resolve(response)
