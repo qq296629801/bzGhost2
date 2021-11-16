@@ -7,18 +7,6 @@
 		</u-navbar>
 		<!-- #endif -->
 		<textarea class="input" v-model="content" placeholder="这一刻的想法..." :show-confirm-bar="false" :adjust-position="false" :disable-default-padding="true"></textarea>
-		<upload
-			class="upload"
-			ref="upload"
-			:action="action"
-			:max-size="maxSize"
-			:max-count="3"
-			:size-type="['compressed']"
-			@on-success="getImgUrl"
-			@on-remove="onRemove"
-			@on-uploaded="isAdd = true"
-			:before-upload="filterFileType"
-		></upload>
 		<view class="tips">
 			<u-cell-group>
 				<u-cell-item bg-color="#F6F7F8" title="所在位置" :title-style="{ marginLeft: '10rpx' }">
@@ -33,9 +21,7 @@
 </template>
 
 <script>
-import upload from '@/components/upload.vue';
 export default {
-	components:{upload},
 	data() {
 		return {
 			content: '',
@@ -48,18 +34,6 @@ export default {
 	},
 	onShow() {},
 	methods: {
-		filterFileType(index, lists) {
-			if (lists[index].fileType != 'jpg' && lists[index].fileType != 'png' && lists[index].fileType != 'gif') {
-				lists.splice(index, 1);
-				// 当前文件不支持
-				uni.showModal({
-					title: '暂不支持当前图片类型',
-					showCancel: false
-				});
-			} else {
-				this.isAdd = false;
-			}
-		},
 		getImgUrl(res) {
 			this.imgUrls.push(res.data);
 		},
