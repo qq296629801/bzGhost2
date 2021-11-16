@@ -21,11 +21,7 @@ const message = {
     });
   },
    online() {
-    let userData = store.state.userData;
-    if (!userData.token) {
-      userData = localStorage.getItem("userData");
-    }
-    let userId = userData.user.operId;
+    let userId = store.state.user.operId || '';
     post("app/group/msg/online", {
       userId
     }).then(res => {

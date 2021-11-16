@@ -235,9 +235,13 @@ export default {
     tapLogin: function() {
       let {Login} = this
       Login(this.loginParams).then(res=>{
-          this.$socket.login();
-          
+          console.log(res);
+
+          this.$socket.login(res.user.operId, res=>{});
+
+
           apiMessage.online();
+
           apiCommon.post("group");
           apiCommon.post("post");
           apiCommon.post("friend");
@@ -247,6 +251,9 @@ export default {
             path: "/index/chatBox",
             params: {}
           });
+
+
+
       });
 
       // this.$get("login", this.requestData).then(res => {

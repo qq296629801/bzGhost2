@@ -1,21 +1,11 @@
 import cache from "@/utils/cache.js";
-import store from "@/store/index.js";
 import { post } from "@/utils/request.js";
-
-
+import store from "@/store/index.js";
 const common = {
   post(key) {
-    let userData = store.state.userData;
-    if (!userData.token) {
-      userData = localStorage.getItem("userData");
-    }
-    if (userData.user == undefined) {
-      return;
-    }
-    let userId = userData.user.operId;
     return new Promise((resolve, reject) => {
       let httpData = {
-        userId
+        userId:store.state.user.operId || ''
       };
       post("app/" + key + "/list", httpData)
         .then(res => {
@@ -28,16 +18,9 @@ const common = {
     });
   },
   get(key) {
-    let userData = store.state.userData;
-    if (!userData.token) {
-      userData =  localStorage.getItem("userData");
-    }
-    if (userData.user == undefined) {
-      return;
-    }
-    let userId = userData.user.operId;
     return new Promise((resolve, reject) => {
       try {
+        let userId = store.state.user.operId || '';
         resolve(cache.get(key + "_" + userId));
       } catch (e) {
         reject(e);

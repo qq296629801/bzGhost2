@@ -1,8 +1,7 @@
 import Vue from "vue";
 import { login } from '@/utils/api/login.js'
+import webim from '@/utils/socket/webim.js'
 export const state = {
-  //用户数据
-  userData: {},
   user: {},
   token: '',
   config: {},
@@ -47,16 +46,18 @@ export const actions = {
           // 保证登录成功以后才来获取token
           if (response.code === 200) {
             const result = response.data
-            commit('setUserData', result)
+
             commit('SET_TOKEN',result.token)
             commit('SET_USER',result.user)
+
+
             if (result.roles && result.roles.length > 0) {
              commit('SET_ROLES', result.roles)
              commit('SET_PERMISSION', result.permissions)
               } else {
                 commit('SET_ROLES', ['ROLE_DEFAULT'])
               }
-            localStorage.setItem("userData",result)
+              
             localStorage.setItem('token', result.token)
           }
           resolve(response)

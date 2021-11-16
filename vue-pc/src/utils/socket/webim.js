@@ -49,9 +49,9 @@ const WEBIM = {
   isConnect: function() {
     return WEBIM.server._isLogin;
   },
-  login: res => {
+  login: (userId,res) => {
     let requestPacket = {
-      userId: store.state.user.operId,
+      userId,
       version: 1,
       command: 1
     };

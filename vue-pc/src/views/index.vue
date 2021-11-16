@@ -3,7 +3,7 @@
     <div class="left-bar" style="-webkit-app-region: drag">
       <ul>
         <li class="userPhoto" @click="modal = true">
-          <img :src="[host + userData.user.avatar]" />
+          <img :src="[host + user.avatar]" />
         </li>
         <li title="会话">
           <router-link v-bind:to="'/index/chatBox'">
@@ -46,15 +46,15 @@
       </p>
       <p class="user-model-item">
         <label>昵称</label>
-        <span>{{ userData.user.nickName }}</span>
+        <span>{{ user.realname }}</span>
       </p>
       <p class="user-model-item">
         <label>账号</label>
-        <span>{{ userData.user.username }}</span>
+        <span>{{ user.username }}</span>
       </p>
       <p class="user-model-item">
         <label>邮箱：</label>
-        <span>{{ userData.user.email }}</span>
+        <span>{{ user.email }}</span>
       </p>
       <p>
         <Button type="error" long @click="myLogout">退出</Button>
