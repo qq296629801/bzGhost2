@@ -1,85 +1,48 @@
 import Vue from "vue";
-import { login } from '@/utils/api/login.js'
-import webim from '@/utils/socket/webim.js'
+import cache from "@/utils/cache.js"
 export const state = {
+  exipreTime:0,
+  token:'',
   user: {},
-  token: '',
-  config: {},
-  permissions: [],
-  roles: []
+  config:{},
+  roles:[],
+  permissions:[]
 };
 export const mutations = {
-  SET_PERMISSION(state, permissions){
-    if(permissions){
-      state.permissions = permissions
-    }
+  setUser(state, data) {
+  	if (data) {
+  		state.user =  Object.assign({}, state.user, data);
+		cache.set("user",state.user);
+  	}
   },
-  SET_ROLES(state, roles){
-    if(roles){
-      state.roles = roles
-    }
+  setToken(state, data) {
+  	if (data) {
+  		state.token =  Object.assign({}, state.token, data);
+  		cache.set("token",state.token);
+  	}
   },
-  SET_USER(state, user){
-    if(user){
-      state.user = user
-    }
+  setConfig(state, data) {
+  	if (data) {
+  		state.config =  Object.assign({}, state.config, data);
+  		cache.set("config",state.config);
+  	}
   },
-  SET_TOKEN(state, token){
-    if(token){
-      state.token = token
-    }
+  setRoles(state, data) {
+  	if (data) {
+  		state.roles =  Object.assign({}, state.roles, data);
+  		cache.set("roles",state.roles);
+  	}
   },
-  setUserData(state, data) {
-    if (data) {
-      state.userData = Object.assign({}, state.userData, data);
-    }
+  setPermissions(state, data){
+	  if (data) {
+	  	state.permissions =  Object.assign({}, state.permissions, data);
+	  	cache.set("permissions",state.permissions);
+	  }
   },
-  emptyUserData(state) {
-    state.userData = {};
-  }
+  emptyUser(state) {
+  	state.user = {};
+	cache.remove("user")
+  },
 };
 export const actions = {
-    // 登录
-    Login ({ commit }, userInfo) {
-      return new Promise((resolve, reject) => {
-        login(userInfo).then(response => {
-          // 保证登录成功以后才来获取token
-          if (response.code === 200) {
-            const result = response.data
-
-            commit('SET_TOKEN',result.token)
-            commit('SET_USER',result.user)
-
-
-            if (result.roles && result.roles.length > 0) {
-             commit('SET_ROLES', result.roles)
-             commit('SET_PERMISSION', result.permissions)
-              } else {
-                commit('SET_ROLES', ['ROLE_DEFAULT'])
-              }
-              
-            localStorage.setItem('token', result.token)
-          }
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    // 登出
-    Logout ({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          commit('SET_PERMISSION', [])
-          // storage.remove(ACCESS_TOKEN)
-          localStorage.removeItem('token')
-          resolve()
-        }).catch((error) => {
-          reject(error)
-        }).finally(() => {
-        })
-      })
-    }
 };

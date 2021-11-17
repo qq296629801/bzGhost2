@@ -115,9 +115,9 @@
 
 <script>
 import Top from "./im/components/top.vue";
-import apiMessage from "@/utils/api/message.js";
-import apiCommon from "@/utils/api/common.js";
-import { mapMutations, mapActions } from "vuex";
+import messageAPI from "@/utils/api/message.js";
+import commonAPI from "@/utils/api/common.js";
+import store from '@/store/index.js'
 export default {
   name: "login-page",
   data() {
@@ -196,10 +196,9 @@ export default {
     Top
   },
   mounted() {
-    this.$socket.initSocket();
+     this.$socket.initSocket();
   },
   methods: {
-    ...mapActions(['Login', 'Logout', 'GetInfo']),
     clickUser: function() {
       location.reload();
     },
@@ -234,47 +233,27 @@ export default {
     },
     tapLogin: function() {
       let {Login} = this
-      Login(this.loginParams).then(res=>{
+      this.$get('/login',this.loginParams).then(res=>{
           console.log(res);
 
-          this.$socket.login(res.user.operId, res=>{});
+          store.commit("setUser",res.user);
+          store.commit("setToken",res.token);
+          store.commit("setConfig",res.config);
+          store.commit("setRoles",res.roles);
+          store.commit("setPermissions",res.permissions);
 
+            messageAPI.pull();
+            
+            commonAPI.pull();
 
-          apiMessage.online();
-
-          apiCommon.post("group");
-          apiCommon.post("post");
-          apiCommon.post("friend");
-          apiCommon.post("conversation");
+          this.$socket.login(res2=>{});
           
-          this.$router.push({
-            path: "/index/chatBox",
-            params: {}
-          });
-
-
+            this.$router.push({
+              path: "/index/chatBox",
+              params: {}
+            });
 
       });
-
-      // this.$get("login", this.requestData).then(res => {
-      //   if (res) {
-      //     this.setUserData(res);
-      //     localStorage.setItem("userData",res);
-      //     this.$socket.login(e=>{
-
-      //     },);
-      //     apiMessage.online();
-      //     apiCommon.post("group");
-      //     apiCommon.post("post");
-      //     apiCommon.post("friend");
-      //     apiCommon.post("conversation");
-          
-      //     this.$router.push({
-      //       path: "/index/chatBox",
-      //       params: {}
-      //     });
-      //   }
-      // });
     }
   }
 };

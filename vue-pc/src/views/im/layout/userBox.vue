@@ -4,7 +4,7 @@
       <Search class="search-box" @showChat="showChat"></Search>
       <div class="group-box">
         <Collapse simple>
-          <template v-for="(item, index) in userFriendList">
+          <template v-for="(item, index) in friend">
             <Panel v-if="item.members.length" :key="index" :name="`${index}`">
               <span class="group-head">
                 <span>{{ item.name }}</span>
@@ -42,8 +42,8 @@ import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
-import apiCommon from "@/utils/api/common.js";
 import base from "@/utils/baseUrl.js";
+import { mapState, mapMutations} from 'vuex';
 export default {
   components: {
     Search,
@@ -60,16 +60,14 @@ export default {
       host: "",
       userFriends: [],
       first: true,
-      userFriendList: [],
       host:base.webUrl
     };
   },
   mounted: function() {
-    apiCommon.get('friend').then(res=>{
-        console.log(res)
-				this.userFriendList = res;
-    });
     this.host = base.webUrl
+  },
+  computed: {
+    ...mapState(["userData","friend"])
   },
   methods: {
     // 打开一个聊天对话框

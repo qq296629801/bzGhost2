@@ -69,13 +69,12 @@ import base from "@/utils/baseUrl.js";
 export default {
   data() {
     return {
-      user: {},
       modal: false,
       host:''
     };
   },
   computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
   methods: {
     myLogout() {

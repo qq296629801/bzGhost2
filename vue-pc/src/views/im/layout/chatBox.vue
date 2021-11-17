@@ -4,7 +4,7 @@
       <Search class="search-box" @showChat="showSearchChat"></Search>
       <div class="group-box">
         <ul class="user-list">
-          <li class="user" v-for="(chat, index) in chatList" :key="index">
+          <li class="user" v-for="(chat, index) in conversation" :key="index">
             <a
               href="javascript:"
               @click="showChat(chat)"
@@ -37,7 +37,6 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-import apiCommon from "@/utils/api/common.js";
 import { mapState, mapMutations} from 'vuex';
 import base from "@/utils/baseUrl.js";
 export default {
@@ -56,7 +55,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userData","chatObj"])
+    ...mapState(["userData","chatObj","conversation"])
   },
   methods: {
     ...mapMutations(['setChatObj']),
@@ -81,9 +80,6 @@ export default {
   activated: function() {
   },
   mounted: function() {
-    apiCommon.get("conversation").then(list => {
-      this.chatList = list;
-    });
     this.host = base.webUrl;
   }
 };

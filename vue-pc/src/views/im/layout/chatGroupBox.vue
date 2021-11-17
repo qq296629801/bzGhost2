@@ -4,7 +4,7 @@
       <Search class="search-box" @showChat="showChat"></Search>
       <div class="group-box">
         <ul class="user-list">
-          <li class="user" v-for="(chatGroup, index) in list" :key="index">
+          <li class="user" v-for="(chatGroup, index) in group" :key="index">
             <a href="javascript:" @click="showChat(chatGroup)">
               <img :src="[host + chatGroup.avatar]" />
               <b>{{ chatGroup.chatName }}</b>
@@ -25,7 +25,6 @@
 import Search from "../components/search.vue";
 import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
-import apiCommon from "@/utils/api/common.js";
 import base from "@/utils/baseUrl.js";
 import UserChat from "../components/chat.vue";
 import { mapState, mapMutations} from 'vuex';
@@ -37,7 +36,7 @@ export default {
     UserChat
   },
   computed: {
-    ...mapState(["userData"])
+    ...mapState(["userData","group"])
   },
   data() {
     return {
@@ -49,10 +48,6 @@ export default {
   },
   mounted: function() {
     this.host = base.webUrl;
-    apiCommon.get('group').then(res=>{
-      console.log(res.data)
-				this.list = res.data;
-    });
   },
   methods: {
     ...mapMutations(['setChatObj']),

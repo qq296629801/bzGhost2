@@ -15,6 +15,7 @@ const WEBIM = {
   /*初始化*/
   initSocket: function() {
     return new Promise((resolve, reject) => {
+      
       WEBIM.options = {
         url: WEBIM.serverUrl,
         success(res) {
@@ -31,15 +32,19 @@ const WEBIM = {
         isReconnection: true
       });
       WEBIM.server.initWebSocket(WEBIM.options);
+
       WEBIM.server.onReceivedMsg(event => {
         let packet = packetCode.decode(event.data);
         let command = packet.command;
+
         eventDispatcher.dispatchEvent(command, toJSON(packet));
         eventDispatcher.removeListener(command, toJSON(packet));
+
         if (command === -10) {
           store.commit("setNewsPush", packet);
         }
       });
+
       WEBIM.server.onSocketClosed(WEBIM.options);
     });
   },
@@ -49,9 +54,9 @@ const WEBIM = {
   isConnect: function() {
     return WEBIM.server._isLogin;
   },
-  login: (userId,res) => {
+  login: (res) => {
     let requestPacket = {
-      userId,
+      userId: store.state.user.operId,
       version: 1,
       command: 1
     };
