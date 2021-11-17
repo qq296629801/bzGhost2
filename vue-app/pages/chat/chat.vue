@@ -225,7 +225,7 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['userData','chatObj','packetData'])
+		...mapState(['user','chatObj','packetData'])
 	},
 	methods: {
 		...mapMutations(['setPacketData']),
@@ -238,7 +238,7 @@ export default {
 			
 			let reqData = {
 				groupId: _t.chatObj.chatId,
-				userId: _t.userData.user.operId,
+				userId: _t.user.operId,
 				msgType: _t.messageType.createPacket,
 				message: JSON.stringify(packet),
 			}
@@ -261,7 +261,7 @@ export default {
 			let reqData = {
 				groupId:_t.chatObj.chatId,
 				msgId: _t.message.hasBeenSentId,
-				userId: _t.userData.user.operId,
+				userId: _t.user.operId,
 			}
 			
 			_t.$http.post('app/packet/robPacket', reqData).then(res=>{
@@ -294,7 +294,7 @@ export default {
 			let httpReqData = {
 				chatId: _t.chatObj.chatId,
 				chatType:_t.chatObj.chatType,
-				userId: _t.userData.user.operId,
+				userId: _t.user.operId,
 				condition:'',
 				pageNum: _t.formData.index,
 				pageSize: 10
@@ -381,10 +381,10 @@ export default {
 				content: _t.formData.content,
 				createTime: Date.now(),
 				hasBeenSentId: Date.now(),
-				fromUserId: _t.userData.user.operId,
-				fromUserName: _t.userData.user.username,
-				fromUserHeadImg: _t.userData.user.avatar,
-				userId: _t.userData.user.operId,
+				fromUserId: _t.user.operId,
+				fromUserName: _t.user.username,
+				fromUserHeadImg: _t.user.avatar,
+				userId: _t.user.operId,
 				toUserId: _t.chatObj.chatId,
 				toUserName: _t.chatObj.chatName,
 				toUserHeadImg:_t.chatObj.avatar,
@@ -446,7 +446,7 @@ export default {
 					_t.$http.post('app/msg/add',{
 						chatId: _t.chatObj.chatId,
 						chatType:_t.chatObj.chatType,
-						userId: _t.userData.user.operId,
+						userId: _t.user.operId,
 						message:_t.formData.content,
 						msgType: params.contentType
 					});
@@ -458,7 +458,7 @@ export default {
 				// 判断是否当前群组
 				if(res.toUserId==_t.chatObj.chatId){
 					// 判断发送人是不是自己
-					if(res.fromUserId!=_t.userData.user.operId){
+					if(res.fromUserId!=_t.user.operId){
 						if(res.content!=''){
 							res.isItMe = false;
 							// 红包广播

@@ -49,7 +49,7 @@
 			});
 		},
 		computed:{
-			...mapState(['userData'])
+			...mapState(['user'])
 		},
 		onLoad(option) {},
 		watch: {
@@ -94,7 +94,7 @@
 				let data = {
 					users:this.ids,
 					defaultGroupNames:this.userNames, 
-					userId:this.userData.user.operId
+					userId: this.user.operId
 				}
 				this.$http.post('app/group/create',data).then(res => {
 					uni.reLaunch({

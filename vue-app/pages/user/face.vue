@@ -36,26 +36,11 @@
 		watch:{},
 		methods:{
 			addFaceUser(faceId){
-				this.$socket.addFaceUser(this.userData.user.operId, faceId, res=>{
-					if(res.success){
-						uni.showToast({
-							title:'添加成功',
-							icon:'success'
-						})
-					}
-				})
 			},
 			search(){
-				this.$socket.listFaces(this.keyword,res=>{
-					this.faces = res.response.data
-				})
 			}
 		},
 		onShow() {
-			this.search()
-			this.$socket.listBanner(res=>{
-				this.list = res.response.data
-			})
 		}
 	}
 </script>

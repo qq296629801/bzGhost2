@@ -14,7 +14,7 @@
 			<text class="nickname"></text>
 		</view>
 		<view class="signature">
-			<view class="">{{ userData.user.username }}</view>
+			<view class="">{{ user.username }}</view>
 		</view>
 
 		<!-- 朋友圈列表 -->
@@ -162,7 +162,7 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	watch: {
 		inputOffsetBottom: {
@@ -209,12 +209,12 @@ export default {
 		clickThumb(item) {
 			item.isPraise = !item.isPraise;
 			if (item.isPraise) {
-				item.praise.push({ id: this.userData.user.operIdid, userName: this.userData.user.username });
-				this.$http.post("app/fabulous/add",{userId:this.userData.user.operId,postId:item.circleMegId});
+				item.praise.push({ id: this.user.operIdid, userName: this.user.username });
+				this.$http.post("app/fabulous/add",{userId:this.user.operId,postId:item.circleMegId});
 			} else {
-				const index = item.praise.findIndex(i => i.id == this.userData.user.operIdid);
+				const index = item.praise.findIndex(i => i.id == this.user.operIdid);
 				item.praise.splice(index, 1);
-				this.$http.post("app/fabulous/delete",{userId:this.userData.user.operId,postId:item.circleMegId});
+				this.$http.post("app/fabulous/delete",{userId:this.user.operId,postId:item.circleMegId});
 			}
 		},
 		//跳转到名片
@@ -236,7 +236,7 @@ export default {
 					//xxx回复xxx ...
 					this.placeholder = `回复${comment.replyUserName}:`;
 				} else {
-					if (comment.userId == this.userData.user.operId) {
+					if (comment.userId == this.user.operId) {
 						//如果是回复自己
 						this.placeholder = `评论：`;
 					} else {
@@ -256,7 +256,7 @@ export default {
 			}
 			this.circleData.forEach(item => {
 				if (item.circleMegId == this.circleMegId) {
-					const { operId, username } = this.userData.user;
+					const { operId, username } = this.user;
 					const { replyUserId, replyUserName } = this.commentInfo;
 					
 					const params = {

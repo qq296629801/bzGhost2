@@ -43,7 +43,7 @@
 			this.groupMember();
 		},
 		computed:{
-			...mapState(['userData'])
+			...mapState(['user'])
 		},
 		onLoad({groupId}) {this.groupId=groupId},
 		watch: {
@@ -70,7 +70,7 @@
 			groupMember(){
 				let reqData = {
 					groupId: this.groupId,
-					userId: this.userData.user.operId
+					userId: this.user.operId
 				}
 				this.$http.post('app/group/member', reqData).then(res=>{
 					this.list = res.memberResponse

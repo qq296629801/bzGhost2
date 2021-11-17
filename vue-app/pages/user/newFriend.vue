@@ -34,20 +34,20 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	onShow() {
 		this.findFriend()
 	},
 	methods: {
 		addFriend(item){
-			item.userId = this.userData.user.operId
+			item.userId = this.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{
 				this.findFriend();
 			});
 		},
 		findFriend() {
-			this.$http.post('app/friendAsk/list',{userId:this.userData.user.operId}).then(res => {
+			this.$http.post('app/friendAsk/list',{userId:this.user.operId}).then(res => {
 				this.list = res;
 			});
 		}

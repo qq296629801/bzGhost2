@@ -13,10 +13,10 @@
 				</u-upload>
 			</u-cell-item>
 			
-			<u-cell-item title="昵称" @tap="linkTo(userData.user.realname,0)" :value="userData.user.realname" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item title="昵称" @tap="linkTo(user.realname,0)" :value="user.realname" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			
-			<u-cell-item title="用户名" :arrow="false" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item title="用户名" :arrow="false" :value="user.username" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 			
 			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
@@ -37,7 +37,7 @@
 			}
 		},
 		computed:{
-			...mapState(['userData','packet'])
+			...mapState(['user','packet'])
 		},
 		methods: {
 			onUploaded(lists) {
@@ -49,8 +49,8 @@
 						icon:'none'
 					})
 				}
-				this.$socket.updateAvatar(this.userData.user.operId, res.response.data, res => {
-				  this.userData.user = res.response.data;
+				this.$socket.updateAvatar(this.user.operId, res.response.data, res => {
+				  this.user = res.response.data;
 				  });
 			},
 			linkToQrcode(){

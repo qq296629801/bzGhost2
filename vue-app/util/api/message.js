@@ -20,11 +20,6 @@ var postfix = 'msgItem_';
 }
 
 function online(){
-	let userData = store.state.userData;
-	if (!userData.token) {
-		userData = uni.getStorageSync("userData");
-	}
-	let userId = userData.user.operId;
 	requestConfig.post('app/group/msg/online', {
 		userId
 	}).then(res=>{

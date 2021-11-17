@@ -33,7 +33,7 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	onShow() {
 		this.getGroups();

@@ -11,7 +11,7 @@
 					</view>
 					<view class="blessing">{{ packet.userName }}发的红包</view>
 					<view class="money" v-for="(item,index) in packet.Records">
-						<view v-if="item.userName == userData.user.username">
+						<view v-if="item.userName == user.username">
 							{{ item.money }}
 						</view>
 					</view>
@@ -52,7 +52,7 @@
 			}
 		},
 		computed:{
-			...mapState(['userData'])
+			...mapState(['user'])
 		},
 		methods:{
 			discard(){

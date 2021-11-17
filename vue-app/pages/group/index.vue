@@ -171,28 +171,18 @@ export default {
 		linkAdd(){
 			this.$u.route({
 				url: 'pages/group/memAdd',
-				params:{groupId:this.chatObj.chatId}
+				params:{groupId: this.chatObj.chatId}
 			});
 		},
 		linkDel(){
 			this.$u.route({
 				url: 'pages/group/memDel',
-				params:{groupId:this.chatObj.chatId}
+				params:{groupId: this.chatObj.chatId}
 			});
 		},
 		removeMem() {
-			// this.$socket.removeGroupUser([this.userData.user.operId], this.chatObj.chatId, res => {
-			// 	if (res.success) {
-			// 		this.$u.route({
-			// 			type: 'navigateBack'
-			// 		});
-			// 	}
-			// });
 		},
 		delMess() {
-			// this.$socket.clearGroupMsg(this.userData.user.operId, this.chatObj.chatId, res => {
-			// 	this.util.modal('不能添加自己为好友');
-			// });
 		},
 		chooseImg() {
 			this.$u.route({
@@ -206,7 +196,7 @@ export default {
 		},
 		queryMembers() {
 			let pData = {
-				userId: this.userData.user.operId,
+				userId: this.user.operId,
 				groupId: this.chatObj.chatId,
 			}
 			this.$http.post('app/group/member', pData).then(res => {
@@ -218,7 +208,7 @@ export default {
 		this.queryMembers();
 	},
 	computed:{
-		...mapState(['userData','chatObj'])
+		...mapState(['user','chatObj'])
 	}
 };
 </script>

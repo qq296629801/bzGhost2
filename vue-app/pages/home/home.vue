@@ -47,7 +47,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['userData','packet','newsPush'])
+		...mapState(['user','packet','newsPush'])
 	},
 	onLoad() {
 	},
@@ -58,9 +58,6 @@ export default {
 		});
 	},
 	onShow() {
-		if(this.userData.user==undefined){
-			return;
-		}
 		apiCommon.setItem('conversation').then(res=>{
 			this.list = res
 		});
@@ -79,9 +76,6 @@ export default {
 			this.value = !this.value
 		},
 		a(){
-			if(this.userData.user==undefined){
-				return;
-			}
 			apiCommon.get('conversation').then(res=>{
 				this.list = res
 				this.mescroll.endSuccess(this.list.length);

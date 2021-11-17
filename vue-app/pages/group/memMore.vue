@@ -36,7 +36,7 @@
 				})
 			},
 			queryMems(){
-				this.$socket.queryMembers(this.chatObj.chatId, this.userData.user.operId, res => {
+				this.$socket.queryMembers(this.chatObj.chatId, this.user.operId, res => {
 					if (res.success) {
 						this.$u.vuex('memberItem',res.members)
 						uni.setNavigationBarTitle({

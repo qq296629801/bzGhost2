@@ -40,17 +40,10 @@ export default {
 		//this.querylinkItem()
 	},
 	computed: {
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	methods: {
 		querylinkItem(){
-			// this.$socket.getLinks(this.userData.user.operId, res=>{
-			// 	if(res.response.success){
-			// 		//this.$u.vuex('linkItem',res.response.data);
-			// 	}else {
-			// 		this.util.modal(res.response.errorMessage)
-			// 	}
-			// });
 		},
 		linkToMoment(){
 			this.$u.route({
@@ -62,7 +55,7 @@ export default {
 				success: function(res) {
 					uni.vibrateLong();
 					let uId = res.result
-					if (uId==t.userData.user.operId){
+					if (uId==t.user.operId){
 						uni.showToast({
 							icon:'none',
 							title:'暂不支持添加自己'

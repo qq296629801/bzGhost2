@@ -12,8 +12,8 @@
 				<u-avatar @tap="previewImage" mode="square" src="/static/image/huge.jpg" size="140"></u-avatar>
 			</view>
 			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">{{userData.user.realname}}</view>
-				<view class="u-font-14 u-tips-color">{{userData.user.money}}</view>
+				<view class="u-font-18 u-p-b-20">{{user.realname}}</view>
+				<view class="u-font-14 u-tips-color">{{user.money}}</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
 				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/user/my')"></u-icon>
@@ -54,7 +54,7 @@
 		onLoad() {
 		},
 		computed: {
-			...mapState(['userData','chatObj'])
+			...mapState(['user','chatObj'])
 		},
 		methods: {
 			jump(url){
@@ -63,7 +63,6 @@
 				})
 			},
 			previewImage() {
-				// let current = this.$url + this.userData.user.avatar
 				let current = '/static/image/girl.jpg'
 				uni.previewImage({
 					current,

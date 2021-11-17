@@ -39,7 +39,7 @@
 			}
 		},
 		computed:{
-			...mapState(['userData'])
+			...mapState(['user'])
 		},
 		methods: {
 			...mapMutations(['setChatObj']),
@@ -55,7 +55,7 @@
 			},
 			linkAdd(){
 				let item = {
-					userId: this.userData.user.operId,
+					userId: this.user.operId,
 					friendId: this.userId,
 				}
 				this.$http.post('app/friend/addAsk', item).then(res=>{

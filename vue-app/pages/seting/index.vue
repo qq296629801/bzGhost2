@@ -43,7 +43,7 @@ export default {
 		// #endif
 	},
 	computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	methods: {
 		onAPPUpdate() {

@@ -69,14 +69,12 @@
 			this.logoImage = this.$base.logoImage
 		},
 		methods: {
-			...mapMutations(['setUserData']),
 		    linkLogin(e){
 				if(my.loading){
 					return false;
 				}
 				my.loading=true
 				this.$http.get('/login',this.formData).then(a=>{
-					my.setUserData(a);
 					this.$socket.login(b=>{
 						apiMessage.online();
 						

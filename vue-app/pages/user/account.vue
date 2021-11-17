@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<u-cell-group>
-			<u-cell-item :arrow="false" title="微信号" :value="userData.user.username" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item :arrow="false" title="微信号" :value="user.username" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
-			<u-cell-item :arrow="false" title="手机号" :value="userData.user.mobile" :title-style="{ marginLeft: '10rpx' }">
+			<u-cell-item :arrow="false" title="手机号" :value="user.mobile" :title-style="{ marginLeft: '10rpx' }">
 			</u-cell-item>
 		</u-cell-group>
 	</view>
@@ -17,10 +17,9 @@
 			}
 		},
 		methods: {
-			
 		},
 		computed:{
-			...mapState(['userData'])
+			...mapState(['user'])
 		}
 	}
 </script>

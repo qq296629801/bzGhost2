@@ -22,7 +22,7 @@ export default {
 		this.scrollTop = e.scrollTop;
 	},
 	computed: {
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
 	methods: {
 		a(){

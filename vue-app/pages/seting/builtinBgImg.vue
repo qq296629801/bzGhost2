@@ -39,10 +39,6 @@ export default {
 		//处理跳转逻辑
 		handleLink(){
 			const item = this.bgList.find(it=>it.isCheck);
-			if(item){
-				this.$u.vuex('userData.user.pictureBanner', item.src);
-				this.$u.route({ type: 'back',delta:2});
-			}
 		},
 		
 	},
