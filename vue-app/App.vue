@@ -1,21 +1,15 @@
 <script>
-	// #ifdef APP-PLUS
-	import APPUpdate from "@/util/APPUpdate";
-	// #endif
 	import store from '@/store/index.js'
+	import webim from '@/util/socket/webim.js'
+	
 	export default {
 		onLaunch: function() {
-			// #ifdef APP-PLUS
-			APPUpdate();
-			// #endif
-			this.$socket.initSocket();
+			store.commit('setCacheData');
+			webim.initSocket();
 		},
 		onShow: function() {
-			let storeUserData = store.state.userData;
-			if(!storeUserData.token){
-				uni.navigateTo({
-					url: "pages/login/login"
-				});
+			if(store.state.token){
+				webim.login();
 			}
 		},
 		onHide: function() {

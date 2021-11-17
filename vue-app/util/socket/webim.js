@@ -59,7 +59,7 @@ const WEBIM = {
 	//绑定用户通道
 	login: (res) => {
 		let requestPacket = {
-			userId:store.state.userData.user.operId,
+			userId:store.state.user.operId,
 			version: 1,
 			command: 1
 		}
@@ -70,7 +70,7 @@ const WEBIM = {
 	joinGroup: (res) => {
 		let requestPacket = {
 			chatId:store.state.chatObj.chatId,
-			userId:store.state.userData.user.operId,
+			userId:store.state.user.operId,
 			chatType:store.state.chatObj.chatType,
 			version: 1,
 			command: 7
@@ -82,7 +82,7 @@ const WEBIM = {
 	quitGroup: (res) => {
 		let requestPacket = {
 			chatId:store.state.chatObj.chatId,
-			userId:store.state.userData.user.operId,
+			userId:store.state.user.operId,
 			chatType:store.state.chatObj.chatType,
 			version: 1,
 			command: 9
@@ -93,7 +93,7 @@ const WEBIM = {
 	// 心跳检测
 	heartTest: (func) => {
 		let packet = {
-			userId:store.state.userData.user.operId,
+			userId:store.state.user.operId,
 			version: 1,
 			command: 17
 		}
@@ -110,7 +110,7 @@ const WEBIM = {
 	//注销用户通道
 	logout: (func) => {
 		let requestPacket = {
-			userId:store.state.userData.user.operId,
+			userId:store.state.user.operId,
 			version: 1,
 			command: 5
 		}

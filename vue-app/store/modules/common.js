@@ -1,5 +1,5 @@
 import Vue from "vue";
-
+import cache from "@/util/cache.js"
 export const state = {
   // 加载动画
   loadingShow: false,
@@ -13,9 +13,18 @@ export const state = {
   newsPush:{}
 };
 //缓存浏览器的数据名称
-const cacheNameList = ["userData"];
+const cacheNameList = ["user","token","config","roles","permissions"];
 let clearTime;
 export const mutations = {
+	//取出缓存数据（打开APP就取出）
+	setCacheData(state) {
+		for (let name of cacheNameList) {
+			let data = cache.get(name);
+			if (data) {
+				state[name] = data;
+			}
+		}
+	},
 	setPacketData(state, data){
 		if(data){
 			state.packetData = data
@@ -33,27 +42,6 @@ export const mutations = {
 			state.chatObj = data
 		}
 	},
-  //取出缓存数据（打开APP就取出）
-  setCacheData(state) {
-  	for (let name of cacheNameList) {
-		let data;
-  		// #ifndef H5
-  		data = uni.getStorageSync(name);
-  		// #endif
-  		// #ifdef H5
-  		data = sessionStorage.getItem(name) || localStorage.getItem(name);
-  		// #endif
-  		if (data) {
-  			// #ifdef H5
-  			try {
-  				data = JSON.parse(data);
-  			} catch (e) {
-  			}
-  			// #endif
-  			state[name] = data;
-  		}
-  	}
-  },
   //数据加载状态
   setLoadingShow(state, data) {
   	if(state.loadingShow){

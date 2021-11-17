@@ -1,19 +1,12 @@
 import cache from '@/util/cache.js'
-import requestConfig from '@/util/requestConfig'
+import http from '@/util/requestConfig'
 import store from '@/store/index.js'
 
 
 function setItem(key){
-	let userData = store.state.userData;
-	if (!userData.token) {
-		userData = uni.getStorageSync("userData");
-	}
-	if(userData.user==undefined){
-		return;
-	}
-	let userId = userData.user.operId;
+	let userId = store.state.user.operId;
 	return new Promise((resolve,reject) =>{
-		requestConfig.post('app/'+key+'/list', {
+		http.post('app/'+key+'/list', {
 			userId
 		}).then(res=>{
 			cache.set(key+'_'+ userId, res);
@@ -24,14 +17,7 @@ function setItem(key){
 
 
 function getItem(key){
-	let userData = store.state.userData;
-	if (!userData.token) {
-		userData = uni.getStorageSync("userData");
-	}
-	if(userData.user==undefined){
-		return;
-	}
-	let userId = userData.user.operId;
+	let userId = store.state.user.operId;
 	return new Promise((resolve,reject) =>{
 		try{
 		  resolve(cache.get(key+'_'+ userId))

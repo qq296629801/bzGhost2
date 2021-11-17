@@ -32,13 +32,6 @@ let $http = new request({
 $http.getQnToken = function(callback) {
 	//该地址需要开发者自行配置（每个后台的接口风格都不一样）
 	$http.get("api/open/v1/qn_upload").then(data => {
-		/*
-		 *接口返回参数：
-		 *visitPrefix:访问文件的域名
-		 *token:七牛云上传token
-		 *folderPath:上传的文件夹
-		 *region: 地区 默认为：SCN
-		 */
 		callback({
 			visitPrefix: data.visitPrefix,
 			token: data.token,
@@ -76,12 +69,9 @@ $http.requestStart = function(options) {
 	}
 	// #endif
 	//请求前加入token
-	let storeUserData = store.state.userData;
-	if (!storeUserData.token) {
-		storeUserData = uni.getStorageSync("userData");
-	}
-	if (storeUserData.token) {
-		options.header['Authentication'] = storeUserData.token;
+	
+	if (store.state.token) {
+		options.header['Authentication'] = store.state.token;
 	};
 	return options;
 }
@@ -96,22 +86,15 @@ $http.requestEnd = function(options) {
 let loginPopupNum = 0;
 //所有接口数据处理（此方法需要开发者根据各自的接口返回类型修改，以下只是模板）
 $http.dataFactory = async function(res) {
-	// console.log("接口请求数据", {
-	// 	url: res.url,
-	// 	resolve: res.response,
-	// 	header: res.header,
-	// 	data: res.data,
-	// 	method: res.method,
-	// });
 	if (res.response.statusCode && res.response.statusCode == 200) {
-		let httpData = res.response.data;
-		if (typeof(httpData) == "string") {
-			httpData = JSON.parse(httpData);
+		let data = res.response.data;
+		if (typeof(data) == "string") {
+			data = JSON.parse(data);
 		}
 		//判断数据是否请求成功
-		if (httpData.success) {
+		if (data.success) {
 			// 返回正确的结果(then接受数据)
-			return Promise.resolve(httpData.data);
+			return Promise.resolve(data.data);
 		}
 	} else {
 		// 返回错误的结果(catch接受数据)

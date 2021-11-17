@@ -44,6 +44,7 @@
 	import apiCommon from '@/util/api/common.js'
 	import apiMessage from '@/util/api/message.js'
 	import { mapState, mapMutations } from 'vuex';
+	import store from '@/store/index.js' 
 	export default {
 		data() {
 			return {
@@ -74,8 +75,17 @@
 					return false;
 				}
 				my.loading=true
-				this.$http.get('/login',this.formData).then(a=>{
+				this.$http.get('/login',this.formData).then(res=>{
+					
 					this.$socket.login(b=>{
+						console.log(res)
+						
+						store.commit("setUser",res.user);
+						store.commit("setToken",res.token);
+						store.commit("setConfig",res.config);
+						store.commit("setRoles",res.roles);
+						store.commit("setPermissions",res.permissions);
+						
 						apiMessage.online();
 						
 						apiCommon.setItem('post');

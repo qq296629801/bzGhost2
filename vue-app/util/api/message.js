@@ -20,6 +20,7 @@ var postfix = 'msgItem_';
 }
 
 function online(){
+	let userId = store.state.user.operId;
 	requestConfig.post('app/group/msg/online', {
 		userId
 	}).then(res=>{
