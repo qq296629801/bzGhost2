@@ -7,8 +7,8 @@
 		</chunLei-popups>
 		
 		<view class="list">
-			<view class="item" v-for="(item,index) in list">
-				<message @taptext="taptext($event)" @jump="jump" :value="item" :index="index"></message>
+			<view class="item" v-for="(item,index) in conversation">
+				<message @taptext="taptext($event)" @jump="jump" :value="item" :index="item.id"></message>
 			</view>
 		</view>
 	</view>
@@ -18,7 +18,6 @@
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
-import apiCommon from '@/util/api/common.js';
 import { mapState, mapMutations} from 'vuex';
 export default {
 	components: { selectInput, message },
@@ -36,31 +35,16 @@ export default {
 			{ id: '1', name: '发起群聊', icon: 'chat' },
 			{ id: '2', name: '扫一扫', icon: 'scan' }
 			],
-			list:{}
 		};
 	},
 	watch:{
         newsPush: function(value){
-			apiCommon.setItem('conversation').then(res=>{
-				this.list = res
-			});
 		}
 	},
 	computed: {
-		...mapState(['user','packet','newsPush'])
+		...mapState(['user','packet','newsPush','conversation'])
 	},
 	onLoad() {
-	},
-	onPullDownRefresh() {
-		apiCommon.setItem('conversation').then(res=>{
-			this.list = res
-			uni.stopPullDownRefresh()
-		});
-	},
-	onShow() {
-		apiCommon.setItem('conversation').then(res=>{
-			this.list = res
-		});
 	},
 	methods: {
 		...mapMutations(['setChatObj']),
@@ -74,14 +58,6 @@ export default {
 			this.x = e.touches[0].clientX
 			this.y = e.touches[0].clientY
 			this.value = !this.value
-		},
-		a(){
-			apiCommon.get('conversation').then(res=>{
-				this.list = res
-				this.mescroll.endSuccess(this.list.length);
-			}).catch(e=>{
-				this.mescroll.endErr();
-			});
 		},
 		jump(item){
 			this.setChatObj(item);

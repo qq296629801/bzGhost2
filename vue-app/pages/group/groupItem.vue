@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view v-for="(value, index) in list">
+		<view v-for="(value, index) in group">
 			<view class="item u-border-bottom" :class="currIndex ===index ? 'bg_view' : ''" hover-class="message-hover-class" 
 			@tap="link(value)">
 				<image :src="host + value.avatar"></image>
@@ -20,23 +20,18 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import apiCommon from '@/util/api/common.js';
 import base from '@/util/baseUrl.js';
 export default {
 	components: {
 	},
 	data() {
 		return {
-			list: [],
 			currIndex: -1,
 			host: base.webUrl
 		};
 	},
 	computed:{
-		...mapState(['user'])
-	},
-	onShow() {
-		this.getGroups();
+		...mapState(['user','group'])
 	},
 	methods: {
 		...mapMutations(['setChatObj']),
@@ -48,11 +43,6 @@ export default {
 				params: {}
 			});
 		},
-		getGroups() {
-			apiCommon.getItem('group').then(res=>{
-				this.list = res.data;
-			});
-		}
 	},
 	filters: {
 	   format: function (e) {

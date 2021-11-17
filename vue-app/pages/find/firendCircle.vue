@@ -19,7 +19,7 @@
 
 		<!-- 朋友圈列表 -->
 		<view class="content-circle">
-			<view class="content-circle-box" v-for="(item, index) in circleData" :key="item.circleMegId">
+			<view class="content-circle-box" v-for="(item, index) in post" :key="item.circleMegId">
 				<view class="headimg"><image class="img" :src="item.userHeadImg" @tap="jump(item.userId)"></image></view>
 				<view class="content">
 					<view class="content-name" @tap="jump(item.userId)">{{ item.userName }}</view>
@@ -126,7 +126,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import apiCommon from '@/util/api/common.js'
 import { mapState, mapMutations } from 'vuex';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
@@ -149,9 +148,6 @@ export default {
 			inputOffsetBottom: 0, //键盘的高度
 			viewOffsetBottom: 0, //视窗距离页面的距离
 			sel: '', //选中的节点
-			//朋友圈展示信息
-			circleData: [
-			],
 			//内置朋友圈相册banner图
 			circleBgList:[
 				{ src:require('@/static/image/circleBanner/1.jpg'),isCheck:false },
@@ -162,7 +158,7 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['user'])
+		...mapState(['user','post'])
 	},
 	watch: {
 		inputOffsetBottom: {
@@ -179,17 +175,8 @@ export default {
 			}
 		}
 	},
-	onLoad() {
-		this.a()
-	},
 	methods: {
 		a(){
-			apiCommon.setItem('post').then(res=>{
-				this.circleData = res
-				this.mescroll.endSuccess(res.length);
-			}).catch(e=>{
-				this.mescroll.endErr();
-			});
 		},
 		//自定义标题栏按钮
 		onNavigationBarButtonTap({ index }) {
@@ -254,7 +241,7 @@ export default {
 			if (!this.$u.trim(this.content)) {
 				return;
 			}
-			this.circleData.forEach(item => {
+			this.post.forEach(item => {
 				if (item.circleMegId == this.circleMegId) {
 					const { operId, username } = this.user;
 					const { replyUserId, replyUserName } = this.commentInfo;
@@ -284,9 +271,7 @@ export default {
 					}
 					item.comment.push(params);
 					this.$http.post("app/comment/add",params).then(res=>{
-						apiCommon.setItem("post").then(res=>{
-							this.circleData = res
-						});
+						
 					});
 					
 				}
@@ -357,7 +342,7 @@ export default {
 					// do something
 					//由于模拟的数据是从vuex中获取的 所以他是响应式的
 					//在此可以做数据的获取 并且再生命周期中调用
-					//例如this.circleData = await xxx ...
+					
 					uni.hideLoading();
 					resolve();
 				}, 500);

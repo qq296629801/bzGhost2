@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<addressBook :list="list" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook>
+		<addressBook :list="friend" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook>
 	</view>
 </template>
 <script>
@@ -11,27 +11,17 @@ export default {
 	components:{ addressBook },
 	data() {
 		return {
-			scrollTop: 0,
-			list:[]
+			scrollTop: 0
 		};
-	},
-	onLoad() {
-		this.a()
 	},
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop;
 	},
 	computed: {
-		...mapState(['user'])
+		...mapState(['user','friend'])
 	},
 	methods: {
-		a(){
-			apiCommon.getItem('friend').then(res=>{
-				this.list = res
-			});
-		},
 		jump({id,nickName}){
-			//console.log(JSON.stringify(item))
 			this.$u.route({
 				url: 'pages/friend/businessCard',
 				params:{ userId: id, source: 0,nickName:nickName}

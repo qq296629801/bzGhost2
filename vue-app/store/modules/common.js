@@ -10,13 +10,41 @@ export const state = {
   },
   // 红包对象
   packetData:{},
-  newsPush:{}
+  newsPush:{},
+  // 缓存
+  post:[],
+  friend:[],
+  group:[],
+  conversation:[]
 };
 //缓存浏览器的数据名称
-const cacheNameList = ["user","token","config","roles","permissions"];
+const cacheNameList = ["user","token","config","roles","permissions","post","friend","group","conversation"];
 let clearTime;
 export const mutations = {
-	//取出缓存数据（打开APP就取出）
+	setPost(state, data){
+		if(data){
+			state.post =  Object.assign({}, state.post, data);
+			cache.set("post",state.post);
+		}
+	},
+	setFriend(state, data){
+		if(data){
+			state.friend =  Object.assign({}, state.friend, data);
+			cache.set("friend",state.friend);
+		}
+	},
+	setGroup(state, data){
+		if(data){
+			state.group =  Object.assign({}, state.group, data);
+			cache.set("group",state.group);
+		}
+	},
+	setConversation(state, data){
+		if(data){
+			state.conversation =  Object.assign({}, state.conversation, data);
+			cache.set("conversation",state.conversation);
+		}
+	},
 	setCacheData(state) {
 		for (let name of cacheNameList) {
 			let data = cache.get(name);
@@ -43,7 +71,7 @@ export const mutations = {
 		}
 	},
   //数据加载状态
-  setLoadingShow(state, data) {
+	setLoadingShow(state, data) {
   	if(state.loadingShow){
   		clearTime && clearTimeout(clearTime);
   		clearTime = setTimeout(function(){

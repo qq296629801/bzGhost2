@@ -87,11 +87,7 @@
 						store.commit("setPermissions",res.permissions);
 						
 						apiMessage.online();
-						
-						apiCommon.setItem('post');
-						apiCommon.setItem('friend');
-						apiCommon.setItem('group');
-						apiCommon.setItem('conversation');
+						apiCommon.online();
 						
 						my.loading=false;
 						

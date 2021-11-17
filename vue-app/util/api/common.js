@@ -1,33 +1,39 @@
 import cache from '@/util/cache.js'
 import http from '@/util/requestConfig'
 import store from '@/store/index.js'
-
-
-function setItem(key){
+const api = {
+	groupUrl:'app/group/list',
+	postUrl:'app/post/list',
+	friendUrl:'app/friend/list',
+	conversationUrl:'app/conversation/list'
+}
+function online(){
 	let userId = store.state.user.operId;
-	return new Promise((resolve,reject) =>{
-		http.post('app/'+key+'/list', {
-			userId
-		}).then(res=>{
-			cache.set(key+'_'+ userId, res);
-			resolve(res)
-		}).catch(e=>{reject});
+	
+	http.post(api.postUrl, {
+		userId
+	}).then(res=>{
+		store.commit("setPost", res)
+	});
+	
+	http.post(api.friendUrl, {
+		userId
+	}).then(res=>{
+		store.commit("setFriend", res)
+	});
+	
+	http.post(api.groupUrl, {
+		userId
+	}).then(res=>{
+		store.commit("setGroup", res.data)
+	});
+	
+	http.post(api.conversationUrl, {
+		userId
+	}).then(res=>{
+		store.commit("setConversation", res)
 	});
 }
-
-
-function getItem(key){
-	let userId = store.state.user.operId;
-	return new Promise((resolve,reject) =>{
-		try{
-		  resolve(cache.get(key+'_'+ userId))
-		}catch(e){
-			reject(e)
-		}
-	});
-}
-
 module.exports = {
-    setItem: setItem,
-    getItem: getItem,
+    online: online
 }
