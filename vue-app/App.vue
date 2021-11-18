@@ -8,13 +8,9 @@
 			webim.initSocket();
 		},
 		onShow: function() {
-			if(store.state.token){
-				webim.login();
-			} else {
-				this.$u.route({
-					url: 'pages/login/login'
-				})
-			}
+			uni.navigateTo({
+				url:'/pages/login/login'
+			})
 		},
 		onHide: function() {
 		}
