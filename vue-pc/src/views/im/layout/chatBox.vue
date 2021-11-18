@@ -55,7 +55,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userData","chatObj","conversation"])
+    ...mapState(["user","chatObj","conversation"])
   },
   methods: {
     ...mapMutations(['setChatObj']),

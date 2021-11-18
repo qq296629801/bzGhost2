@@ -67,7 +67,7 @@ export default {
     this.host = base.webUrl
   },
   computed: {
-    ...mapState(["userData","friend"])
+    ...mapState(["user","friend"])
   },
   methods: {
     // 打开一个聊天对话框

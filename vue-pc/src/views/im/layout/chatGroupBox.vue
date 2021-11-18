@@ -36,7 +36,7 @@ export default {
     UserChat
   },
   computed: {
-    ...mapState(["userData","group"])
+    ...mapState(["user","group"])
   },
   data() {
     return {

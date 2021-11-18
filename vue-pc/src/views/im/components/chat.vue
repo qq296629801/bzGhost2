@@ -151,7 +151,7 @@ export default {
   },
   name: "UserChat",
   computed: {
-    ...mapState(["userData","chatObj"])
+    ...mapState(["user","chatObj"])
   },
   data() {
     return {
@@ -231,10 +231,10 @@ export default {
             content:  _t.messageContent,
             createTime: Date.now(),
             hasBeenSentId: Date.now(),
-            fromUserId: _t.userData.user.operId,
-            fromUserName: _t.userData.user.username,
-            fromUserHeadImg: _t.userData.user.avatar,
-            userId: _t.userData.user.operId,
+            fromUserId: _t.user.operId,
+            fromUserName: _t.user.username,
+            fromUserHeadImg: _t.user.avatar,
+            userId: _t.user.operId,
             toUserId: _t.chatObj.chatId,
             toUserName: _t.chatObj.chatName,
             toUserHeadImg:_t.chatObj.avatar,
@@ -255,7 +255,7 @@ export default {
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
                 // 判断发送人是不是自己
-                if(res.fromUserId!=_t.userData.user.operId){
+                if(res.fromUserId!=_t.user.operId){
                   if(res.content!=''){
                     res.isItMe = false;
                     _t.messageList.push(res);

@@ -66,7 +66,7 @@ export default {
     };
   },
   computed:{
-		...mapState(['userData'])
+		...mapState(['user'])
 	},
   watch: {
     showHistory: function(show) {
@@ -97,7 +97,7 @@ export default {
 			let httpReqData = {
         chatType: this.chat.chatType,
 				chatId: this.chat.chatId,
-				userId: this.userData.user.operId,
+				userId: this.user.operId,
 				condition:'',
 				pageNum: pageNo,
 				pageSize: this.pageSize
