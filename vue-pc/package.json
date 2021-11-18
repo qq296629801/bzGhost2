@@ -1,6 +1,6 @@
 {
-  "name": "yiqun",
-  "version": "1.0.0",
+  "name": "bzGhost",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode web-serve",
