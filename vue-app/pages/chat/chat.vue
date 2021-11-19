@@ -13,7 +13,7 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ item.content }}</view>
+					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ transformFace(item.content) }}</view>
 					
 					<!-- contentType = 2 语音 -->
 					<view
@@ -100,18 +100,20 @@
 				</view>
 				
 				<!-- 功能性按钮 -->
-				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun"></view>
-				<!-- <image class="icon_btn_add" :src="require('@/static/add.png')" @tap="switchFun"></image> -->
-				
-				<!-- #ifdef H5 --> 
-				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
-				<!-- #endif -->
+				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun(false)"></view>
+				<view class="iconfont iconbiaoqing icon_btn_add" @tap="switchFun(true)"></view>
+				<button class="btn" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
 			</view>
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
-				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
+				
+				<view v-if="face" class="face">
+					<face @addEmoji="addEmoji"></face>
+				</view>
+				
+				<u-grid v-if="!face" :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
 					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
-						<image style="width: 120rpx;height: 120rpx;" :src="item.url"></image>
+						<image class="img" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
 					</u-grid-item>
 				</u-grid>
@@ -150,13 +152,15 @@
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue';
 import { mapState, mapMutations } from 'vuex';
+import face from '@/components/face'
 import messageMap from '@/util/api/message.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
+import { transform } from '@/util/ChatUtils.js';
 export default {
 	mixins: [MescrollMixin], // 使用mixin
-	components:{ RedCard, packet },
+	components:{ RedCard, packet, face },
 	data() {
 		return {
 			host: base.webUrl,
@@ -188,6 +192,7 @@ export default {
 			message:{
 				hasBeenSentId:0
 			},
+			face:false,
 			loading: true, //标识是否正在获取数据
 			imgHeight: '1000px',
 			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
@@ -231,6 +236,12 @@ export default {
 		...mapMutations(['setPacketData']),
 		close(){
 			this.pStatus = false;
+		},
+		addEmoji(item){
+			this.formData.content = this.formData.content + "face" + item;
+		},
+		transformFace(content){
+			return transform(content)
 		},
 		// 发红包
 		packetTap(packet){
@@ -363,7 +374,8 @@ export default {
 			this.showFunBtn =false;
 		},
 		//切换功能性按钮
-		switchFun(){
+		switchFun(face){
+			this.face = face
 			this.chatType = 'keyboard'
 			this.showFunBtn = !this.showFunBtn;
 			uni.hideKeyboard()

@@ -196,7 +196,7 @@ export let faceUtils = {
     let self = this;
     let arr = {};
     for (let i = 0; i < self.alt.length; i++) {
-      arr[self.alt[i]] = "./static/face/" + i + ".gif";
+      arr[self.alt[i]] = "/static/face/" + i + ".gif";
     }
     return arr;
   }
@@ -226,13 +226,7 @@ export function transform(content) {
         // 转义表情
         let alt = face.replace(/^face/g, "");
         return (
-          '<img alt="' +
-          fa[alt] +
-          '" title="' +
-          fa[alt] +
-          '" src="' +
-          fa[alt] +
-          '">'
+          '<img>'
         );
       })
       .replace(/img\[([^\s]+?)]/g, function(img) {

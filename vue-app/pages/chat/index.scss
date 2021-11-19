@@ -318,10 +318,13 @@ page {
 			transition: all 0.1s ease-in-out;
 			height: 0;
 			.grid-text{
-				padding-top: 10rpx;
+				//padding-top: 10rpx;
 				color: $uni-text-color-grey;
 			}
-			
+			.img{
+				width: 100rpx;
+				height: 100rpx;
+			}
 		}
 		.show-fun-box{
 			opacity: 1;

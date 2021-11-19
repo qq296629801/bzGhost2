@@ -33,7 +33,7 @@
 
               <div class="im-chat-text" v-if="item.contentType == 0">
                 <pre
-                  v-html="item.content"
+                  v-html="transformFace(item.content)"
                   v-on:click="openImageProxy($event)"
                 ></pre>
               </div>
@@ -139,7 +139,7 @@ import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState, mapMutations } from 'vuex';
-import { imageLoad } from "../../../utils/ChatUtils";
+import { imageLoad, transform } from "../../../utils/ChatUtils";
 import apiMessage from "@/utils/api/message.js";
 import base from "@/utils/baseUrl.js";
 export default {
@@ -178,6 +178,9 @@ export default {
     };
   },
   methods: {
+    transformFace(content){
+      return transform(content)
+    },
     history() {
       this.showHistory = !this.showHistory;
     },

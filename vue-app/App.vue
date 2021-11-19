@@ -8,9 +8,6 @@
 			webim.initSocket();
 		},
 		onShow: function() {
-			uni.navigateTo({
-				url:'pages/login/login'
-			})
 		},
 		onHide: function() {
 		}
