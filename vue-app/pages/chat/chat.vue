@@ -24,7 +24,7 @@
 						v-if="item.contentType == messageType.audio"
 						@tap="handleAudio(item)"
 						hover-class="contentType2-hover-class"
-						:style="{width:`${130+(2)}rpx`}"
+						:style="{width:`${130+(item.contentDuration*2)}rpx`}"
 					>
 						<view
 							class="voice_icon"
@@ -35,7 +35,7 @@
 								{ voice_icon_left_an: item.anmitionPlay && !item.isItMe }
 							]"
 						></view>
-						<view class="">''</view>
+						<view class=""></view>
 					</view>
 					
 					<!-- contentType = 3 图片 -->
