@@ -4,7 +4,9 @@
 			<!-- 背景图- 定位方式 -->
 			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
+			
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
+			
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<view class="username">
@@ -22,7 +24,7 @@
 						v-if="item.contentType == messageType.audio"
 						@tap="handleAudio(item)"
 						hover-class="contentType2-hover-class"
-						:style="{width:`${130+(item.contentDuration*2)}rpx`}"
+						:style="{width:`${130+(2)}rpx`}"
 					>
 						<view
 							class="voice_icon"
@@ -33,7 +35,7 @@
 								{ voice_icon_left_an: item.anmitionPlay && !item.isItMe }
 							]"
 						></view>
-						<view class="">{{ item.contentDuration }}''</view>
+						<view class="">''</view>
 					</view>
 					
 					<!-- contentType = 3 图片 -->
@@ -101,7 +103,9 @@
 				
 				<!-- 功能性按钮 -->
 				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun(false)"></view>
+				
 				<!-- <view class="iconfont iconbiaoqing icon_btn_add" @tap="switchFun(true)"></view> -->
+				
 				<button type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
 			</view>
 			
@@ -153,7 +157,7 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue';
 import { mapState, mapMutations } from 'vuex';
 import face from '@/components/face'
-import messageMap from '@/util/api/message.js';
+import messageAPI from '@/util/api/message.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
@@ -243,6 +247,10 @@ export default {
 		transformFace(content){
 			return transform(content)
 		},
+		// audio(item){
+		// 	console.log(item)
+		// 	return JSON.parse(item.content)
+		// },
 		// 发红包
 		packetTap(packet){
 			let _t = this;
@@ -352,7 +360,7 @@ export default {
 		},
 		// 初始消息数据
 		async initData() {
-			messageMap.getItem(this.chatObj.chatId).then(res=>{
+			messageAPI.getItem(this.chatObj.chatId).then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
 					this.mescroll.scrollTo(99999, 0);
@@ -404,15 +412,15 @@ export default {
 			};
 
 			if (data) {
+				// 视频
 				if(data.contentType == _t.messageType.video){
 					params.content = data.content;
 					params.contentType = _t.messageType.video;
 				}else if(data.contentType == _t.messageType.audio){
 					//说明是发送语音
 					params.contentType = _t.messageType.audio;
-					params.anmitionPlay = false;
 					params.content = data.content;
-					params.contentDuration = data.contentDuration;
+					params.anmitionPlay = false;
 				}else if(data.contentType == _t.messageType.image){
 					//发送图片
 					params.content = data.content;
@@ -432,11 +440,9 @@ export default {
 			
 			// 抢红包不需要存储只需要广播 
 			if(params.contentType == _t.messageType.robPacket){
-				// 本地内存更改
 				for(var a in _t.messageList){
 					if(_t.messageList[a].hasBeenSentId == params.hasBeenSentId){
 						_t.messageList[a].content = params.content;
-						// 当前正在看的红包 才更新
 						if(_t.message.hasBeenSentId == params.hasBeenSentId){
 							_t.message = _t.messageList[a];
 							let content = JSON.parse(params.content);
@@ -445,16 +451,14 @@ export default {
 						}
 					}
 				}
-				// 本地缓存更改
-				messageMap.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
-			}else if(_t.formData.content!=''){
-				//本地内存
+				messageAPI.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
+			}else if(params.contentType == _t.messageType.createPacket){
 				_t.messageList.push(params);
-				//本地缓存
-				messageMap.commit(params,_t.chatObj.chatId);
-				// 创建红包不需要入库
-				if(params.contentType != _t.messageType.createPacket){
-					// 服务器入库
+				messageAPI.commit(params,_t.chatObj.chatId);
+			} else if(params.contentType == _t.messageType.text){
+				if(_t.formData.content!=''){
+					_t.messageList.push(params);
+					messageAPI.commit(params,_t.chatObj.chatId);
 					_t.$http.post('app/msg/add',{
 						chatId: _t.chatObj.chatId,
 						chatType:_t.chatObj.chatType,
@@ -463,6 +467,16 @@ export default {
 						msgType: params.contentType
 					});
 				}
+			} else {
+				_t.messageList.push(params);
+				messageAPI.commit(params,_t.chatObj.chatId);
+				_t.$http.post('app/msg/add',{
+					chatId: _t.chatObj.chatId,
+					chatType:_t.chatObj.chatType,
+					userId: _t.user.operId,
+					message: params.content,
+					msgType: params.contentType
+				});
 			}
 			
 			// 发送消息到服务器转发
@@ -488,12 +502,12 @@ export default {
 										}
 									}
 								}
-								messageMap.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
+								messageAPI.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
 							}else {
 								// 本地内存
 								_t.messageList.push(res);
 								// 本地缓存
-								messageMap.commit(res, _t.chatObj.chatId);
+								messageAPI.commit(res, _t.chatObj.chatId);
 								// 页面置底
 								_t.mescroll.scrollTo(99999, 0);
 								// 页面红点

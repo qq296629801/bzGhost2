@@ -24,7 +24,6 @@
 	</view>
 </template>
 <script>
-	import apiCommon from '@/util/api/common.js';
 	export default {
 		components: {
 		},
@@ -41,17 +40,17 @@
 			}
 		},
 		onShow() {
-			apiCommon.getItem('friend').then(res=>{
-				this.list = res
-				this.firendItem = res
-				let indexList = []
-				this.list.forEach(item => {
-					if(item.members.length>0){
-						indexList.push(item.name)
-					}
-				})
-				this.indexList = indexList
-			});
+			// apiCommon.getItem('friend').then(res=>{
+			// 	this.list = res
+			// 	this.firendItem = res
+			// 	let indexList = []
+			// 	this.list.forEach(item => {
+			// 		if(item.members.length>0){
+			// 			indexList.push(item.name)
+			// 		}
+			// 	})
+			// 	this.indexList = indexList
+			// });
 		},
 		onLoad({groupId}) { this.groupId = groupId },
 		watch: {
