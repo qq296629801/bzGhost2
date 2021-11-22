@@ -226,8 +226,14 @@ export function transform(content) {
         // 转义表情
         let alt = face.replace(/^face/g, "");
         return (
-          '<img>'
-        );
+		  '<img alt="' +
+		  fa[alt] +
+		  '" title="' +
+		  fa[alt] +
+		  '" src="' +
+		  fa[alt] +
+		  '">'
+		);
       })
       .replace(/img\[([^\s]+?)]/g, function(img) {
         // 转义图片

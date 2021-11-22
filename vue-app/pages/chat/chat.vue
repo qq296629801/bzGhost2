@@ -13,7 +13,7 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text">{{ transformFace(item.content) }}</view>
+					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text" v-html="transformFace(item.content)"></view>
 					
 					<!-- contentType = 2 语音 -->
 					<view
