@@ -101,15 +101,15 @@
 				
 				<!-- 功能性按钮 -->
 				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun(false)"></view>
-				<view class="iconfont iconbiaoqing icon_btn_add" @tap="switchFun(true)"></view>
-				<button class="btn" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
+				<!-- <view class="iconfont iconbiaoqing icon_btn_add" @tap="switchFun(true)"></view> -->
+				<button type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
 			</view>
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
 				
-				<view v-if="face" class="face">
+				<!-- <view v-if="face" class="face">
 					<face @addEmoji="addEmoji"></face>
-				</view>
+				</view> -->
 				
 				<u-grid v-if="!face" :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
 					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
