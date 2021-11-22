@@ -255,6 +255,8 @@ export default {
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
+
+            console.log(res)
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
                 // 判断发送人是不是自己

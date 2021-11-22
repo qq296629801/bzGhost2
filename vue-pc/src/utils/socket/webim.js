@@ -39,7 +39,7 @@ const WEBIM = {
 
         eventDispatcher.dispatchEvent(command, toJSON(packet));
         eventDispatcher.removeListener(command, toJSON(packet));
-
+        console.log(packet)
         if (command === -10) {
           store.commit("setNewsPush", packet);
         }
