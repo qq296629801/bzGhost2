@@ -27,9 +27,9 @@
 
 # 参考文献
 
-[https://gitee.com/lele-666/V-IM.git](https://gitee.com/lele-666/V-IM.git)
-[http://doc.ruoyi.vip/ruoyi/](http://doc.ruoyi.vip/ruoyi/)
-[https://gitee.com/xiaowang0482/wechat.git](https://gitee.com/xiaowang0482/wechat.git)
+* [https://gitee.com/lele-666/V-IM.git](https://gitee.com/lele-666/V-IM.git)
+* [http://doc.ruoyi.vip/ruoyi/](http://doc.ruoyi.vip/ruoyi/)
+* [https://gitee.com/xiaowang0482/wechat.git](https://gitee.com/xiaowang0482/wechat.git)
 
 
 #   下载体验
