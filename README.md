@@ -1,4 +1,7 @@
 # bzGhost像鬼的聊天软件
+![ci](https://api.travis-ci.org/xtuhcy/gecco.svg?branch=master)
+![maven](https://img.shields.io/maven-central/v/com.geccocrawler/gecco.svg?style=flat-square)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 打造跨终端跨平台即时通讯，个人也能玩的转的聊天软件。
 
