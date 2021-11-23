@@ -12,26 +12,21 @@
 ![](/assets/app_03.jpg)
 
 
-# 参考文献
-
-[V-IM ](https://gitee.com/lele-666/V-IM.git)
-
-基于JS的超轻量级聊天软件。前端：vue、iview、electron实现的 PC&
-
-Web版聊天程序，主要适用于私有云项目内部聊天，企业内部管理通讯等功能，主要通讯协议websocket。支持web网页聊天实现。 服务端： springboot、tio、oauth2.0等技术。界面：高仿微信。
-
-[RuoYi](http://doc.ruoyi.vip/ruoyi/)
-
-是一个后台管理系统，基于经典技术组合（Spring Boot、Apache Shiro、MyBatis、Thymeleaf）主要目的让开发者注重专注业务，降低技术难度，从而节省人力成本，缩短项目周期，提高软件安全质量。
-
-[wechat](https://gitee.com/xiaowang0482/wechat.git)
-
-uniapp仿微信，支持h5、微信小程序和app。感谢star。
-
 # 版权信息
 
 软件遵循[MIT](https://baike.baidu.com/item/MIT/10772952)开源协议，意味着您无需支付任何费用，也无需授权，即可将 软件应用到您的产品中。
-注意：这并不意味着您可以将软件应用到非法的领域，比如涉及赌博，暴力等方面。如因此产生纠纷等法律问题， 作者不承担任何责任。切勿以身试法!!!
+注意：这并不意味着您可以将软件应用到非法的领域，比如涉及赌博，暴力等方面。
+如因此产生纠纷等法律问题， 作者不承担任何责任。
+切勿以身试法!!!
+
+
+
+# 参考文献
+
+[https://gitee.com/lele-666/V-IM.git](https://gitee.com/lele-666/V-IM.git)
+[http://doc.ruoyi.vip/ruoyi/](http://doc.ruoyi.vip/ruoyi/)
+[https://gitee.com/xiaowang0482/wechat.git](https://gitee.com/xiaowang0482/wechat.git)
+
 
 #   下载体验
 
