@@ -4,6 +4,14 @@
 
 ![](/assets/home.jpg)
 
+![](/assets/pc_03.png)
+![](/assets/pc_02.png)
+![](/assets/pc_01.png)
+![](/assets/app_01.jpg)
+![](/assets/app_02.jpg)
+![](/assets/app_03.jpg)
+
+
 # 参考文献
 
 [V-IM ](https://gitee.com/lele-666/V-IM.git)
@@ -377,7 +385,7 @@ store.commit('setNewsPush', packet);
 
 
 
-## 捐赠研发
+# 捐赠研发
 
 ![](/assets/微信图片_20210530130450.jpg)![](/assets/微信图片_20210530130459.jpg)![](/assets/微信图片_20210629151220.png)
 
