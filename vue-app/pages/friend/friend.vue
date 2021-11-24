@@ -1,14 +1,16 @@
 <template>
 	<view class="content">
-		<addressBook :list="friend" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook>
+		<friend-list></friend-list>
+		<!-- <addressBook :list="friend" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook> -->
 	</view>
 </template>
 <script>
 import addressBook from '@/components/addressBook.vue';
+import friendList from '@/components/msg/friend-list.vue'
 import { mapState, mapMutations} from 'vuex';
 import apiCommon from '@/util/api/common.js';
 export default {
-	components:{ addressBook },
+	components:{ addressBook, friendList },
 	data() {
 		return {
 			scrollTop: 0

@@ -6,11 +6,13 @@
 		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="column" theme="dark" placement="bottom-end" dynamic>
 		</chunLei-popups>
 		
-		<view class="list">
+		<!-- <view class="list">
 			<view class="item" v-for="(item,index) in conversation">
 				<message @taptext="taptext($event)" @jump="jump" :value="item" :index="item.id"></message>
 			</view>
 		</view>
+		 -->
+		<msg-list></msg-list>
 	</view>
 </template>
 
@@ -18,9 +20,12 @@
 import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
 import selectInput from '@/components/selectInput/selectInput.vue';
 import message from '@/components/message.vue';
+
+import msgList from '@/components/msg/msg-list.vue'
+
 import { mapState, mapMutations} from 'vuex';
 export default {
-	components: { selectInput, message },
+	components: { selectInput, message, msgList },
 	data() {
 		return {
 			// 右键
