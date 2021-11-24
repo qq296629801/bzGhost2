@@ -1,0 +1,86 @@
+{
+  "id": "1180237",
+  "name": "my-icons",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15838525",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "12583938",
+      "name": "扫一扫",
+      "font_class": "saoyisao",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "11512404",
+      "name": "爱心",
+      "font_class": "aixin",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "11512406",
+      "name": "分享",
+      "font_class": "fenxiang1",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "1027200",
+      "name": "语音-右",
+      "font_class": "yuyinyou",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "1027206",
+      "name": "语音-左",
+      "font_class": "yuyinzuo",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "6364167",
+      "name": "二维码",
+      "font_class": "ico",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "1025053",
+      "name": "键盘",
+      "font_class": "jianpan1",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "436016",
+      "name": "语音",
+      "font_class": "yuyin",
+      "unicode": "e805",
+      "unicode_decimal": 59397
+    },
+    {
+      "icon_id": "1403751",
+      "name": "新增",
+      "font_class": "addNew",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "2121741",
+      "name": "笑脸",
+      "font_class": "xiaolian",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    }
+  ]
+}
