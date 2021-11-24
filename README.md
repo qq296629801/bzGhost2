@@ -10,17 +10,17 @@
 
 # 截图
 
-## 1.电脑版本截图
+## 1.1电脑版本截图
 ![](/assets/pc_03.png)
 ![](/assets/pc_02.png)
 ![](/assets/pc_01.png)
 
-## 2.手机截图
+## 1.2手机截图
 ![](/assets/app_01.jpg)
 ![](/assets/app_02.jpg)
 ![](/assets/app_03.jpg)
 
-## 3.管理截图
+## 1.3管理截图
 ![](/assets/web_01.png)
 
 
