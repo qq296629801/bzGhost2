@@ -10,19 +10,21 @@
 
 # 截图
 
-## 电脑版本截图
+## 1.电脑版本截图
 ![](/assets/pc_03.png)
 ![](/assets/pc_02.png)
 ![](/assets/pc_01.png)
 
-## 手机截图
+## 2.手机截图
 ![](/assets/app_01.jpg)
 ![](/assets/app_02.jpg)
 ![](/assets/app_03.jpg)
 
+## 3.管理截图
+![](/assets/web_01.png)
+
 
 # 版权信息
-
 软件遵循[MIT](https://baike.baidu.com/item/MIT/10772952)开源协议，意味着您无需支付任何费用，也无需授权，即可将 软件应用到您的产品中。
 注意：这并不意味着您可以将软件应用到非法的领域，比如涉及赌博，暴力等方面。
 如因此产生纠纷等法律问题， 作者不承担任何责任。
@@ -40,7 +42,7 @@
 会将各个版本的演示在此展示，目前演示的版本有H5，安卓，苹果，电脑，其他版本的演示将会陆续添加
 
 
-## web版本
+## 1. web版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
@@ -48,35 +50,35 @@
 
 
 
-## 手机版本
+## 2.手机版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
 | [Download](http://42.193.146.14:8089/yiqun.apk) | .apk | 1.0.0 | 24.2 MB |
 
-## 电脑版本
+## 3.电脑版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
 | [Download](http://42.193.146.14:8089/yiqun.exe) | .exe | 1.0.0 | 52.5 MB |
 
-##  账号说明
+##  4.账号说明
 
 \*\*注意：
 测试账号分别为：admin /123456
 
 
+# 通讯底层封装
+##   webim.js
 
-#   webim.js
-
-## 通讯文件
+### 通讯文件
 
 * 分离了API 与webSocket 。
 * 群通道，用户通道。
 * 重试次数，心跳检测，断网重连。
 * 字节传输，支持自定义加密解密等功能。
 
-## 1.1 用户绑定
+### 1.1 用户绑定
 
 * **方法名** login
 
@@ -109,7 +111,7 @@ success: true
 }
 ```
 
-## 1.2 加入群组
+### 1.2 加入群组
 
 * **方法名** joinGroup
 * **参数说明**
@@ -145,7 +147,7 @@ success: true
 }
 ```
 
-## 1.3 退出群组
+### 1.3 退出群组
 
 * **方法名** quitGroup
 * **参数说明\(参照加入群组\)**
@@ -172,7 +174,7 @@ success: true
 }
 ```
 
-## 1.4 发送消息
+### 1.4 发送消息
 
 * **方法名** sendMessage
 * **参数说明**
@@ -239,7 +241,7 @@ command: 4,
 };
 ```
 
-## 1.5 指令集参照表
+### 1.5 指令集参照表
 
 | 指令集 | 备注 |
 | :--- | :--- |
@@ -253,9 +255,9 @@ command: 4,
 | 4 | 发送消息响应 |
 
 
-#   webPacketCode.js
+##   webPacketCode.js
 
-## 数据包解码文件
+### 数据包解码文件
 
 报文格式：magic4字节 + 版本1字节 + 序列化算法1字节 + 指令1字节 + 数据长度4字节 + 数据内容
 
@@ -297,11 +299,11 @@ bytes[i - 11] = dataView.getUint8(i)
 ```
 
 
-#   webSocket.js
+##   webSocket.js
 
 封装uni方法 支持心跳包，断线重连，断线重试，网络检测，发送自定义报文。
 
-## 1.1 initWebSocket\(options\)
+### 1.1 initWebSocket\(options\)
 
 初始化创建一个[websocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)连接
 
@@ -329,7 +331,7 @@ reject(e);
 WEBIM.server.initWebSocket(WEBIM.options);
 ```
 
-## 1.2 sendWebSocketMsg\(options\)
+### 1.2 sendWebSocketMsg\(options\)
 
 通过 WebSocket 连接发送数据，需要先 initWebSocket，并在 \_onSocketOpened回调之后才能发送
 
@@ -345,26 +347,26 @@ WEBIM.server.initWebSocket(WEBIM.options);
 
 ```js
 WEBIM.server.sendWebSocketMsg({
-data: arrayBuffer,
-success(res) {},
-fail(err) {
-// 进行重连
-WEBIM.server._isLogin = false;
-if (WEBIM.server._isReconnection) {
-console.log('网络中断，尝试重连')
-WEBIM.options = {
-url: WEBIM.serverUrl,
-success(res) {},
-fail(err) {}
-}
-WEBIM.server._reConnect(WEBIM.options)
-}
-console.log('【websocket】发送失败,尝试手动重连')
-}
+    data: arrayBuffer,
+    success(res) {},
+    fail(err) {
+        // 进行重连
+        WEBIM.server._isLogin = false;
+        if (WEBIM.server._isReconnection) {
+            console.log('网络中断，尝试重连')
+            WEBIM.options = {
+            url: WEBIM.serverUrl,
+            success(res) {},
+            fail(err) {}
+            }
+        WEBIM.server._reConnect(WEBIM.options)
+         }
+    console.log('【websocket】发送失败,尝试手动重连')
+    }
 });
 ```
 
-## 1.3 onReceivedMsg\(callBack\)
+### 1.3 onReceivedMsg\(callBack\)
 
 监听WebSocket接受到服务器的消息事件。
 
