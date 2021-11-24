@@ -5,8 +5,12 @@
 				<u-avatar @tap="previewImage" shape="square" src="/static/image/huge.jpg" size="80"></u-avatar>
 			</view>
 			<view class="box">
-				<view class="name">{{user.realname}}</view>
-				<view class="money">{{user.money}}</view>
+				<view class="name">
+					<u--text size="22" mode="name" :text="user.realname"></u--text>
+				</view>
+				<view class="money">
+					<u--text type="info" :text="user.money"></u--text>
+				</view>
 			</view>
 			<view class="arrow">
 				<u-icon name="arrow-right" color="#969799" size="30" @tap="jump('pages/user/my')"></u-icon>
@@ -76,6 +80,7 @@
 	align-items: center;
 	padding: 30rpx;
 	height: 300rpx;
+	background-color: white;
 	.avatar{
 		display: flex;
 		width: 30%;
