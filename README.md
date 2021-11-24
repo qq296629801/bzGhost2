@@ -361,11 +361,11 @@ WEBIM.server.sendWebSocketMsg({
             WEBIM.options = {
             url: WEBIM.serverUrl,
             success(res) {},
-            fail(err) {}
+                fail(err) {}
             }
-        WEBIM.server._reConnect(WEBIM.options)
+            WEBIM.server._reConnect(WEBIM.options)
          }
-    console.log('【websocket】发送失败,尝试手动重连')
+        console.log('【websocket】发送失败,尝试手动重连')
     }
 });
 ```
@@ -384,15 +384,15 @@ WEBIM.server.sendWebSocketMsg({
 
 ```js
 WEBIM.server.onReceivedMsg(event => {
-let packet = packetCode.decode(event.data);
-let command = packet.command;
+    let packet = packetCode.decode(event.data);
+    let command = packet.command;
+    // 转发事件
+    eventDispatcher.dispatchEvent(command, toJSON(packet))
+    eventDispatcher.removeListener(command, toJSON(packet))
 
-eventDispatcher.dispatchEvent(command, toJSON(packet))
-eventDispatcher.removeListener(command, toJSON(packet))
-
-if(command === -10){
-store.commit('setNewsPush', packet);
-}
+    if(command === -10){
+        store.commit('setNewsPush', packet);
+    }
 });
 ```
 
