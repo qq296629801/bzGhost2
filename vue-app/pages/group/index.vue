@@ -25,32 +25,32 @@
 		<view style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item @tap="show = true" title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell-item>
-			<u-cell-item @tap="xxShow = true" title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell-item>
-			<u-cell-item title="二维码" :title-style="titleStyle">
+			<u-cell @tap="show = true" title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell>
+			<u-cell @tap="xxShow = true" title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell>
+			<u-cell title="二维码" :title-style="titleStyle">
 				<view class="iconfont iconxingzhuangjiehe erweima"></view>
-			</u-cell-item>
-			<u-cell-item @tap="xxxShow = true"
+			</u-cell>
+			<u-cell @tap="xxxShow = true"
 				title="群昵称"
 				:value="group.groupUser.groupNickName"
 				:title-style="titleStyle"
-			></u-cell-item>
-			<u-cell-item title="全体禁言" :title-style="titleStyle" :arrow="false">
+			></u-cell>
+			<u-cell title="全体禁言" :title-style="titleStyle" :arrow="false">
 				<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
-			</u-cell-item>
-			<u-cell-item title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell-item>
-			<u-cell-item title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell-item>
+			</u-cell>
+			<u-cell title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell>
+			<u-cell title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell>
 		</u-cell-group>
 		
 		<view  style="height: 20rpx;"></view>
 		
 		<u-cell-group>
-			<u-cell-item :title-style="titleStyle" @click="delMess" :arrow="false">
+			<u-cell :title-style="titleStyle" @click="delMess" :arrow="false">
 				<view class="btn-red">清空聊天记录</view>
-			</u-cell-item>
-			<u-cell-item :title-style="titleStyle" @click="removeMem" :arrow="false">
+			</u-cell>
+			<u-cell :title-style="titleStyle" @click="removeMem" :arrow="false">
 				<view class="btn-red">删除并退出</view>
-			</u-cell-item>
+			</u-cell>
 		</u-cell-group>
 		
 		
