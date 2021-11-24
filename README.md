@@ -42,7 +42,7 @@
 会将各个版本的演示在此展示，目前演示的版本有H5，安卓，苹果，电脑，其他版本的演示将会陆续添加
 
 
-## 1. web版本
+## 1.1 web版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
@@ -50,19 +50,19 @@
 
 
 
-## 2.手机版本
+## 1.2手机版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
 | [Download](http://42.193.146.14:8089/yiqun.apk) | .apk | 1.0.0 | 24.2 MB |
 
-## 3.电脑版本
+## 1.3电脑版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
 | [Download](http://42.193.146.14:8089/yiqun.exe) | .exe | 1.0.0 | 52.5 MB |
 
-##  4.账号说明
+##  1.4账号说明
 
 \*\*注意：
 测试账号分别为：admin /123456
@@ -128,11 +128,11 @@ success: true
 
 ```js
 let packet = {
-chatId:"04b09fbee3d24a21a2acedc755d5d7c3",
-userId:"5f6d9d98",
-chatType: 0,
-version: 1,
-command: 7
+    chatId:"04b09fbee3d24a21a2acedc755d5d7c3",
+    userId:"5f6d9d98",
+    chatType: 0,
+    version: 1,
+    command: 7
 }
 ```
 
@@ -140,10 +140,10 @@ command: 7
 
 ```js
 let packet = {
-version : 1,
-command: 8,
-errorMsg:"",
-success: true
+    version : 1,
+    command: 8,
+    errorMsg:"",
+    success: true
 }
 ```
 
@@ -155,11 +155,11 @@ success: true
 
 ```js
 let packet = {
-chatId:"04b09fbee3d24a21a2acedc755d5d7c3",
-userId:"5f6d9d98",
-chatType: 0,
-version: 1,
-command: 9
+    chatId:"04b09fbee3d24a21a2acedc755d5d7c3",
+    userId:"5f6d9d98",
+    chatType: 0,
+    version: 1,
+    command: 9
 }
 ```
 
@@ -167,10 +167,10 @@ command: 9
 
 ```js
 let packet = {
-version : 1,
-command: 10,
-errorMsg:"",
-success: true
+    version : 1,
+    command: 10,
+    errorMsg:"",
+    success: true
 }
 ```
 
@@ -201,21 +201,21 @@ success: true
 
 ```js
 let packet = {
-isItMe: true,
-contentType: 0,
-content: "测试",
-createTime: Date.now(),
-hasBeenSentId: Date.now(),
-fromUserId: "5f6d9d98",
-fromUserName: "admin",
-fromUserHeadImg: '/static/image/huge.jpg',
-userId: "5f6d9d98",
-toUserId: "220e805b8521444e9f27d78e45633b44",
-toUserName: "test",
-toUserHeadImg:'/static/image/huge.jpg',
-chatType: 0,
-version : 1,
-command: 3,
+    isItMe: true,
+    contentType: 0,
+    content: "测试",
+    createTime: Date.now(),
+    hasBeenSentId: Date.now(),
+    fromUserId: "5f6d9d98",
+    fromUserName: "admin",
+    fromUserHeadImg: '/static/image/huge.jpg',
+    userId: "5f6d9d98",
+    toUserId: "220e805b8521444e9f27d78e45633b44",
+    toUserName: "test",
+    toUserHeadImg:'/static/image/huge.jpg',
+    chatType: 0,
+    version : 1,
+    command: 3,
 };
 ```
 
@@ -223,21 +223,21 @@ command: 3,
 
 ```js
 let packet = {
-isItMe: true,
-contentType: 0,
-content: "测试",
-createTime: Date.now(),
-hasBeenSentId: Date.now(),
-fromUserId: "5f6d9d98",
-fromUserName: "admin",
-fromUserHeadImg: '/static/image/huge.jpg',
-userId: "5f6d9d98",
-toUserId: "220e805b8521444e9f27d78e45633b44",
-toUserName: "test",
-toUserHeadImg:'/static/image/huge.jpg',
-chatType: 0,
-version : 1,
-command: 4,
+    isItMe: true,
+    contentType: 0,
+    content: "测试",
+    createTime: Date.now(),
+    hasBeenSentId: Date.now(),
+    fromUserId: "5f6d9d98",
+    fromUserName: "admin",
+    fromUserHeadImg: '/static/image/huge.jpg',
+    userId: "5f6d9d98",
+    toUserId: "220e805b8521444e9f27d78e45633b44",
+    toUserName: "test",
+    toUserHeadImg:'/static/image/huge.jpg',
+    chatType: 0,
+    version : 1,
+    command: 4,
 };
 ```
 
@@ -270,18 +270,18 @@ command: 4,
 ```js
 let dataView = new DataView(buffer)
 
-dataView.setInt32(0, 0x12345678)
-
-dataView.setInt8(4, packet.version)
-
-dataView.setInt8(5, 1) // 写死1表示json序列化
-
-dataView.setInt8(6, packet.command)
-
-dataView.setInt32(7, bytes.length)
+    dataView.setInt32(0, 0x12345678)
+    
+    dataView.setInt8(4, packet.version)
+    
+    dataView.setInt8(5, 1) // 写死1表示json序列化
+    
+    dataView.setInt8(6, packet.command)
+    
+    dataView.setInt32(7, bytes.length)
 
 for (let i = 11; i < bytes.length + 11; i++) {
-dataView.setUint8(i, bytes[i - 11])
+    dataView.setUint8(i, bytes[i - 11])
 }
 ```
 
@@ -294,7 +294,7 @@ let lenght = dataView.getInt32(7)
 
 let bytes = []
 for (let i = 11; i < lenght + 11; i++) {
-bytes[i - 11] = dataView.getUint8(i)
+    bytes[i - 11] = dataView.getUint8(i)
 }
 ```
 
@@ -319,13 +319,13 @@ bytes[i - 11] = dataView.getUint8(i)
 
 ```js
 WEBIM.options = {
-url: 'ws://127.0.0.1',
-success(res) {
-resolve(res);
-},
-fail(e) {
-reject(e);
-}
+    url: 'ws://127.0.0.1',
+    success(res) {
+        resolve(res);
+    },
+    fail(e) {
+        reject(e);
+    }
 }
 
 WEBIM.server.initWebSocket(WEBIM.options);
