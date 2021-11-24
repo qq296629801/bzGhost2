@@ -17,7 +17,7 @@ export const mutations = {
   },
   setToken(state, data) {
   	if (data) {
-  		state.token =  Object.assign({}, state.token, data);
+  		state.token =  data;
   		cache.set("token",state.token);
   	}
   },
