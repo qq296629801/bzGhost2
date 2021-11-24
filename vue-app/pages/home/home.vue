@@ -2,10 +2,6 @@
 	<view class="content">
 		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
 		
-		<!-- //左右按键 -->
-		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="column" theme="dark" placement="bottom-end" dynamic>
-		</chunLei-popups>
-		
 		<!-- <view class="list">
 			<view class="item" v-for="(item,index) in conversation">
 				<message @taptext="taptext($event)" @jump="jump" :value="item" :index="item.id"></message>
@@ -49,10 +45,7 @@ export default {
 	computed: {
 		...mapState(['user','packet','newsPush','conversation'])
 	},
-	onLoad() {
-	},
 	methods: {
-		...mapMutations(['setChatObj']),
 		tapPopup(){
 			uni.showToast({
 				title:'测试开发',
@@ -65,8 +58,12 @@ export default {
 			this.value = !this.value
 		},
 		jump(item){
-			this.setChatObj(item);
-			this.onPageJump('/pages/chat/chat');
+			this.$store.commit("setChatObj",item);
+			this.$u.route({
+				url: 'pages/chat/chat'
+			})
+			//this.setChatObj(item);
+			//this.onPageJump('/pages/chat/chat');
 		},
 		onPageJump(url){
 			this.$u.route({

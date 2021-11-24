@@ -4,17 +4,17 @@
 			@scrolltolower="scrolltolower"
 		>
 			<u-list-item
-				v-for="(item, index) in indexList"
+				v-for="(item, index) in conversation"
 				:key="index"
 			>
-				<u-cell
-					:title="`列表长度-${index + 1}`"
+				<u-cell @tap="jumpChatPage(item)"
+					:title="item.chatName" :label="item.msgType==0?item.content:message[item.msgType]"
 				>
 					<u-avatar
 						slot="icon"
 						shape="square"
 						size="35"
-						:src="item.url"
+						src="https://cdn.uviewui.com/uview/album/1.jpg"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 				</u-cell>
@@ -24,26 +24,27 @@
 </template>
 
 <script>
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		name:'msg-list',
 		data() {
 			return {
-				indexList: [
-					{
-						url:'https://cdn.uviewui.com/uview/album/1.jpg'
-					},
-					{
-						url:'https://cdn.uviewui.com/uview/album/2.jpg'
-					}
-				]
+				message:['文字', '图片', '表情', '语音', '视频',
+				 '签到', '撤销', '发红包', '抢红包','其它'],
 			}
 		},
-		onLoad() {
-			this.loadmore()
+		computed: {
+			...mapState(['conversation'])
 		},
 		methods: {
 			scrolltolower() {
 			},
+			jumpChatPage(item){
+				this.$store.commit("setChatObj",item);
+				this.$u.route({
+					url: 'pages/chat/chat'
+				})
+			}
 		},
 	}
 </script>
