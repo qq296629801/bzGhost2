@@ -98,9 +98,9 @@
 
 ```js
 let packet = {
-version:1,
-command: 1,
-userId:"5f6d9d98"
+    version:1,
+    command: 1,
+    userId:"5f6d9d98"
 }
 ```
 
@@ -108,10 +108,10 @@ userId:"5f6d9d98"
 
 ```js
 let packet = {
-version : 1,
-command: 2,
-errorMsg:"",
-success: true
+    version : 1,
+    command: 2,
+    errorMsg:"",
+    success: true
 }
 ```
 
@@ -150,6 +150,16 @@ let packet = {
     success: true
 }
 ```
+
+
+**示例代码**
+
+```js
+webim.joinGroup(res=>{     
+});
+```
+
+
 
 ### 1.3 退出群组
 
