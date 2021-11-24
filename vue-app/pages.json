@@ -389,7 +389,7 @@
             "path" : "pages/user/album",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "相册",
                 "enablePullDownRefresh": false
             }
             
