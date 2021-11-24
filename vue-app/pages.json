@@ -71,47 +71,49 @@
 					}
 				}
 			}
-		}, {
-			"path": "pages/find/firendCircle",
-			"style": {
-				"navigationBarTitleText": " ",
-				// #ifdef MP-WEIXIN
-				"navigationStyle": "custom",
-				// #endif
-				"transparentTitle": "auto",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"backgroundColor": "#f8f9f9",
-						"coverage": "45%", //h5不起作用
-						// #ifdef APP-PLUS
-						"backButton": {
-							"color": "#303133",
-							"background": "rgba(255,255,255,0)"
-						},
+		}, 
+		{
+					"path": "pages/find/firendCircle",
+					"style": {
+						"navigationBarTitleText": " ",
+						// #ifdef MP-WEIXIN
+						"navigationStyle": "custom",
 						// #endif
-						"buttons": [{
-								"fontSrc": "/static/iconfont/iconfont.ttf",
-								"float": "right",
-								"text": "\ue609",
-								"color": "#303133",
-								"background": "rgba(255,255,255,0)"
+						"transparentTitle": "auto",
+						"enablePullDownRefresh": true,
+						"app-plus": {
+							"titleNView": {
+								"type": "transparent",
+								"backgroundColor":"#f8f9f9",
+								"coverage":"45%", //h5不起作用
+								// #ifdef APP-PLUS
+								"backButton": {
+									"color": "#303133",
+									"background": "rgba(255,255,255,0)"
+								},
+								// #endif
+								"buttons": [{
+										"fontSrc": "/static/iconfont/iconfont.ttf",
+										"float": "right",
+										"text": "\ue609",
+										"color": "#303133",
+										"background": "rgba(255,255,255,0)"
+									}
+									// #ifdef H5
+									, {
+										"fontSrc": "/static/iconfont/iconfont.ttf",
+										"float": "left",
+										"text": "\ue6f2",
+										"color": "#303133",
+										"background": "rgba(255,255,255,0)"
+									}
+									// #endif
+								]
 							}
-							// #ifdef H5
-							, {
-								"fontSrc": "/static/iconfont/iconfont.ttf",
-								"float": "left",
-								"text": "\ue6f2",
-								"color": "#303133",
-								"background": "rgba(255,255,255,0)"
-							}
-							// #endif
-						]
+						}
 					}
-				}
-			}
-		},  {
+				},
+		{
 			"path": "pages/find/releaseCircle",
 			"style": {
 				"navigationBarTitleText": "",

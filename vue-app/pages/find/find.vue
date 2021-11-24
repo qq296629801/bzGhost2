@@ -27,6 +27,8 @@ export default {
 			this.$u.route({
 				url: 'pages/find/firendCircle'
 			})
+		},
+		linkToScan(){
 		}
 	}
 };

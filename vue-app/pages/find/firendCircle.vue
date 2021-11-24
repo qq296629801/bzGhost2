@@ -6,8 +6,6 @@
 		</u-navbar>
 		<!-- #endif -->
 		
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="downOption" :up="upOption" @down="a" @up="upCallback">
-		
 		<view class="content-imgbox">
 			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
 			<image class="headimg" src="/static/image/huge.jpg"></image>
@@ -119,7 +117,7 @@
 				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg">发送</button>
 			</view>
 		</view>
-		</mescroll-body>
+		
 		<u-action-sheet :list="list" v-model="show" border-radius="25" safe-area-inset-bottom @click="clickAction"></u-action-sheet>
 	</view>
 </template>
@@ -127,16 +125,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import { mapState, mapMutations } from 'vuex';
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
 	name: 'firendCircle',
-	mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 	data() {
 		return {
-			upOption: {
-			},
-			downOption:{
-			},
 			show: false, //u-action-sheet  show
 			list: [{ text: '更换相册封面', fontSize: '28' }],
 			content: '',
@@ -176,8 +168,6 @@ export default {
 		}
 	},
 	methods: {
-		a(){
-		},
 		//自定义标题栏按钮
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
@@ -351,12 +341,12 @@ export default {
 		//点击相册封面弹窗选择项
 		clickAction(index) {
 			if (index == 0) {
-				this.$u.route('pages/chooseBgImg/chooseBgImg');
+				this.$u.route('pages/seting/chooseBgImg');
 			}
 		},
 		//点击自定义组件相机按钮
 		linkToRelease() {
-			this.$u.route('pages/releaseFirendCircle/releaseFirendCircle');
+			this.$u.route('pages/find/releaseFirendCircle');
 		}
 	},
 	onReady() {
@@ -379,6 +369,10 @@ export default {
 			}
 		});
 	},
+	//下拉刷新
+	async onPullDownRefresh() {
+		uni.stopPullDownRefresh();
+	}
 };
 </script>
 
