@@ -1,35 +1,29 @@
 <template>
 	<view>
-		<u-popup :mask="false" v-model="pStatus" :mask-close-able="false">
-			<view style="background-color: #f1f1f1;height: 100%;">
+		<u-popup :show="pShow">
 				<view class="content">
-					<view>发红包</view>
-					<view class="luck">
-						<view class="row">
-							<view class="term">
-								红包个数
-							</view>
-							<view class="input">
-								<u-input v-model="packet.number" placeholder="填写个数" type="number" /> 个
-							</view>
-						</view>
-						<view class="row">
-							<view class="term">
-								总金额
-							</view>
-							<view class="input">
-								<u-input v-model="packet.money" placeholder="0.00" type="number" /> 元
-							</view>
-						</view>
-						<view class="blessing">
-							<u-input v-model="packet.description" placeholder="恭喜发财,大吉大利！" type="textarea" />
-						</view>
-						<u-button type="error"@tap="hand">塞钱进红包</u-button>
-						<u-button @tap="close">返回</u-button>
-					</view>
-					<view>未领取的红包，系统将于24小时后自动丢失</view>
+						<u--form
+								labelPosition="left"
+								:model="model1"
+								:rules="rules"
+								ref="form1"
+								>
+								<u-form-item
+										label="金额"
+										prop="userInfo.name"
+										borderBottom
+										ref="item1"
+								>
+									<u--input
+											v-model="model1.userInfo.name"
+											border="none"
+									></u--input>
+								</u-form-item>
+									
+							</u--form>
+							<u-button type="error"@tap="hand">塞钱进红包</u-button>
+							<u-button @tap="close">返回</u-button>
 				</view>
-			</view>
 		</u-popup>
 	</view>
 </template>
@@ -38,13 +32,27 @@
 	export default {
 		name:'packet',
 		props: {
-			pStatus: {
+			pShow: {
 				type: Boolean,
 				default: false
 			}
 		},
 		data() {
 			return {
+				model1: {
+					userInfo: {
+						name: '0.00',
+						sex: '',
+					},
+				},
+				rules: {
+					'userInfo.name': {
+						type: 'string',
+						required: true,
+						message: '请填写姓名',
+						trigger: ['blur', 'change']
+					}
+				},
 				packet: {
 					description: null,
 					money: null,
