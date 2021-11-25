@@ -54,7 +54,7 @@
 		</u-cell-group>
 		
 		
-		<u-popup v-model="show" mode="bottom">
+		<u-popup :show="show" mode="bottom">
 			<view class="xx">
 				<view class="xx-t">
 					群名称
@@ -64,7 +64,7 @@
 			</view>
 		</u-popup>
 		
-		<u-popup v-model="xxShow" mode="bottom">
+		<u-popup :show="xxShow" mode="bottom">
 			<view class="xx">
 				<view class="xx-t">
 					群公告
@@ -75,7 +75,7 @@
 		</u-popup>
 		
 		
-		<u-popup v-model="xxxShow" mode="bottom">
+		<u-popup :show="xxxShow" mode="bottom">
 			<view class="xx">
 				<view class="xx-t">
 					群昵称

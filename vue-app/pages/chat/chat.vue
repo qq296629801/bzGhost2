@@ -15,7 +15,8 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view @tap="tapText(item)" @longtap="longtapText($event)" class="content" v-if="item.contentType == messageType.text" v-html="transformFace(item.content)"></view>
+					<view class="content" v-if="item.contentType == messageType.text" v-html="transformFace(item.content)"></view>
+					
 					
 					<!-- contentType = 2 语音 -->
 					<view
@@ -38,6 +39,7 @@
 						<view class=""></view>
 					</view>
 					
+					
 					<!-- contentType = 3 图片 -->
 					<view 
 						class="content contentType3" 	
@@ -46,6 +48,8 @@
 					>
 						<image :src="webUrl + item.content" class="img" mode="widthFix"></image>
 					</view>
+					
+					
 					
 					<!-- contentType = 4 红包 -->
 					<view
@@ -61,6 +65,8 @@
 						</div>
 						<div class="tag">红包</div>
 					</view>
+					
+					
 					
 				</view>
 			</view> 
@@ -140,21 +146,16 @@
 		</view
 		>
 		
-		<!-- //左右按键 -->
-		<chunLei-popups v-model="value" :popData="data" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
-		</chunLei-popups>
-		
 		<!-- 红包卡片 -->
 		<red-card :packet="packet" :winState="winState" @hiddenCard="hiddenCard" @openCard="openCard"></red-card>
 		
 		<!-- 发包-->
-		<packet :pStatus="pStatus" @packet="packetTap" @close="close"></packet>
+		<packet :pShow="pShow" @packet="packetTap" @close="close"></packet>
 	</view>
 </template>
 
 <script>
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue';
 import { mapState, mapMutations } from 'vuex';
 import face from '@/components/face'
 import messageAPI from '@/util/api/message.js';
@@ -173,17 +174,16 @@ export default {
 			downOption:{
 				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
-				textColor: "#FF8095" // 下拉刷新的文本颜色
+				textColor: "#00aaff" // 下拉刷新的文本颜色
 			},
-			pStatus:false,
+			pShow:false,
 			upOption: {
 				use: false, // 禁止上拉
 				toTop: {
 					src: '' // 不显示回到顶部按钮
 				}
 			},
-			x: 0,
-			y: 0,
+			
 			value: false,
 			packet:{},
 			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
@@ -237,9 +237,8 @@ export default {
 		...mapState(['user','chatObj','packetData'])
 	},
 	methods: {
-		...mapMutations(['setPacketData']),
 		close(){
-			this.pStatus = false;
+			this.pShow = false;
 		},
 		addEmoji(item){
 			this.formData.content = this.formData.content + "face" + item;
@@ -247,10 +246,7 @@ export default {
 		transformFace(content){
 			return transform(content)
 		},
-		// audio(item){
-		// 	console.log(item)
-		// 	return JSON.parse(item.content)
-		// },
+		
 		// 发红包
 		packetTap(packet){
 			let _t = this;
@@ -270,7 +266,7 @@ export default {
 				
 				// 告诉大家我发了红包
 				_t.sendMsg(params);
-				_t.pStatus = false;
+				_t.pShow = false;
 			});
 		},
 		// 开红包
@@ -297,7 +293,7 @@ export default {
 			let _t = this;
 			let content = JSON.parse(item.content);
 			_t.packet = content.Packets[0];
-			_t.setPacketData(_t.packet);
+			this.$store.commit("setPacketData",_t.packet);
 			_t.message = item
 			_t.winState = 'show';
 		},
@@ -337,27 +333,7 @@ export default {
 				//this.mescroll.endErr(); // 隐藏下拉刷新的状态
 			});
 		},
-		tapPopup(item){
-			if(item.title=='转发'){
-				this.$u.route({
-					url: 'pages/chat/forward',
-					params: {
-						message:this.message.content, 
-						msgType:this.message.contentType
-					}
-				});
-				//console.log(JSON.stringify(item))
-			}
-		},
-		tapText(item){
-			//console.log(JSON.stringify(item))
-			this.message=item;
-		},
-		longtapText(e,index){
-			this.x = e.touches[0].clientX
-			this.y = e.touches[0].clientY
-			this.value = !this.value
-		},
+		
 		// 初始消息数据
 		async initData() {
 			messageAPI.getItem(this.chatObj.chatId).then(res=>{
@@ -447,7 +423,7 @@ export default {
 							_t.message = _t.messageList[a];
 							let content = JSON.parse(params.content);
 							_t.packet = content.Packets[0];
-							_t.setPacketData(_t.packet);
+							this.$store.commit("setPacketData",_t.packet);
 						}
 					}
 				}
@@ -498,7 +474,7 @@ export default {
 											_t.message = _t.messageList[a];
 											let content = JSON.parse(params.content);
 											_t.packet = content.Packets[0];
-											_t.setPacketData(_t.packet);
+											this.$store.commit("setPacketData",_t.packet);
 										}
 									}
 								}
@@ -678,7 +654,7 @@ export default {
 			}else if(index == 1){
 				this.chooseImage(['camera'])
 			}else if(index == 2){
-				this.pStatus = true;
+				this.pShow = true;
 			} else if(index == 3){
 				// 上传可以不用传递url（使用全局的上传图片url）
 				this.$http.urlVideoUpload({

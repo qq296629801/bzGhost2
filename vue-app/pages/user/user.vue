@@ -1,29 +1,27 @@
 <template>
 	<view>
-		<u-navbar :is-back="false" title="　" :border-bottom="false">
-			<view class="u-flex u-row-right" style="width: 100%;">
-				<view class="camera u-flex u-row-center">
-					<u-icon @tap="jump('pages/find/firendCircle')" name="camera-fill" color="#000000" size="40"></u-icon>
+		<view class="head">
+			<view class="avatar">
+				<u-avatar @tap="previewImage" shape="square" src="/static/image/huge.jpg" size="80"></u-avatar>
+			</view>
+			<view class="box">
+				<view class="name">
+					<u--text size="22" mode="name" :text="user.realname"></u--text>
+				</view>
+				<view class="money">
+					<u--text type="info" :text="user.money"></u--text>
 				</view>
 			</view>
-		</u-navbar>
-		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
-			<view class="u-m-r-10 u-p-r-30">
-				<u-avatar @tap="previewImage" mode="square" src="/static/image/huge.jpg" size="140"></u-avatar>
-			</view>
-			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">{{user.realname}}</view>
-				<view class="u-font-14 u-tips-color">{{user.money}}</view>
-			</view>
-			<view class="u-m-l-10 u-p-10">
-				<u-icon name="arrow-right" color="#969799" size="28" @tap="jump('pages/user/my')"></u-icon>
+			<view class="arrow">
+				<u-icon name="arrow-right" color="#969799" size="30" @tap="jump('pages/user/my')"></u-icon>
 			</view>
 		</view>
-		<view class="u-m-t-20">
+		
+		<view class="">
 			<u-cell-group>
-				<u-cell-item @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title" :title-style="{ marginLeft: '30rpx' ,fontWeight:'400'}">
-					<u-icon slot="icon" :name="item.icon" :color="item.color" size="40"></u-icon>
-				</u-cell-item>
+				<u-cell @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
+					<u-icon slot="icon" :name="item.icon" :color="item.color" size="30"></u-icon>
+				</u-cell>
 			</u-cell-group>
 		</view>
 	</view>
@@ -37,10 +35,10 @@
 				show:true,
 				list: [
 					{
-						title: '朋友圈',
+						title: '相册',
 						color: '#00aaff',
 						icon: 'photo-fill',
-						url:'pages/find/firendCircle'
+						url:'pages/user/album'
 					},
 					{
 						title: '设置',
@@ -63,7 +61,7 @@
 				})
 			},
 			previewImage() {
-				let current = '/static/image/girl.jpg'
+				let current = '/static/image/huge.jpg'
 				uni.previewImage({
 					current,
 					urls: [current],
@@ -77,19 +75,30 @@
 </script>
 
 <style lang="scss">
-page{
-	background-color: #F6F7F8;
-}
-
-.camera{
-	width: 54px;
-	height: 44px;
-	
-	&:active{
-		background-color: #ededed;
+.head{
+	display: flex;
+	align-items: center;
+	padding: 30rpx;
+	height: 300rpx;
+	background-color: white;
+	.avatar{
+		display: flex;
+		width: 30%;
 	}
-}
-.user-box{
-	background-color: #fff;
+	.box{
+		display: flex;
+		width: 60%;
+		flex-direction: column;
+		.name{
+			font-weight: bold;
+		}
+		.money{
+			color: #565656;
+		}
+	}
+	.arrow{
+		display: flex;
+		width: 10%;
+	}
 }
 </style>
