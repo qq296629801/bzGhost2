@@ -7,7 +7,7 @@
 			
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			
-			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
+			<view @touchstart="touchmessage" class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<view class="username">
 						<u--text :text="item.fromUserName"></u--text>
@@ -66,11 +66,12 @@
 						<div class="tag">红包</div>
 					</view>
 					
-					
-					
 				</view>
 			</view> 
+			
+			
 			</mescroll-body>
+			
 		</view>
 		
 		<!-- 底部聊天输入框 -->
@@ -92,6 +93,7 @@
 						:confirm-hold="true"
 						placeholder-style="color:#DDDDDD;"
 						:cursor-spacing="10"
+						
 						@confirm="sendMsg(null)"
 					/>
 					<view
@@ -108,20 +110,12 @@
 				</view>
 				
 				<!-- 功能性按钮 -->
-				<view class="iconfont icontianjia icon_btn_add" @tap="switchFun(false)"></view>
-				
-				<!-- <view class="iconfont iconbiaoqing icon_btn_add" @tap="switchFun(true)"></view> -->
-				
-				<button type="primary" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
+				<view v-show="formData.content == ''" class="iconfont icontianjia icon_btn_add" @tap="switchFun"></view>
+				<button v-show="formData.content != ''" type="primary" class="icon_btn_add" size="mini" @touchend.prevent="sendMsg(null)">发送</button>
 			</view>
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
-				
-				<!-- <view v-if="face" class="face">
-					<face @addEmoji="addEmoji"></face>
-				</view> -->
-				
-				<u-grid v-if="!face" :col="4"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
+				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
 					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
 						<image class="img" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
@@ -358,8 +352,7 @@ export default {
 			this.showFunBtn =false;
 		},
 		//切换功能性按钮
-		switchFun(face){
-			this.face = face
+		switchFun(){
 			this.chatType = 'keyboard'
 			this.showFunBtn = !this.showFunBtn;
 			uni.hideKeyboard()
@@ -520,6 +513,10 @@ export default {
 		//用户触摸屏幕的时候隐藏键盘
 		touchstart() {
 			uni.hideKeyboard();
+		},
+		touchmessage(){
+			console.log(1111111111)
+			this.showFunBtn =false;
 		},
 		// 卡片
 		linkCard({userId, nickName, source}) {

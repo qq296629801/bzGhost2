@@ -54,6 +54,7 @@ page {
 		
 		.message-item {
 			display: flex;
+			z-index: 99;
 			justify-content: flex-start;
 			align-items: flex-start;
 			align-content: flex-start;
