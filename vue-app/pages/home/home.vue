@@ -9,6 +9,9 @@
 import msgList from '@/components/msg/msg-list.vue'
 import { mapState, mapMutations} from 'vuex';
 export default {
+	components:{
+		msgList
+	},
 	data() {
 		return {
 		};
