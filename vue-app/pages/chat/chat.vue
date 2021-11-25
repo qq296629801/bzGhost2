@@ -115,8 +115,8 @@
 			</view>
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
-				<u-grid :col="4"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
-					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
+				<u-grid :col="5"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
+					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index">
 						<image class="img" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
 					</u-grid-item>
