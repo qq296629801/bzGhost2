@@ -1,30 +1,29 @@
 <template>
 	<view>
 		<view class="userinfo">
-			<u-avatar src="/static/image/huge.jpg" mode="square" size="110" @tap="linkImg(url)"></u-avatar>
+			<u-avatar shape="square" src="https://cdn.uviewui.com/uview/album/1.jpg" size="60"></u-avatar>
 			<view class="userinfo-desc">
 				<view class="userinfo-desc-name">{{nickName}}</view>
-				<view class="userinfo-desc-gray">地区 未知</view>
+				<view class="userinfo-desc-gray">{{userId}}</view>
 			</view>
 		</view>
 		
 		<view  class="perch"></view>
 		
-		<u-cell-group>
-			<u-cell-item title="朋友圈" label="模拟数据暂不支持查看好友朋友圈" hover-class="none" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-			<u-cell-item title="更多" :title-style="{ marginLeft: '10rpx' }"></u-cell-item>
-		</u-cell-group>
+		<view class="cell-group">
+			<u-cell-group :border="false">
+				<u-cell title="朋友圈" label="模拟数据暂不支持查看好友朋友圈"></u-cell>
+				<u-cell title="更多" :title-style="{ marginLeft: '10rpx' }"></u-cell>
+				<u-cell v-if="source == 1" title="" @click="linkAdd" :arrow="false">
+						<view  style="text-align: center;">添加到通讯录</view>
+				</u-cell>
+				<u-cell v-else title="发消息" :arrow="false" @click="linkChat">
+					<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
+				</u-cell>
+			</u-cell-group>
+		</view>
 		
-		<view  class="perch"></view>
 		
-		<u-cell-group>
-			<u-cell-item v-if="source == 1" title="" @click="linkAdd" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }">
-					<view  style="text-align: center;">添加到通讯录</view>
-			</u-cell-item>
-			<u-cell-item v-else title="发消息" :arrow="false" :center="true" :title-style="{ marginLeft: '10rpx' }" @click="linkChat">
-				<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
-			</u-cell-item>
-		</u-cell-group>
 	</view>
 </template>
 
@@ -42,13 +41,12 @@
 			...mapState(['user'])
 		},
 		methods: {
-			...mapMutations(['setChatObj']),
 			linkChat(){
-				this.setChatObj({
+				this.$store.commit("setChatObj",{
 					chatId: this.userId,
 					chatName:this.nickName,
 					chatType:0
-				});
+				})
 				this.$u.route({
 					url:"pages/chat/chat"
 				});
@@ -75,9 +73,12 @@
 </script>
 
 <style scoped lang="scss">
-	.perch{
-		height: 10rpx;
-	}
+.perch{
+	height: 10rpx;
+}
+.cell-group{
+	background-color: white;
+}
 .userinfo{
 	display: flex;
 	justify-content: flex-start;

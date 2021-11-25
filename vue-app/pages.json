@@ -32,11 +32,6 @@
 							"fontSrc": "/static/iconfont/iconfont.ttf",
 							"float": "right",
 							"text": "\ue9c9"
-						},{
-							"fontSrc": "/static/icon/iconfont.ttf",
-							"float": "right",
-							"text": "\ue67d",
-							"width":"80rpx"
 						}]
 					}
 				}
@@ -243,7 +238,7 @@
 		    "path" : "pages/user/my",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "个人中心",
 		        "enablePullDownRefresh": false
 		    }
 		    

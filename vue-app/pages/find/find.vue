@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="cell-group">
 			<u-cell-group :border="false">
-				<u-cell  title="朋友圈" @tap="jumpPage">
+				<u-cell size="large"  title="朋友圈" @tap="jumpPage">
 					<u-avatar
 						slot="icon"
 						size="30"
@@ -12,7 +12,7 @@
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 				</u-cell>
-				<u-cell  title="扫一扫" @tap="linkToScan">
+				<u-cell size="large"  title="扫一扫" @tap="linkToScan">
 					<u-avatar
 						slot="icon"
 						size="30"

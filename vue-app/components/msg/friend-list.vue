@@ -2,7 +2,7 @@
 	<u-index-list>
 		<u-cell-group slot="header">
 			
-			<u-cell title="新的朋友" @tap="jumpNewFriend">
+			<u-cell :clickable="true" title="新的朋友" @tap="jumpNewFriend">
 				<u-avatar
 					slot="icon"
 					shape="square"
@@ -14,7 +14,7 @@
 				></u-avatar>
 			</u-cell>
 
-			<u-cell title="我的群组" @tap="jumpGroupList">
+			<u-cell :clickable="true" title="我的群组" @tap="jumpGroupList">
 				<u-avatar
 					slot="icon"
 					shape="square"
@@ -41,6 +41,7 @@
 					v-for="(item1, index1) in item.members"
 					:key="index1"
 					:title="item1.nickName"
+					:clickable="true"
 					:border="index1 !== item.members.length - 1"
 					@tap="jumpBusinessCard(item1)"
 				>

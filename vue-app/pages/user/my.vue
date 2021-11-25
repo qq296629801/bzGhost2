@@ -1,27 +1,34 @@
 <template>
-	<view>
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar :is-back="false" title=" " :background="{ background: '#ffffff'  }" :border-bottom="false"></u-navbar>
-		<!-- #endif -->
-		
+	<view class="content">
 		<u-cell-group>
-			<u-cell-item title="头像" :title-style="{ marginLeft: '10rpx' }">
-				<u-upload :showUploadList="false" style="display: inline;" :custom-btn="true" @on-uploaded="onUploaded" :action="action">
-					<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
-						<u-icon name="/static/image/huge.jpg" size="60"></u-icon>
-					</view>
-				</u-upload>
-			</u-cell-item>
+			<u-cell title="头像">
+				<u-upload slot="right-icon"
+					:fileList="fileList3"
+					@afterRead="afterRead"
+					@delete="deletePic"
+					name="3"
+					multiple
+					:maxCount="10"
+					:previewFullImage="true"
+				></u-upload>
+			</u-cell>
 			
-			<u-cell-item title="昵称" @tap="linkTo(user.realname,0)" :value="user.realname" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
+			<u-cell title="昵称" @tap="linkTo(user.realname,0)" :value="user.realname">
+			</u-cell>
 			
-			<u-cell-item title="用户名" :arrow="false" :value="user.username" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
+			<u-cell title="用户名" :arrow="false" :value="user.username">
+			</u-cell>
 			
-			<u-cell-item @tap="linkToQrcode" title="二维码" :title-style="{ marginLeft: '10rpx' }">
-				<view style="font-size: 16px;color: #969799;" class="iconfont iconxingzhuangjiehe"></view>
-			</u-cell-item>
+			<u-cell @tap="linkToQrcode" title="二维码">
+				<u-avatar
+					slot="right-icon"
+					size="30"
+					icon="fingerprint"
+					fontSize="26"
+					randomBgColor
+					customStyle="margin: -3px 5px -3px 0"
+				></u-avatar>
+			</u-cell>
 		</u-cell-group>
 	</view>
 </template>
@@ -33,26 +40,16 @@
 		data() {
 			return {
 				action:base.baseUrl,
-				filesArr: [],
+				fileList1: [],
+				fileList3: [{
+					url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
+				}],
 			}
 		},
 		computed:{
-			...mapState(['user','packet'])
+			...mapState(['user'])
 		},
 		methods: {
-			onUploaded(lists) {
-				this.filesArr = lists;
-				let res = lists[0];
-				if(res.response===undefined){
-					uni.showToast({
-						title:'文件错误',
-						icon:'none'
-					})
-				}
-				this.$socket.updateAvatar(this.user.operId, res.response.data, res => {
-				  this.user = res.response.data;
-				  });
-			},
 			linkToQrcode(){
 				this.$u.route({
 					url: 'pages/user/qr'
@@ -63,15 +60,57 @@
 					url: 'pages/chat/groupEdit',
 					params: { context, type }
 				});
-			}
+			},
+			// 删除图片
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1)
+			},
+			// 新增图片
+			async afterRead(event) {
+				// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file)
+				let fileListLen = this[`fileList${event.name}`].length
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中'
+					})
+				})
+				for (let i = 0; i < lists.length; i++) {
+					const result = await this.uploadFilePromise(lists[i].thumb)
+					let item = this[`fileList${event.name}`][fileListLen]
+					this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result
+					}))
+					fileListLen++
+				}
+			},
+			uploadFilePromise(url) {
+				return new Promise((resolve, reject) => {
+					let a = uni.uploadFile({
+						url: base.baseUrl + '/file/upload', // 仅为示例，非真实的接口地址
+						filePath: url,
+						name: 'file',
+						formData: {
+							user: 'test'
+						},
+						success: (res) => {
+							setTimeout(() => {
+								resolve(res.data.data)
+							}, 1000)
+						}
+					});
+				})
+			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.slot-btn {
-	}
-	.slot-btn__hover {
-		background-color: rgb(235, 236, 238);
+	.content{
+		background-color: white;
 	}
 </style>

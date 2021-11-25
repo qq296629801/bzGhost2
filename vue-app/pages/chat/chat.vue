@@ -10,7 +10,7 @@
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					<view class="username">
-						{{item.fromUserName}}
+						<u--text :text="item.fromUserName"></u--text>
 						<image class="img" :src="host + item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
 					</view>
 					

@@ -6,7 +6,7 @@
 			</view>
 			<view class="box">
 				<view class="name">
-					<u--text size="22" mode="name" :text="user.realname"></u--text>
+					<u--text size="20" mode="name" :text="user.realname"></u--text>
 				</view>
 				<view class="money">
 					<u--text type="info" :text="user.money"></u--text>
@@ -21,7 +21,7 @@
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">
-				<u-cell isLink @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
+				<u-cell size="large" isLink @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
 					<u-avatar
 						slot="icon"
 						size="30"
