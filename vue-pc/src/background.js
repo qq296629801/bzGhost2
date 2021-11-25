@@ -22,7 +22,7 @@ if (process.env.NODE_ENV !== "development") {
   global.__static = path.join(__dirname, "/static").replace(/\\/g, "\\\\");
 }
 
-let iconPath = "/static/static/icon.ico";
+let iconPath = "/static/icon.ico";
 let emptyIconPath = "/static/empty.ico";
 if (process.env.NODE_ENV === "development") {
   iconPath = "../public/static/icon.ico";
