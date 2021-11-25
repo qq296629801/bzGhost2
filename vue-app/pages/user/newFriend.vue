@@ -1,8 +1,41 @@
 <template>
 	<view class="content">
+		<view class="u-page">
+			<u-list
+				@scrolltolower="scrolltolower"
+			>
+				<u-list-item
+					v-for="(item, index) in list"
+					:key="index"
+				>
+					<u-cell @tap="jumpChatPage(item)" :clickable="true"
+						:title="item.nickName" :label="item.lastOperTime"
+					>
+						<u-avatar
+							slot="icon"
+							shape="square"
+							size="50"
+							src="https://cdn.uviewui.com/uview/album/1.jpg"
+							customStyle="margin: -3px 5px -3px 0"
+						></u-avatar>
+						
+						<u-button slot="value" @tap="addFriend(value)" type="success" size="mini">同意</u-button>
+					</u-cell>
+				</u-list-item>
+			</u-list>
+		</view>
+		
+		
+		
 		<view v-for="(value, index) in list">
 			<view class="item u-border-bottom" hover-class="message-hover-class">
-				<img-cache src="/static/image/huge.jpg"></img-cache>
+				<u-avatar
+					slot="icon"
+					shape="square"
+					size="35"
+					src="https://cdn.uviewui.com/uview/album/1.jpg"
+					customStyle="margin: -3px 5px -3px 0"
+				></u-avatar>
 				<view class="right title-wrap">
 					<view class="right_top">
 						<view class="right_top_name">{{ value.nickName }}</view>
@@ -40,6 +73,8 @@ export default {
 		this.findFriend()
 	},
 	methods: {
+		scrolltolower(){
+		},
 		addFriend(item){
 			item.userId = this.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{

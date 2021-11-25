@@ -6,7 +6,7 @@
 				<u-avatar
 					slot="icon"
 					shape="square"
-					size="35"
+					size="40"
 					icon="man-add-fill"
 					fontSize="26"
 					randomBgColor
@@ -18,7 +18,7 @@
 				<u-avatar
 					slot="icon"
 					shape="square"
-					size="35"
+					size="40"
 					icon="account-fill"
 					fontSize="26"
 					randomBgColor
@@ -47,7 +47,7 @@
 					<u-avatar
 						slot="icon"
 						shape="square"
-						size="35"
+						size="40"
 						src="https://cdn.uviewui.com/uview/album/1.jpg"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>

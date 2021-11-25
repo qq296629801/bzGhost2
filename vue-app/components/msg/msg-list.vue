@@ -13,7 +13,7 @@
 					<u-avatar
 						slot="icon"
 						shape="square"
-						size="40"
+						size="50"
 						src="https://cdn.uviewui.com/uview/album/1.jpg"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>

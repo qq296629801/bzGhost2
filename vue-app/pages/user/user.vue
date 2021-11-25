@@ -2,7 +2,7 @@
 	<view>
 		<view class="head">
 			<view class="avatar">
-				<u-avatar @tap="previewImage" shape="square" src="/static/image/huge.jpg" size="80"></u-avatar>
+				<u-avatar shape="square" src="https://cdn.uviewui.com/uview/album/1.jpg" size="60"></u-avatar>
 			</view>
 			<view class="box">
 				<view class="name">
@@ -17,9 +17,11 @@
 			</view>
 		</view>
 		
-		<view class="">
+		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+		
+		<view class="cell-group">
 			<u-cell-group>
-				<u-cell @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
+				<u-cell isLink @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
 					<u-icon slot="icon" :name="item.icon" :color="item.color" size="30"></u-icon>
 				</u-cell>
 			</u-cell-group>
@@ -37,13 +39,13 @@
 					{
 						title: '相册',
 						color: '#00aaff',
-						icon: 'photo-fill',
+						icon: 'photo',
 						url:'pages/user/album'
 					},
 					{
 						title: '设置',
 						color: '#00aaff',
-						icon: 'setting-fill',
+						icon: 'setting',
 						url:'pages/seting/index'
 					}
 				],
@@ -75,6 +77,9 @@
 </script>
 
 <style lang="scss">
+.cell-group{
+	background-color: white;
+}
 .head{
 	display: flex;
 	align-items: center;
@@ -83,11 +88,11 @@
 	background-color: white;
 	.avatar{
 		display: flex;
-		width: 30%;
+		width: 20%;
 	}
 	.box{
 		display: flex;
-		width: 60%;
+		width: 70%;
 		flex-direction: column;
 		.name{
 			font-weight: bold;
