@@ -234,7 +234,7 @@
 		    "path" : "pages/find/firendCircle",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "朋友圈",
 		        "enablePullDownRefresh": false
 		    }
 		    
