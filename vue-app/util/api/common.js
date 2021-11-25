@@ -7,7 +7,7 @@ const api = {
 	friendUrl:'app/friend/list',
 	conversationUrl:'app/conversation/list'
 }
-function online(){
+function download(){
 	let userId = store.state.user.operId;
 	
 	http.post(api.postUrl, {
@@ -35,5 +35,5 @@ function online(){
 	});
 }
 module.exports = {
-    online: online
+    download: download
 }

@@ -3,7 +3,7 @@
 		<!-- 红包弹窗 -->
 		<view class="windows" :class="winState">
 			<!-- 遮罩层 -->
-			<view class="mask" @touchmove.stop.prevent="discard" @tap="hiddenCard"></view>
+			<view class="mask" @touchmove.stop.prevent="discard" @tap="hideCard"></view>
 			<view class="layer" @touchmove.stop.prevent="discard">
 				<view class="redenvelope">
 					<view class="from">
@@ -22,7 +22,7 @@
 						
 						<view class="img" @tap="openCard">开</view>
 					</view>
-					<view class="showDetails" @tap="toDetails">
+					<view class="showDetails" @tap="jumpDetail">
 						查看领取详情
 					</view>
 				</view>
@@ -61,10 +61,10 @@
 			openCard:function(){
 				this.$emit('openCard')
 			},
-			hiddenCard: function(){
-				this.$emit('hiddenCard')
+			hideCard: function(){
+				this.$emit('hideCard')
 			},
-			toDetails(){
+			jumpDetail(){
 				uni.navigateTo({
 					url:'/pages/chat/detail'
 				})

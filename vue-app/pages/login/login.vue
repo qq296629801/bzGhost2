@@ -25,7 +25,7 @@
 				class="wbutton"
 				text="登 录"
 				:rotate="loading" 
-				@click="linkLogin"
+				@click="jumpLogin"
 			></wButton>
 			
 			<view class="footer">
@@ -41,8 +41,8 @@
 	let my;
 	import wInput from '@/components/watch-login/watch-input.vue' 
 	import wButton from '@/components/watch-login/watch-button.vue'
-	import apiCommon from '@/util/api/common.js'
-	import apiMessage from '@/util/api/message.js'
+	import db2 from '@/util/api/common.js'
+	import db from '@/util/api/message.js'
 	import { mapState, mapMutations } from 'vuex';
 	import store from '@/store/index.js' 
 	export default {
@@ -70,24 +70,21 @@
 			this.logoImage = this.$base.logoImage
 		},
 		methods: {
-		    linkLogin(e){
+		    jumpLogin(e){
 				if(my.loading){
 					return false;
 				}
 				my.loading=true
 				this.$http.get('/login',this.formData).then(res=>{
+					store.commit("setUser",res.user);
+					store.commit("setToken",res.token);
+					store.commit("setConfig",res.config);
+					store.commit("setRoles",res.roles);
+					store.commit("setPermissions",res.permissions);
 					
 					this.$socket.login(b=>{
-						console.log(res)
-						
-						store.commit("setUser",res.user);
-						store.commit("setToken",res.token);
-						store.commit("setConfig",res.config);
-						store.commit("setRoles",res.roles);
-						store.commit("setPermissions",res.permissions);
-						
-						apiMessage.online();
-						apiCommon.online();
+						db.download();
+						db2.download();
 						
 						my.loading=false;
 						

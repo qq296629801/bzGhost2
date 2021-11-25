@@ -147,7 +147,7 @@
 		>
 		
 		<!-- 红包卡片 -->
-		<red-card :packet="packet" :winState="winState" @hiddenCard="hiddenCard" @openCard="openCard"></red-card>
+		<red-card :packet="packet" :winState="winState" @hideCard="hideCard" @openCard="openCard"></red-card>
 		
 		<!-- 发包-->
 		<packet :pShow="pShow" @packet="packetTap" @close="close"></packet>
@@ -158,7 +158,7 @@
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { mapState, mapMutations } from 'vuex';
 import face from '@/components/face'
-import messageAPI from '@/util/api/message.js';
+import db from '@/util/api/message.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
@@ -297,7 +297,7 @@ export default {
 			_t.message = item
 			_t.winState = 'show';
 		},
-		hiddenCard(){
+		hideCard(){
 			this.winState = 'hide';
 			setTimeout(()=>{
 				this.winState = '';
@@ -336,7 +336,7 @@ export default {
 		
 		// 初始消息数据
 		async initData() {
-			messageAPI.getItem(this.chatObj.chatId).then(res=>{
+			db.getItem().then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
 					this.mescroll.scrollTo(99999, 0);
@@ -427,14 +427,14 @@ export default {
 						}
 					}
 				}
-				messageAPI.upPacket(params.hasBeenSentId, _t.chatObj.chatId, params.content);
+				db.upPacket(params.hasBeenSentId, params.content);
 			}else if(params.contentType == _t.messageType.createPacket){
 				_t.messageList.push(params);
-				messageAPI.commit(params,_t.chatObj.chatId);
+				db.commit(params);
 			} else if(params.contentType == _t.messageType.text){
 				if(_t.formData.content!=''){
 					_t.messageList.push(params);
-					messageAPI.commit(params,_t.chatObj.chatId);
+					db.commit(params,_t.chatObj.chatId);
 					_t.$http.post('app/msg/add',{
 						chatId: _t.chatObj.chatId,
 						chatType:_t.chatObj.chatType,
@@ -445,7 +445,7 @@ export default {
 				}
 			} else {
 				_t.messageList.push(params);
-				messageAPI.commit(params,_t.chatObj.chatId);
+				db.commit(params);
 				_t.$http.post('app/msg/add',{
 					chatId: _t.chatObj.chatId,
 					chatType:_t.chatObj.chatType,
@@ -478,12 +478,12 @@ export default {
 										}
 									}
 								}
-								messageAPI.upPacket(res.hasBeenSentId, _t.chatObj.chatId, res.content);
+								db.upPacket(res.hasBeenSentId, res.content);
 							}else {
 								// 本地内存
 								_t.messageList.push(res);
 								// 本地缓存
-								messageAPI.commit(res, _t.chatObj.chatId);
+								db.commit(res);
 								// 页面置底
 								_t.mescroll.scrollTo(99999, 0);
 								// 页面红点

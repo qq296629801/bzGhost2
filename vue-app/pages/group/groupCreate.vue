@@ -38,15 +38,15 @@
 			}
 		},
 		onShow() {
-			apiCommon.getItem('friend').then(res=>{
-				this.list = res
-				this.firendItem = res
-				let indexList = []
-				this.list.forEach(item => {
-					indexList.push(item.name)
-				})
-				this.indexList = indexList
-			});
+			// apiCommon.getItem('friend').then(res=>{
+			// 	this.list = res
+			// 	this.firendItem = res
+			// 	let indexList = []
+			// 	this.list.forEach(item => {
+			// 		indexList.push(item.name)
+			// 	})
+			// 	this.indexList = indexList
+			// });
 		},
 		computed:{
 			...mapState(['user'])

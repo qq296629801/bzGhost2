@@ -1,9 +1,10 @@
 import cache from '@/util/cache.js'
-import requestConfig from '@/util/requestConfig'
+import http from '@/util/requestConfig'
 import store from '@/store/index.js'
 var postfix = 'msgItem_';
 
- function getItem(chatId) {
+ function getItem() {
+   let chatId = store.state.chatObj.chatId;
    let list = cache.get(postfix+chatId);
    return new Promise((resolve,reject) =>{
 	   try{
@@ -19,16 +20,16 @@ var postfix = 'msgItem_';
    })
 }
 
-function online(){
+function download(){
 	let userId = store.state.user.operId;
-	requestConfig.post('app/group/msg/online', {
+	http.post('app/group/msg/online', {
 		userId
 	}).then(res=>{
 		res.forEach(r=>{
 			cache.set(postfix+r.groupInfo.chatId,r.groupMsg.list)
 		})
 	});
-	requestConfig.post('app/friend/msg/online', {userId,condition:''}).then(res=>{
+	http.post('app/friend/msg/online', {userId,condition:''}).then(res=>{
 		res.forEach(r=>{
 			cache.set(postfix+r.friendInfo.id,r.friendMsg)
 		})
@@ -37,7 +38,8 @@ function online(){
 
 
 
-function del(id, chatId, obj){
+function del(id, obj = {}){
+	let chatId = store.state.chatObj.chatId;
 	let list = cache.get(postfix+chatId);
 	if(list==""){
 		let tempItem = [];
@@ -54,7 +56,8 @@ function del(id, chatId, obj){
 }
 
 
- function upPacket(hasBeenSentId, chatId, content){
+ function upPacket(hasBeenSentId, content){
+	let chatId = store.state.chatObj.chatId;
 	let list = cache.get(postfix+chatId);
 	if(list==""){
 		let tempItem = [];
@@ -71,23 +74,24 @@ function del(id, chatId, obj){
 }
 	
 
-function commit(obj, gid){
-	let list = cache.get(postfix+gid);
+function commit(obj = {}){
+	let chatId = store.state.chatObj.chatId;
+	let list = cache.get(postfix+chatId);
 	if(list==""){
 		let tempItem = [];
 		tempItem.push(obj);
-		cache.set(postfix+gid,tempItem)
+		cache.set(postfix+chatId,tempItem)
 		return;
 	}
 	if(list.length>=10){
 		list.splice(0,1);
 	}
 	list.push(obj);
-	cache.set(postfix+gid,list)
+	cache.set(postfix+chatId,list)
 }
 
 module.exports = {
-    online: online,
+    download: download,
     getItem: getItem,
 	commit: commit,
 	delete: del,
