@@ -9,7 +9,7 @@
 					:key="index"
 				>
 					<u-cell @tap="jumpChatPage(item)" :clickable="true"
-						:title="item.chatName" :label="item.lastOpenTime | format"
+						:title="item.chatName" :label="item.lastOperTime | format"
 					>
 						<u-avatar
 							slot="icon"

@@ -22,7 +22,7 @@
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"enablePullDownRefresh": true ,
+				"enablePullDownRefresh": false ,
 				// #ifdef MP-WEIXIN
 				"navigationStyle": "custom",
 				// #endif
@@ -161,25 +161,8 @@
 		{
 			"path": "pages/friend/friend",
 			"style": {
-				"navigationBarTitleText": "消息",
-				"enablePullDownRefresh": false ,
-				// #ifdef MP-WEIXIN
-				"navigationStyle": "custom",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/iconfont/iconfont.ttf",
-							"float": "right",
-							"text": "\ue9c9"
-						},{
-							"fontSrc": "/static/icon/iconfont.ttf",
-							"float": "right",
-							"text": "\ue67d",
-							"width":"80rpx"
-						}]
-					}
-				}
+				"navigationBarTitleText": "通讯录",
+				"enablePullDownRefresh": false 
 			}
 		},
 		{
@@ -197,7 +180,7 @@
 		    "path" : "pages/find/find",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "我的",
+		        "navigationBarTitleText": "发现",
 		        "enablePullDownRefresh": false
 		    }
 		    
@@ -233,7 +216,7 @@
 		    "path" : "pages/user/newFriend",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "新的朋友",
 		        "enablePullDownRefresh": false
 		    }
 		    
@@ -242,7 +225,7 @@
 		    "path" : "pages/group/groupItem",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "我的群组",
 		        "enablePullDownRefresh": false
 		    }
 		    

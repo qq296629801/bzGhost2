@@ -13,16 +13,23 @@
 				</view>
 			</view>
 			<view class="arrow">
-				<u-icon name="arrow-right" color="#969799" size="30" @tap="jump('pages/user/my')"></u-icon>
+				<u-icon name="arrow-right" color="#969799" size="20" @tap="jump('pages/user/my')"></u-icon>
 			</view>
 		</view>
 		
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 		
 		<view class="cell-group">
-			<u-cell-group>
+			<u-cell-group :border="false">
 				<u-cell isLink @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">
-					<u-icon slot="icon" :name="item.icon" :color="item.color" size="30"></u-icon>
+					<u-avatar
+						slot="icon"
+						size="30"
+						:icon="item.icon"
+						fontSize="26"
+						randomBgColor
+						customStyle="margin: -3px 5px -3px 0"
+					></u-avatar>
 				</u-cell>
 			</u-cell-group>
 		</view>

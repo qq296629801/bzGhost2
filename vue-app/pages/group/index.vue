@@ -1,7 +1,6 @@
 <template>
 	<view class="content">
 		<view class="member">
-			
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
 					<image class="img" :src="host + item.avatar"></image>
@@ -22,36 +21,37 @@
 			<view class="more" @tap="linkMore" v-if="group.members.length>20">查看更多</view>
 		</view>
 		
-		<view style="height: 20rpx;"></view>
 		
-		<u-cell-group>
-			<u-cell @tap="show = true" title="群名称" :value="group.group.groupName" :title-style="titleStyle"></u-cell>
-			<u-cell @tap="xxShow = true" title="群公告" label="暂无公告" :title-style="titleStyle"></u-cell>
-			<u-cell title="二维码" :title-style="titleStyle">
-				<view class="iconfont iconxingzhuangjiehe erweima"></view>
-			</u-cell>
-			<u-cell @tap="xxxShow = true"
-				title="群昵称"
-				:value="group.groupUser.groupNickName"
-				:title-style="titleStyle"
-			></u-cell>
-			<u-cell title="全体禁言" :title-style="titleStyle" :arrow="false">
-				<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
-			</u-cell>
-			<u-cell title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell>
-			<u-cell title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell>
-		</u-cell-group>
-		
-		<view  style="height: 20rpx;"></view>
-		
-		<u-cell-group>
-			<u-cell :title-style="titleStyle" @click="delMess" :arrow="false">
-				<view class="btn-red">清空聊天记录</view>
-			</u-cell>
-			<u-cell :title-style="titleStyle" @click="removeMem" :arrow="false">
-				<view class="btn-red">删除并退出</view>
-			</u-cell>
-		</u-cell-group>
+		<view class="cell-group">
+			
+			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+			<u-cell-group :border="false">
+				<u-cell @tap="show = true" title="群名称" :value="group.group.groupName"></u-cell>
+				<u-cell @tap="xxShow = true" title="群公告" value="xx" label="暂无公告"></u-cell>
+				<u-cell title="二维码">
+					<view class="iconfont iconxingzhuangjiehe erweima"></view>
+				</u-cell>
+				<u-cell @tap="xxxShow = true"
+					title="群昵称"
+					:value="group.groupUser.groupNickName"
+				></u-cell>
+				<u-cell title="全体禁言" :arrow="false">
+					<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
+				</u-cell>
+				<u-cell title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell>
+				<u-cell title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell>
+			</u-cell-group>
+			
+			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+			<u-cell-group :border="false">
+				<u-cell @click="delMess" :arrow="false">
+					<view slot="label" class="btn-red">清空聊天记录</view>
+				</u-cell>
+				<u-cell @click="removeMem" :arrow="false">
+					<view slot="label" class="btn-red">删除并退出</view>
+				</u-cell>
+			</u-cell-group>
+		</view>
 		
 		
 		<u-popup :show="show" mode="bottom">
@@ -209,6 +209,11 @@ export default {
 
 <style lang="scss">
 	.content{
+		.cell-group{
+			background-color: white;
+		}
+		
+		
 		.xx{
 			height: 500rpx;
 			padding: 50rpx;
@@ -227,7 +232,7 @@ export default {
 		}
 		.member{
 			background-color: #FFFFFF;
-			padding-left: 30rpx;
+			//padding-left: 30rpx;
 		}
 		.more{
 			text-align: center;

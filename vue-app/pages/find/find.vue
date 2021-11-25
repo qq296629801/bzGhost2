@@ -1,12 +1,26 @@
 <template>
 	<view class="content">
 		<view class="cell-group">
-			<u-cell-group>
+			<u-cell-group :border="false">
 				<u-cell  title="朋友圈" @tap="jumpPage">
-					<u-icon slot="icon" name="moments" color="#55aaff" size="30"></u-icon> 
+					<u-avatar
+						slot="icon"
+						size="30"
+						icon="moments"
+						fontSize="26"
+						randomBgColor
+						customStyle="margin: -3px 5px -3px 0"
+					></u-avatar>
 				</u-cell>
 				<u-cell  title="扫一扫" @tap="linkToScan">
-					<u-icon slot="icon" name="scan" color="#55aaff" size="30"></u-icon> 
+					<u-avatar
+						slot="icon"
+						size="30"
+						icon="scan"
+						fontSize="26"
+						randomBgColor
+						customStyle="margin: -3px 5px -3px 0"
+					></u-avatar>
 				</u-cell>
 			</u-cell-group>	
 		</view>

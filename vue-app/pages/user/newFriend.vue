@@ -9,7 +9,7 @@
 					:key="index"
 				>
 					<u-cell @tap="jumpChatPage(item)" :clickable="true"
-						:title="item.nickName" :label="item.lastOperTime"
+						:title="item.nickName" :label="item.lastOperTime | format"
 					>
 						<u-avatar
 							slot="icon"
@@ -25,34 +25,6 @@
 			</u-list>
 		</view>
 		
-		
-		
-		<view v-for="(value, index) in list">
-			<view class="item u-border-bottom" hover-class="message-hover-class">
-				<u-avatar
-					slot="icon"
-					shape="square"
-					size="35"
-					src="https://cdn.uviewui.com/uview/album/1.jpg"
-					customStyle="margin: -3px 5px -3px 0"
-				></u-avatar>
-				<view class="right title-wrap">
-					<view class="right_top">
-						<view class="right_top_name">{{ value.nickName }}</view>
-						<view class="right_top_time">{{value.operTime | format}}</view>
-					</view>
-					
-					<view class="right_btm">
-						<view>
-							{{value.remark}}
-						</view>
-						<view>
-							<u-button @tap="addFriend(value)" type="success" size="mini">同意</u-button>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -129,53 +101,5 @@ export default {
 <style lang="scss">
 	.content{
 		background-color: #fff;
-		.item {
-				width: 750rpx;
-				height: 140rpx;
-				display: flex;
-				align-items: center;
-				image {
-					width: 96rpx;
-					height: 96rpx;
-					margin: 20rpx;
-					border-radius: 12rpx;
-					flex: 0 0 96rpx;
-				}
-				.right {
-					overflow: hidden;
-					flex: 1 0;
-					padding: 20rpx 20rpx 40rpx 0;
-					&_top {
-						display: flex;
-						justify-content: space-between;
-						&_name {
-							font-size: 28rpx;
-							font-weight: 800;
-							color: $u-main-color;
-							flex: 0 0 450rpx;
-							overflow: hidden;
-						}
-						&_time {
-							font-size: 22rpx;
-							color: $u-light-color;
-						}
-					}
-					&_btm {
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
-						font-size: 22rpx;
-						color: $u-tips-color;
-					}
-				}
-			}
-			.bg_view {
-				background-color: #fafafa;
-			}
-			.slot-wrap {
-				display: flex;
-				align-items: center;
-				padding: 0 30rpx; 
-			}
 	}
 </style>
