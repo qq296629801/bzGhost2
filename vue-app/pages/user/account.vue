@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<u-cell-group>
-			<u-cell-item :arrow="false" title="微信号" :value="user.username" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-			<u-cell-item :arrow="false" title="手机号" :value="user.mobile" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
+			<u-cell :arrow="false" title="微信号" :value="user.username">
+			</u-cell>
+			<u-cell :arrow="false" title="手机号" :value="user.mobile">
+			</u-cell>
 		</u-cell-group>
 	</view>
 </template>

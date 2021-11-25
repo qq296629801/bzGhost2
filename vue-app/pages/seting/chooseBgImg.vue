@@ -1,12 +1,8 @@
 <template>
 	<view>
 		<u-cell-group>
-			<u-cell-item title="选择内置背景图" :title-style="{ marginLeft: '10rpx' }" @click="linkToBuiltinBgImg"></u-cell-item>
-		</u-cell-group>
-		<view style="height: 10rpx;"></view>
-		<u-cell-group>
-			<u-cell-item title="通过手机选择" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg"></u-cell-item>
-		</u-cell-group>
+			<u-cell title="选择内置背景图" @click="linkToBuiltinBgImg"></u-cell>
+			<u-cell-item title="通过手机选择" @click="chooseImg"></u-cell>
 		<u-toast ref="uToast" />
 	</view>
 </template>

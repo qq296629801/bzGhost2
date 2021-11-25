@@ -8,24 +8,18 @@
 				</u-grid-item>
 			</u-grid>
 		</view>
-		
-		<view style="height: 20rpx;"></view>
-		
-		<u-cell-group>
-			<u-cell-item title="查看聊天内容" @click="showSearch" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-			<u-cell-item title="设置聊天背景" :title-style="{ marginLeft: '10rpx' }" @click="chooseImg">
-			</u-cell-item>
-			
-		</u-cell-group>
-		
-		<view style="height: 20rpx;"></view>
-		
-		<u-cell-group>
-			<u-cell-item :title-style="{ marginLeft: '10rpx' }" @click="delFriendMsg" :arrow="false">
-				<view style="text-align: center; color: red;">清空聊天记录</view>
-			</u-cell-item>
-		</u-cell-group>
+		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+		<view class="head">
+			<u-cell-group>
+				<u-cell title="查看聊天内容" @click="showSearch">
+				</u-cell>
+				<u-cell title="设置聊天背景" @click="chooseImg">
+				</u-cell>
+				<u-cell @click="delFriendMsg">
+					<view solt="label" style="text-align: center; color: red;">清空聊天记录</view>
+				</u-cell>
+			</u-cell-group>
+		</view>
 	</view>
 </template>
 
@@ -48,8 +42,5 @@
 	.head{
 		background-color: white;
 	}
-	.status_bar {
-		height: var(--status-bar-height);
-		width: 100%;
-	}
+	
 </style>

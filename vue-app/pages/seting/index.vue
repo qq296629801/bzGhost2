@@ -1,26 +1,16 @@
 <template>
 	<view class="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar :is-back="false" title=" " :background="{ background: '#ffffff'  }" :border-bottom="false"></u-navbar>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-		<view class="status_bar"></view>
-		<!-- #endif -->
-		
-		<u-cell-group>
-			<u-cell-item title="账号与安全" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-			<u-cell-item @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
-			</u-cell-item>
-		</u-cell-group>
-
-		<view  style="height: 20rpx;"></view>
-		
-		<u-cell-group>
-			<u-cell-item :arrow="false" @click="logout">
-				<view style="text-align: center;">退出登录</view>
-			</u-cell-item>
-		</u-cell-group>
+		<view class="cell-group">
+			<u-cell-group>
+				<u-cell size="large" title="关于我们" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">
+				</u-cell>
+				<u-cell size="large" value="1.0" @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
+				</u-cell>
+				<u-cell size="large" :arrow="false" @click="logout">
+					<view slot="label" style="text-align: center;">退出登录</view>
+				</u-cell>
+			</u-cell-group>
+		</view>
 	</view>
 </template>
 
@@ -60,7 +50,7 @@ export default {
 			});
 		},
 		logout(){
-			this.$socket.logout(res =>{});
+			//this.$socket.logout(res =>{});
 			uni.clearStorageSync();
 			this.$u.route({
 				url: 'pages/login/login'

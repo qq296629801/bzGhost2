@@ -1,12 +1,5 @@
 <template>
 	<view class="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar title=" " :background="{ background: '#F6F7F8'}" :border-bottom="false" back-icon-name="" back-text="取消" :back-text-style="{color:'#404133'}">
-			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="handleLink" >完成</u-button>
-			</view>		
-		</u-navbar>
-		<!-- #endif -->
 		<u-grid @click="clickGrid">
 			<u-grid-item v-for="(item, index) in bgList" :key="index"  :index="index">
 				<image :src="item.src" class="img" mode="scaleToFill"></image>
