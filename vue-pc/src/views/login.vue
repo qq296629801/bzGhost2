@@ -6,7 +6,7 @@
       <Alert v-if="showErr" type="error">{{ err }}</Alert>
       <div v-show="!showRegister" class="login-form">
         <div class="login-form-left">
-          <img class="my-logo" src="../static/ll.png" alt="" />
+          <img class="my-logo" src="../static/logo.png" alt="" />
         </div>
         <div class="login-form-right">
           <div class="title">账号密码登录</div>
@@ -232,26 +232,22 @@ export default {
       });
     },
     tapLogin: function() {
-      let {Login} = this
       this.$get('/login',this.loginParams).then(res=>{
-          console.log(res);
 
           store.commit("setUser",res.user);
           store.commit("setToken",res.token);
           store.commit("setConfig",res.config);
           store.commit("setRoles",res.roles);
           store.commit("setPermissions",res.permissions);
-
-            messageAPI.pull();
-            
-            commonAPI.pull();
+          messageAPI.pull();
+          commonAPI.pull();
 
           this.$socket.login(res2=>{});
           
-            this.$router.push({
-              path: "/index/chatBox",
-              params: {}
-            });
+          this.$router.push({
+            path: "/index/chatBox",
+            params: {}
+          });
 
       });
     }
@@ -304,7 +300,7 @@ export default {
   }
 
   .login-panel {
-    background: url("../static/login-bg.png") no-repeat;
+    background: url("../static/bg.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
     left: 50%;

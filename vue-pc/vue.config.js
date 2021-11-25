@@ -3,8 +3,8 @@ module.exports = {
     electronBuilder: {
       builderOptions: {
         appId: "https://gitee.com/Huiyun-Co/yiqun.git",
-        productName: "yiqun", //项目名，也是生成的安装文件名，即aDemo.exe
-        copyright: "Copyright © 2020 yiqun", //版权信息
+        productName: "bzGhost", //项目名，也是生成的安装文件名，即aDemo.exe
+        copyright: "Copyright © 2020 bzGhost", //版权信息
         directories: {
           output: "./dist_electron" //输出文件路径
         },

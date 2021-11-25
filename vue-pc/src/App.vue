@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "yiqun"
+  name: "bzGhost"
 };
 </script>
 <style lang="scss">

@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-message">
-    <img src="~@/static/ll.png" alt="icon" />
+    <img src="~@/static/logo.png" alt="icon" />
   </div>
 </template>
 <script>
