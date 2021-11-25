@@ -140,7 +140,7 @@ import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import { mapState, mapMutations } from 'vuex';
 import { imageLoad, transform } from "../../../utils/ChatUtils";
-import apiMessage from "@/utils/api/message.js";
+import db from "@/utils/api/message.js";
 import base from "@/utils/baseUrl.js";
 export default {
   components: {
@@ -276,7 +276,7 @@ export default {
     loadHistory() {
       this.host = base.webUrl;
       // 从本地获取最新历史记录
-      apiMessage.getItem(this.chatObj.chatId).then(res=>{
+      db.getItem().then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
            imageLoad("message-box");

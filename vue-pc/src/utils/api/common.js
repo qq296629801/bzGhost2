@@ -7,7 +7,7 @@ const api = {
 	conversationUrl:'app/conversation/list'
 }
 const common = {
-   pull:function(){
+   download:function(){
     let userId = store.state.user.operId;
     post(api.postUrl, {
       userId

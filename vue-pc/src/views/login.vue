@@ -30,7 +30,7 @@
             />
           </div>
           <div class="btn item">
-            <Button type="primary" @click="tapLogin" icon="md-contact"
+            <Button type="primary" @click="jumpLogin" icon="md-contact"
               >登录</Button
             >
           </div>
@@ -115,8 +115,8 @@
 
 <script>
 import Top from "./im/components/top.vue";
-import messageAPI from "@/utils/api/message.js";
-import commonAPI from "@/utils/api/common.js";
+import db from "@/utils/api/message.js";
+import db2 from "@/utils/api/common.js";
 import store from '@/store/index.js'
 export default {
   name: "login-page",
@@ -231,7 +231,7 @@ export default {
         }
       });
     },
-    tapLogin: function() {
+    jumpLogin: function() {
       this.$get('/login',this.loginParams).then(res=>{
 
           store.commit("setUser",res.user);
@@ -239,16 +239,16 @@ export default {
           store.commit("setConfig",res.config);
           store.commit("setRoles",res.roles);
           store.commit("setPermissions",res.permissions);
-          messageAPI.pull();
-          commonAPI.pull();
 
-          this.$socket.login(res2=>{});
-          
-          this.$router.push({
-            path: "/index/chatBox",
-            params: {}
+          db.download();
+          db2.download();
+
+          this.$socket.login(res2=>{
+            this.$router.push({
+              path: "/index/chatBox",
+              params: {}
+            });
           });
-
       });
     }
   }

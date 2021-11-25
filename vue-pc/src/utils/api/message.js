@@ -3,7 +3,8 @@ import {post} from '@/utils/request'
 import store from '@/store/index.js'
 var postfix = 'msgItem_';
 const message = {
-  getItem:function(chatId) {
+  getItem:function() {
+    let chatId = store.state.chatObj.chatId;
     let list = cache.get(postfix+chatId);
     return new Promise((resolve,reject) =>{
       try{
@@ -18,7 +19,7 @@ const message = {
       resolve(list);
     })
  },
-   pull:function(){
+ download:function(){
    let userId = store.state.user.operId;
    post('app/group/msg/online', {
      userId
@@ -33,7 +34,8 @@ const message = {
      })
    });
  },
- del(id, chatId, obj){
+ del(id, obj = {}){
+  let chatId = store.state.chatObj.chatId;
    let list = cache.get(postfix+chatId);
    if(list==""){
      let tempItem = [];
@@ -48,7 +50,8 @@ const message = {
    }
    cache.set(postfix+chatId,list)
  },
- upPacket(hasBeenSentId, chatId, content){
+ upPacket(hasBeenSentId, content){
+  let chatId = store.state.chatObj.chatId;
    let list = cache.get(postfix+chatId);
    if(list==""){
      let tempItem = [];
@@ -63,19 +66,20 @@ const message = {
    }
    cache.set(postfix+chatId,list)
  },
- commit(obj, gid){
-   let list = cache.get(postfix+gid);
+ commit(obj = {}){
+  let chatId = store.state.chatObj.chatId;
+   let list = cache.get(postfix+chatId);
    if(list==""){
      let tempItem = [];
      tempItem.push(obj);
-     cache.set(postfix+gid,tempItem)
+     cache.set(postfix+chatId,tempItem)
      return;
    }
    if(list.length>=10){
      list.splice(0,1);
    }
    list.push(obj);
-   cache.set(postfix+gid,list)
+   cache.set(postfix+chatId,list)
  }
  
 }
