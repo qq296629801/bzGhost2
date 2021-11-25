@@ -357,16 +357,6 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
-		},
-		{
-		    "path" : "pages/group/groupName",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
-		    
 		}
 		,{
 		    "path" : "pages/guest/guest",
