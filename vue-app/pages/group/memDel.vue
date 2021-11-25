@@ -8,44 +8,63 @@
 		</u-navbar>
 		<view class="list-search">
 		</view>
-		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
-			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
-				<u-index-anchor :index="item.name" />
-				<u-checkbox-group style="width: 100%;">
-					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
-							{{ user.nickName }}
+		
+		
+		<u-index-list>
+			<template
+				v-for="(item, index) in list"
+			>
+				<!-- #ifdef APP-NVUE -->
+				<u-index-anchor :text="item.name" :key="index" v-if="item.members.length>0"></u-index-anchor>
+				<!-- #endif -->
+				<u-index-item :key="index">
+					<!-- #ifndef APP-NVUE -->
+					<u-index-anchor :text="item.name" v-if="item.members.length>0"></u-index-anchor>
+					<!-- #endif -->
+					<u-cell 
+						v-for="(item1, index1) in item.members"
+						:key="index1"
+						:title="item1.nickName"
+						:border="index1 !== item.members.length - 1"
+						@tap="jumpBusinessCard(item1)"
+					>
+					
+						<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
+							<u-avatar
+								slot="icon"
+								shape="square"
+								size="35"
+								src="https://cdn.uviewui.com/uview/album/1.jpg"
+								customStyle="margin: -3px 5px -3px 0"
+							></u-avatar>
 						</u-checkbox>
-					</view>
-				</u-checkbox-group>
-			</view>
+						
+					</u-cell>
+				</u-index-item>
+			</template>
 		</u-index-list>
 	</view>
 </template>
 <script>
-	import { mapState, mapMutations } from 'vuex';
+	import { mapState } from 'vuex';
 	export default {
 		components: {
 		},
 		data() {
 			return {
-				scrollTop: 0,
-				indexList: [],
 				ids: [],
 				userNames: [],
 				list: [],
 				keyword: '',
 				firendItem:[],
-				groupId:''
 			}
 		},
 		onShow() {
 			this.groupMember();
 		},
-		computed:{
-			...mapState(['user'])
+		computed: {
+			...mapState(['chatObj'])
 		},
-		onLoad({groupId}) {this.groupId=groupId},
 		watch: {
 			keyword: function(val) {
 				let arr = this.firendItem;
@@ -69,18 +88,12 @@
 		methods: {
 			groupMember(){
 				let reqData = {
-					groupId: this.groupId,
+					groupId: this.chatObj.chatId,
 					userId: this.user.operId
 				}
 				this.$http.post('app/group/member', reqData).then(res=>{
 					this.list = res.memberResponse
-					let indexList = []
-					this.list.forEach(item => {
-						if(item.members.length>0){
-							indexList.push(item.name)
-						}
-					})
-					this.indexList = indexList
+					this.firendItem = this.list
 				});
 			},
 			chechMem(user) {
@@ -95,7 +108,7 @@
 			delGroupMember() {
 				let data = {
 					userIds:this.ids,
-					groupId:this.groupId, 
+					groupId:this.chatObj.chatId,
 				}
 				this.$http.post('app/group/user/del',data).then(res => {
 					uni.navigateBack({
@@ -104,9 +117,6 @@
 					})
 				});
 			},
-		},
-		onPageScroll(e) {
-			this.scrollTop = e.scrollTop;
 		}
 	};
 </script>

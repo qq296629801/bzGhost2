@@ -6,22 +6,42 @@
 				<u-button size="mini" type="success" @click="createGroup">保存</u-button>
 			</view>
 		</u-navbar>
-		<u-index-list class="list-box" :scrollTop="scrollTop" :indexList="indexList">
-			<view class="list-wrap" v-if="item.members.length" v-for="(item, index) in list" :key="index">
-				<u-index-anchor :index="item.name" />
-				<u-checkbox-group style="width: 100%;">
-					<view class="member-list u-border-bottom list-cell" v-for="(user, jndex) in item.members" :key="jndex">
-						<u-checkbox @change="chechMem(user)" v-model="user.checked" :name="user.id">
-							{{ user.nickName }}
+		<u-index-list>
+			<template
+				v-for="(item, index) in friend"
+			>
+				<!-- #ifdef APP-NVUE -->
+				<u-index-anchor :text="item.name" :key="index" v-if="item.members.length>0"></u-index-anchor>
+				<!-- #endif -->
+				<u-index-item :key="index">
+					<!-- #ifndef APP-NVUE -->
+					<u-index-anchor :text="item.name" v-if="item.members.length>0"></u-index-anchor>
+					<!-- #endif -->
+					<u-cell 
+						v-for="(item1, index1) in item.members"
+						:key="index1"
+						:title="item1.nickName"
+						:border="index1 !== item.members.length - 1"
+						@tap="jumpBusinessCard(item1)"
+					>
+					
+						<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
+							<u-avatar
+								slot="icon"
+								shape="square"
+								size="35"
+								src="https://cdn.uviewui.com/uview/album/1.jpg"
+								customStyle="margin: -3px 5px -3px 0"
+							></u-avatar>
 						</u-checkbox>
-					</view>
-				</u-checkbox-group>
-			</view>
+						
+					</u-cell>
+				</u-index-item>
+			</template>
 		</u-index-list>
 	</view>
 </template>
 <script>
-	import apiCommon from '@/util/api/common.js';
 	import { mapState, mapMutations } from 'vuex';
 	export default {
 		components: {
@@ -33,28 +53,16 @@
 				ids: [],
 				userNames: [],
 				list: [],
-				keyword: '',
-				firendItem:[]
+				keyword: ''
 			}
 		},
-		onShow() {
-			// apiCommon.getItem('friend').then(res=>{
-			// 	this.list = res
-			// 	this.firendItem = res
-			// 	let indexList = []
-			// 	this.list.forEach(item => {
-			// 		indexList.push(item.name)
-			// 	})
-			// 	this.indexList = indexList
-			// });
-		},
 		computed:{
-			...mapState(['user'])
+			...mapState(['friend'])
 		},
 		onLoad(option) {},
 		watch: {
 			keyword: function(val) {
-				let arr = this.firendItem;
+				let arr = this.friend;
 				if (val != '') {
 					this.list = arr.filter(v => {
 						let flag = false
@@ -68,7 +76,7 @@
 						return flag
 					})
 				} else {
-					this.list = this.firendItem
+					this.list = this.friend
 				}
 			}
 		},
@@ -90,7 +98,6 @@
 					})
 					return;
 				}
-				//let defaultGroupName = this.userNames.length > 3 ? this.userNames.substr(0, 3) + '...' : this.userNames
 				let data = {
 					users:this.ids,
 					defaultGroupNames:this.userNames, 
@@ -102,9 +109,6 @@
 					});
 				});
 			},
-		},
-		onPageScroll(e) {
-			this.scrollTop = e.scrollTop;
 		}
 	};
 </script>

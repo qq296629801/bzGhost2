@@ -1,19 +1,26 @@
 <template>
 	<view class="content">
-		<view v-for="(value, index) in group">
-			<view class="item u-border-bottom" :class="currIndex ===index ? 'bg_view' : ''" hover-class="message-hover-class" 
-			@tap="link(value)">
-				<image :src="host + value.avatar"></image>
-				<view class="right title-wrap">
-					<view class="right_top">
-						<view class="right_top_name u-line-1">{{ value.chatName }}</view>
-						<view class="right_top_time ">{{value.lastOperTime || value.lastOpenTime | format}}</view>
-					</view>
-					<view class="right_btm ">
-						<view class="u-line-1">{{value.desc}}</view>
-					</view>
-				</view>
-			</view>
+		<view class="u-page">
+			<u-list
+				@scrolltolower="scrolltolower"
+			>
+				<u-list-item
+					v-for="(item, index) in group"
+					:key="index"
+				>
+					<u-cell @tap="jumpChatPage(item)" :clickable="true"
+						:title="item.chatName" :label="item.lastOpenTime | format"
+					>
+						<u-avatar
+							slot="icon"
+							shape="square"
+							size="40"
+							src="https://cdn.uviewui.com/uview/album/1.jpg"
+							customStyle="margin: -3px 5px -3px 0"
+						></u-avatar>
+					</u-cell>
+				</u-list-item>
+			</u-list>
 		</view>
 	</view>
 </template>
@@ -26,23 +33,19 @@ export default {
 	},
 	data() {
 		return {
-			currIndex: -1,
 			host: base.webUrl
 		};
 	},
 	computed:{
-		...mapState(['user','group'])
+		...mapState(['group'])
 	},
 	methods: {
-		...mapMutations(['setChatObj']),
-		link(item,index) {
-			this.currIndex = index;
-			this.setChatObj(item);
+		jumpChatPage(item){
+			this.$store.commit("setChatObj",item);
 			this.$u.route({
-				url: 'pages/chat/chat',
-				params: {}
-			});
-		},
+				url: 'pages/chat/chat'
+			})
+		}
 	},
 	filters: {
 	   format: function (e) {
@@ -84,56 +87,12 @@ export default {
 </script>
 
 <style lang="scss">
-	.content{
-		background-color: #fff;
+	.u-page {
+		padding: 0;
+		background-color: white;
 	}
-	.item {
-			width: 750rpx;
-			height: 140rpx;
-			display: flex;
-			align-items: center;
-			image {
-				width: 96rpx;
-				height: 96rpx;
-				margin: 20rpx;
-				border-radius: 12rpx;
-				flex: 0 0 96rpx;
-			}
-			.right {
-				overflow: hidden;
-				flex: 1 0;
-				padding: 20rpx 20rpx 40rpx 0;
-				&_top {
-					display: flex;
-					justify-content: space-between;
-					&_name {
-						font-size: 28rpx;
-						font-weight: 400;
-						color: $u-main-color;
-						flex: 0 0 450rpx;
-						overflow: hidden;
-					}
-					&_time {
-						font-size: 22rpx;
-						color: $u-light-color;
-					}
-				}
-				&_btm {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					font-size: 22rpx;
-					color: $u-tips-color;
-					padding-top: 10rpx;
-				}
-			}
-		}
-		.bg_view {
-			background-color: #fafafa;
-		}
-		.slot-wrap {
-			display: flex;
-			align-items: center;
-			padding: 0 30rpx; 
-		}
+	/* 或者单是设置透明度 */
+	.cell-hover-class {
+		opacity: 0.5;
+	}
 </style>

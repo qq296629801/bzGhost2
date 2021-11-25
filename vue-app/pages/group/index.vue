@@ -170,19 +170,13 @@ export default {
 		},
 		linkAdd(){
 			this.$u.route({
-				url: 'pages/group/memAdd',
-				params:{groupId: this.chatObj.chatId}
+				url: 'pages/group/memAdd'
 			});
 		},
 		linkDel(){
 			this.$u.route({
-				url: 'pages/group/memDel',
-				params:{groupId: this.chatObj.chatId}
+				url: 'pages/group/memDel'
 			});
-		},
-		removeMem() {
-		},
-		delMess() {
 		},
 		chooseImg() {
 			this.$u.route({
