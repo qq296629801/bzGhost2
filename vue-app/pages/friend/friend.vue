@@ -1,34 +1,17 @@
 <template>
 	<view class="content">
 		<friend-list></friend-list>
-		<!-- <addressBook :list="friend" :scrollTop="scrollTop" :isShowMenu="true" @toCard="jump"></addressBook> -->
 	</view>
 </template>
 <script>
-import addressBook from '@/components/addressBook.vue';
 import friendList from '@/components/msg/friend-list.vue'
-import { mapState, mapMutations} from 'vuex';
-import apiCommon from '@/util/api/common.js';
 export default {
-	components:{ addressBook, friendList },
+	components:{ friendList },
 	data() {
 		return {
-			scrollTop: 0
 		};
 	},
-	onPageScroll(e) {
-		this.scrollTop = e.scrollTop;
-	},
-	computed: {
-		...mapState(['user','friend'])
-	},
 	methods: {
-		jump({id,nickName}){
-			this.$u.route({
-				url: 'pages/friend/businessCard',
-				params:{ userId: id, source: 0,nickName:nickName}
-			});
-		}
 	}
 };
 </script>

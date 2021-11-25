@@ -1,41 +1,16 @@
 <template>
 	<view class="content">
-		<selectInput :list="selectList" :list-key="'name'" :show.sync="selectShow" @on-select="checkSelect" @close="closeSelect" />
-		
-		<!-- <view class="list">
-			<view class="item" v-for="(item,index) in conversation">
-				<message @taptext="taptext($event)" @jump="jump" :value="item" :index="item.id"></message>
-			</view>
-		</view>
-		 -->
+		<!-- 会话列表 -->
 		<msg-list></msg-list>
 	</view>
 </template>
 
 <script>
-import chunLeiPopups from '@/components/chunLei-popups/chunLei-popups.vue'
-import selectInput from '@/components/selectInput/selectInput.vue';
-import message from '@/components/message.vue';
-
 import msgList from '@/components/msg/msg-list.vue'
-
 import { mapState, mapMutations} from 'vuex';
 export default {
-	components: { selectInput, message, msgList },
 	data() {
 		return {
-			// 右键
-			x: 0,
-			y: 0,
-			value: false,
-			data: [{title:'标记未读'},{title:'置顶该聊天'},{title:'不显示该聊天'},{title:'删除该聊天'}],
-			//
-			show: false,
-			selectShow: false,
-			selectList: [
-			{ id: '1', name: '发起群聊', icon: 'chat' },
-			{ id: '2', name: '扫一扫', icon: 'scan' }
-			],
 		};
 	},
 	watch:{
@@ -43,52 +18,22 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['user','packet','newsPush','conversation'])
+		...mapState(['newsPush','conversation'])
 	},
 	methods: {
-		tapPopup(){
-			uni.showToast({
-				title:'测试开发',
-				icon:'success'
-			})
-		},
-		taptext(e,index){
-			this.x = e.touches[0].clientX
-			this.y = e.touches[0].clientY
-			this.value = !this.value
-		},
 		jump(item){
 			this.$store.commit("setChatObj",item);
 			this.$u.route({
 				url: 'pages/chat/chat'
 			})
-			//this.setChatObj(item);
-			//this.onPageJump('/pages/chat/chat');
-		},
-		onPageJump(url){
-			this.$u.route({
-				url: url,
-				params: {}
-			});
 		},
 		onNavigationBarButtonTap({ index }) {
-			if (index == 0) {
-				this.selectShow = !this.selectShow;
-			}else {
-				this.$u.route({
-					url: 'pages/search/search'
-				})
-			}
-		},
-		closeSelect(){
-			this.selectShow = false;
 		},
 		checkSelect(index) {
 			if (index == 0) {
 				this.$u.route({
 					url: 'pages/group/groupCreate'
 				})
-				
 			} else {
 				// const _t = this
 				// uni.scanCode({
@@ -106,9 +51,4 @@ export default {
 };
 </script>
 <style lang="scss">
-	.content{
-		.list{
-			box-shadow:1rpx 1rpx 15rpx 5rpx #f1f1f1;
-		}
-	}
 </style>

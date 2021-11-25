@@ -2,7 +2,7 @@
 	<u-index-list>
 		<u-cell-group slot="header">
 			
-			<u-cell title="新的朋友">
+			<u-cell title="新的朋友" @tap="jumpNewFriend">
 				<u-avatar
 					slot="icon"
 					shape="square"
@@ -14,7 +14,7 @@
 				></u-avatar>
 			</u-cell>
 
-			<u-cell title="我的群组">
+			<u-cell title="我的群组" @tap="jumpGroupList">
 				<u-avatar
 					slot="icon"
 					shape="square"
@@ -31,17 +31,18 @@
 			v-for="(item, index) in friend"
 		>
 			<!-- #ifdef APP-NVUE -->
-			<u-index-anchor :text="item.name" :key="index"></u-index-anchor>
+			<u-index-anchor :text="item.name" :key="index" v-if="item.members.length>0"></u-index-anchor>
 			<!-- #endif -->
 			<u-index-item :key="index">
 				<!-- #ifndef APP-NVUE -->
-				<u-index-anchor :text="item.name"></u-index-anchor>
+				<u-index-anchor :text="item.name" v-if="item.members.length>0"></u-index-anchor>
 				<!-- #endif -->
-				<u-cell
+				<u-cell 
 					v-for="(item1, index1) in item.members"
 					:key="index1"
 					:title="item1.nickName"
 					:border="index1 !== item.members.length - 1"
+					@tap="jumpBusinessCard(item1)"
 				>
 					<u-avatar
 						slot="icon"
@@ -57,42 +58,38 @@
 </template>
 
 <script>
-	const indexList = () => {
-		const indexList = []
-		const charCodeOfA = 'A'.charCodeAt(0)
-		for (let i = 0; i < 26; i++) {
-			indexList.push(String.fromCharCode(charCodeOfA + i))
-		}
-		return indexList
-	}
 	// #ifdef APP-NVUE
     // 复制后解开下面一行注释
 	// const dom = uni.requireNativePlugin('dom')
 	// #endif
-	import { mapState, mapMutations} from 'vuex';
+	import { mapState } from 'vuex';
 	export default {
 		name:'friend-list',
 		data() {
 			return {
-				indexList: indexList(),
 			}
 		},
 		computed: {
-			...mapState(['friend']),
-			itemArr() {
-				return this.indexList.map(item => {
-					const arr = []
-					for (let i = 0; i < 10; i++) {
-						arr.push({
-                            // 复制后解开下面两行注释
-							// name: this.names[uni.$u.random(0, this.names.length - 1)],
-							// url: this.urls[uni.$u.random(0, this.urls.length - 1)]
-						})
-					}
-					return arr
-				})
-			}
+			...mapState(['friend'])
 		},
+		methods:{
+			jumpBusinessCard({id,nickName}){
+				this.$u.route({
+					url: 'pages/friend/businessCard',
+					params:{ userId: id, source: 0, nickName}
+				});
+			},
+			jumpNewFriend(){
+				this.$u.route({
+					url: 'pages/user/newFriend'
+				});
+			},
+			jumpGroupList(){
+				this.$u.route({
+					url: 'pages/group/groupItem'
+				});
+			}
+		}
 	}
 </script>
 
