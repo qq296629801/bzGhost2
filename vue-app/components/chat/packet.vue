@@ -15,14 +15,25 @@
 										ref="item1"
 								>
 									<u--input
-											v-model="model1.userInfo.name"
+											v-model="model1.packet.money"
+											border="none"
+									></u--input>
+								</u-form-item>
+								<u-form-item
+										label="个数"
+										prop="userInfo.name"
+										borderBottom
+										ref="item1"
+								>
+									<u--input
+											v-model="model1.packet.number"
 											border="none"
 									></u--input>
 								</u-form-item>
 									
 							</u--form>
-							<u-button type="error"@tap="hand">塞钱进红包</u-button>
-							<u-button @tap="close">返回</u-button>
+							<u-button type="error"@tap="save">塞钱进红包</u-button>
+							<u-button @tap="cancer">返回</u-button>
 				</view>
 		</u-popup>
 	</view>
@@ -40,34 +51,35 @@
 		data() {
 			return {
 				model1: {
-					userInfo: {
-						name: '0.00',
-						sex: '',
+					packet: {
+						description: '大吉大利，今晚吃鸡！',
+						money: 0.00,
+						number: 1,
+						status: 0
 					},
 				},
 				rules: {
-					'userInfo.name': {
-						type: 'string',
+					'packet.money': {
+						type: 'number',
 						required: true,
-						message: '请填写姓名',
+						message: '0.00',
 						trigger: ['blur', 'change']
-					}
-				},
-				packet: {
-					description: null,
-					money: null,
-					number: null,
-					status: 0
-				},
-				typeClass:''
+					},
+					'packet.number': {
+						type: 'number',
+						required: true,
+						message: '1',
+						trigger: ['blur', 'change']
+					},
+				}
 			};
 		},
 		methods:{
-			close(){
-				this.$emit('close',false)
+			cancer(){
+				this.$emit('cancer',false)
 			},
-			hand(){
-				this.$emit('packet',this.packet)
+			save(){
+				this.$emit('save',this.model1.packet)
 			}
 		}
 	}

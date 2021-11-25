@@ -121,7 +121,7 @@
 					<face @addEmoji="addEmoji"></face>
 				</view> -->
 				
-				<u-grid v-if="!face" :col="4"  hover-class="contentType2-hover-class" :border="false" @click="clickGrid">
+				<u-grid v-if="!face" :col="4"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
 					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index" bg-color="#f6f7f8">
 						<image class="img" :src="item.url"></image>
 						<view class="grid-text">{{ item.title }}</view>
@@ -150,7 +150,7 @@
 		<red-card :packet="packet" :winState="winState" @hideCard="hideCard" @openCard="openCard"></red-card>
 		
 		<!-- 发包-->
-		<packet :pShow="pShow" @packet="packetTap" @close="close"></packet>
+		<packet :pShow="pShow" @save="packetTap" @cancer="cancer"></packet>
 	</view>
 </template>
 
@@ -237,7 +237,7 @@ export default {
 		...mapState(['user','chatObj','packetData'])
 	},
 	methods: {
-		close(){
+		cancer(){
 			this.pShow = false;
 		},
 		addEmoji(item){
