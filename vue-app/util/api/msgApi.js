@@ -1,5 +1,6 @@
 import http from '@/util/requestConfig'
 import store from '@/store/index.js'
+import cache from '@/util/cache.js'
 const msgApi = {
 	msgfOnline : 'app/group/msg/online',
 	msggOnline : 'app/friend/msg/online',
