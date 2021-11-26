@@ -3,12 +3,14 @@
 		<view class="head">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
-					<u-avatar src="/static/image/huge.jpg" mode="square"></u-avatar>
+					<u-avatar :src="webUrl + chatObj.avatar" mode="square"></u-avatar>
 					<view class="grid-text">{{chatObj.chatName}}</view>
 				</u-grid-item>
 			</u-grid>
 		</view>
+		
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+		
 		<view class="head">
 			<u-cell-group>
 				<u-cell title="查看聊天内容" @click="showSearch">
@@ -25,9 +27,11 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		data() {
 			return {
+				webUrl:base.webUrl
 			}
 		},
 		computed:{

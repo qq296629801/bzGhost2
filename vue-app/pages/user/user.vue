@@ -1,21 +1,6 @@
 <template>
 	<view>
-		<view class="head">
-			<view class="avatar">
-				<u-avatar shape="square" :src="webUrl + user.avatar" size="60"></u-avatar>
-			</view>
-			<view class="box">
-				<view class="name">
-					<u--text size="20" mode="name" :text="user.realname"></u--text>
-				</view>
-				<view class="money">
-					<u--text type="info" :text="user.money"></u--text>
-				</view>
-			</view>
-			<view class="arrow">
-				<u-icon name="arrow-right" color="#969799" size="20" @tap="jump('pages/user/my')"></u-icon>
-			</view>
-		</view>
+		<user-card :user="user"></user-card>
 		
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 		
@@ -38,8 +23,12 @@
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
+	import userCard from "@/components/chat/user-card.vue"
 	import base from '@/util/baseUrl.js';
 	export default {
+		components:{
+			userCard
+		},
 		data() {
 			return {
 				show:true,
@@ -86,33 +75,35 @@
 </script>
 
 <style lang="scss">
+.perch{
+	height: 10rpx;
+}
 .cell-group{
 	background-color: white;
 }
-.head{
+.userinfo{
 	display: flex;
-	align-items: center;
-	padding: 30rpx;
-	height: 300rpx;
-	background-color: white;
-	.avatar{
-		display: flex;
-		width: 20%;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 20rpx 30rpx 40rpx 40rpx;
+	background-color: #FFFFFF;
+	.img{
+		display: block;
+		width: 110rpx;
+		height: 110rpx;
+		border-radius: 10rpx;
 	}
-	.box{
-		display: flex;
-		width: 70%;
-		flex-direction: column;
-		.name{
+	&-desc{
+		padding-left: 30rpx;
+		&-name{
 			font-weight: bold;
+			font-size: 36rpx;
+			transform: translateY(-10rpx);
 		}
-		.money{
-			color: #565656;
+		&-gray{
+			color: $u-tips-color;
+			font-size: 29rpx;
 		}
-	}
-	.arrow{
-		display: flex;
-		width: 10%;
 	}
 }
 </style>

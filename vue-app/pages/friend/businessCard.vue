@@ -1,14 +1,6 @@
 <template>
 	<view>
-		<view class="userinfo">
-			<u-avatar shape="square" src="https://cdn.uviewui.com/uview/album/1.jpg" size="60"></u-avatar>
-			<view class="userinfo-desc">
-				<view class="userinfo-desc-name">{{nickName}}</view>
-				<view class="userinfo-desc-gray">{{userId}}</view>
-			</view>
-		</view>
-		
-		<view  class="perch"></view>
+		<user-card :user="u"></user-card>
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">
@@ -23,22 +15,27 @@
 			</u-cell-group>
 		</view>
 		
-		
 	</view>
 </template>
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
+	import userCard from "@/components/chat/user-card.vue"
+	import base from '@/util/baseUrl.js';
 	export default {
+		components:{
+			userCard
+		},
 		data() {
 			return {
 				nickName:'',
 				userId:'',
-				source:0,//
+				source:0,
+				u:{},
 			}
 		},
 		computed:{
-			...mapState(['user'])
+			...mapState(['user']),
 		},
 		methods: {
 			linkChat(){
@@ -68,6 +65,11 @@
 			this.nickName = nickName
 			this.userId = userId
 			this.source = source
+			this.u = {
+				nickName,
+				avatar:'',
+				money:0
+			}
 		}
 	}
 </script>

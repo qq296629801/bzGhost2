@@ -1,21 +1,6 @@
 <template>
 	<view>
-		<view class="head">
-			<view class="avatar">
-				<u-avatar shape="square" src="https://cdn.uviewui.com/uview/album/1.jpg" size="60"></u-avatar>
-			</view>
-			<view class="box">
-				<view class="name">
-					<u--text size="20" mode="name" :text="$store.state.user.realname"></u--text>
-				</view>
-				<view class="money">
-					<u--text type="info" :text="$store.state.user.money"></u--text>
-				</view>
-			</view>
-			<view class="arrow">
-				<u-icon name="arrow-right" color="#969799" size="20"></u-icon>
-			</view>
-		</view>
+		<user-card :user="$store.state.user"></user-card>
 		
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 		
@@ -26,18 +11,22 @@
 </template>
 
 <script>
+	import userCard from "@/components/chat/user-card.vue"
 	export default {
-	  onReady() {
-	    this.$refs
-	        .uqrcode
-	        .make({
-	            size: 200,
-	            text: 'uQRCode'
-	        })
-	        .then(res => {
-	            console.log(res)
-	        })
-	  }
+		components:{
+			userCard
+		},
+		  onReady() {
+			this.$refs
+				.uqrcode
+				.make({
+					size: 200,
+					text: 'uQRCode'
+				})
+				.then(res => {
+					console.log(res)
+				})
+		  }
 	}
 </script>
 
