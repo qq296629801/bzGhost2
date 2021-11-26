@@ -41,8 +41,8 @@
 	let my;
 	import wInput from '@/components/watch-login/watch-input.vue' 
 	import wButton from '@/components/watch-login/watch-button.vue'
-	import db2 from '@/util/api/common.js'
-	import db from '@/util/api/message.js'
+	import commonApi from '@/util/api/comApi.js'
+	import msgApi from '@/util/api/msgApi.js'
 	import { mapState, mapMutations } from 'vuex';
 	import store from '@/store/index.js' 
 	export default {
@@ -83,8 +83,8 @@
 					store.commit("setPermissions",res.permissions);
 					
 					this.$socket.login(b=>{
-						db.download();
-						db2.download();
+						commonApi.download();
+						msgApi.download();
 						
 						my.loading=false;
 						

@@ -3,7 +3,7 @@
 		<!-- 红包弹窗 -->
 		<view class="windows" :class="winState">
 			<!-- 遮罩层 -->
-			<view class="mask" @touchmove.stop.prevent="discard" @tap="hideCard"></view>
+			<view class="mask" @touchmove.stop.prevent="discard" @tap="close()"></view>
 			<view class="layer" @touchmove.stop.prevent="discard">
 				<view class="redenvelope">
 					<view class="from">
@@ -19,8 +19,7 @@
 						<view class="close-btn">
 							<view class="icon close"></view>
 						</view>
-						
-						<view class="img" @tap="openCard">开</view>
+						<view class="img" @tap="open()">开</view>
 					</view>
 					<view class="showDetails" @tap="jumpDetail">
 						查看领取详情
@@ -58,11 +57,11 @@
 			discard(){
 				return;
 			},
-			openCard:function(){
-				this.$emit('openCard')
+			open:function(){
+				this.$emit('open')
 			},
-			hideCard: function(){
-				this.$emit('hideCard')
+			close: function(){
+				this.$emit('close')
 			},
 			jumpDetail(){
 				uni.navigateTo({

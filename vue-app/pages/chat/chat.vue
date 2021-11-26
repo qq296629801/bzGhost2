@@ -141,46 +141,42 @@
 		>
 		
 		<!-- 红包卡片 -->
-		<red-card :packet="packet" :winState="winState" @hideCard="hideCard" @openCard="openCard"></red-card>
+		<red-card :packet="packet" :winState="winState" @close="hideCard" @open="openCard"></red-card>
 		
 		<!-- 发包-->
-		<packet :pShow="pShow" @save="packetTap" @cancer="cancer"></packet>
+		<packet :pShow="pShow" @save="packetTap" @cancer="packetCancer"></packet>
 	</view>
 </template>
 
 <script>
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { mapState, mapMutations } from 'vuex';
-import face from '@/components/face'
-import db from '@/util/api/message.js';
+import db from '@/util/db/db2.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
 import { transform } from '@/util/ChatUtils.js';
 export default {
 	mixins: [MescrollMixin], // 使用mixin
-	components:{ RedCard, packet, face },
+	components:{ RedCard, packet },
 	data() {
 		return {
-			host: base.webUrl,
 			winState:'',
-			webUrl:'',
+			webUrl:base.webUrl,
+			pShow:false,
 			downOption:{
 				auto:false,
 				autoShowLoading: true, // 显示下拉刷新的进度条
 				textColor: "#00aaff" // 下拉刷新的文本颜色
 			},
-			pShow:false,
 			upOption: {
 				use: false, // 禁止上拉
 				toTop: {
 					src: '' // 不显示回到顶部按钮
 				}
 			},
-			
 			value: false,
 			packet:{},
-			data: [{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}],
 			formData: {
 				content: '',
 				limit: 10,
@@ -190,7 +186,6 @@ export default {
 			message:{
 				hasBeenSentId:0
 			},
-			face:false,
 			loading: true, //标识是否正在获取数据
 			imgHeight: '1000px',
 			mpInputMargin: false, //适配微信小程序 底部输入框高度被顶起的问题
@@ -231,16 +226,17 @@ export default {
 		...mapState(['user','chatObj','packetData'])
 	},
 	methods: {
-		cancer(){
-			this.pShow = false;
-		},
-		addEmoji(item){
-			this.formData.content = this.formData.content + "face" + item;
-		},
+		// 表情
+		// addEmoji(item){
+		// 	this.formData.content = this.formData.content + "face" + item;
+		// },
 		transformFace(content){
 			return transform(content)
 		},
-		
+		// 取消发红包
+		packetCancer(){
+			this.pShow = false;
+		},
 		// 发红包
 		packetTap(packet){
 			let _t = this;
@@ -327,7 +323,6 @@ export default {
 				//this.mescroll.endErr(); // 隐藏下拉刷新的状态
 			});
 		},
-		
 		// 初始消息数据
 		async initData() {
 			db.getItem().then(res=>{
@@ -407,7 +402,6 @@ export default {
 				}
 			}
 			
-			// 抢红包不需要存储只需要广播 
 			if(params.contentType == _t.messageType.robPacket){
 				for(var a in _t.messageList){
 					if(_t.messageList[a].hasBeenSentId == params.hasBeenSentId){
@@ -515,7 +509,6 @@ export default {
 			uni.hideKeyboard();
 		},
 		touchmessage(){
-			console.log(1111111111)
 			this.showFunBtn =false;
 		},
 		// 卡片
@@ -685,13 +678,6 @@ export default {
 				// #ifndef MP-WEIXIN
 				indicator: 'number'
 				// #endif
-			});
-		},
-		// 跳转
-		onPageJump(url){
-			this.$u.route({
-				url: url,
-				params: {}
 			});
 		},
 	},
