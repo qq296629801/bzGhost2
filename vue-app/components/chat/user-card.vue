@@ -1,13 +1,12 @@
 <template>
 	<view>
 		<view class="userinfo">
-			<u-avatar shape="square" :src="webUrl + base.webUrl" size="60"></u-avatar>
+			<u-avatar shape="square" :src="webUrl + user.avatar" size="60"></u-avatar>
 			<view class="userinfo-desc">
 				<view class="userinfo-desc-name">{{user.nickName}}</view>
 				<view class="userinfo-desc-gray">{{user.money}}</view>
 			</view>
 		</view>
-		<view  class="perch"></view>
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 	</view>
 </template>
@@ -16,10 +15,19 @@
 	import base from '@/util/baseUrl.js';
 	export default {
 		name:'user-card',
-		props:['user'],
+		props:{
+			user:{
+				type:Object,
+				default:{}
+			}
+		},
+		computed:{
+			webUrl:function(v){
+				return base.webUrl
+			}
+		},
 		data() {
 			return {
-				webUrl:base.webUrl
 			};
 		}
 	}
