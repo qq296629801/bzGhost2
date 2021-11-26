@@ -1,7 +1,7 @@
 {
-    "name" : "uView UI",
-    "appid" : "__UNI__60F4B81",
-    "description" : "多平台快速开发的UI框架",
+    "name" : "bzGhost",
+    "appid" : "__UNI__F0BC691",
+    "description" : "跨平台即时通讯软件",
     "versionName" : "1.0.0",
     "versionCode" : 1,
     "transformPx" : false,
