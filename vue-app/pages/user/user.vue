@@ -2,7 +2,7 @@
 	<view>
 		<view class="head">
 			<view class="avatar">
-				<u-avatar shape="square" src="https://cdn.uviewui.com/uview/album/1.jpg" size="60"></u-avatar>
+				<u-avatar shape="square" :src="webUrl + user.avatar" size="60"></u-avatar>
 			</view>
 			<view class="box">
 				<view class="name">
@@ -38,10 +38,12 @@
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		data() {
 			return {
 				show:true,
+				webUrl:base.webUrl,
 				list: [
 					{
 						title: '相册',

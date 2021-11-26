@@ -14,7 +14,7 @@
 						slot="icon"
 						shape="square"
 						size="50"
-						src="https://cdn.uviewui.com/uview/album/1.jpg"
+						:src="[webUrl + item.imgUrl]"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 					
@@ -27,12 +27,14 @@
 
 <script>
 	import { mapState } from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		name:'msg-list',
 		data() {
 			return {
 				message:['文字', '图片', '表情', '语音', '视频',
 				 '签到', '撤销', '发红包', '抢红包','其它'],
+				 webUrl:base.webUrl
 			}
 		},
 		computed: {

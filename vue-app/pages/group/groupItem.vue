@@ -15,7 +15,7 @@
 							slot="icon"
 							shape="square"
 							size="50"
-							src="https://cdn.uviewui.com/uview/album/1.jpg"
+							:src="[webUrl + item.avatar]"
 							customStyle="margin: -3px 5px -3px 0"
 						></u-avatar>
 					</u-cell>
@@ -33,7 +33,7 @@ export default {
 	},
 	data() {
 		return {
-			host: base.webUrl
+			webUrl: base.webUrl
 		};
 	},
 	computed:{

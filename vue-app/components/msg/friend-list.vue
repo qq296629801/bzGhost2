@@ -49,7 +49,7 @@
 						slot="icon"
 						shape="square"
 						size="40"
-						src="https://cdn.uviewui.com/uview/album/1.jpg"
+						:src="webUrl + item1.avatar"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 				</u-cell>
@@ -64,10 +64,12 @@
 	// const dom = uni.requireNativePlugin('dom')
 	// #endif
 	import { mapState } from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		name:'friend-list',
 		data() {
 			return {
+				webUrl:base.webUrl
 			}
 		},
 		computed: {
