@@ -2,7 +2,7 @@
 	<view>
 		<u-cell-group>
 			<u-cell title="选择内置背景图" @click="linkToBuiltinBgImg"></u-cell>
-			<u-cell-item title="通过手机选择" @click="chooseImg"></u-cell>
+			<u-cell title="通过手机选择" @click="chooseImg"></u-cell>
 		<u-toast ref="uToast" />
 	</view>
 </template>
