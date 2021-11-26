@@ -3,7 +3,7 @@
     <div class="left-bar" style="-webkit-app-region: drag">
       <ul>
         <li class="userPhoto" @click="modal = true">
-          <img :src="[host + user.avatar]" />
+          <img :src="[webUrl + user.avatar]" />
         </li>
         <li title="会话">
           <router-link v-bind:to="'/index/chatBox'">
@@ -64,13 +64,13 @@
 </template>
 <script>
 import { logout } from "../utils/ChatUtils";
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import base from "@/utils/baseUrl.js";
 export default {
   data() {
     return {
       modal: false,
-      host:''
+      webUrl:base.webUrl
     };
   },
   computed:{
@@ -81,9 +81,6 @@ export default {
       let self = this;
       logout(self);
     }
-  },
-  mounted: function() {
-    this.host = base.webUrl
   }
 };
 </script>
