@@ -3,17 +3,17 @@
 		<view class="member">
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
-					<image class="img" :src="host + item.avatar"></image>
-					<view class="text">{{ item.groupNickName || item.nickName }}</view>
+					<image class="img" :src="webUrl + item.avatar"></image>
+					<u--text :text="item.groupNickName"></u--text>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="plus">
-						<u-icon name="plus" size="35" color="#cececf"></u-icon>
+						<u-icon name="plus" size="30" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="plus">
-						<u-icon name="minus" size="35" color="#cececf"></u-icon>
+						<u-icon name="minus" size="30" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -93,7 +93,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
 	data() {
 		return {
-			host: base.webUrl,
+			webUrl: base.webUrl,
 			disTalk: false,
 			titleStyle:{ marginLeft: '10rpx' },
 			group:{
