@@ -1,9 +1,10 @@
 import http from '@/util/requestConfig'
 import store from '@/store/index.js'
 import cache from '@/util/cache.js'
+var postfix = 'msgItem_';
 const msgApi = {
-	msgfOnline : 'app/group/msg/online',
-	msggOnline : 'app/friend/msg/online',
+	msggOnline : 'app/group/msg/online',
+	msgfOnline : 'app/friend/msg/online',
 	download: function(){
 		let userId = store.state.user.operId;
 		http.post(msgApi.msggOnline, {
