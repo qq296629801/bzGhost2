@@ -221,7 +221,7 @@ export default {
       this.$refs.formValidate.validate(valid => {
         if (valid) {
           let _this = this;
-          this.$post("/register/register", this.registerForm)
+          this.$post("register/register", this.registerForm)
             .then(function(response) {
               _this.$Message.success(response.data.data);
             })
