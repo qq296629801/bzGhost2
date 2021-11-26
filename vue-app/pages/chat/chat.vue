@@ -9,9 +9,11 @@
 			
 			<view @touchstart="touchmessage" class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
-					<view class="username">
+					
+					<!-- 图像昵称 -->
+					<view class="username"  @tap="linkCard(item)">
 						<u--text :text="item.fromUserName"></u--text>
-						<image class="img" :src="host + item.fromUserHeadImg" mode="" @tap="linkCard(item)"></image>
+						<image class="img" :src="webUrl + item.fromUserHeadImg" mode=""></image>
 					</view>
 					
 					<!-- contentType = 1 文本 -->
