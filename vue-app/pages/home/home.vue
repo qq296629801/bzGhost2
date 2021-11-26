@@ -14,14 +14,23 @@ export default {
 	},
 	data() {
 		return {
+			cURL:'app/conversation/list'
 		};
 	},
 	watch:{
+		// 监听服务器是否有推送数据
+		// 后期优化为推送单条数据
         newsPush: function(value){
+			let _this = this
+			_this.$http.post(_this.cURL, {
+				userId: _this.user.operId
+			}).then(res=>{
+				_this.$store.commit("setConversation", res)
+			});
 		}
 	},
 	computed: {
-		...mapState(['newsPush','conversation'])
+		...mapState(['newsPush','conversation','user'])
 	},
 	methods: {
 		jump(item){
@@ -31,25 +40,8 @@ export default {
 			})
 		},
 		onNavigationBarButtonTap({ index }) {
-		},
-		checkSelect(index) {
-			if (index == 0) {
-				this.$u.route({
-					url: 'pages/group/groupCreate'
-				})
-			} else {
-				// const _t = this
-				// uni.scanCode({
-				// 	success: function(res) {
-				// 		let result = res.result
-				// 		_t.$u.route({
-				// 			url: 'pages/friend/businessCard',
-				// 			params:{ userId: result, nickName:'', source: 1}
-				// 		})
-				// 	}
-				// });
-			}
-		},
+			console.log(index)
+		}
 	},
 };
 </script>
