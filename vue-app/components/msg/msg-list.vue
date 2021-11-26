@@ -14,7 +14,7 @@
 						slot="icon"
 						shape="square"
 						size="50"
-						:src="[webUrl + item.imgUrl]"
+						:src="webUrl + item.imgUrl"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 					

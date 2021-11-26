@@ -7,13 +7,12 @@
 					@afterRead="afterRead"
 					@delete="deletePic"
 					name="3"
-					multiple
 					:maxCount="10"
 					:previewFullImage="true"
 				></u-upload>
 			</u-cell>
 			
-			<u-cell title="昵称" @tap="linkTo(user.realname,0)" :value="user.realname">
+			<u-cell title="昵称" :value="user.realname">
 			</u-cell>
 			
 			<u-cell title="用户名" :arrow="false" :value="user.username">
@@ -41,9 +40,7 @@
 			return {
 				action:base.baseUrl,
 				webUrl:base.webUrl,
-				fileList3: [{
-					url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
-				}],
+				fileList3: [],
 			}
 		},
 		computed:{
@@ -101,13 +98,9 @@
 				})
 			},
 			upAvatar(avatar){
-				let { username } = this.user
-				const params = {
-					username,
-					avatar: avatar
-				}
-				this.$http.put('user/avatar', params).then(res => {
-					
+				this.$http.put('user/upAvatar', this.user).then(res => {
+					// this.$http.get('user/'+ this.user.username).then(res1=>{
+					// });
 				})
 			}
 		}

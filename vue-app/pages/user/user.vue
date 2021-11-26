@@ -2,8 +2,6 @@
 	<view>
 		<user-card :user="user"></user-card>
 		
-		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
-		
 		<view class="cell-group">
 			<u-cell-group :border="false">
 				<u-cell size="large" isLink @tap="jump(item.url)" v-for="(item, index) in list" :key="index" :title="item.title">

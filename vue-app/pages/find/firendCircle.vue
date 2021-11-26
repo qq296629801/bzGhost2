@@ -8,11 +8,12 @@
 		
 		<view class="content-imgbox">
 			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
-			<image class="headimg" src="/static/image/huge.jpg"></image>
-			<text class="nickname"></text>
+			
+			<image class="headimg" :src="webUrl + user.avatar"></image>
+			<text class="nickname">{{ user.username }}</text>
 		</view>
 		<view class="signature">
-			<view class="">{{ user.username }}</view>
+			<view class=""></view>
 		</view>
 
 		<!-- 朋友圈列表 -->
@@ -123,12 +124,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
+import base from '@/util/baseUrl.js';
 export default {
-	name: 'firendCircle',
 	data() {
 		return {
+			webUrl:base.webUrl,
 			show: false, //u-action-sheet  show
 			list: [{ text: '更换相册封面', fontSize: '28' }],
 			content: '',
