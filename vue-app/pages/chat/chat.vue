@@ -52,21 +52,8 @@
 					</view>
 					
 					
-					
 					<!-- contentType = 4 红包 -->
-					<view
-						class="contentType4" 	
-						v-if="item.contentType == messageType.createPacket"
-						@tap="showCard(item)"
-					>
-						<div class="packet">
-						  <view class="img">
-							  <image src="/static/img/red.png"></image>
-						  </view>
-						  <span>恭喜发财，大吉大利</span>
-						</div>
-						<div class="tag">红包</div>
-					</view>
+					<red-packet v-if="item.contentType == messageType.createPacket" :item="item"></red-packet>
 					
 				</view>
 			</view> 
@@ -157,10 +144,11 @@ import db from '@/util/db/db2.js';
 import base from '@/util/baseUrl.js';
 import RedCard from '@/components/chat/red-card.vue';
 import packet from '@/components/chat/packet.vue';
+import RedPacket from '@/components/chat/red-packet.vue'
 import { transform } from '@/util/ChatUtils.js';
 export default {
 	mixins: [MescrollMixin], // 使用mixin
-	components:{ RedCard, packet },
+	components:{ RedCard, packet, RedPacket },
 	data() {
 		return {
 			winState:'',
