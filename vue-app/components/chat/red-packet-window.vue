@@ -12,9 +12,7 @@
 						{{packet.description}}
 					</view>
 					<view class="money">
-						<template v-for="r in packet.Records">
-							<view v-if="isItMe">{{r.money}}</view>
-						</template>
+						{{robMoney}}
 					</view>
 					<view class="to">
 						<view v-if="!isItMe && packet.surplusNumber !=0" class="open" @tap="open()">开</view>
@@ -63,6 +61,16 @@
 					}
 				}
 				return flag;
+			},
+			robMoney:function(){
+				let records = this.packet.Records;
+				if(records){
+					for(var i in records){
+						if(records[i].userName==this.user.username){
+							return records[i].money
+						}
+					}
+				}
 			}
 		},
 		methods:{

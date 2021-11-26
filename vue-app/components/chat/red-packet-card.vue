@@ -4,8 +4,8 @@
 			class="contentType4" 	
 			@tap="showCard(item)"
 		>
-			<div class="packet" :class="isItMe?'close':'open'">
-			  <view class="img" v-if="isItMe">
+			<div class="packet" :class="isItMe || packet.surplusNumber==0?'close':'open'">
+			  <view class="img" v-if="isItMe || packet.surplusNumber==0">
 				   <image src="/static/img/red-chai.png"></image>
 			  </view>
 			  <view class="img" v-else>
@@ -13,7 +13,7 @@
 			  </view>
 			  <span>{{ packet.description }}</span>
 			</div>
-			<div class="tag" :class="isItMe?'close':'open'">红包</div>
+			<div class="tag" :class="isItMe || packet.surplusNumber==0?'close':'open'">红包</div>
 		</view>
 	</view>
 </template>
