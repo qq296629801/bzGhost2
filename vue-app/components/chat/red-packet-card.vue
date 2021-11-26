@@ -8,18 +8,16 @@
 			  <view class="img">
 				  <image src="/static/img/red.png"></image>
 			  </view>
-			  <span>恭喜发财，大吉大利</span>
+			  <span>{{ packet }}</span>
 			</div>
-			
 			<div class="tag">红包</div>
-			{{packet}}
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		name:'red-packet',
+		name:'red-packet-card',
 		props:{
 			item:{
 				type:Object,

@@ -51,10 +51,8 @@
 						<image :src="webUrl + item.content" class="img" mode="widthFix"></image>
 					</view>
 					
-					
 					<!-- contentType = 4 红包 -->
-					<red-packet v-if="item.contentType == messageType.createPacket" :item="item"></red-packet>
-					
+					<red-packet-card v-if="item.contentType == messageType.createPacket" :item="item" @showCard="showCard"></red-packet-card>
 				</view>
 			</view> 
 			
@@ -129,11 +127,11 @@
 		</view
 		>
 		
-		<!-- 红包卡片 -->
-		<red-card :packet="packet" :winState="winState" @close="hideCard" @open="openCard"></red-card>
+		<!-- 打开卡片窗口 -->
+		<red-packet-window :packet="packet" :winState="winState" @close="hideCard" @open="openCard"></red-packet-window>
 		
-		<!-- 发包-->
-		<packet :pShow="pShow" @save="packetTap" @cancer="packetCancer"></packet>
+		<!-- 发送红包表单-->
+		<red-packet-form :pShow="pShow" @save="packetTap" @cancer="packetCancer"></red-packet-form>
 	</view>
 </template>
 
@@ -142,13 +140,13 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import { mapState, mapMutations } from 'vuex';
 import db from '@/util/db/db2.js';
 import base from '@/util/baseUrl.js';
-import RedCard from '@/components/chat/red-card.vue';
-import packet from '@/components/chat/packet.vue';
-import RedPacket from '@/components/chat/red-packet.vue'
 import { transform } from '@/util/ChatUtils.js';
+import RedPacketCard from '@/components/chat/red-packet-card.vue';
+import redPacketForm from '@/components/chat/red-packet-form.vue';
+import RedPacketWindow from '@/components/chat/red-packet-window.vue'
 export default {
 	mixins: [MescrollMixin], // 使用mixin
-	components:{ RedCard, packet, RedPacket },
+	components:{ RedPacketCard, redPacketForm, RedPacketWindow },
 	data() {
 		return {
 			winState:'',
