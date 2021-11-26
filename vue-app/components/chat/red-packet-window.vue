@@ -17,7 +17,7 @@
 						</template>
 					</view>
 					<view class="to">
-						<view v-if="!isItMe" class="open" @tap="open()">开</view>
+						<view v-if="!isItMe && packet.surplusNumber !=0" class="open" @tap="open()">开</view>
 					</view>
 					<view class="showDetails" @tap="jumpDetail">
 						查看领取详情
