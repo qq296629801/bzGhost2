@@ -19,7 +19,7 @@
 			<u-cell title="用户名" :arrow="false" :value="user.username">
 			</u-cell>
 			
-			<u-cell @tap="linkToQrcode" title="二维码">
+			<u-cell @tap="jumpQr" title="二维码">
 				<u-avatar
 					slot="right-icon"
 					size="30"
@@ -40,7 +40,7 @@
 		data() {
 			return {
 				action:base.baseUrl,
-				fileList1: [],
+				webUrl:base.webUrl,
 				fileList3: [{
 					url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
 				}],
@@ -50,15 +50,9 @@
 			...mapState(['user'])
 		},
 		methods: {
-			linkToQrcode(){
+			jumpQr(){
 				this.$u.route({
 					url: 'pages/user/qr'
-				});
-			},
-			linkTo( context, type){
-				this.$u.route({
-					url: 'pages/chat/groupEdit',
-					params: { context, type }
 				});
 			},
 			// 删除图片
@@ -98,13 +92,24 @@
 							user: 'test'
 						},
 						success: (res) => {
-							setTimeout(() => {
-								resolve(res.data.data)
-							}, 1000)
+							let json = JSON.parse(res.data)
+							console.log(json)
+							this.upAvatar(json.data)
+							resolve(json.data)
 						}
 					});
 				})
 			},
+			upAvatar(avatar){
+				let { username } = this.user
+				const params = {
+					username,
+					avatar: avatar
+				}
+				this.$http.put('user/avatar', params).then(res => {
+					
+				})
+			}
 		}
 	}
 </script>
