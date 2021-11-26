@@ -24,17 +24,10 @@
 						:border="index1 !== item.members.length - 1"
 						@tap="jumpBusinessCard(item1)"
 					>
-					
-						<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
-							<u-avatar
-								slot="icon"
-								shape="square"
-								size="35"
-								src="https://cdn.uviewui.com/uview/album/1.jpg"
-								customStyle="margin: -3px 5px -3px 0"
-							></u-avatar>
-						</u-checkbox>
-						
+						<u-checkbox-group slot="icon">
+							<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
+							</u-checkbox>
+						</u-checkbox-group>
 					</u-cell>
 				</u-index-item>
 			</template>
