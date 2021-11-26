@@ -15,11 +15,11 @@
             <Icon type="ios-contact-outline" />
           </router-link>
         </li>
-        <li title="组织">
+        <!-- <li title="组织">
           <router-link v-bind:to="'/index/dept'">
             <Icon type="ios-list-box-outline" />
           </router-link>
-        </li>
+        </li> -->
         <li title="群">
           <router-link v-bind:to="'/index/chatGroupBox'">
             <Icon type="ios-contacts-outline" />
