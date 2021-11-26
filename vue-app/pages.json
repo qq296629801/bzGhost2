@@ -164,11 +164,9 @@
 		    "path" : "pages/user/user",
 		    "style" :                                                                           
 		    {
-		        "navigationBarTitleText": "我的",
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
 		    }
-		    
 		},
 		
 		{
