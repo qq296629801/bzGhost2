@@ -21,13 +21,9 @@
 				default:{}
 			}
 		},
-		computed:{
-			webUrl:function(v){
-				return base.webUrl
-			}
-		},
 		data() {
 			return {
+				webUrl:base.webUrl
 			};
 		}
 	}
