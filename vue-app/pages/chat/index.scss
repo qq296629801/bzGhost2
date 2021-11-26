@@ -85,12 +85,18 @@ page {
 				position: relative;
 				font-size: 0.4rem;
 				min-width: 200px;
+				.open{
+					background-color: #F09D47;
+				}
+				.close{
+					background-color: #ffdebc;
+				}
 				.packet {
 				  height: 80rpx;
 				  color: #fff;
 				  padding: 20rpx;
 				  display: flex;
-				  background-color: #F09D47;
+				  //background-color: #ffdebc;
 				  line-height: 60rpx;
 				  font-size: 25rpx;
 				  font-weight: 400;
@@ -109,8 +115,8 @@ page {
 				  line-height: 50rpx;
 				  font-size: 25rpx;
 				  font-weight: 400;
-				  background: #F09D47;
-				  border-top: 1px solid #f9b56f;
+				  //background: #F09D47;
+				  //border-top: 1px solid #f9b56f;
 				  padding-left: 20rpx;
 				  color: #fff;
 				}
@@ -452,75 +458,63 @@ page {
 			}
 		}
 	}
-	.redenvelope{
+	.red-packet{
 		width: 100%;
 		height: 70vh;
 		background-color: #EC624F; 
 		position: relative;
-		padding-top: 150rpx;
-		.to{
-			position: fixed;
-			bottom: 100rpx;
-			width: 100%;
-			background-color: #EC624F;
+		
+		.avatar{
+			padding-top: 100rpx;
 			display: flex;
 			justify-content: center;
-			flex-wrap: wrap;
-			border-radius: 0 0 100% 100%;
-			box-shadow: inset 0 -8upx 0 #DE4129;
-			.close-btn{
-				width: 100%;
-				height: 80upx;
-				display: flex;
-				justify-content: flex-end;
-				.icon{
-					color: #EE5B49;
-					margin-top: 10upx;
-					margin-right: 10upx;
-				}
-			}
-			.img{
-				width: 150rpx;
-				height: 150rpx;
-				background-color: #E7CB9B;
-				border-radius: 100%;
-				font-size: 25px;
-				text-align: center;
-				padding-top: 20px;
-				margin-bottom: -65upx;
-			}
-			margin-bottom: 65upx;
+			height: 150rpx;
+			text-align: center;
+			color: #E7CB9B;
 		}
-		.from,.blessing,.money,.showDetails{
-			width: 100%;
-			padding: 5upx 5%;
+		.desc{
 			display: flex;
 			justify-content: center;
 			text-align: center;
-			font-size: 32upx;
 			color: #E7CB9B;
-			image{
-				width: 100rpx;
-				height: 100rpx;
-				border-radius: 80rpx;
-			}
 		}
 		.money{
-			font-size: 100upx;
-			color: #E7CB9B;
 			display: flex;
-			padding-top: 20upx;
+			justify-content: center;
+			text-align: center;
+			color: #E7CB9B;
+			font-size: 70rpx;
 		}
+		.to{
+			display: flex;
+			position: absolute;
+			bottom: 150rpx;
+			width: 100%;
+			background-color: #EC624F;
+			justify-content: center;
+			flex-wrap: wrap;
+			
+			border-radius: 0 0 100% 100%;
+			box-shadow: inset 0 -8upx 0 #DE4129;
+			
+			.open{
+				width: 150rpx;
+				height: 150rpx;
+				border-radius: 100%;
+				background-color: #E7CB9B;
+				font-size: 25px;
+				text-align: center;
+				line-height: 150rpx;
+			}
+		}
+		
 		.showDetails{
 			position: absolute;
-			bottom: 20upx;
+			left: 200rpx;
 			text-align: center;
-			font-size: 28upx;
+			font-size: 35rpx;
 			color: #E7CB9B;
-			.icon{
-				font-size: 26upx;
-				color: #E7CB9B;
-			}
+			bottom: 30rpx;
 		}
 	}
 }

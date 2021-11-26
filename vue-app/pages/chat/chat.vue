@@ -131,7 +131,7 @@
 		<red-packet-window :packet="packet" :winState="winState" @close="hideCard" @open="openCard"></red-packet-window>
 		
 		<!-- 发送红包表单-->
-		<red-packet-form :pShow="pShow" @save="packetTap" @cancer="packetCancer"></red-packet-form>
+		<red-packet-form :pShow="pShow" @save="packetSave" @cancer="packetCancer"></red-packet-form>
 	</view>
 </template>
 
@@ -226,7 +226,9 @@ export default {
 			this.pShow = false;
 		},
 		// 发红包
-		packetTap(packet){
+		packetSave(packet){
+			console.log(JSON.stringify(packet))
+			
 			let _t = this;
 			
 			let reqData = {

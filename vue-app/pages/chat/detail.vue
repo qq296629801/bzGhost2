@@ -1,5 +1,10 @@
 <template>
 	<view>
+		<z-nav-bar ref="navBar" :scrollTop="scrollTop" transparentFixedFontColor="#FFF" type="transparentFixed" title="">
+			<view class="transparent_fixed_preview" slot="transparentFixedRight" @click="onPreview"></view> 
+			<view class="preview" slot="right" @click="onPreview"></view>
+		</z-nav-bar>
+					
 		<view class="top">
 			<view class="blessing">
 				{{ packetData.userName}}的红包
@@ -8,7 +13,7 @@
 				{{packetData.robMoney}}
 			</view>
 			<view class="face" :style="{'border-radius':radius}">
-				<image src="/static/image/huge.jpg"></image>
+				<image :src="webUrl + packetData.userAvatar"></image>
 			</view>
 			<view class="desc">
 				{{packetData.description}}
@@ -20,7 +25,7 @@
 		<view class="list">
 			<view class="row" v-for="(row,index) in packetData.Records" :key="index">
 				<view class="left">
-					<image src="/static/image/huge.jpg"></image>
+					<image :src="webUrl + row.userAvatar"></image>
 				</view>
 				<view class="right">
 					<view class="r1">
@@ -47,16 +52,20 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		data() {
 			return {
-				radius:'100% 100% 0 0'
+				radius:'100% 100% 0 0',
+				scrollTop:0,
+				webUrl: base.webUrl
 			};
 		},
 		computed:{
 			...mapState(['packetData'])
 		},
 		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
 			if(e.scrollTop>100){return;}
 			let radiusTmp = 100 - e.scrollTop;
 			this.radius = radiusTmp+'% '+radiusTmp+'% 0 0';

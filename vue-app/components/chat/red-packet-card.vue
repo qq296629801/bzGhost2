@@ -4,18 +4,22 @@
 			class="contentType4" 	
 			@tap="showCard(item)"
 		>
-			<div class="packet">
-			  <view class="img">
-				  <image src="/static/img/red.png"></image>
+			<div class="packet" :class="isItMe?'close':'open'">
+			  <view class="img" v-if="isItMe">
+				   <image src="/static/img/red-chai.png"></image>
 			  </view>
-			  <span>{{ packet }}</span>
+			  <view class="img" v-else>
+				 <image src="/static/img/red.png"></image>
+			  </view>
+			  <span>{{ packet.description }}</span>
 			</div>
-			<div class="tag">红包</div>
+			<div class="tag" :class="isItMe?'close':'open'">红包</div>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex';
 	export default {
 		name:'red-packet-card',
 		props:{
@@ -29,9 +33,22 @@
 			};
 		},
 		computed:{
+			...mapState(['user']),
 			packet:function(v){
 				let message = JSON.parse(this.item.content)
 				return message.Packets[0]
+			},
+			isItMe:function(){
+				let flag = false;
+				let records = this.packet.Records;
+				if(records){
+					for(var i in records){
+						if(records[i].userName==this.user.username){
+							flag = true;
+						}
+					}
+				}
+				return flag;
 			}
 		},
 		methods:{

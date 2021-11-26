@@ -1,25 +1,23 @@
 <template>
 	<view>
-		<!-- 红包弹窗 -->
 		<view class="windows" :class="winState">
-			<!-- 遮罩层 -->
 			<view class="mask" @touchmove.stop.prevent="discard" @tap="close()"></view>
 			<view class="layer" @touchmove.stop.prevent="discard">
-				<view class="redenvelope">
-					<view class="from">
-						<image src="/static/image/huge.jpg"></image>  
+				<view class="red-packet">
+					<view class="avatar">
+						<u-avatar :src="webUrl = packet.userAvatar"></u-avatar>
+						{{ packet.userName}}的红包
 					</view>
-					<view class="blessing">{{ packet.userName }}发的红包</view>
-					<view class="money" v-for="(item,index) in packet.Records">
-						<view v-if="item.userName == user.username">
-							{{ item.money }}
-						</view>
+					<view class="desc">
+						{{packet.description}}
+					</view>
+					<view class="money">
+						<template v-for="r in packet.Records">
+							<view v-if="isItMe">{{r.money}}</view>
+						</template>
 					</view>
 					<view class="to">
-						<view class="close-btn">
-							<view class="icon close"></view>
-						</view>
-						<view class="img" @tap="open()">开</view>
+						<view v-if="!isItMe" class="open" @tap="open()">开</view>
 					</view>
 					<view class="showDetails" @tap="jumpDetail">
 						查看领取详情
@@ -32,10 +30,12 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex';
+	import base from '@/util/baseUrl.js';
 	export default {
 		name:'red-packet-window',
 		data() {
 			return {
+				webUrl:base.webUrl
 			};
 		},
 		props: {
@@ -51,7 +51,19 @@
 			}
 		},
 		computed:{
-			...mapState(['user'])
+			...mapState(['user']),
+			isItMe:function(){
+				let flag = false;
+				let records = this.packet.Records;
+				if(records){
+					for(var i in records){
+						if(records[i].userName==this.user.username){
+							flag = true;
+						}
+					}
+				}
+				return flag;
+			}
 		},
 		methods:{
 			discard(){

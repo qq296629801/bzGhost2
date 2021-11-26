@@ -351,8 +351,8 @@
 		    "path" : "pages/chat/detail",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "红包",
-				"navigationBarTextStyle":"black",
+		        "navigationBarTitleText": "",
+				"navigationStyle":"custom",
 		        "enablePullDownRefresh": false
 		    }
 		    

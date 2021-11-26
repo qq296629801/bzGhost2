@@ -64,7 +64,7 @@
 				model1: {
 					packet: {
 						description: '大吉大利，今晚吃鸡！',
-						money: 0.00,
+						money: 100.00,
 						number: 1,
 						status: 0,
 					},
@@ -73,7 +73,7 @@
 					'packet.money': {
 						type: 'number',
 						required: true,
-						message: '0.00',
+						message: '100.00',
 						trigger: ['blur', 'change']
 					},
 					'packet.number': {
