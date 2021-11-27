@@ -1,7 +1,7 @@
 <template>
   <div class="chat-panel">
     <div class="chat-box-list">
-      <Search class="search-box" @showChat="showSearchChat"></Search>
+      <Search class="search-box"></Search>
       <div class="group-box">
         <ul class="user-list">
           <li class="user" v-for="(chat, index) in conversation" :key="index">
@@ -17,9 +17,9 @@
               <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
               <img :src="[webUrl + chat.imgUrl]" alt="头像" />
               <b>{{ chat.chatName }}</b>
-              <p>{{ contontType[chat.chatType] }}</p>
+              <p>{{ chat.msgType==0?chat.content:message[chat.chatType] }}</p>
             </a>
-            <Icon type="md-close" @click="delChat(chat)"></Icon>
+            <Icon type="md-close"></Icon>
           </li>
         </ul>
       </div>
@@ -50,7 +50,8 @@ export default {
   data() {
     return {
       chatList: [],
-      contontType: ["文本", "语音", "图片", "红包"],
+      message:['文字', '图片', '表情', '语音', '视频',
+				 '签到', '撤销', '发红包', '抢红包','其它'],
       webUrl:base.webUrl,
       first:true
     };
@@ -60,12 +61,11 @@ export default {
   },
   watch:{
     newsPush:function(v){
-      console.log(v);
-
       let userId = this.user.operId
        this.$post('app/conversation/list', {
         userId
       }).then(res=>{
+        res.sort(function(a, b){return a.lastOpenTime>b.lastOpenTime});
         store.commit("setConversation", res)
       });
     }

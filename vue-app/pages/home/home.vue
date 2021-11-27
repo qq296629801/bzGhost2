@@ -16,12 +16,11 @@ export default {
 		// 监听服务器是否有推送数据
 		// 后期优化为推送单条数据
         newsPush: function(v){
-			console.log(v)
-			
 			let userId = this.user.operId;
 			this.$http.post('app/conversation/list', {
 				userId
 			}).then(res=>{
+				res.sort(function(a, b){return b.lastOpenTime>a.lastOpenTime});
 				this.$store.commit("setConversation", res)
 			});
 		}
