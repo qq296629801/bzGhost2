@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="userinfo">
-			<u-avatar shape="square" :src="webUrl + user.avatar" size="60"></u-avatar>
+			<u-avatar shape="square" @tap="jumpImage(webUrl + user.avatar)" :src="webUrl + user.avatar" size="60"></u-avatar>
 			<view class="userinfo-desc">
 				<u--text :text="user.userName || user.nickName || user.username"></u--text>
 				<u--text type="info" :text="user.money"></u--text>
@@ -38,6 +38,9 @@
 				this.$u.route({
 					url: 'pages/user/my'
 				})
+			},
+			jumpImage(urls){
+				uni.previewImage({urls:[urls]})
 			}
 		}
 	}

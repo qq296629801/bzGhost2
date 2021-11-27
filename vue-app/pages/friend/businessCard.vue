@@ -9,7 +9,7 @@
 				<u-cell v-if="source == 1" title="" @click="linkAdd" :arrow="false">
 						<view  style="text-align: center;">添加到通讯录</view>
 				</u-cell>
-				<u-cell v-else title="发消息" :arrow="false" @click="linkChat">
+				<u-cell v-else title="发消息" :arrow="false" @click="jumpChat">
 					<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 				</u-cell>
 			</u-cell-group>
@@ -38,37 +38,15 @@
 			...mapState(['user','userCardData']),
 		},
 		methods: {
-			linkChat(){
+			jumpChat(){
 				this.$store.commit("setChatObj",{
-					chatId: this.userId,
-					chatName:this.nickName,
+					chatId: this.userCardData.id,
+					chatName:this.userCardData.nickName,
 					chatType:0
 				})
 				this.$u.route({
 					url:"pages/chat/chat"
 				});
-			},
-			linkAdd(){
-				let item = {
-					userId: this.user.operId,
-					friendId: this.userId,
-				}
-				this.$http.post('app/friend/addAsk', item).then(res=>{
-					uni.navigateBack()
-				});
-			},
-			linkImg(urls){
-				uni.previewImage({urls:[urls]})
-			},
-		},
-		onLoad({ userId, nickName, source }) {
-			this.nickName = nickName
-			this.userId = userId
-			this.source = source
-			this.u = {
-				nickName,
-				avatar:'',
-				money:0
 			}
 		}
 	}
