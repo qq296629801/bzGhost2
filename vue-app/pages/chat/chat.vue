@@ -7,7 +7,7 @@
 			
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			
-			<view @touchstart="touchmessage" class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
+			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					
 					<!-- 图像昵称 -->
@@ -497,8 +497,6 @@ export default {
 		//用户触摸屏幕的时候隐藏键盘
 		touchstart() {
 			uni.hideKeyboard();
-		},
-		touchmessage(){
 			this.showFunBtn =false;
 		},
 		// 卡片

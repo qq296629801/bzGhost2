@@ -1,10 +1,6 @@
 <template>
 	<view>
-		<z-nav-bar ref="navBar" :scrollTop="scrollTop" transparentFixedFontColor="#FFF" type="transparentFixed" title="">
-			<view class="transparent_fixed_preview" slot="transparentFixedRight" @click="onPreview"></view> 
-			<view class="preview" slot="right" @click="onPreview"></view>
-		</z-nav-bar>
-					
+		
 		<view class="top">
 			<view class="blessing">
 				{{ packetData.userName}}的红包
@@ -65,7 +61,6 @@
 			...mapState(['packetData'])
 		},
 		onPageScroll(e) {
-			this.scrollTop = e.scrollTop;
 			if(e.scrollTop>100){return;}
 			let radiusTmp = 100 - e.scrollTop;
 			this.radius = radiusTmp+'% '+radiusTmp+'% 0 0';

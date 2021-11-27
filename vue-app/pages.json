@@ -351,9 +351,8 @@
 		    "path" : "pages/chat/detail",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle":"custom",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
 		    }
 		    
 		}

@@ -1,7 +1,6 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="成员" :border-bottom="false"
-		 z-index="1001">
+		<u-navbar title="成员">
 			<view class="slot-wrap" slot="right">
 				<u-button size="mini" type="success" @click="saveGroupMember">保存</u-button>
 			</view>

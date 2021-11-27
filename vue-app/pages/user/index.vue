@@ -3,8 +3,8 @@
 		<view class="head">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
-					<u-avatar :src="webUrl + chatObj.avatar" mode="square"></u-avatar>
-					<view class="grid-text">{{chatObj.chatName}}</view>
+					<u-avatar :src="webUrl + chatObj.imgUrl" shape="square"></u-avatar>
+					<u--text :text="chatObj.chatName"></u--text>
 				</u-grid-item>
 			</u-grid>
 		</view>
@@ -17,8 +17,8 @@
 				</u-cell>
 				<u-cell title="设置聊天背景" @click="chooseImg">
 				</u-cell>
-				<u-cell @click="delFriendMsg">
-					<view solt="label" style="text-align: center; color: red;">清空聊天记录</view>
+				<u-cell>
+					<view slot="label" class="btn-red">清空聊天记录</view>
 				</u-cell>
 			</u-cell-group>
 		</view>
@@ -36,8 +36,6 @@
 		},
 		computed:{
 			...mapState(['chatObj'])
-		},
-		methods: {
 		}
 	}
 </script>
@@ -46,5 +44,8 @@
 	.head{
 		background-color: white;
 	}
-	
+	.btn-red{
+		text-align: center; 
+		color: red;
+	}
 </style>
