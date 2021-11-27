@@ -76,10 +76,12 @@
 			...mapState(['friend'])
 		},
 		methods:{
-			jumpBusinessCard({id,nickName}){
+			jumpBusinessCard(userCardData){
+				userCardData.source = 0
+				console.log(JSON.stringify(userCardData))
+				this.$store.commit("setUserCardData",userCardData)
 				this.$u.route({
-					url: 'pages/friend/businessCard',
-					params:{ userId: id, source: 0, nickName}
+					url: 'pages/friend/businessCard'
 				});
 			},
 			jumpNewFriend(){

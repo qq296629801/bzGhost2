@@ -3,10 +3,10 @@
 		<view class="userinfo">
 			<u-avatar shape="square" :src="webUrl + user.avatar" size="60"></u-avatar>
 			<view class="userinfo-desc">
-				<u--text :text="user.username"></u--text>
+				<u--text :text="user.userName || user.nickName || user.username"></u--text>
 				<u--text type="info" :text="user.money"></u--text>
 			</view>
-			<view class="userinfo-arrow" @tap="jumpMy">
+			<view class="userinfo-arrow" @tap="jumpMy" v-if="isStatic">
 				<u-icon name="arrow-right"></u-icon>
 			</view>
 		</view>
@@ -22,6 +22,10 @@
 			user:{
 				type:Object,
 				default:{}
+			},
+			isStatic:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data() {

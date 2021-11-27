@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<user-card :user="user"></user-card>
+		<user-card :user="user" :isStatic="true"></user-card>
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">

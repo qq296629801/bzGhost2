@@ -1,11 +1,11 @@
 <template>
 	<view>
-		<user-card :user="u"></user-card>
+		<user-card :user="userCardData"></user-card>
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">
 				<u-cell title="朋友圈" label="模拟数据暂不支持查看好友朋友圈"></u-cell>
-				<u-cell title="更多" :title-style="{ marginLeft: '10rpx' }"></u-cell>
+				<u-cell title="更多"></u-cell>
 				<u-cell v-if="source == 1" title="" @click="linkAdd" :arrow="false">
 						<view  style="text-align: center;">添加到通讯录</view>
 				</u-cell>
@@ -35,7 +35,7 @@
 			}
 		},
 		computed:{
-			...mapState(['user']),
+			...mapState(['user','userCardData']),
 		},
 		methods: {
 			linkChat(){

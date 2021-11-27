@@ -15,12 +15,18 @@ export const state = {
   post:[],
   friend:[],
   group:[],
-  conversation:[]
+  conversation:[],
+  userCardData:{}
 };
 //缓存浏览器的数据名称
 const cacheNameList = ["user","token","config","roles","permissions","post","friend","group","conversation"];
 let clearTime;
 export const mutations = {
+	setUserCardData(state, data){
+		if(data){
+			state.userCardData =  data;
+		}
+	},
 	setPost(state, data){
 		if(data){
 			state.post =  Object.assign({}, state.post, data);
