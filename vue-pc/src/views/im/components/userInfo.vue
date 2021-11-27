@@ -5,7 +5,7 @@
         <h5 class="username">{{ user.nickName }}</h5>
       </Col>
       <Col span="12" class="text-right">
-        <Avatar size="large" :src="host + user.avatar" />
+        <Avatar size="large" :src="webUrl + user.avatar" />
       </Col>
     </Row>
     <Divider />
@@ -32,17 +32,16 @@
 
 <script>
 import base from "@/utils/baseUrl.js";
-import { mapState, mapMutations} from 'vuex';
+import store from "@/store/index.js";
 export default {
   name: "userInfo",
   props: ["user"],
   data() {
     return {
-      host: base.webUrl
+      webUrl: base.webUrl
     };
   },
   methods: {
-    ...mapMutations(['setChatObj']),
     // 打开一个聊天对话框
     showChat: function() {
       let self = this;
@@ -52,7 +51,8 @@ export default {
         chatId:self.user.id,
         avatar:self.user.avatar
       };
-      this.setChatObj(obj);
+      store.commit("setChatObj",obj);
+
       self.$router.push({
         path: "/index/chatBox/"
       });

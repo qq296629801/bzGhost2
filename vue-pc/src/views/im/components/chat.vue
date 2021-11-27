@@ -19,14 +19,14 @@
                 <img :src="[host + item.fromUserHeadImg]" alt="头像" />
                 <div class="message-info right" v-if="item.isItMe">
                   <i>
-                    <!-- <Time :time="item.createTime" /> -->
+                    <Time :time="item.createTime" />
                   </i>
                   <span>{{ item.fromUserName }}</span>
                 </div>
                 <div class="message-info" v-if="!item.isItMe">
                   <span>{{ item.fromUserName }}</span>
                   <i>
-                    <!-- <Time :time="item.createTime" /> -->
+                    <Time :time="item.createTime" />
                   </i>
                 </div>
               </div>
@@ -91,12 +91,12 @@
       width="300"
     >
       <div v-if="chatObj.chatType==0">
-        <UserModal :userId="chatObj.chatId"></UserModal>
+        <UserModal :user="chatObj"></UserModal>
       </div>
 
       <div v-if="chatObj.chatType==1">
         <p class="user-model-img">
-          <img :src="[host + chatObj.avatar]" class="img" />
+          <img :src="[webUrl + chatObj.imgUrl]" class="img" />
         </p>
         <p class="user-model-item">
           <label>群名称：</label>
@@ -138,7 +138,7 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import { imageLoad, transform } from "../../../utils/ChatUtils";
 import db from "@/utils/api/message.js";
 import base from "@/utils/baseUrl.js";
@@ -155,7 +155,7 @@ export default {
   },
   data() {
     return {
-      host:'',
+      webUrl:base.webUrl,
       count: 0,
       pageSize: 20,
       modal: false,
@@ -165,8 +165,6 @@ export default {
       messageList: [],
       showFace: false,
       showHistory: false,
-     // userList: [],
-     // isGroup: false,
       messageType:{
 				text:0,
 				video:1,

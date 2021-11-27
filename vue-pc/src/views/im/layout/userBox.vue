@@ -1,7 +1,7 @@
 <template>
   <div class="user-box">
     <div class="user-box-list">
-      <Search class="search-box" @showChat="showChat"></Search>
+      <Search class="search-box"></Search>
       <div class="group-box">
         <Collapse simple>
           <template v-for="(item, index) in friend">
@@ -12,12 +12,12 @@
               </span>
               <div slot="content" class="group-wrap">
                 <div
-                  :class="m.id == chat.chatId ? 'con-item active' : 'con-item'"
+                  :class="m.id == user.id ? 'con-item active' : 'con-item'"
                   v-for="(m, n) in item.members"
                   :key="n"
                   @click="showUser(m)"
                 >
-                  <img class="member-img" :src="[host + m.avatar]" />
+                  <img class="member-img" :src="[webUrl + m.avatar]" />
                   <span>{{ m.nickName }}</span>
                 </div>
               </div>
@@ -43,7 +43,7 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
 import base from "@/utils/baseUrl.js";
-import { mapState, mapMutations} from 'vuex';
+import { mapState } from 'vuex';
 export default {
   components: {
     Search,
@@ -54,34 +54,19 @@ export default {
   computed: {},
   data() {
     return {
-      chat: {},
-      user: {},
-      currentUser: {},
-      host: "",
-      userFriends: [],
       first: true,
-      host:base.webUrl
+      webUrl:base.webUrl,
+      user:{}
     };
   },
-  mounted: function() {
-    this.host = base.webUrl
-  },
   computed: {
-    ...mapState(["user","friend"])
+    ...mapState(["friend"])
   },
   methods: {
-    // 打开一个聊天对话框
-    showChat: function() {
-    },
     // 打开一个用户信息对话框
     showUser: function(user) {
-      let self = this;
-      console.log(user)
-      // self.$router.push({
-      //   path: "/index/userBox/"
-      // });
-      self.first = false;
-      self.user = user;
+      this.first = false;
+      this.user = user;
     }
   }
 };

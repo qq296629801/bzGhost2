@@ -161,7 +161,6 @@ export default {
         phone: "",
         pwd: "",
         nickName: "",
-        invitationPerson: "QhQf",
         sex: "",
         birthday: ""
       },

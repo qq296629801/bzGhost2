@@ -6,7 +6,7 @@
         <ul class="user-list">
           <li class="user" v-for="(chatGroup, index) in group" :key="index">
             <a href="javascript:" @click="showChat(chatGroup)">
-              <img :src="[host + chatGroup.avatar]" />
+              <img :src="[webUrl + chatGroup.avatar]" />
               <b>{{ chatGroup.chatName }}</b>
               <p>{{ chatGroup.lastOperTime }}</p>
             </a>
@@ -28,6 +28,7 @@ import Welcome from "../components/welcome.vue";
 import base from "@/utils/baseUrl.js";
 import UserChat from "../components/chat.vue";
 import { mapState, mapMutations} from 'vuex';
+import store from "@/store/index.js";
 export default {
   components: {
     Search,
@@ -41,22 +42,17 @@ export default {
   data() {
     return {
       list: [],
-      host:'',
+      webUrl:base.webUrl,
       first: true,
       currentChat:{}
     };
   },
-  mounted: function() {
-    this.host = base.webUrl;
-  },
   methods: {
-    ...mapMutations(['setChatObj']),
     // 打开一个聊天对话框
     showChat: function(chatGroup) {
       this.first = false;
       this.currentChat = chatGroup;
-      this.setChatObj(chatGroup);
-      console.log(chatGroup)
+      store.commit("setChatObj",chatGroup)
     }
   }
 };

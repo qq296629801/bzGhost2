@@ -42,20 +42,17 @@
       width="300"
     >
       <p class="user-model-img">
-        <img :src="user.avatar" class="img" />
+        <img width="100" height="100" :src="webUrl + user.avatar" class="img" />
       </p>
       <p class="user-model-item">
-        <label>昵称</label>
+        <label>昵称：</label>
         <span>{{ user.realname }}</span>
       </p>
       <p class="user-model-item">
-        <label>账号</label>
+        <label>账号：</label>
         <span>{{ user.username }}</span>
       </p>
-      <p class="user-model-item">
-        <label>邮箱：</label>
-        <span>{{ user.email }}</span>
-      </p>
+      
       <p>
         <Button type="error" long @click="myLogout">退出</Button>
       </p>

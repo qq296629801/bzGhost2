@@ -15,7 +15,7 @@
               "
             >
               <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
-              <img :src="[host + chat.imgUrl]" alt="头像" />
+              <img :src="[webUrl + chat.imgUrl]" alt="头像" />
               <b>{{ chat.chatName }}</b>
               <p>{{ contontType[chat.chatType] }}</p>
             </a>
@@ -37,7 +37,8 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-import { mapState, mapMutations} from 'vuex';
+import { mapState} from 'vuex';
+import store from "@/store/index.js";
 import base from "@/utils/baseUrl.js";
 export default {
   components: {
@@ -50,7 +51,7 @@ export default {
     return {
       chatList: [],
       contontType: ["文本", "语音", "图片", "红包"],
-      host:'',
+      webUrl:base.webUrl,
       first:true
     };
   },
@@ -58,9 +59,8 @@ export default {
     ...mapState(["user","chatObj","conversation"])
   },
   methods: {
-    ...mapMutations(['setChatObj']),
     showChat: function(chat) {
-      this.setChatObj(chat);
+      store.commit("setChatObj",chat)
       this.first = false;
       // 每次滚动到最底部
       this.$nextTick(() => {
@@ -69,18 +69,13 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-      this.setChatObj(chat);
+      store.commit("setChatObj",chat)
       // 每次滚动到最底部
       self.$nextTick(() => {
         imageLoad("message-box");
       });
     },
     delChat() {}
-  },
-  activated: function() {
-  },
-  mounted: function() {
-    this.host = base.webUrl;
   }
 };
 </script>
@@ -200,7 +195,7 @@ export default {
         position: absolute;
         left: 1rem;
         top: 0;
-        z-index: 99999999999;
+        z-index:1;
       }
 
       p {

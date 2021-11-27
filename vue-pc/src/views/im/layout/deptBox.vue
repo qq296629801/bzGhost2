@@ -45,8 +45,6 @@
 <script>
 import Top from "../components/top.vue";
 import UserModal from "../components/userModal.vue";
-import { ChatListUtils, MessageTargetType } from "@/utils/ChatUtils";
-import apiCommon from "@/utils/api/common.js";
 export default {
   components: {
     Top,
