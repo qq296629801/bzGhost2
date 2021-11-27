@@ -17,7 +17,9 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view class="content" v-if="item.contentType == messageType.text" v-html="transformFace(item.content)"></view>
+					<view class="content" v-if="item.contentType == messageType.text">
+						 <u-tooltip :text="item.content" overlay></u-tooltip>
+					</view>
 					
 					
 					<!-- contentType = 2 语音 -->
