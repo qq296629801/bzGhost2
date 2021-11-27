@@ -2,7 +2,7 @@
   <div>
     <div>
       <p class="text-center">
-        <img :src="[webUrl + user.imgUrl]" class="img" />
+        <img width="100" height="100" :src="[webUrl + user.imgUrl]" class="img" />
       </p>
       <p class="user-model-item">
         <label>姓名：</label>

@@ -12,20 +12,17 @@ export default {
 	components:{
 		msgList
 	},
-	data() {
-		return {
-			cURL:'app/conversation/list'
-		};
-	},
 	watch:{
 		// 监听服务器是否有推送数据
 		// 后期优化为推送单条数据
-        newsPush: function(value){
-			let _this = this
-			_this.$http.post(_this.cURL, {
-				userId: _this.user.operId
+        newsPush: function(v){
+			console.log(v)
+			
+			let userId = this.user.operId;
+			this.$http.post('app/conversation/list', {
+				userId
 			}).then(res=>{
-				_this.$store.commit("setConversation", res)
+				this.$store.commit("setConversation", res)
 			});
 		}
 	},

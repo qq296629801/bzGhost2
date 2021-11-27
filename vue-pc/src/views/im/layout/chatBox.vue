@@ -56,7 +56,19 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user","chatObj","conversation"])
+    ...mapState(["user","chatObj","conversation","newsPush"])
+  },
+  watch:{
+    newsPush:function(v){
+      console.log(v);
+
+      let userId = this.user.operId
+       this.$post('app/conversation/list', {
+        userId
+      }).then(res=>{
+        store.commit("setConversation", res)
+      });
+    }
   },
   methods: {
     showChat: function(chat) {
