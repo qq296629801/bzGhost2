@@ -14,6 +14,7 @@
 					<view class="username"  @tap="linkCard(item)">
 						<u--text :text="item.fromUserName"></u--text>
 						<image class="img" :src="webUrl + item.fromUserHeadImg" mode=""></image>
+						
 					</view>
 					
 					<!-- contentType = 1 文本 -->

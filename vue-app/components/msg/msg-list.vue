@@ -17,8 +17,7 @@
 						:src="webUrl + item.imgUrl"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
-					
-					 <u-badge type="error" slot="value" max="99" :value="item.unreadNumber"></u-badge>
+					 <u-badge type="error" slot="right-icon" max="99" :value="item.unreadNumber"></u-badge>
 				</u-cell>
 			</u-list-item>
 		</u-list>

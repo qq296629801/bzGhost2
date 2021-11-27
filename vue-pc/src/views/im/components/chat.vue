@@ -244,17 +244,22 @@ export default {
 
           if(!_t.messageContent==''){
              _t.messageList.push(params);
+              db.commit(params);
+             _t.$post('app/msg/add',{
+              chatId: _t.chatObj.chatId,
+              chatType:_t.chatObj.chatType,
+              userId: _t.user.operId,
+              message: params.content,
+              msgType: params.contentType
+            });
           }
           _t.messageContent = '';
-          
           this.$nextTick(() => {
             imageLoad("message-box");
           });
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
-
-            console.log(res)
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
                 // 判断发送人是不是自己
@@ -262,7 +267,7 @@ export default {
                   if(res.content!=''){
                     res.isItMe = false;
                     _t.messageList.push(res);
-
+                    db.commit(res);
                     this.$nextTick(() => {
                       imageLoad("message-box");
                     });
