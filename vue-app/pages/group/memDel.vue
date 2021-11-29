@@ -9,7 +9,6 @@
 		<view class="list-search">
 		</view>
 		
-		
 		<u-index-list>
 			<template
 				v-for="(item, index) in list"
@@ -26,7 +25,6 @@
 						:key="index1"
 						:title="item1.nickName"
 						:border="index1 !== item.members.length - 1"
-						@tap="jumpBusinessCard(item1)"
 					>
 						<u-checkbox-group slot="icon">
 							<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
