@@ -18,8 +18,8 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view class="content" v-if="item.contentType == messageType.text">
-						 <u-tooltip :text="item.content" overlay></u-tooltip>
+					<view class="content" v-html="item.content" v-if="item.contentType == messageType.text">
+						 <!-- <u-tooltip :text="item.content" overlay></u-tooltip> -->
 					</view>
 					
 					
