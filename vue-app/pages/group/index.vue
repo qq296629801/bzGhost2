@@ -8,26 +8,23 @@
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="plus">
-						<u-icon name="plus" size="30" color="#cececf"></u-icon>
+						<u-icon name="plus" size="20" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="plus">
-						<u-icon name="minus" size="30" color="#cececf"></u-icon>
+						<u-icon name="minus" size="20" color="#cececf"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
-			
 			<view class="more" @tap="linkMore" v-if="group.members.length>20">查看更多</view>
 		</view>
 		
-		
 		<view class="cell-group">
-			
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 			<u-cell-group :border="false">
 				<u-cell @tap="show = true" title="群名称" :value="group.group.groupName"></u-cell>
-				<u-cell @tap="xxShow = true" title="群公告" value="xx" label="暂无公告"></u-cell>
+				<u-cell @tap="xxShow = true" title="群公告" label="暂无"></u-cell>
 				<u-cell title="二维码">
 					<view class="iconfont iconxingzhuangjiehe erweima"></view>
 				</u-cell>
@@ -38,8 +35,8 @@
 				<u-cell title="全体禁言" :arrow="false">
 					<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
 				</u-cell>
-				<u-cell title="查看内容" @click="linkSearch" :title-style="titleStyle"></u-cell>
-				<u-cell title="设置背景" @click="chooseImg" :title-style="titleStyle"></u-cell>
+				<u-cell title="查看内容" @click="linkSearch"></u-cell>
+				<u-cell title="设置背景" @click="chooseImg"></u-cell>
 			</u-cell-group>
 			
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
@@ -53,34 +50,81 @@
 			</u-cell-group>
 		</view>
 		
-		
-		<u-popup :show="show" mode="bottom">
+		<u-popup :show="show" mode="bottom" @close="show = false" @open="show = true">
 			<view class="xx">
-				<view class="xx-t">
-					群名称
-				</view>
-				<u-input class="textarea" height="200" v-model="group.group.groupName" />
-				<u-button type="success" @tap="tapGroupName">保存</u-button>
+				
+				<u--form
+						labelPosition="left"
+						:model="group"
+						:rules="rules"
+						ref="form1"
+						>
+							<u-form-item
+									label="群名"
+									prop="group.groupName"
+									borderBottom
+									ref="item1"
+							>
+								<u--input
+										v-model="group.group.groupName"
+										border="none"
+								></u--input>
+							</u-form-item>
+						
+						</u--form>
+				
+						<u-button type="success" @tap="tapGroupName">保存</u-button>
 			</view>
 		</u-popup>
 		
-		<u-popup :show="xxShow" mode="bottom">
+		<u-popup :show="xxShow" @close="xxShow = false" @open="xxShow = true" mode="bottom" >
 			<view class="xx">
-				<view class="xx-t">
-					群公告
-				</view>
-				<u-input class="textarea" height="200" v-model="group.group.gContext" />
+				<u--form
+						labelPosition="left"
+						:model="group"
+						:rules="rules"
+						ref="form1"
+						>
+							<u-form-item
+									label="公告"
+									prop="group.gContext"
+									borderBottom
+									ref="item1"
+							>
+								<u--input
+										v-model="group.group.gContext"
+										border="none"
+								></u--input>
+							</u-form-item>
+						
+						</u--form>
+				
+				<!-- <u-input class="textarea" height="200" v-model="group.group.gContext" /> -->
 				<u-button type="success" @tap="tapGroupNotice">保存</u-button>
 			</view>
 		</u-popup>
 		
-		
-		<u-popup :show="xxxShow" mode="bottom">
+		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="bottom">
 			<view class="xx">
-				<view class="xx-t">
-					群昵称
-				</view>
-				<u-input class="textarea" height="200" v-model="group.group.gContext" />
+				<u--form
+					labelPosition="left"
+					:model="group"
+					:rules="rules"
+					ref="form1"
+					>
+						<u-form-item
+								label="昵称"
+								prop="group.gContext"
+								borderBottom
+								ref="item1"
+						>
+							<u--input
+									v-model="group.group.gContext"
+									border="none"
+							></u--input>
+						</u-form-item>
+					
+					</u--form>
 				<u-button type="success" @tap="tapGroupNick">保存</u-button>
 			</view>
 		</u-popup>
@@ -95,7 +139,21 @@ export default {
 		return {
 			webUrl: base.webUrl,
 			disTalk: false,
-			titleStyle:{ marginLeft: '10rpx' },
+			showSex: false,
+			rules: {
+				'userInfo.name': {
+					type: 'string',
+					required: true,
+					message: '请填写姓名',
+					trigger: ['blur', 'change']
+				}
+			},
+			model1: {
+				userInfo: {
+					name: 'uView UI',
+					sex: '',
+				},
+			},
 			group:{
 				group:{},
 				groupUser:{},
