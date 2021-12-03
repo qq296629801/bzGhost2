@@ -698,6 +698,14 @@ export default {
 				// #endif
 			});
 		},
+		cOpen(){
+			let _t = this
+			_t.$http.post('app/conversation/open',{
+				chatId: _t.chatObj.chatId,
+				chatType:_t.chatObj.chatType,
+				userId: _t.user.operId,
+			});
+		}
 	},
 	//导航栏
 	onNavigationBarButtonTap({ index }) {
@@ -760,13 +768,15 @@ export default {
 			index : 0,
 		})
 		
-		this.initData();
-		
 		let _this = this
 		
+		_this.initData();
+		
+		_this.cOpen();
+		
 		// 绑定通道
-		this.$socket.joinGroup(a=>{
-			this.sendMsg(null)
+		_this.$socket.joinGroup(a=>{
+			_this.sendMsg(null)
 		});
 		
 		uni.getSystemInfo({
