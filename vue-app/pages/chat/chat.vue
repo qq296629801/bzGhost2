@@ -437,12 +437,38 @@ export default {
 			
 			// 发送消息到服务器转发
 			_t.$socket.sendMessage(params, res=>{
+				// 私聊
+				console.log(5)
+				if(_t.chatObj.chatType == 0){
+					if(res.fromUserId!=_t.user.operId){
+						console.log(3)
+						if(res.content!=''){
+							res.isItMe = false;
+							console.log(2)
+							// 红包广播
+							console.log(1)
+							// 本地内存
+							_t.messageList.push(res);
+							// 本地缓存
+							db.commit(res);
+							// 页面置底
+							_t.mescroll.scrollTo(99999, 0);
+							// 页面红点
+							uni.showTabBarRedDot({
+								index: 0
+							});
+						}
+					}
+				}
 				// 判断是否当前群组
 				if(res.toUserId==_t.chatObj.chatId){
 					// 判断发送人是不是自己
+					console.log(4)
 					if(res.fromUserId!=_t.user.operId){
+						console.log(3)
 						if(res.content!=''){
 							res.isItMe = false;
+							console.log(2)
 							// 红包广播
 							if(res.contentType == _t.messageType.robPacket){
 								// 修改红包内容
@@ -460,6 +486,7 @@ export default {
 								}
 								db.upPacket(res.hasBeenSentId, res.content);
 							}else {
+								console.log(1)
 								// 本地内存
 								_t.messageList.push(res);
 								// 本地缓存
