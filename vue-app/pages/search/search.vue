@@ -168,10 +168,10 @@
 				this.keyword = obj.keyword;
 				this.saveKeyword(obj.keyword); //保存为历史 
 			
-				let {id,nickName} = obj.item
+				obj.item.source = 1;
+				this.$store.commit("setUserCardData",obj.item);
 				this.$u.route({
-					url: '/pages/friend/businessCard',
-					params:{ userId: id, source: 1,nickName:nickName}
+					url: '/pages/friend/businessCard'
 				});
 			},
 			//保存关键字到历史记录

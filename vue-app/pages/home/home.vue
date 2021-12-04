@@ -36,7 +36,9 @@ export default {
 			})
 		},
 		onNavigationBarButtonTap({ index }) {
-			console.log(index)
+			this.$u.route({
+				url: 'pages/search/search'
+			})
 		}
 	},
 };

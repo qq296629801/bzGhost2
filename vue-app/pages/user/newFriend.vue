@@ -19,7 +19,7 @@
 							customStyle="margin: -3px 5px -3px 0"
 						></u-avatar>
 						
-						<u-button slot="value" @tap="addFriend(item)" type="success" size="mini">同意</u-button>
+						<u-button slot="value" @tap="accept(item)" type="success" size="mini">同意</u-button>
 					</u-cell>
 				</u-list-item>
 			</u-list>
@@ -47,7 +47,7 @@ export default {
 	methods: {
 		scrolltolower(){
 		},
-		addFriend(item){
+		accept(item){
 			item.userId = this.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{
 				this.findFriend();

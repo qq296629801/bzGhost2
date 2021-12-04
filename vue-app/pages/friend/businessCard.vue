@@ -5,13 +5,16 @@
 		<view class="cell-group">
 			<u-cell-group :border="false">
 				<u-cell title="朋友圈" label="模拟数据暂不支持查看好友朋友圈"></u-cell>
-				<u-cell title="更多"></u-cell>
-				<u-cell v-if="source == 1" title="" @click="linkAdd" :arrow="false">
-						<view  style="text-align: center;">添加到通讯录</view>
+				
+				<u-cell v-if="userCardData.source==1" @click="jumpAdd" :arrow="false">
+					<view slot="value" style="text-align: center;">添加到通讯录</view>
 				</u-cell>
+				
 				<u-cell v-else title="发消息" :arrow="false" @click="jumpChat">
 					<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 				</u-cell>
+				
+				<u-cell title="更多"></u-cell>
 			</u-cell-group>
 		</view>
 		
@@ -28,16 +31,20 @@
 		},
 		data() {
 			return {
-				nickName:'',
-				userId:'',
-				source:0,
-				u:{},
 			}
 		},
 		computed:{
 			...mapState(['user','userCardData']),
 		},
 		methods: {
+			jumpAdd(){
+				this.$http.post('app/friend/addAsk', {
+					userId: this.user.operId,
+					friendId: this.userId,
+				}).then(res=>{
+					uni.navigateBack()
+				});
+			},
 			jumpChat(){
 				this.$store.commit("setChatObj",{
 					chatId: this.userCardData.id,
