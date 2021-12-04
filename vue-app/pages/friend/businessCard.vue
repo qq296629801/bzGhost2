@@ -40,7 +40,7 @@
 			jumpAdd(){
 				this.$http.post('app/friend/addAsk', {
 					userId: this.user.operId,
-					friendId: this.userId,
+					friendId: this.userCardData.id,
 				}).then(res=>{
 					uni.navigateBack()
 				});
