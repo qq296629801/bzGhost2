@@ -112,23 +112,12 @@
 					return;
 				}
 				this.isShowKeywordList = true;
-				
 				this.$http.post('app/friend/query',{nickName:''}).then(res=>{
 					//console.log(JSON.stringify(res))
 					this.keywordList = [];
 					this.keywordList = this.drawCorrelativeKeyword(res, keyword);
 					
 				});
-				
-				//以下示例截取淘宝的关键字，请替换成你的接口
-				// uni.request({
-				// 	url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
-				// 	success: (res) => {
-				// 		this.keywordList = [];
-				// 		this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
-						
-				// 	}
-				// });
 			},
 			//高亮关键字
 			drawCorrelativeKeyword(keywords, keyword) {
