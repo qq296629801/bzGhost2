@@ -7,7 +7,7 @@
 				v-for="(item, index) in conversation"
 				:key="index"
 			>
-				<u-cell @tap="jumpChatPage(item)" :clickable="true"
+				<u-cell @tap="jumpChatPage(item)"
 					:title="item.chatName" :label="item.msgType==0?item.content:message[item.msgType]"
 				>
 					<u-avatar
