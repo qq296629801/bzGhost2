@@ -38,6 +38,10 @@
                 ></pre>
               </div>
 
+              <div class="im-chat-img" v-if="item.contentType == 3">
+                 <imgView :images="[webUrl + item.content]"></imgView>
+              </div>   
+              
             </li>
           </ul>
         </div>
@@ -138,6 +142,7 @@ import Faces from "./faces.vue";
 import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
+import imgView from "./imgView.vue";
 import { mapState } from 'vuex';
 import { imageLoad, transform } from "../../../utils/ChatUtils";
 import db from "@/utils/api/message.js";
@@ -147,7 +152,8 @@ export default {
     Faces,
     UserModal,
     HistoryMessage,
-    UploadTool
+    UploadTool,
+    imgView
   },
   name: "UserChat",
   computed: {
@@ -466,6 +472,19 @@ export default {
               padding-left: 20rpx;
               color: #fff;
             }
+        }
+
+        .im-chat-img {
+          max-width: 200px;
+          position: relative;
+          line-height: 22px;
+          margin-top: 25px;
+          padding: 1rem;
+          color: #e2e2e2;
+          word-break: break-all;
+          display: inline-block;
+          vertical-align: top;
+          font-size: 14px;
         }
 
         .im-chat-text {

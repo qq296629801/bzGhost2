@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index.js";
 import ViewUI from "view-design";
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
 import "view-design/dist/styles/iview.css";
 import {
   post,
@@ -18,6 +20,7 @@ import webim from "./utils/socket/webim";
 import "./utils/directives";
 Vue.config.productionTip = false;
 Vue.use(ViewUI);
+Vue.use(Viewer);
 Vue.prototype.formatDateTime = formatDateTime;
 Vue.prototype.$socket = webim;
 Vue.prototype.$post = post;

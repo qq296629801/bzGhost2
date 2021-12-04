@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "v-viewer": "^1.6.4",
     "view-design": "^4.2.0",
     "vue": "^2.6.12",
     "vue-router": "^3.1.6",
