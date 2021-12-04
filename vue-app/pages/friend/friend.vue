@@ -12,6 +12,11 @@ export default {
 		};
 	},
 	methods: {
+	},
+	onNavigationBarButtonTap({ index }) {
+		this.$u.route({
+			url: 'pages/group/groupCreate'
+		})
 	}
 };
 </script>

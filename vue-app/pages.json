@@ -158,7 +158,17 @@
 			"path": "pages/friend/friend",
 			"style": {
 				"navigationBarTitleText": "通讯录",
-				"enablePullDownRefresh": false 
+				"enablePullDownRefresh": false ,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"float": "right",
+							"text": "\ue671",
+							"width":"80rpx"
+						}]
+					}
+				}
 			}
 		},
 		{
