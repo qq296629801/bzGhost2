@@ -1,4 +1,7 @@
 <template>
+	
+	<u-transition :show="true" mode="slide-right">
+	
 	<u-index-list>
 		<u-cell-group slot="header">
 			
@@ -56,6 +59,8 @@
 			</u-index-item>
 		</template>
 	</u-index-list>
+	
+	</u-transition>
 </template>
 
 <script>

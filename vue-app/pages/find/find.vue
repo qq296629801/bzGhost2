@@ -1,5 +1,7 @@
 <template>
 	<view class="content">
+		<u-transition :show="true" mode="slide-right">
+		
 		<view class="cell-group">
 			<u-cell-group :border="false">
 				<u-cell size="large"  title="朋友圈" @tap="jumpPage">
@@ -24,6 +26,9 @@
 				</u-cell>
 			</u-cell-group>	
 		</view>
+		
+		</u-transition>
+		
 	</view>
 </template>
 <script>

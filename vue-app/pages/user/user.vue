@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<u-transition :show="true" mode="slide-right">
+		
 		<user-card :user="user" :isStatic="true"></user-card>
 		
 		<view class="cell-group">
@@ -16,6 +18,9 @@
 				</u-cell>
 			</u-cell-group>
 		</view>
+		
+		
+		</u-transition>
 	</view>
 </template>
 

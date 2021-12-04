@@ -1,14 +1,19 @@
 <template>
 	<view class="u-page">
+		
+		<u-transition :show="true" mode="slide-right">
+		        
 		<u-list
 			@scrolltolower="scrolltolower"
 		>
 			<u-list-item
 				v-for="(item, index) in conversation"
 				:key="index"
+				
 			>
 				<u-cell @tap="jumpChatPage(item)"
-					:title="item.chatName" :label="item.msgType==0?item.content:message[item.msgType]"
+					:title="item.chatName"
+					:label="item.msgType==0?item.content:message[item.msgType]"
 				>
 					<u-avatar
 						slot="icon"
@@ -21,6 +26,9 @@
 				</u-cell>
 			</u-list-item>
 		</u-list>
+		
+		
+		</u-transition>
 	</view>
 </template>
 
@@ -37,10 +45,17 @@
 			}
 		},
 		computed: {
-			...mapState(['conversation'])
+			...mapState(['conversation','user'])
 		},
 		methods: {
 			scrolltolower() {
+				let userId = this.user.operId;
+				this.$http.post('app/conversation/list', {
+					userId
+				}).then(res=>{
+					res.sort(function(a, b){return b.lastOpenTime>a.lastOpenTime});
+					this.$store.commit("setConversation", res)
+				});
 			},
 			jumpChatPage(item){
 				this.$store.commit("setChatObj",item);

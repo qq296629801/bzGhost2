@@ -1,11 +1,17 @@
 <template>
 	<view class="content">
+		
+		
+		
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
 			<!-- 背景图- 定位方式 -->
 			<!-- <image class="content-box-bg" src="" :style="{ height: imgHeight }"></image> -->
 			<view class="content-box-loading" v-if="!loading"><u-loading mode="flower"></u-loading></view>
 			
 			<mescroll-body ref="mescrollRef" bottom="20%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
+			
+			
+			<u-transition :show="true" mode="slide-down">
 			
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
@@ -57,9 +63,11 @@
 					<!-- contentType = 4 红包 -->
 					<red-packet-card v-if="item.contentType == messageType.createPacket" :item="item" @showCard="showCard"></red-packet-card>
 				</view>
+				
+				
 			</view> 
 			
-			
+			</u-transition>
 			</mescroll-body>
 			
 		</view>
@@ -135,6 +143,9 @@
 		
 		<!-- 发送红包表单-->
 		<red-packet-form :pShow="pShow" @save="packetSave" @cancer="packetCancer"></red-packet-form>
+	
+	
+	
 	</view>
 </template>
 
