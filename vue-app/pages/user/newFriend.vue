@@ -8,7 +8,7 @@
 					v-for="(item, index) in list"
 					:key="index"
 				>
-					<u-cell @tap="jumpChatPage(item)" :clickable="true"
+					<u-cell
 						:title="item.nickName" :label="item.lastOperTime | format"
 					>
 						<u-avatar
@@ -19,7 +19,7 @@
 							customStyle="margin: -3px 5px -3px 0"
 						></u-avatar>
 						
-						<u-button slot="value" @tap="addFriend(value)" type="success" size="mini">同意</u-button>
+						<u-button slot="value" @tap="addFriend(item)" type="success" size="mini">同意</u-button>
 					</u-cell>
 				</u-list-item>
 			</u-list>
