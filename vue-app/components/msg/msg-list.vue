@@ -1,6 +1,7 @@
 <template>
 	<view class="u-page">
 		
+		
 		<u-transition :show="true" mode="slide-right">
 		        
 		<u-list
