@@ -50,7 +50,7 @@
 			}
 		},
 		computed:{
-			...mapState(['friend'])
+			...mapState(['friend','user'])
 		},
 		onLoad(option) {},
 		watch: {
