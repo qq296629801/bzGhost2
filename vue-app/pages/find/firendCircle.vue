@@ -19,7 +19,7 @@
 		<!-- 朋友圈列表 -->
 		<view class="content-circle">
 			<view class="content-circle-box" v-for="(item, index) in post" :key="item.circleMegId">
-				<view class="headimg"><image class="img" :src="item.userHeadImg" @tap="jump(item.userId)"></image></view>
+				<view class="headimg"><image class="img" :src="webUrl + item.userHeadImg" @tap="jump(item.userId)"></image></view>
 				<view class="content">
 					<view class="content-name" @tap="jump(item.userId)">{{ item.userName }}</view>
 					<view class="content-desc">{{ item.content }}</view>
