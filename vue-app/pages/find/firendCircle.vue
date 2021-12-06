@@ -232,7 +232,8 @@ export default {
 			if (!this.$u.trim(this.content)) {
 				return;
 			}
-			this.post.forEach(item => {
+			for(var a in this.post){
+				let item = this.post[a]
 				if (item.circleMegId == this.circleMegId) {
 					const { operId, username } = this.user;
 					const { replyUserId, replyUserName } = this.commentInfo;
@@ -266,7 +267,8 @@ export default {
 					});
 					
 				}
-			});
+			}
+		
 			this.closeInputModel();
 		},
 		//将视图滚动到键盘的上方 微信小程序有些许bug 会把输入框的焦点和placeholder顶起... 、
