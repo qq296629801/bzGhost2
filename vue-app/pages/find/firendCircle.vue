@@ -1,10 +1,5 @@
 <template>
 	<view class="content" id="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar title=" " :background="{ background: '#f8f8f8' }" :border-bottom="false">
-			<view class="slot-wrap" slot="right"><u-icon name="camera-fill" size="36" @click="linkToRelease"></u-icon></view>
-		</u-navbar>
-		<!-- #endif -->
 		
 		<view class="content-imgbox">
 			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
@@ -173,7 +168,7 @@ export default {
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
 				//发布朋友圈
-				this.$u.route('pages/releaseFirendCircle/releaseFirendCircle');
+				this.$u.route('pages/find/releaseCircle');
 			} else if (index == 1) {
 				//返回按钮
 				this.$u.route({ type: 'back' });
@@ -349,7 +344,7 @@ export default {
 		},
 		//点击自定义组件相机按钮
 		linkToRelease() {
-			this.$u.route('pages/find/releaseFirendCircle');
+			this.$u.route('pages/find/releaseCircle');
 		}
 	},
 	onReady() {
