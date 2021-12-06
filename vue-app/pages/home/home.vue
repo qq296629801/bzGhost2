@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<!-- 通知 -->
-		<u-notice-bar text="你有新的消息,请注意查收!"></u-notice-bar>
+		<!-- <u-notice-bar text="你有新的消息,请注意查收!"></u-notice-bar> -->
 		
 		<!-- 会话列表 -->
 		<msg-list></msg-list>

@@ -41,10 +41,10 @@
 			
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 			<u-cell-group :border="false">
-				<u-cell @click="delMess" :arrow="false">
+				<u-cell :arrow="false">
 					<view slot="label" class="btn-red">清空聊天记录</view>
 				</u-cell>
-				<u-cell @click="removeMem" :arrow="false">
+				<u-cell :arrow="false">
 					<view slot="label" class="btn-red">删除并退出</view>
 				</u-cell>
 			</u-cell-group>
