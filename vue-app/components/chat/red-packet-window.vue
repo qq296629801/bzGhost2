@@ -5,8 +5,8 @@
 			<view class="layer" @touchmove.stop.prevent="discard">
 				<view class="red-packet">
 					<view class="avatar">
-						<u-avatar :src="webUrl = packet.userAvatar"></u-avatar>
-						{{ packet.userName}}的红包
+						<u-avatar size="50" :src="webUrl + packet.userAvatar"></u-avatar>
+						{{ packet.userName}} 的红包
 					</view>
 					<view class="desc">
 						{{packet.description}}

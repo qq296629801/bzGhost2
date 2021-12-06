@@ -511,6 +511,8 @@ page {
 		.showDetails{
 			position: absolute;
 			left: 200rpx;
+			display: flex;
+			line-height: 60rpx;
 			text-align: center;
 			font-size: 35rpx;
 			color: #E7CB9B;
