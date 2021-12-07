@@ -1,14 +1,5 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="成员" :border-bottom="false"
-		 z-index="1001">
-			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="delGroupMember">保存</u-button>
-			</view>
-		</u-navbar>
-		<view class="list-search">
-		</view>
-		
 		<u-index-list>
 			<template
 				v-for="(item, index) in list"
@@ -75,6 +66,9 @@
 					this.list = this.firendItem
 				}
 			}
+		},
+		onNavigationBarButtonTap({ index }) {
+			this.delGroupMember()
 		},
 		methods: {
 			groupMember(){

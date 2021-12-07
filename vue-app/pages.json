@@ -333,20 +333,36 @@
 		    "path" : "pages/group/memAdd",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"float": "right",
+							"text": "\ue671",
+							"width":"80rpx"
+						}]
+					}
+				}
 		    }
 		    
 		},
 		{
 		    "path" : "pages/group/memDel",
 		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
-		    }
+		   {
+		       "enablePullDownRefresh": false,
+		   	"app-plus": {
+		   		"titleNView": {
+		   			"buttons": [{
+		   				"fontSrc": "/static/icon/iconfont.ttf",
+		   				"float": "right",
+		   				"text": "\ue671",
+		   				"width":"80rpx"
+		   			}]
+		   		}
+		   	}
+		   }
 		    
 		}
 		,{

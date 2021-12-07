@@ -1,14 +1,5 @@
 <template>
 	<view class="content-mem">
-		<u-navbar title="成员">
-			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="save">保存</u-button>
-			</view>
-		</u-navbar>
-		<view class="list-search">
-		</view>
-		
-		
 		<u-index-list>
 			<template
 				v-for="(item, index) in friend"
@@ -75,6 +66,9 @@
 				}
 			}
 		},
+		onNavigationBarButtonTap({ index }) {
+			this.save()
+		},
 		methods: {
 			chechMem(user) {
 				if (user.checked==undefined || user.checked==false) {
@@ -110,6 +104,7 @@
 </script>
 
 <style lang="scss">
+	
 	.content-mem {
 		height: 100%;
 		.list-search {

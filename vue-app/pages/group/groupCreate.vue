@@ -1,11 +1,5 @@
 <template>
 	<view class="content-mem">
-		<u-navbar :is-back="true" title="创建群组" :border-bottom="false"
-		 z-index="1001">
-			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="createGroup">保存</u-button>
-			</view>
-		</u-navbar>
 		<u-index-list>
 			<template
 				v-for="(item, index) in friend"
