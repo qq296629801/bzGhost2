@@ -80,6 +80,18 @@ export default {
     };
   },
   methods: {
+    handleSelectTx (e) {
+        this.file = e.target.files[0]
+        // this.waitSubmitAvatar = e.target.files[0].name 此时是客户机的地址，不用直接获取
+        let formData = new FormData()
+        formData.append('file', this.file)
+        // file 是服务器的入参，这个接口只有一个入参就是文件类型
+        this.$post('/file/upload', formData).then(res => {
+            // 返回的是服务器后台的处理过的地址，dsadxzdasd.jpg ，因为客户上传文件名称可能是中文加乱码，所以服务器要处理。
+            this.addForm.form.avatar = res
+            //  复制给全局变量
+        })
+    },
     beforeUpload() {
       this.tokenImg = {
         access_token: '',
