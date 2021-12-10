@@ -1,7 +1,8 @@
-import packetCode from '@/util/socket/webPacketCode.js'
+import packetCode from './webPacketCode.js'
+import webScoket from './webSocket.js'
+
 import store from '@/store/index.js'
-import webScoket from '@/util/socket/webSocket.js'
-import base from '@/util/baseUrl.js';
+import base from '../baseUrl.js';
 const EventDispatcher = function() {
 	this.listeners = {}
 }
