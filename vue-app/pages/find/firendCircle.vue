@@ -20,7 +20,7 @@
 					<view class="content-desc">{{ item.content }}</view>
 					<view class="content-img" v-if="item.imageList.length">
 						<!-- //只有一张图时候 -->
-						<view v-if="item.imageList.length == 1"><image class="img-1" :src="item.imageList[0]" mode="widthFix" @tap="previewImg(0, item.imageList)"></image></view>
+						<view v-if="item.imageList.length == 1"><image class="img-1" :src="webUrl + item.imageList[0]" mode="widthFix" @tap="previewImg(0, item.imageList)"></image></view>
 						<!-- 有多张图的时候 -->
 						<view v-else-if="item.imageList.length > 1">
 							<view class="content-img-more">
@@ -29,7 +29,7 @@
 									v-for="(src, index) in item.imageList"
 									:key="index"
 									:class="index % 3 == 0 && 'img-3'"
-									:src="src"
+									:src="webUrl + src"
 									mode="aspectFill"
 									@tap="previewImg(index, item.imageList)"
 								></image>

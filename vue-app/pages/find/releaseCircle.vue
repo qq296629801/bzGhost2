@@ -27,6 +27,7 @@ export default {
 	data() {
 		return {
 			content: '',
+			files:[],
 			fileList1: [],
 			action: base.baseUrl,
 			maxSize: 2 * 1024 * 1024, //限制文件大小 2M
@@ -62,6 +63,7 @@ export default {
 					message: '',
 					url: result
 				}))
+				this.files.push(result)
 				fileListLen++
 			}
 		},
@@ -81,7 +83,6 @@ export default {
 						if (typeof(data) == "string") {
 							data = JSON.parse(data);
 						}
-						console.log(data.data)
 						resolve(data.data)
 					}
 				});
@@ -102,15 +103,17 @@ export default {
 					mask: true
 				});
 				const { operId } = this.user;
+				
 				const reqData = {
 					userId: operId,
 					postContext: this.content,
-					urls: this.fileList1.join(",")
+					urls: this.files.join(",")
 				}
+				console.log(reqData)
 				this.$http.post('app/post/add',reqData).then(res=>{
 					this.btnLoading = false;
 					uni.hideLoading();
-					this.$u.route({ type: 'back'});
+					//this.$u.route({ type: 'back'});
 				});
 			}
 		}
