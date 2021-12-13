@@ -1,24 +1,16 @@
 <!-- 发布朋友圈 -->
 <template>
 	<view class="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<u-navbar title=" " :background="{ background: '#f8f8f8'}" :border-bottom="false" back-icon-name="" back-text="取消" :back-text-style="{color:'#404133'}">
-			<view class="slot-wrap" slot="right">
-				<u-button size="mini" type="success" @click="handleRelease" :disabled="$u.trim(this.content)?false:true">发表</u-button>
-			</view>		
-		</u-navbar>
-		<!-- #endif -->
 		<textarea class="input" v-model="content" placeholder="这一刻的想法..." :show-confirm-bar="false" :adjust-position="false" :disable-default-padding="true"></textarea>
 		<u-upload
-			class="upload"
-			ref="upload"
-			:action="action"
-			:auto-upload="false"
-			:max-size="maxSize"
-			:max-count="3"
-			:size-type="['compressed']"
-			@on-oversize="oversizeUpload"
-		></u-upload>
+				:fileList="fileList1"
+				@afterRead="afterRead"
+				@delete="deletePic"
+				name="1"
+				multiple
+				:maxCount="10"
+			></u-upload>
+		
 		<view class="tips">
 			<u-cell-group>
 				<u-cell bg-color="#f8f8f8" title="占位字段" :title-style="{ marginLeft: '10rpx' }"></u-cell>
@@ -29,17 +21,66 @@
 </template>
 
 <script>
+import { mapState, mapMutations} from 'vuex';
+import base from '@/util/baseUrl.js';
 export default {
 	data() {
 		return {
 			content: '',
-			action: '',
+			fileList1: [],
+			action: base.baseUrl,
 			maxSize: 2 * 1024 * 1024, //限制文件大小 2M
 			btnLoading: false //防止重复点击
 		};
 	},
+	computed: {
+		...mapState(['user'])
+	},
 	methods: {
-		oversizeUpload() {},
+		// 删除图片
+		deletePic(event) {
+			this[`fileList${event.name}`].splice(event.index, 1)
+		},
+		// 新增图片
+		async afterRead(event) {
+			// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+			let lists = [].concat(event.file)
+			let fileListLen = this[`fileList${event.name}`].length
+			lists.map((item) => {
+				this[`fileList${event.name}`].push({
+					...item,
+					status: 'uploading',
+					message: '上传中'
+				})
+			})
+			for (let i = 0; i < lists.length; i++) {
+				const result = await this.uploadFilePromise(lists[i].thumb)
+				
+				let item = this[`fileList${event.name}`][fileListLen]
+				this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
+					status: 'success',
+					message: '',
+					url: result
+				}))
+				fileListLen++
+			}
+		},
+		// 上传文件回调
+		uploadFilePromise(url) {
+			return new Promise((resolve, reject) => {
+				let a = uni.uploadFile({
+					url: base.baseUrl + 'file/upload', // 仅为示例，非真实的接口地址
+					filePath: url,
+					name: 'file',
+					formData: {
+						user: 'test'
+					},
+					success: (res) => {
+						resolve(res.data)
+					}
+				});
+			})
+		},
 		//自定义标题栏按钮 h5&&app
 		onNavigationBarButtonTap({ index }) {
 			if (index == 0) {
@@ -48,30 +89,24 @@ export default {
 		},
 		//自定义标题栏按钮点击事件  微信小程序
 		handleRelease(){
-			if (this.$u.trim(this.content) || this.$refs.upload.lists.length) {
+			if (this.$u.trim(this.content) || this.fileList1.length) {
 				this.btnLoading = true;
 				uni.showLoading({
 					title: '正在发布...',
 					mask: true
 				});
-				const { id, userName, headImg } = this._user_info;
-				this.circleData.unshift({
-					circleMegId: Date.now(),
-					userId: id,
-					userName,
-					createTime: '刚刚',
-					userHeadImg: headImg,
-					content: this.content,
-					imageList: this.$refs.upload.lists.map(it => it.url),
-					isPraise: false,
-					praise: [],
-					comment: []
-				});
-				setTimeout(() => {
+				const { id, userName, headImg } = this.user;
+				const reqData = {
+					userId: this.user.operId,
+					postContext:this.content,
+					urls:this.fileList1.map(it => it.url)
+				}
+				this.$http.post('app/post/add',reqData).then(res=>{
+					console.log(res);
 					this.btnLoading = false;
 					uni.hideLoading();
-					this.$u.route({ type: 'back'});
-				}, 500);
+					//this.$u.route({ type: 'back'});
+				});
 			}
 		}
 	}

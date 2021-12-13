@@ -41,7 +41,6 @@ $http.getQnToken = function(callback) {
 }
 //请求开始拦截器
 $http.requestStart = function(options) {
-	//console.log("请求开始", options);
 	if (options.load) {
 		//打开加载动画
 		store.commit("setLoadingShow", true);
@@ -88,13 +87,19 @@ let loginPopupNum = 0;
 $http.dataFactory = async function(res) {
 	if (res.response.statusCode && res.response.statusCode == 200) {
 		let data = res.response.data;
+		// 字符串转json
 		if (typeof(data) == "string") {
 			data = JSON.parse(data);
 		}
 		//判断数据是否请求成功
 		if (data.success) {
-			// 返回正确的结果(then接受数据)
 			return Promise.resolve(data.data);
+		}else {
+			// 返回错误提示
+			uni.showModal({
+				title:data.code,
+				content:data.errorHint
+			})
 		}
 	} else {
 		// 返回错误的结果(catch接受数据)
