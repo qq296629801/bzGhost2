@@ -40,8 +40,15 @@
 		name:'msg-list',
 		data() {
 			return {
-				message:['文字', '图片', '表情', '语音', '视频',
-				 '签到', '撤销', '发红包', '抢红包','其它'],
+				messageType:{
+					text:0,
+					video:1,
+					audio:2,
+					image:3,
+					createPacket:4,
+					robPacket:5
+				},
+				message:['文字', '视频', '录音', '图片', '红包'],
 				 webUrl:base.webUrl
 			}
 		},
