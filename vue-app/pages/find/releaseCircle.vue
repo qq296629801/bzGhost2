@@ -76,7 +76,13 @@ export default {
 						user: 'test'
 					},
 					success: (res) => {
-						resolve(res.data)
+						// 字符串转json
+						let data = res.data
+						if (typeof(data) == "string") {
+							data = JSON.parse(data);
+						}
+						console.log(data.data)
+						resolve(data.data)
 					}
 				});
 			})
@@ -95,17 +101,16 @@ export default {
 					title: '正在发布...',
 					mask: true
 				});
-				const { id, userName, headImg } = this.user;
+				const { operId } = this.user;
 				const reqData = {
-					userId: this.user.operId,
-					postContext:this.content,
-					urls:this.fileList1.map(it => it.url)
+					userId: operId,
+					postContext: this.content,
+					urls: this.fileList1.join(",")
 				}
 				this.$http.post('app/post/add',reqData).then(res=>{
-					console.log(res);
 					this.btnLoading = false;
 					uni.hideLoading();
-					//this.$u.route({ type: 'back'});
+					this.$u.route({ type: 'back'});
 				});
 			}
 		}
