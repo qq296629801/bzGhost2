@@ -79,7 +79,7 @@
 								"buttons": [{
 										"fontSrc": "/static/font/iconfont.ttf",
 										"float": "right",
-										"text": "\ue609",
+										"text": "\ue60b",
 										"color": "#303133",
 										"background": "rgba(255,255,255,0)"
 									}
@@ -217,15 +217,6 @@
 		    "style" :                                                                           
 		    {
 		        "navigationBarTitleText": "我的群组",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},
-		{
-		    "path" : "pages/find/firendCircle",
-		    "style" :                                                                           
-		    {
-		        "navigationBarTitleText": "朋友圈",
 		        "enablePullDownRefresh": false
 		    }
 		    
