@@ -321,13 +321,20 @@
 		},
 		{
 		    "path" : "pages/group/groupCreate",
-		    "style" :                                                                                    
+		    "style" :
 		    {
-		        "navigationBarTitleText": "",
-				"navigationStyle": "custom",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+		    	"app-plus": {
+		    		"titleNView": {
+		    			"buttons": [{
+		    				"fontSrc": "/static/font/iconfont.ttf",
+		    				"float": "right",
+		    				"text": "\ue628",
+		    				"width":"80rpx"
+		    			}]
+		    		}
+		    	}
 		    }
-		    
 		},
 		{
 		    "path" : "pages/group/memAdd",
@@ -337,9 +344,9 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"fontSrc": "/static/icon/iconfont.ttf",
+							"fontSrc": "/static/font/iconfont.ttf",
 							"float": "right",
-							"text": "\ue671",
+							"text": "\ue628",
 							"width":"80rpx"
 						}]
 					}
@@ -355,9 +362,9 @@
 		   	"app-plus": {
 		   		"titleNView": {
 		   			"buttons": [{
-		   				"fontSrc": "/static/icon/iconfont.ttf",
+		   				"fontSrc": "/static/font/iconfont.ttf",
 		   				"float": "right",
-		   				"text": "\ue671",
+		   				"text": "\ue628",
 		   				"width":"80rpx"
 		   			}]
 		   		}

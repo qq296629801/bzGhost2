@@ -67,6 +67,9 @@
 				}
 			}
 		},
+		onNavigationBarButtonTap({ index }) {
+			this.createGroup()
+		},
 		methods: {
 			chechMem(user) {
 				if (user.checked==undefined || user.checked==false) {
