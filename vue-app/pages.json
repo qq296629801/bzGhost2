@@ -83,6 +83,7 @@
 										"color": "#303133",
 										"background": "rgba(255,255,255,0)"
 									}
+									// #ifdef H5
 									, {
 										"fontSrc": "/static/font/iconfont.ttf",
 										"float": "left",
@@ -90,6 +91,7 @@
 										"color": "#303133",
 										"background": "rgba(255,255,255,0)"
 									}
+									// #endif
 								]
 							}
 						}
