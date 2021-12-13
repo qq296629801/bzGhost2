@@ -23,9 +23,6 @@
 			"style": {
 				"navigationBarTitleText": "消息",
 				"enablePullDownRefresh": false ,
-				// #ifdef MP-WEIXIN
-				"navigationStyle": "custom",
-				// #endif
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -72,9 +69,6 @@
 					"path": "pages/find/firendCircle",
 					"style": {
 						"navigationBarTitleText": " ",
-						// #ifdef MP-WEIXIN
-						"navigationStyle": "custom",
-						// #endif
 						"transparentTitle": "auto",
 						"enablePullDownRefresh": true,
 						"app-plus": {
@@ -82,28 +76,20 @@
 								"type": "transparent",
 								"backgroundColor":"#f8f9f9",
 								"coverage":"45%", //h5不起作用
-								// #ifdef APP-PLUS
-								"backButton": {
-									"color": "#303133",
-									"background": "rgba(255,255,255,0)"
-								},
-								// #endif
 								"buttons": [{
-										"fontSrc": "/static/iconfont/iconfont.ttf",
+										"fontSrc": "/static/font/iconfont.ttf",
 										"float": "right",
 										"text": "\ue609",
 										"color": "#303133",
 										"background": "rgba(255,255,255,0)"
 									}
-									// #ifdef H5
 									, {
-										"fontSrc": "/static/iconfont/iconfont.ttf",
+										"fontSrc": "/static/font/iconfont.ttf",
 										"float": "left",
-										"text": "\ue6f2",
+										"text": "\ue606",
 										"color": "#303133",
 										"background": "rgba(255,255,255,0)"
 									}
-									// #endif
 								]
 							}
 						}
@@ -173,15 +159,12 @@
 		},
 		{
 		    "path" : "pages/user/user",
-		    "style" :                                                                           
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"white",
-				"backgroundColorTop":"white"
-		    }
+		   "style" :
+		   {
+		    "enablePullDownRefresh": false,
+		   	"navigationBarTitleText": ""
+		   }
 		},
-		
 		{
 		    "path" : "pages/find/find",
 		    "style" :                                                                           
@@ -249,10 +232,10 @@
 		},
 		{
 		    "path" : "pages/user/my",
-		    "style" :                                                                           
+		    "style" :
 		    {
-		        "navigationBarTitleText": "个人中心",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"navigationBarTitleText": "我的"
 		    }
 		    
 		}

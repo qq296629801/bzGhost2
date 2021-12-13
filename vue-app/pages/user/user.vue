@@ -52,7 +52,8 @@
 				],
 			}
 		},
-		onLoad() {
+		onNavigationBarButtonTap({ index }) {
+			this.jump('/pages/find/releaseCircle')
 		},
 		computed: {
 			...mapState(['user','chatObj'])
@@ -62,16 +63,6 @@
 				this.$u.route({
 					url:url
 				})
-			},
-			previewImage() {
-				let current = '/static/image/huge.jpg'
-				uni.previewImage({
-					current,
-					urls: [current],
-					// #ifndef MP-WEIXIN
-					indicator: 'number'
-					// #endif
-				});
 			}
 		}
 	}
