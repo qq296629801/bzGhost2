@@ -57,7 +57,7 @@
 						v-if="item.contentType == messageType.image"
 						@tap="viewImg([webUrl + item.content])"
 					>
-						<image :src="webUrl + item.content" class="img" mode="widthFix"></image>
+						<image :src="webUrl + 'scale_' + item.content" class="img" mode="widthFix"></image>
 					</view>
 					
 					<!-- contentType = 4 红包 -->
