@@ -28,6 +28,7 @@
 	</view>
 </template>
 <script>
+	import store from '@/store/index.js' 
 	import { mapState } from 'vuex';
 	export default {
 		components: {
@@ -44,7 +45,7 @@
 			}
 		},
 		computed: {
-			...mapState(['friend','chatObj'])
+			...mapState(['friend','chatObj','user'])
 		},
 		watch: {
 			keyword: function(val) {
