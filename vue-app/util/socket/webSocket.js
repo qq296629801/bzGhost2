@@ -64,6 +64,7 @@ export default class Websocket {
                 // 进行重连
                 if (this._isReconnection) {
 					console.log('网络中断，尝试重连')
+					
                     this._reConnect(options)
                 }
             }

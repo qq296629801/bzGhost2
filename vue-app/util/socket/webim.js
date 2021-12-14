@@ -39,7 +39,7 @@ const WEBIM = {
 			 WEBIM.server.onReceivedMsg(event => {
 			 	let packet = packetCode.decode(event.data);
 			 	let command = packet.command;
-				//console.log(packet)
+				console.log(packet)
 			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
 			 	eventDispatcher.removeListener(command, toJSON(packet))
 				if(command === -10){
