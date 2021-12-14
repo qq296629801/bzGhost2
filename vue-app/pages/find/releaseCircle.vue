@@ -23,6 +23,7 @@
 <script>
 import { mapState, mapMutations} from 'vuex';
 import base from '@/util/baseUrl.js';
+import store from '@/store/index.js' 
 export default {
 	data() {
 		return {
@@ -109,11 +110,15 @@ export default {
 					postContext: this.content,
 					urls: this.files.join(",")
 				}
-				console.log(reqData)
 				this.$http.post('app/post/add',reqData).then(res=>{
 					this.btnLoading = false;
 					uni.hideLoading();
-					//this.$u.route({ type: 'back'});
+					this.$http.post("app/post/list", {
+						userId: operId
+					}).then(res=>{
+						store.commit("setPost", res)
+					});
+					this.$u.route({ type: 'back'});
 				});
 			}
 		}
