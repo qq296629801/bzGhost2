@@ -1,6 +1,7 @@
 # bzGhost像鬼的聊天软件
-![ci](https://api.travis-ci.org/xtuhcy/gecco.svg?branch=master)
-![maven](https://img.shields.io/maven-central/v/com.geccocrawler/gecco.svg?style=flat-square)
+
+![ci](https://api.travis-ci.org/xtuhcy/gecco.svg?branch=master)  
+![maven](https://img.shields.io/maven-central/v/com.geccocrawler/gecco.svg?style=flat-square)  
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 打造跨终端跨平台即时通讯，个人也能玩的转的聊天软件。
@@ -8,30 +9,44 @@
 ![](/assets/home.jpg)
 
 # 版权信息
-软件遵循[MIT](https://baike.baidu.com/item/MIT/10772952)开源协议，意味着您无需支付任何费用，也无需授权，即可将 软件应用到您的产品中。
-注意：这并不意味着您可以将软件应用到非法的领域，比如涉及赌博，暴力等方面。
-如因此产生纠纷等法律问题， 作者不承担任何责任。
+
+软件遵循[MIT](https://baike.baidu.com/item/MIT/10772952)开源协议，意味着您无需支付任何费用，也无需授权，即可将 软件应用到您的产品中。  
+注意：这并不意味着您可以将软件应用到非法的领域，比如涉及赌博，暴力等方面。  
+如因此产生纠纷等法律问题， 作者不承担任何责任。  
 切勿以身试法!!!
-
-
 
 # 截图
 
 ## 1.1电脑版本截图
-![](/assets/pc_03.png)
-![](/assets/pc_02.png)
-![](/assets/pc_01.png)
+
+![](/assets/pc_login_01.png)![](/assets/pc_friend_04.png)![](/assets/pc_group_02.png)![](/assets/pc_chat_03.png)
 
 ## 1.2手机截图
-![](/assets/app_01.jpg)
-![](/assets/app_02.jpg)
-![](/assets/app_03.jpg)
+
+![](/assets/login.jpg)
+
+![](/assets/list.jpg)
+
+![](/assets/chat.jpg)
+
+![](/assets/group.jpg)
+
+![](/assets/friend.jpg)
+
+![](/assets/friend2.jpg)
+
+![](/assets/redpacket.jpg)
+
+![](/assets/redpacketdetail.jpg)
 
 ## 1.3管理截图
-![](/assets/web_01.png)
+
+![](/assets/admin_login_01.png)![](/assets/admin_group_02.png)
 
 # 联系方式
+
 如有问题联系作者 18767176707
+
 ![](/assets/微信图片_20211124104139.jpg)
 
 # 参考文献
@@ -40,19 +55,15 @@
 * [http://doc.ruoyi.vip/ruoyi/](http://doc.ruoyi.vip/ruoyi/)
 * [https://gitee.com/xiaowang0482/wechat.git](https://gitee.com/xiaowang0482/wechat.git)
 
-
-#   下载体验
+# 下载体验
 
 会将各个版本的演示在此展示，目前演示的版本有H5，安卓，苹果，电脑，其他版本的演示将会陆续添加
-
 
 ## 1.1 web版本
 
 | 链接 | 类型 | 版本 | 大小 |
 | :--- | :--- | :--- | :--- |
 | [后台管理](http://42.193.146.14:8089/index.html) | .html | 1.0.0 | 0MB |
-
-
 
 ## 1.2手机版本
 
@@ -66,14 +77,14 @@
 | :--- | :--- | :--- | :--- |
 | [Download](http://42.193.146.14:8089/yiqun.exe) | .exe | 1.0.0 | 52.5 MB |
 
-##  1.4账号说明
+## 1.4账号说明
 
-\*\*注意：
+\*\*注意：  
 测试账号分别为：admin /123456
 
-
 # 通讯底层封装
-##   webim.js
+
+## webim.js
 
 ### 通讯文件
 
@@ -98,9 +109,9 @@
 
 ```js
 let packet = {
-    version:1,
-    command: 1,
-    userId:"5f6d9d98"
+version:1,
+command: 1,
+userId:"5f6d9d98"
 }
 ```
 
@@ -108,10 +119,10 @@ let packet = {
 
 ```js
 let packet = {
-    version : 1,
-    command: 2,
-    errorMsg:"",
-    success: true
+version : 1,
+command: 2,
+errorMsg:"",
+success: true
 }
 ```
 
@@ -150,16 +161,6 @@ let packet = {
     success: true
 }
 ```
-
-
-**示例代码**
-
-```js
-webim.joinGroup(res=>{     
-});
-```
-
-
 
 ### 1.3 退出群组
 
@@ -268,8 +269,7 @@ let packet = {
 | 3 | 发送消息请求 |
 | 4 | 发送消息响应 |
 
-
-##   webPacketCode.js
+## webPacketCode.js
 
 ### 数据包解码文件
 
@@ -277,21 +277,19 @@ let packet = {
 
 总字节长度 = 11 + 数据内容长度
 
-
-
 * 编码encode
 
 ```js
 let dataView = new DataView(buffer)
 
     dataView.setInt32(0, 0x12345678)
-    
+
     dataView.setInt8(4, packet.version)
-    
+
     dataView.setInt8(5, 1) // 写死1表示json序列化
-    
+
     dataView.setInt8(6, packet.command)
-    
+
     dataView.setInt32(7, bytes.length)
 
 for (let i = 11; i < bytes.length + 11; i++) {
@@ -312,8 +310,7 @@ for (let i = 11; i < lenght + 11; i++) {
 }
 ```
 
-
-##   webSocket.js
+## webSocket.js
 
 封装uni方法 支持心跳包，断线重连，断线重试，网络检测，发送自定义报文。
 
@@ -406,14 +403,7 @@ WEBIM.server.onReceivedMsg(event => {
 });
 ```
 
-
-
 # 捐赠研发
 
 ![](/assets/微信图片_20210530130450.jpg)![](/assets/微信图片_20210530130459.jpg)![](/assets/微信图片_20210629151220.png)
-
-
-
-
-
 
