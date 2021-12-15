@@ -35,6 +35,9 @@ export default class Websocket {
     // 监听websocket连接关闭
     onSocketClosed(options) {
 		uni.onSocketError(err => {
+			uni.showLoading({
+				title:"服务器异常断开"
+			})
 			console.log('服务器异常断开');
 			// 停止心跳连接
 			if (this._heartCheck) {
@@ -71,6 +74,8 @@ export default class Websocket {
     }
     _onSocketOpened() {
         uni.onSocketOpen(res => {
+			// 隐藏进度展示
+			uni.hideLoading();
             // 打开已登录开关
             this._isLogin = true;
             // 发送心跳
@@ -110,6 +115,7 @@ export default class Websocket {
 									// 开始建立连接
 									console.log('建立websocket连接' + options.url);
 			                        options.success(res);
+									
 			                        _this._onSocketOpened();
 			                    } else {
 			                        console.log('参数的类型必须为函数')
