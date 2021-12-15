@@ -1,5 +1,7 @@
 <template>
 	<view class="content">
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		<view class="u-page">
 			<u-list
 				@scrolltolower="scrolltolower"

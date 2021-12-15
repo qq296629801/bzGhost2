@@ -1,6 +1,8 @@
 <!-- 发布朋友圈 -->
 <template>
 	<view class="content">
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		<textarea class="input" v-model="content" placeholder="这一刻的想法..." :show-confirm-bar="false" :adjust-position="false" :disable-default-padding="true"></textarea>
 		<u-upload
 				:fileList="fileList1"

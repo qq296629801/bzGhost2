@@ -1,5 +1,8 @@
 <template>
 	<view class="content">
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
+		
 		<u-cell-group>
 			<u-cell title="头像">
 				<u-upload slot="right-icon"
@@ -18,16 +21,6 @@
 			<u-cell title="用户名" :arrow="false" :value="user.username">
 			</u-cell>
 			
-			<u-cell @tap="jumpQr" title="二维码">
-				<u-avatar
-					slot="right-icon"
-					size="30"
-					icon="fingerprint"
-					fontSize="26"
-					randomBgColor
-					customStyle="margin: -3px 5px -3px 0"
-				></u-avatar>
-			</u-cell>
 		</u-cell-group>
 	</view>
 </template>

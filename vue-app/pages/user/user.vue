@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
+		
+		
 		<u-transition :show="true" mode="slide-right">
 		
 		<user-card :user="user" :isStatic="true"></user-card>

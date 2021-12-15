@@ -1,6 +1,7 @@
 <template>
 	<view class="content" id="content">
-		
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		<view class="content-imgbox">
 			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
 			

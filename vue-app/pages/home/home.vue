@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<public-module></public-module>
 		<!-- 通知 -->
 		<!-- <u-notice-bar text="你有新的消息,请注意查收!"></u-notice-bar> -->
 		
@@ -34,13 +35,13 @@ export default {
 	methods: {
 		jump(item){
 			this.$store.commit("setChatObj",item);
-			this.$u.route({
-				url: 'pages/chat/chat'
+			uni.navigateTo({
+				url:'pages/chat/chat'
 			})
 		},
 		onNavigationBarButtonTap({ index }) {
-			this.$u.route({
-				url: 'pages/search/search'
+			uni.navigateTo({
+				url:'pages/search/search'
 			})
 		}
 	},

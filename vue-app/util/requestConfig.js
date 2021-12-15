@@ -96,10 +96,10 @@ $http.dataFactory = async function(res) {
 			return Promise.resolve(data.data);
 		}else {
 			// 返回错误提示
-			uni.showModal({
-				title:data.code,
-				content:data.errorHint
-			})
+			uni.showToast({
+				title: data.errorHint,
+				icon: "none"
+			});
 		}
 	} else {
 		// 返回错误的结果(catch接受数据)

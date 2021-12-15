@@ -1,5 +1,7 @@
 <template>
 	<view class="content-mem">
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		<u-index-list>
 			<template
 				v-for="(item, index) in friend"
