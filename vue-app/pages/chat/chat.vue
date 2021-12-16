@@ -139,7 +139,7 @@
 		>
 		
 		<!-- 打开卡片窗口 -->
-		<red-packet-window :packet="packet" :winState="winState" @close="hideCard" @open="openCard"></red-packet-window>
+		<red-packet-window :packet="packet" :winState="winState" @close="closeCard" @open="openCard"></red-packet-window>
 		
 		<!-- 发送红包表单-->
 		<red-packet-form :pShow="pShow" @save="packetSave" @cancer="packetCancer"></red-packet-form>
@@ -291,7 +291,7 @@ export default {
 			_t.message = item
 			_t.winState = 'show';
 		},
-		hideCard(){
+		closeCard(){
 			this.winState = 'hide';
 			setTimeout(()=>{
 				this.winState = '';
