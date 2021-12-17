@@ -266,6 +266,20 @@ export default {
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
+              if(_t.chatObj.chatType == 0){
+                if(res.fromUserId!=_t.user.operId){
+                  if(res.content!=''){
+                    res.isItMe = false;
+                    // 本地内存
+                    _t.messageList.push(res);
+                    // 本地缓存
+                    db.commit(res);
+                    // 页面置底
+                    _t.mescroll.scrollTo(99999, 0);
+                  }
+                }
+              }
+
               // 判断是否当前群组
               if(res.toUserId==_t.chatObj.chatId){
                 // 判断发送人是不是自己
