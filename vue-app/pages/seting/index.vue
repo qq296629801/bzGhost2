@@ -4,7 +4,7 @@
 			<u-cell-group>
 				<u-cell size="large" title="关于我们" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">
 				</u-cell>
-				<u-cell size="large" value="1.0" @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
+				<u-cell size="large" :value="version" @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
 				</u-cell>
 				<u-cell size="large" :arrow="false" @click="logout">
 					<view slot="label" style="text-align: center;">退出登录</view>
@@ -18,7 +18,7 @@
 // #ifdef APP-PLUS
 import APPUpdate, { getCurrentNo } from "@/util/APPUpdate";
 // #endif
-import { mapState } from 'vuex';	
+import store from '@/store/index.js' 
 export default {
 	data() {
 		return {
@@ -32,9 +32,7 @@ export default {
 		});
 		// #endif
 	},
-	computed:{
-		...mapState(['user'])
-	},
+
 	methods: {
 		onAPPUpdate() {
 			APPUpdate(true);
@@ -52,6 +50,7 @@ export default {
 		logout(){
 			//this.$socket.logout(res =>{});
 			uni.clearStorageSync();
+			store.commit("emptyUser",{});
 			this.$u.route({
 				url: 'pages/login/login'
 			});
