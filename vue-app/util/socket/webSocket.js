@@ -55,7 +55,10 @@ export default class Websocket {
 			
 		})
         uni.onSocketClose(err => {
-			console.log('服务器断开');
+			uni.showLoading({
+				title:"你的账号已经在其他端登录"
+			})
+			console.log('服务器断开',err);
 			options.fail(err)
         })
     }
