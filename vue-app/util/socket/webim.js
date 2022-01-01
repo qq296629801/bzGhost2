@@ -18,37 +18,36 @@ const WEBIM = {
 	options: null,
 	//初始化
 	initSocket: function() {
-		 return new Promise((resolve, reject) => {
-			 WEBIM.options = {
-			 	url: WEBIM.serverUrl,
-			 	success(res) {
-					resolve(res);
-				},
-			 	fail(e) {
-					reject(e);
-				}
-			 }
-			 eventDispatcher = new EventDispatcher();
-			 
-			 WEBIM.server = new webScoket({
-			 	heartCheck: true,
-			 	isReconnection: true,
-			 });
-			 WEBIM.server.initWebSocket(WEBIM.options);
-			 
-			 WEBIM.server.onReceivedMsg(event => {
-			 	let packet = packetCode.decode(event.data);
-			 	let command = packet.command;
-				//console.log(packet)
-			 	eventDispatcher.dispatchEvent(command, toJSON(packet))
-			 	eventDispatcher.removeListener(command, toJSON(packet))
+		 WEBIM.options = {
+		 	url: WEBIM.serverUrl,
+		 	success(res) {
+				
+			},
+		 	fail(err) {
+				store.commit("emptyUser",{});
+			}
+		 }
+		 
+		 eventDispatcher = new EventDispatcher();
+		 
+		 WEBIM.server = new webScoket({
+		 	heartCheck: true,
+		 	isReconnection: true,
+		 });
+		 WEBIM.server.initWebSocket(WEBIM.options);
+		 
+		 WEBIM.server.onReceivedMsg(event => {
+		 	let packet = packetCode.decode(event.data);
+		 	let command = packet.command;
+			
+		 	eventDispatcher.dispatchEvent(command, toJSON(packet))
+		 	eventDispatcher.removeListener(command, toJSON(packet))
 				if(command === -10){
 					store.commit('setNewsPush', packet);
 				}
-			 });
-			 WEBIM.server.onNetworkChange(WEBIM.options);
-			 WEBIM.server.onSocketClosed(WEBIM.options)
 		 });
+		 WEBIM.server.onNetworkChange(WEBIM.options);
+		 WEBIM.server.onSocketClosed(WEBIM.options);
 	},
 	//断开连接
 	disconnect: function(e) {

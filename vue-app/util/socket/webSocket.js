@@ -38,7 +38,6 @@ export default class Websocket {
 			uni.showLoading({
 				title:"服务器异常断开"
 			})
-			console.log('服务器异常断开');
 			// 停止心跳连接
 			if (this._heartCheck) {
 			    this._reset();
@@ -58,7 +57,6 @@ export default class Websocket {
 			uni.showLoading({
 				title:"你的账号已经在其他端登录"
 			})
-			console.log('服务器断开',err);
 			options.fail(err)
         })
     }

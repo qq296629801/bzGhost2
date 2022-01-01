@@ -11,6 +11,8 @@ export const state = {
   // 红包对象
   packetData:{},
   newsPush:{},
+  // 异常
+  exception:{},
   // 缓存
   post:[],
   friend:[],
@@ -22,6 +24,11 @@ export const state = {
 const cacheNameList = ["user","token","config","roles","permissions","post","friend","group","conversation"];
 let clearTime;
 export const mutations = {
+	setException(state, data){
+		if(data){
+			state.exception =  data;
+		}
+	},
 	setUserCardData(state, data){
 		if(data){
 			state.userCardData =  data;

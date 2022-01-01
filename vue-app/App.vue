@@ -5,6 +5,11 @@
 		onLaunch: function() {
 			store.commit('setCacheData');
 			webim.initSocket();
+			if(store.state.token == ''){
+				uni.navigateTo({
+				    url: '/pages/login/login'
+				});
+			}
 		},
 		onShow: function() {
 			
