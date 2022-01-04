@@ -38,19 +38,7 @@ export const mutations = {
 	  	state.permissions =  Object.assign({}, state.permissions, data);
 	  	cache.set("permissions",state.permissions);
 	  }
-  },
-  emptyUser(state) {
-  	state.user = {};
-	state.config = {};
-	state.roles = {};
-	state.permissions = {};
-	state.token = '';
-	cache.remove("user");
-	cache.remove("config");
-	cache.remove("roles");
-	cache.remove("permissions");
-	cache.remove("token");
-  },
+  }
 };
 export const actions = {
 };

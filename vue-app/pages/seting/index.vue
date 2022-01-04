@@ -48,9 +48,7 @@ export default {
 			});
 		},
 		logout(){
-			//this.$socket.logout(res =>{});
-			uni.clearStorageSync();
-			store.commit("emptyUser",{});
+			store.commit("empty",{});
 			this.$u.route({
 				url: 'pages/login/login'
 			});

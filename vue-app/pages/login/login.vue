@@ -21,7 +21,7 @@
 				></wInput>
 			</view>
 			
-			<wButton 
+			<wButton
 				class="wbutton"
 				text="登 录"
 				:rotate="loading" 
@@ -31,7 +31,7 @@
 			<view class="footer">
 				<navigator url="forget" open-type="navigate">找回密码</navigator>
 				<text>|</text>
-				<navigator url="register" open-type="navigate">注册账号</navigator>
+				<navigator v-hasPermission="'test:regist'" url="register" open-type="navigate">注册账号</navigator>
 			</view>
 		</view>
 	</view>
@@ -82,6 +82,7 @@
 					store.commit("setRoles",res.roles);
 					store.commit("setPermissions",res.permissions);
 					
+					localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
 					this.$socket.login(b=>{
 						commonApi.download();
 						msgApi.download();

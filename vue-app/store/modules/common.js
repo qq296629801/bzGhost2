@@ -1,24 +1,17 @@
 import Vue from "vue";
 import cache from "@/util/cache.js"
 export const state = {
-  // 加载动画
   loadingShow: false,
-  // 登录弹窗状态
   loginPopupShow: false,
-  // 聊天对象
-  chatObj:{
-  },
-  // 红包对象
+  userCardData:{},
+  conversation:[],
+  chatObj:{},
   packetData:{},
   newsPush:{},
-  // 异常
   exception:{},
-  // 缓存
   post:[],
   friend:[],
-  group:[],
-  conversation:[],
-  userCardData:{}
+  group:[]
 };
 //缓存浏览器的数据名称
 const cacheNameList = ["user","token","config","roles","permissions","post","friend","group","conversation"];
@@ -65,6 +58,16 @@ export const mutations = {
 				state[name] = data;
 			}
 		}
+	},
+	empty(state) {
+		for (let name of cacheNameList) {
+			if(name == 'token'){
+				state.token = ''
+			}else {
+				state[name] = {}
+			}
+			cache.remove(name);
+		}	
 	},
 	setPacketData(state, data){
 		if(data){

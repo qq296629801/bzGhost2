@@ -30,7 +30,7 @@ Vue.mixin(mpShare)
 // #endif
 
 Vue.mixin(mixin)
-
+import "./util/directives";
 const app = new Vue({
     store,
     ...App
