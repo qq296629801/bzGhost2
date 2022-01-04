@@ -83,7 +83,7 @@
 		methods:{
 			jumpBusinessCard(userCardData){
 				userCardData.source = 0
-				console.log(JSON.stringify(userCardData))
+				//console.log(JSON.stringify(userCardData))
 				this.$store.commit("setUserCardData",userCardData)
 				this.$u.route({
 					url: 'pages/friend/businessCard'
