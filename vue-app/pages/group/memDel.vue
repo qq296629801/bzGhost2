@@ -79,7 +79,6 @@
 					userId: this.user.operId
 				}
 				this.$http.post('app/group/member', reqData).then(res=>{
-					console.log(res)
 					this.list = res.memberResponse
 					this.firendItem = this.list
 				});

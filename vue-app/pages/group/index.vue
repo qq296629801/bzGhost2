@@ -24,24 +24,32 @@
 		
 		<view class="cell-group">
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+			
 			<u-cell-group :border="false">
 				<u-cell @tap="show = true" title="群名称" :value="group.group.groupName"></u-cell>
-				<u-cell @tap="xxShow = true" title="群公告" label="暂无"></u-cell>
-				<u-cell title="二维码">
-					<view class="iconfont iconxingzhuangjiehe erweima"></view>
-				</u-cell>
+				
 				<u-cell @tap="xxxShow = true"
 					title="群昵称"
 					:value="group.groupUser.groupNickName"
 				></u-cell>
-				<u-cell title="全体禁言" :arrow="false">
-					<u-switch active-color="rgb(25, 190, 107)" v-model="disTalk"></u-switch>
+				
+				<u-cell @tap="xxShow = true" title="群公告" label="..."></u-cell>
+				
+				
+				<u-cell title="二维码">
+					<view slot="right-icon" class="iconfont iconxingzhuangjiehe erweima"></view>
+				</u-cell>
+				
+				<u-cell title="全体禁言">
+					<view slot="right-icon">
+						<u-switch v-model="disTalk" active-color="rgb(25, 190, 107)"></u-switch>
+					</view>
 				</u-cell>
 				<u-cell title="查看内容" @click="linkSearch"></u-cell>
-				<u-cell title="设置背景" @click="chooseImg"></u-cell>
 			</u-cell-group>
 			
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
+			
 			<u-cell-group :border="false">
 				<u-cell :arrow="false">
 					<view slot="label" class="btn-red">清空聊天记录</view>
@@ -52,7 +60,7 @@
 			</u-cell-group>
 		</view>
 		
-		<u-popup :show="show" mode="bottom" @close="show = false" @open="show = true">
+		<u-popup :show="show" @close="show = false" @open="show = true" mode="right">
 			<view class="xx">
 				
 				<u--form
@@ -79,7 +87,7 @@
 			</view>
 		</u-popup>
 		
-		<u-popup :show="xxShow" @close="xxShow = false" @open="xxShow = true" mode="bottom" >
+		<u-popup :show="xxShow" @close="xxShow = false" @open="xxShow = true" mode="right" >
 			<view class="xx">
 				<u--form
 						labelPosition="left"
@@ -106,7 +114,7 @@
 			</view>
 		</u-popup>
 		
-		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="bottom">
+		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="right">
 			<view class="xx">
 				<u--form
 					labelPosition="left"
@@ -236,16 +244,6 @@ export default {
 		linkDel(){
 			this.$u.route({
 				url: 'pages/group/memDel'
-			});
-		},
-		chooseImg() {
-			this.$u.route({
-				url: 'components/u-avatar-cropper/u-avatar-cropper',
-				params: {
-					destWidth: uni.upx2px(750),
-					rectWidth: uni.upx2px(500),
-					fileType: 'jpg'
-				}
 			});
 		},
 		queryMembers() {

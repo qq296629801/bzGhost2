@@ -43,7 +43,8 @@
 				userNames: [],
 				list: [],
 				keyword: '',
-				firendItem: []
+				firendItem: [],
+				GROUP_MEMBERS:[]
 			}
 		},
 		computed: {
