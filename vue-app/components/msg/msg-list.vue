@@ -2,7 +2,7 @@
 	<view class="u-page">
 		
 		
-		<u-transition :show="true" mode="slide-right">
+		<u-transition :show="true" mode="fade">
 		        
 		<u-list
 			@scrolltolower="scrolltolower"

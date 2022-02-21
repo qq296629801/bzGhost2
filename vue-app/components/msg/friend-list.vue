@@ -1,6 +1,6 @@
 <template>
 	
-	<u-transition :show="true" mode="slide-right">
+	<u-transition :show="true" mode="fade">
 	
 	<u-index-list>
 		<u-cell-group slot="header">

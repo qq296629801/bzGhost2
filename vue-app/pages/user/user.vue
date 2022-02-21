@@ -4,7 +4,7 @@
 		<public-module></public-module>
 		
 		
-		<u-transition :show="true" mode="slide-right">
+		<u-transition :show="true" mode="fade">
 		
 		<user-card :user="user" :isStatic="true"></user-card>
 		
@@ -42,10 +42,10 @@
 				webUrl:base.webUrl,
 				list: [
 					{
-						title: '相册',
+						title: '账户',
 						color: '#00aaff',
-						icon: 'photo',
-						url:'pages/user/album'
+						icon: 'account',
+						url:'pages/user/my'
 					},
 					{
 						title: '设置',

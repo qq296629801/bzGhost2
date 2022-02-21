@@ -3,7 +3,7 @@
 		<!-- 公共组件-每个页面必须引入 -->
 		<public-module></public-module>
 		
-		<u-transition :show="true" mode="slide-right">
+		<u-transition :show="true" mode="fade">
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">
