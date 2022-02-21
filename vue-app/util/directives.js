@@ -1,5 +1,6 @@
 import Vue from 'vue'
-let permissions = JSON.parse(localStorage.getItem('PERMISSIONS'))
+
+let permissions = uni.getStorageSync('PERMISSIONS')
 // 防止重复点击
 Vue.directive('preventReClick', {
     inserted (el, binding) {
@@ -19,7 +20,7 @@ Vue.directive('hasPermission', {
         if (permissions && !permissions.includes(binding.value)) {
             el.style.display = 'none'
         } else {
-            permissions = JSON.parse(localStorage.getItem('PERMISSIONS'))
+            permissions = uni.getStorageSync('PERMISSIONS')
         }
     }
 })

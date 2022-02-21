@@ -329,7 +329,7 @@ export default {
 		},
 		// 初始消息数据
 		async initData() {
-			db.getItem().then(res=>{
+			db.query().then(res=>{
 				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
 				this.$nextTick(() => {
 					this.mescroll.scrollTo(99999, 0);

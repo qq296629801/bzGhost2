@@ -2,7 +2,7 @@ import cache from '@/util/cache.js'
 import store from '@/store/index.js'
 var postfix = 'msgItem_';
 
- function getItem() {
+ function query() {
    let chatId = store.state.chatObj.chatId;
    let list = cache.get(postfix+chatId);
    return new Promise((resolve,reject) =>{
@@ -72,7 +72,7 @@ function commit(obj = {}){
 }
 
 module.exports = {
-    getItem: getItem,
+    query: query,
 	commit: commit,
 	delete: del,
 	upPacket:upPacket

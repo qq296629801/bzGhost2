@@ -82,7 +82,8 @@
 					store.commit("setRoles",res.roles);
 					store.commit("setPermissions",res.permissions);
 					
-					localStorage.setItem('PERMISSIONS', JSON.stringify(res.permissions))
+					uni.setStorageSync('PERMISSIONS', res.permissions)
+					
 					this.$socket.login(b=>{
 						commonApi.download();
 						msgApi.download();
