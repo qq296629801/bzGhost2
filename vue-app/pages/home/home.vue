@@ -36,12 +36,13 @@ export default {
 		jump(item){
 			this.$store.commit("setChatObj",item);
 			uni.navigateTo({
-				url:'pages/chat/chat'
+				url:'/pages/chat/chat'
 			})
 		},
 		onNavigationBarButtonTap({ index }) {
+			console.log(index)
 			uni.navigateTo({
-				url:'pages/search/search'
+				url:'/pages/search/search'
 			})
 		}
 	},
