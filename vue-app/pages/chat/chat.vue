@@ -446,6 +446,10 @@ export default {
 				});
 			}
 			
+			_t.$socket.push(res=>{
+				console.log(res,'我发消息了');
+			},1);
+			
 			// 发送消息到服务器转发
 			_t.$socket.sendMessage(params, res=>{
 				// 私聊

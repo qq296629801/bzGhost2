@@ -85,6 +85,12 @@
 					uni.setStorageSync('PERMISSIONS', res.permissions)
 					
 					this.$socket.login(b=>{
+						
+						this.$socket.push(res=>{
+							console.log(res,'我登录了');
+						},6);
+						
+						
 						commonApi.download();
 						msgApi.download();
 						
@@ -93,6 +99,7 @@
 						uni.reLaunch({
 							url: this.homePath,
 						});
+						
 					});
 				});
 		    }

@@ -39,12 +39,8 @@ const WEBIM = {
 		 WEBIM.server.onReceivedMsg(event => {
 		 	let packet = packetCode.decode(event.data);
 		 	let command = packet.command;
-			
 		 	eventDispatcher.dispatchEvent(command, toJSON(packet))
 		 	eventDispatcher.removeListener(command, toJSON(packet))
-				if(command === -10){
-					store.commit('setNewsPush', packet);
-				}
 		 });
 		 WEBIM.server.onNetworkChange(WEBIM.options);
 		 WEBIM.server.onSocketClosed(WEBIM.options);
@@ -117,6 +113,15 @@ const WEBIM = {
 		}
 		send(requestPacket);
 		eventDispatcher.addListener('6', func);
+	},
+	push:(func, code)=>{
+		let req  = {
+			version: 1,
+			command: -9,
+			code
+		}
+		send(req);
+		eventDispatcher.addListener('-10', func);
 	}
 }
 
