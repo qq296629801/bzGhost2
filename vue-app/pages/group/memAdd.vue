@@ -97,6 +97,10 @@
 					userNames: this.userNames
 				}
 				this.$http.post('app/group/user/add',data).then(res => {
+					this.$socket.push(res=>{
+						console.log(res,'入群');
+					},3);
+					
 					uni.navigateBack({
 						delta: 0,
 						animationDuration: 0

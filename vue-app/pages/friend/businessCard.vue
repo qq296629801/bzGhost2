@@ -9,7 +9,7 @@
 				<u-cell title="朋友圈" label="模拟数据暂不支持查看好友朋友圈"></u-cell>
 				
 				<u-cell v-if="userCardData.source==1" @click="jumpAdd" :arrow="false">
-					<view slot="value" style="text-align: center;">添加到通讯录</view>
+					<view slot="label">添加到通讯录</view>
 				</u-cell>
 				
 				<u-cell v-else title="发消息" :arrow="false" @click="jumpChat">
@@ -46,6 +46,9 @@
 				}).then(res=>{
 					uni.navigateBack()
 				});
+				this.$socket.push(res=>{
+					console.log(res,'增加好友');
+				},2);
 			},
 			jumpChat(){
 				this.$store.commit("setChatObj",{
