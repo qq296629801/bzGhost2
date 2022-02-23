@@ -2,21 +2,23 @@
 	<view>
 		<!-- 公共组件-每个页面必须引入 -->
 		<public-module></public-module>
+		
 		<user-card :user="userCardData"></user-card>
 		
 		<view class="cell-group">
 			<u-cell-group :border="false">
 				<u-cell title="朋友圈" label="模拟数据暂不支持查看好友朋友圈"></u-cell>
+				<u-cell title="更多"></u-cell>
 				
 				<u-cell v-if="userCardData.source==1" @click="jumpAdd" :arrow="false">
-					<view slot="label">添加到通讯录</view>
+					<u-button type="primary" slot="icon" text="添加到通讯录"></u-button>
 				</u-cell>
 				
 				<u-cell v-else title="发消息" :arrow="false" @click="jumpChat">
 					<u-icon  slot="icon" name="chat-fill" color="#b4b4b4" size="34"></u-icon>
 				</u-cell>
 				
-				<u-cell title="更多"></u-cell>
+				
 			</u-cell-group>
 		</view>
 		

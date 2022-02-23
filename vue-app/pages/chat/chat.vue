@@ -10,9 +10,6 @@
 			
 			<mescroll-body ref="mescrollRef" bottom="10%" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption">
 			
-			
-			<!-- <u-transition :show="true" mode="slide-down"> -->
-			
 			<view class="message" v-for="(item, index) in messageList" :key="index" :id="`msg-${item.hasBeenSentId}`">
 				<view class="message-item " :class="item.isItMe ? 'right' : 'left'">
 					
@@ -20,12 +17,10 @@
 					<view class="username"  @tap="linkCard(item)">
 						<u--text :text="item.fromUserName"></u--text>
 						<image class="img" :src="webUrl + item.fromUserHeadImg" mode=""></image>
-						
 					</view>
 					
 					<!-- contentType = 1 文本 -->
 					<view class="content" v-html="item.content" v-if="item.contentType == messageType.text">
-						 <!-- <u-tooltip :text="item.content" overlay></u-tooltip> -->
 					</view>
 					
 					
@@ -67,7 +62,6 @@
 				
 			</view> 
 			
-			<!-- </u-transition> -->
 			</mescroll-body>
 			
 		</view>
@@ -532,12 +526,14 @@ export default {
 			this.showFunBtn =false;
 		},
 		// 卡片
-		linkCard({userId, nickName, source}) {
+		linkCard(item) {
+			item.id = item.userId
+			item.source = 0
+			item.nickName = item.fromUserName
+			item.avatar = item.fromUserHeadImg
+			this.$store.commit("setUserCardData",item);
 			this.$u.route({
-				url: 'pages/friend/businessCard',
-				params: {
-					userId, userName, source:0
-				}
+				url: '/pages/friend/businessCard'
 			});
 		},
 		//准备开始录音

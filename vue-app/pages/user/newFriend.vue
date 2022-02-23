@@ -21,7 +21,7 @@
 							customStyle="margin: -3px 5px -3px 0"
 						></u-avatar>
 						
-						<u-button slot="value" @tap="accept(item)" type="success" size="mini">同意</u-button>
+						<u-button slot="right-icon" @tap="accept(item)" type="primary">同意</u-button>
 					</u-cell>
 				</u-list-item>
 			</u-list>
