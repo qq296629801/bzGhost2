@@ -49,7 +49,8 @@
 						:mode="imgMode"
 						@tap="clickHandler(index)"
 						:style="{
-							height: $u.addUnit(height)
+							height: $u.addUnit(height),
+							borderRadius: $u.addUnit(radius)
 						}"
 					></image>
 					<video
@@ -64,6 +65,7 @@
 							height: $u.addUnit(height)
 						}"
 						controls
+						@tap="clickHandler(index)"
 					></video>
 					<text
 						v-if="showTitle && $u.test.object(item) && item.title && $u.test.image(getSource(item))"
@@ -127,6 +129,12 @@
 		data() {
 			return {
 				currentIndex: 0
+			}
+		},
+		watch: {
+			current(val, preVal) {
+				if(val === preVal) return;
+				this.currentIndex = val; // 和上游数据关联上
 			}
 		},
 		computed: {
@@ -198,12 +206,14 @@
 			flex: 1;
 
 			&__item {
+				flex: 1;
 
 				&__wrapper {
 					@include flex;
 					position: relative;
 					overflow: hidden;
 					transition: transform 0.3s;
+					flex: 1;
 
 					&__image {
 						flex: 1;

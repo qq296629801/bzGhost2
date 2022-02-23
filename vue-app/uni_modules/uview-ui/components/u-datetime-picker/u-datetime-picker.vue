@@ -4,7 +4,12 @@
 		:show="show"
 		:closeOnClickOverlay="closeOnClickOverlay"
 		:columns="columns"
+		:title="title"
 		:defaultIndex="innerDefaultIndex"
+		:cancelText="cancelText"
+		:confirmText="confirmText"
+		:cancelColor="cancelColor"
+		:confirmColor="confirmColor"
 		@close="close"
 		@cancel="cancel"
 		@confirm="confirm"
@@ -110,6 +115,7 @@
 					value: this.innerValue,
 					mode: this.mode
 				})
+				this.$emit('input', this.innerValue)
 			},
 			// 列发生变化时触发
 			change(e) {
@@ -117,7 +123,7 @@
 				let selectValue = ''
 				if(this.mode === 'time') {
 					// 根据value各列索引，从各列数组中，取出当前时间的选中值
-					selectValue = `${values[0][value[0]]}:${values[1][indexs[1]]}`
+					selectValue = `${values[0][indexs[0]]}:${values[1][indexs[1]]}`
 				} else {
 					// 将选择的值转为数值，比如'03'转为数值的3，'2019'转为数值的2019
 					const year = parseInt(values[0][indexs[0]])
@@ -185,7 +191,7 @@
 				        values.push(formatter('day', padZero(dayjs(value).date())), formatter('hour', padZero(dayjs(value).hour())), formatter('minute', padZero(dayjs(value).minute())))
 				    }
 				}
-				
+
 				// 根据当前各列的所有值，从各列默认值中找到默认值在各列中的索引
 				const indexs = this.columns.map((column, index) => {
 					// 通过取大值，可以保证不会出现找不到索引的-1情况

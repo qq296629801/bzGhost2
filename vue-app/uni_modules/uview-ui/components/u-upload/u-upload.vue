@@ -12,10 +12,10 @@
 				    :mode="imageMode"
 				    class="u-upload__wrap__preview__image"
 				    @tap="onPreviewImage(item)"
-					:style="{
+					:style="[{
 						width: $u.addUnit(width),
 						height: $u.addUnit(height)
-					}"
+					}]"
 				/>
 				<view
 				    v-else
@@ -95,10 +95,14 @@
 				<view
 				    v-else
 				    class="u-upload__button"
-				    :hover-class="!disabled && 'u-upload__button--hover'"
+				    :hover-class="!disabled ? 'u-upload__button--hover' : ''"
 				    hover-stay-time="150"
 				    @tap="chooseFile"
 				    :class="[disabled && 'u-upload__button--disabled']"
+					:style="[{
+						width: $u.addUnit(width),
+						height: $u.addUnit(height)
+					}]"
 				>
 					<u-icon
 					    :name="uploadIcon"
@@ -184,9 +188,10 @@
 				} = this;
 				const lists = fileList.map((item) =>
 					Object.assign(Object.assign({}, item), {
-						isImage: uni.$u.test.image(item.url),
-						isVideo: uni.$u.test.video(item.url),
-						deletable: typeof(item.deletable) === 'boolean' ? item.deletable : true,
+						// 如果item.url为本地选择的blob文件的话，无法判断其为video还是image，此处优先通过accept做判断处理
+						isImage: this.accept === 'image' || uni.$u.test.image(item.url || item.thumb),
+						isVideo: this.accept === 'video' || uni.$u.test.video(item.url || item.thumb),
+						deletable: typeof(item.deletable) === 'boolean' ? item.deletable : this.deletable,
 					})
 				);
 				this.lists = lists
@@ -295,8 +300,8 @@
 				if (!item.isImage || !this.previewFullImage) return
 				uni.previewImage({
 					// 先filter找出为图片的item，再返回filter结果中的图片url
-					urls: this.lists.filter((item) => uni.$u.test.image(item.url)).map((item) => item.url),
-					current: item.url,
+					urls: this.lists.filter((item) => this.accept === 'image' || uni.$u.test.image(item.url || item.thumb)).map((item) => item.url || item.thumb),
+					current: item.url || item.thumb,
 					fail() {
 						uni.$u.toast('预览图片失败')
 					},
@@ -320,10 +325,7 @@
 						),
 					current: index,
 					fail() {
-						wx.showToast({
-							title: '预览视频失败',
-							icon: 'none'
-						});
+						uni.$u.toast('预览视频失败')
 					},
 				});
 			},
@@ -333,7 +335,7 @@
 				} = event.currentTarget.dataset;
 				const item = this.data.lists[index];
 				this.$emit(
-					'click-preview',
+					'clickPreview',
 					Object.assign(Object.assign({}, item), this.getDetail(index))
 				);
 			}
@@ -391,11 +393,12 @@
 	$u-upload-text-font-size:11px !default;
 	$u-upload-text-color:$u-tips-color !default;
 	$u-upload-text-margin-top: 2px !default;
-	$u-upload-hover-bgColor:rgb(240, 241, 243) !default;
+	$u-upload-hover-bgColor:rgb(230, 231, 233) !default;
 	$u-upload-disabled-opacity:.5 !default;
 
 	.u-upload {
-		@include flex;
+		@include flex(column);
+		flex: 1;
 
 		&__wrap {
 			@include flex;

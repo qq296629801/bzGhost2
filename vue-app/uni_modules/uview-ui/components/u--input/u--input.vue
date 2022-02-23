@@ -24,7 +24,6 @@
 		:selectionEnd="selectionEnd"
 		:adjustPosition="adjustPosition"
 		:inputAlign="inputAlign"
-		:autosize="autosize"
 		:fontSize="fontSize"
 		:color="color"
 		:prefixIcon="prefixIcon"
@@ -45,8 +44,14 @@
 		@clear="$emit('clear')"
 		@click="$emit('click')"
 	>
+		<!-- #ifdef MP -->
+		<slot name="prefix"></slot>
+		<slot name="suffix"></slot>
+		<!-- #endif -->
+		<!-- #ifndef MP -->
 		<slot name="prefix" slot="prefix"></slot>
 		<slot name="suffix" slot="suffix"></slot>
+		<!-- #endif -->
 	</uvInput>
 </template>
 

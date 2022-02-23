@@ -44,6 +44,16 @@ export default {
         scrollable: {
             type: Boolean,
             default: uni.$u.props.tabs.scrollable
-        }
+        },
+		// 当前选中标签的索引
+		current: {
+			type: [Number, String],
+			default: uni.$u.props.tabs.current
+		},
+		// 默认读取的键名
+		keyName: {
+			type: String,
+			default: uni.$u.props.tabs.keyName
+		}
     }
 }
