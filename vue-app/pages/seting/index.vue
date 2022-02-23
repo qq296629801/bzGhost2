@@ -1,6 +1,9 @@
 <template>
 	<view class="content">
 		<view class="cell-group">
+			<!-- 公共组件-每个页面必须引入 -->
+			<public-module></public-module>
+			
 			<u-cell-group>
 				
 				<u-cell size="large" title="关于我们" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">

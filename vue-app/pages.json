@@ -367,15 +367,6 @@
 		    }
 		    
 		}
-	    ,{
-            "path" : "pages/user/album",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "相册",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
 	// "subPackages": [{
 	// 	"root": "pages/componentsA",

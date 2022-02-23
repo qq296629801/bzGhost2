@@ -6,7 +6,7 @@
 	</view>
 </template>
 <script>
-import friendList from '@/components/msg/friend-list.vue'
+import friendList from '@/components/list/friend-list.vue'
 export default {
 	components:{ friendList },
 	data() {

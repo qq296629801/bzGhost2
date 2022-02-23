@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		<u-transition mode="slide-down" :show="true">
 			<view>
 				<u--image :showLoading="true" :src="logoImage" width="150px" height="150px" @click="click"></u--image>

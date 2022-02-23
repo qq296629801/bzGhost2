@@ -7,7 +7,7 @@ export const state = {
   conversation:[],
   chatObj:{},
   packetData:{},
-  newsPush:{},
+  packetPush:{},
   exception:{},
   post:[],
   friend:[],
@@ -75,9 +75,9 @@ export const mutations = {
 		}
 	},
 	// 
-	setNewsPush(state, data){
+	setPacketPush(state, data){
 		if(data){
-			state.newsPush = data
+			state.packetPush = data
 		}
 	},
 	// 

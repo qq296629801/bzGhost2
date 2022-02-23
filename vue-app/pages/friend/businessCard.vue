@@ -27,7 +27,7 @@
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
-	import userCard from "@/components/chat/user-card.vue"
+	import userCard from "@/components/packet/user-card.vue"
 	import base from '@/util/baseUrl.js';
 	export default {
 		components:{
@@ -49,7 +49,7 @@
 					uni.navigateBack()
 				});
 				this.$socket.push(res=>{
-					console.log(res,'增加好友');
+					this.$store.commit("setPacketPush",res);
 				},2);
 			},
 			jumpChat(){

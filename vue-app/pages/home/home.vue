@@ -10,27 +10,14 @@
 </template>
 
 <script>
-import msgList from '@/components/msg/msg-list.vue'
+import msgList from '@/components/list/msg-list.vue'
 import { mapState, mapMutations} from 'vuex';
 export default {
 	components:{
 		msgList
 	},
-	watch:{
-		// 监听服务器是否有推送数据
-		// 后期优化为推送单条数据
-        newsPush: function(v){
-			let userId = this.user.operId;
-			this.$http.post('app/conversation/list', {
-				userId
-			}).then(res=>{
-				res.sort(function(a, b){return b.lastOpenTime>a.lastOpenTime});
-				this.$store.commit("setConversation", res)
-			});
-		}
-	},
 	computed: {
-		...mapState(['newsPush','conversation','user'])
+		...mapState(['conversation','user'])
 	},
 	methods: {
 		jump(item){
@@ -40,7 +27,6 @@ export default {
 			})
 		},
 		onNavigationBarButtonTap({ index }) {
-			console.log(index)
 			uni.navigateTo({
 				url:'/pages/search/search'
 			})

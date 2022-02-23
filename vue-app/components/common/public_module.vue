@@ -6,6 +6,8 @@
 		<!-- 小程序登录弹窗组件 -->
 		<applets-login></applets-login>
 		<!-- #endif -->
+		
+		<u-notice-bar :text="packetPush.msg || ''"></u-notice-bar>
 	</view>
 </template>
 
@@ -14,12 +16,21 @@
 	// #ifdef MP-WEIXIN
 	import appletsLogin  from "@/components/common/applets_login.vue"
 	// #endif
+	import { mapState, mapMutations} from 'vuex';
 	export default {
 		components:{
 			zLoading,
 			// #ifdef MP-WEIXIN
 			appletsLogin,
 			// #endif
+		},
+		computed: {
+			...mapState(['user','packetPush'])
+		},
+		watch:{
+		    packetPush: function(v){
+				console.log(JSON.stringify(v))
+			}
 		}
 	};
 </script>

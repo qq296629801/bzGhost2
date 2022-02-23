@@ -3,7 +3,6 @@
 		<!-- 公共组件-每个页面必须引入 -->
 		<public-module></public-module>
 		
-		
 		<u-transition :show="true" mode="fade">
 		
 		<user-card :user="user" :isStatic="true"></user-card>
@@ -30,7 +29,7 @@
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
-	import userCard from "@/components/chat/user-card.vue"
+	import userCard from "@/components/packet/user-card.vue"
 	import base from '@/util/baseUrl.js';
 	export default {
 		components:{

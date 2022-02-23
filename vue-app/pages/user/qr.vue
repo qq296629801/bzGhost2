@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
+		
 		<user-card :user="$store.state.user"></user-card>
 		
 		<u-gap height="10" bgColor="#f6f7f8"></u-gap>
@@ -11,7 +14,7 @@
 </template>
 
 <script>
-	import userCard from "@/components/chat/user-card.vue"
+	import userCard from "@/components/packet/user-card.vue"
 	export default {
 		components:{
 			userCard

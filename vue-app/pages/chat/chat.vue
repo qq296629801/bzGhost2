@@ -149,9 +149,9 @@ import { mapState, mapMutations } from 'vuex';
 import db from '@/util/db/db2.js';
 import base from '@/util/baseUrl.js';
 import { transform } from '@/util/ChatUtils.js';
-import RedPacketCard from '@/components/chat/red-packet-card.vue';
-import redPacketForm from '@/components/chat/red-packet-form.vue';
-import RedPacketWindow from '@/components/chat/red-packet-window.vue'
+import RedPacketCard from '@/components/packet/red-packet-card.vue';
+import redPacketForm from '@/components/packet/red-packet-form.vue';
+import RedPacketWindow from '@/components/packet/red-packet-window.vue'
 export default {
 	mixins: [MescrollMixin], // 使用mixin
 	components:{ RedPacketCard, redPacketForm, RedPacketWindow },
@@ -441,7 +441,7 @@ export default {
 			}
 			
 			_t.$socket.push(res=>{
-				console.log(res,'我发消息了');
+				this.$store.commit("setPacketPush",res);
 			},1);
 			
 			// 发送消息到服务器转发

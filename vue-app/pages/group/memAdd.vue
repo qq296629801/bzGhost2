@@ -98,7 +98,7 @@
 				}
 				this.$http.post('app/group/user/add',data).then(res => {
 					this.$socket.push(res=>{
-						console.log(res,'入群');
+						this.$store.commit("setPacketPush",res);
 					},3);
 					
 					uni.navigateBack({

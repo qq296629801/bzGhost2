@@ -87,7 +87,7 @@
 					this.$socket.login(b=>{
 						
 						this.$socket.push(res=>{
-							console.log(res,'我登录了');
+							this.$store.commit("setPacketPush",res);
 						},6);
 						
 						
