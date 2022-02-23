@@ -2,11 +2,14 @@
 	<view class="content">
 		<!-- 公共组件-每个页面必须引入 -->
 		<public-module></public-module>
+		
 		<view class="member">
 			<u-grid :col="6" :border="false">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
-					<image class="img" :src="webUrl + item.avatar"></image>
-					<u--text :text="item.groupNickName"></u--text>
+					<view>
+						<image class="img" :src="webUrl + item.avatar"></image>
+						<u--text :text="item.groupNickName"></u--text>
+					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="plus">
@@ -33,8 +36,8 @@
 					:value="group.groupUser.groupNickName"
 				></u-cell>
 				
-				<u-cell @tap="xxShow = true" title="群公告" label="..."></u-cell>
-				
+		<!-- 		<u-cell @tap="xxShow = true" title="群公告" label="..."></u-cell>
+				 -->
 				
 				<u-cell title="二维码">
 					<view slot="right-icon" class="iconfont iconxingzhuangjiehe erweima"></view>
@@ -45,14 +48,13 @@
 						<u-switch v-model="disTalk" active-color="rgb(25, 190, 107)"></u-switch>
 					</view>
 				</u-cell>
-				<u-cell title="查看内容" @click="linkSearch"></u-cell>
 			</u-cell-group>
 			
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 			
 			<u-cell-group :border="false">
 				<u-cell :arrow="false">
-					<view slot="label" class="btn-red">清空聊天记录</view>
+					<view slot="label" @tap="emptyGroupMsg" class="btn-red">清空聊天记录</view>
 				</u-cell>
 				<u-cell :arrow="false">
 					<view slot="label" class="btn-red">删除并退出</view>
@@ -87,33 +89,6 @@
 			</view>
 		</u-popup>
 		
-		<u-popup :show="xxShow" @close="xxShow = false" @open="xxShow = true" mode="right" >
-			<view class="xx">
-				<u--form
-						labelPosition="left"
-						:model="group"
-						:rules="rules"
-						ref="form1"
-						>
-							<u-form-item
-									label="公告"
-									prop="group.gContext"
-									borderBottom
-									ref="item1"
-							>
-								<u--input
-										v-model="group.group.gContext"
-										border="none"
-								></u--input>
-							</u-form-item>
-						
-						</u--form>
-				
-				<!-- <u-input class="textarea" height="200" v-model="group.group.gContext" /> -->
-				<u-button type="success" @tap="tapGroupNotice">保存</u-button>
-			</view>
-		</u-popup>
-		
 		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="right">
 			<view class="xx">
 				<u--form
@@ -144,6 +119,7 @@
 <script>
 import base from '@/util/baseUrl.js';
 import { mapState, mapMutations } from 'vuex';
+import db from '@/util/db/db2.js';
 export default {
 	data() {
 		return {
@@ -177,6 +153,13 @@ export default {
 		};
 	},
 	methods: {
+		emptyGroupMsg(){
+			db.delMsgByChat(this.group.group.id)
+			uni.showToast({
+				icon:'none',
+				title:'成功'
+			})
+		},
 		tapGroupName(){
 			let reqData = {
 				groupName: this.group.group.groupName,
@@ -201,18 +184,6 @@ export default {
 				})
 			});
 		},
-		tapGroupNotice(){
-			let reqData = {
-				groupName: this.group.group.groupName,
-				groupId: this.group.group.id
-			}
-			this.$http.post("app/group/upGroupName",reqData).then(res=>{
-				uni.showToast({
-					title:'修改成功',
-					icon:'success'
-				})
-			});
-		},
 		linkMore(){
 			this.$u.route({
 				url: 'pages/group/moreMem'
@@ -225,16 +196,10 @@ export default {
 			});
 		},
 		linkCard(id){
-			this.$u.route({
-				url: 'pages/friend/businessCard',
-				params:{ id: id, source: 1}
-			})
-		},
-		linkSearch() {
-			this.$u.route({
-				url:"pages/search/search",
-				params: {searchType: 4, chatId: this.chatObj.chatId}
-			})
+			// this.$u.route({
+			// 	url: 'pages/friend/businessCard',
+			// 	params:{ id: id, source: 1}
+			// })
 		},
 		linkAdd(){
 			this.$u.route({
@@ -271,7 +236,6 @@ export default {
 			background-color: white;
 		}
 		
-		
 		.xx{
 			height: 500rpx;
 			padding: 50rpx;
@@ -290,7 +254,6 @@ export default {
 		}
 		.member{
 			background-color: #FFFFFF;
-			//padding-left: 30rpx;
 		}
 		.more{
 			text-align: center;

@@ -2,6 +2,11 @@ import cache from '@/util/cache.js'
 import store from '@/store/index.js'
 var postfix = 'msgItem_';
 
+function delMsgByChat(chatId){
+	cache.remove(postfix+chatId)
+}
+
+
  function query() {
    let chatId = store.state.chatObj.chatId;
    let list = cache.get(postfix+chatId);
@@ -75,6 +80,7 @@ module.exports = {
     query: query,
 	commit: commit,
 	delete: del,
-	upPacket:upPacket
+	upPacket:upPacket,
+	delMsgByChat:delMsgByChat
 }
 
