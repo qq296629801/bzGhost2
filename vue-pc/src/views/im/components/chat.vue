@@ -70,44 +70,46 @@
         </div>
       </div>
 
-      <!-- <div v-if="chatObj.chatType==1" class="im-chat-users">
+      <!-- <div class="im-chat-users">
         <ul class="chat-user-list">
-          <li
-            v-for="(item, index) in userList"
-            :key="index"
-            @click="showUser(item)"
-          >
-            <span class="im-chat-avatar">
+          <li>
+              <span class="im-chat-avatar">
               <img src="/static/logo.png" alt="" />
-            </span>
-            {{ item.name }}
+              </span>
+           1
           </li>
         </ul>
       </div> -->
 
     </div>
-    <Modal
-      closable
-      class="user-model"
+
+    <Drawer
+      title="群"
+      :closable="true"
       v-model="modal"
-      footer-hide
-      title="信息"
-      width="300"
+      class="history-message"
+      width="30%"
     >
-      <div v-if="chatObj.chatType==0">
+
+     <div v-if="chatObj.chatType==0">
         <UserModal :user="chatObj"></UserModal>
       </div>
-
       <div v-if="chatObj.chatType==1">
-        <p class="user-model-img">
-          <img :src="[webUrl + chatObj.imgUrl]" class="img" />
-        </p>
-        <p class="user-model-item">
-          <label>群名称：</label>
-          <span>{{ chatObj.chatName }}</span>
-        </p>
+
+
+         <div>
+               <CellGroup>
+                  <Cell title="群名称" :label="chatObj.chatName" />
+              </CellGroup>
+          </div>
+        
+         
+
+        
       </div>
-    </Modal>
+    </Drawer>
+
+
     <Modal
       closable
       class="user-model"
@@ -171,6 +173,7 @@ export default {
       messageList: [],
       showFace: false,
       showHistory: false,
+      switchValue:false,
       messageType:{
 				text:0,
 				video:1,
