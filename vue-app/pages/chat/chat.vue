@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
-		
-		
+		<!-- 公共组件-每个页面必须引入 -->
+		<public-module></public-module>
 		
 		<view class="content-box" @touchstart="touchstart" id="content-box" :class="{'content-showfn':showFunBtn}">
 			<!-- 背景图- 定位方式 -->
