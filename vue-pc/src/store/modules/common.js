@@ -10,7 +10,7 @@ export const state = {
   },
   // 红包对象
   packetData:{},
-  newsPush:{},
+  packetPush:{},
   // 缓存
   post:[],
   friend:[],
@@ -58,13 +58,13 @@ export const mutations = {
 			state.packetData = data
 		}
 	},
-	// 
-	setNewsPush(state, data){
+	// 推送
+	setPacketPush(state, data){
 		if(data){
-			state.newsPush = data
+			state.packetPush = data
 		}
 	},
-	// 
+	// 聊天对象
 	setChatObj(state, data){
 		if(data){
 			state.chatObj = data

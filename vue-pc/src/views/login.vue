@@ -117,7 +117,6 @@
 import Top from "./im/components/top.vue";
 import db from "@/utils/api/message.js";
 import db2 from "@/utils/api/common.js";
-import store from '@/store/index.js'
 export default {
   name: "login-page",
   data() {
@@ -233,16 +232,21 @@ export default {
     jumpLogin: function() {
       this.$get('/login',this.loginParams).then(res=>{
 
-          store.commit("setUser",res.user);
-          store.commit("setToken",res.token);
-          store.commit("setConfig",res.config);
-          store.commit("setRoles",res.roles);
-          store.commit("setPermissions",res.permissions);
+          this.$store.commit("setUser",res.user);
+          this.$store.commit("setToken",res.token);
+          this.$store.commit("setConfig",res.config);
+          this.$store.commit("setRoles",res.roles);
+          this.$store.commit("setPermissions",res.permissions);
 
           db.download();
           db2.download();
 
-          this.$socket.login(res2=>{
+          this.$socket.login(data=>{
+
+            this.$socket.push(res=>{
+							this.$store.commit("setPacketPush",res);
+						},6);
+
             this.$router.push({
               path: "/index/chatBox",
               params: {}

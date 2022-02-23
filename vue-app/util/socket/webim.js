@@ -122,6 +122,17 @@ const WEBIM = {
 		}
 		send(req);
 		eventDispatcher.addListener('-10', func);
+	},
+	push:(func, code, eventValue, eventObj)=>{
+		let req  = {
+			version: 1,
+			command: -9,
+			code,
+			eventValue,
+			eventObj
+		}
+		send(req);
+		eventDispatcher.addListener('-10', func);
 	}
 }
 

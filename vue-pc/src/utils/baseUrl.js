@@ -5,7 +5,7 @@ let webUrl = ""
 if (process.env.NODE_ENV === "development") {
   // 开发环境
   baseUrl = "http://42.193.146.14:9998/";
-  socketUrl = "ws://120.27.95.106:9999/chat";
+  socketUrl = "ws://127.0.0.1:9999/chat";
   webUrl = "http://42.193.146.14:8089/";
 } else if (process.env.NODE_ENV === "production") {
   // 生产环境

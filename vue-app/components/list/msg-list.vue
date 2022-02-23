@@ -23,8 +23,8 @@
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 					 <u-tooltip @tap="test" slot="title" :text="item.chatName" direction="bottom"></u-tooltip>
-					 <u-badge type="error" slot="right-icon" max="99" :value="item.unreadNumber"></u-badge>
 					 <u--text format="mm-dd" slot="right-icon" mode="date" :text="item.lastOpenTime"></u--text>
+					 <u-badge type="error" slot="right-icon" max="99" :value="item.unreadNumber"></u-badge>
 				</u-cell>
 			</u-list-item>
 		</u-list>

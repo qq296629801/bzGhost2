@@ -39,9 +39,7 @@ const WEBIM = {
 
         eventDispatcher.dispatchEvent(command, toJSON(packet));
         eventDispatcher.removeListener(command, toJSON(packet));
-        if (command === -10) {
-          store.commit("setNewsPush", packet);
-        }
+
       });
 
       WEBIM.server.onSocketClosed(WEBIM.options);
@@ -108,7 +106,27 @@ const WEBIM = {
     };
     send(requestPacket);
     eventDispatcher.addListener("6", func);
-  }
+  },
+  push:(func, code)=>{
+		let req  = {
+			version: 1,
+			command: -9,
+			code
+		}
+		send(req);
+		eventDispatcher.addListener('-10', func);
+	},
+	push:(func, code, eventValue, eventObj)=>{
+		let req  = {
+			version: 1,
+			command: -9,
+			code,
+			eventValue,
+			eventObj
+		}
+		send(req);
+		eventDispatcher.addListener('-10', func);
+	}
 };
 
 function toJSON(packet) {

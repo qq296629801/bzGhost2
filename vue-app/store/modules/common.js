@@ -7,7 +7,15 @@ export const state = {
   conversation:[],
   chatObj:{},
   packetData:{},
-  packetPush:{},
+  packetPush:{
+	  code:1,
+	  command:-10,
+	  eventObj:1,
+	  eventValue:'',
+	  msg:'',
+	  success:false,
+	  version:1
+  },
   exception:{},
   post:[],
   friend:[],

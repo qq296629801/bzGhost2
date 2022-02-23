@@ -264,6 +264,10 @@ export default {
             imageLoad("message-box");
           });
 
+          this.$socket.push(res=>{
+            this.$store.commit("setPacketPush",res);
+          },1,_t.chatObj.chatId,_t.chatObj.chatType);
+
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
               if(_t.chatObj.chatType == 0){

@@ -442,7 +442,7 @@ export default {
 			
 			_t.$socket.push(res=>{
 				this.$store.commit("setPacketPush",res);
-			},1);
+			},1,_t.chatObj.chatId,_t.chatObj.chatType);
 			
 			// 发送消息到服务器转发
 			_t.$socket.sendMessage(params, res=>{

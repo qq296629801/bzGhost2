@@ -57,17 +57,29 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user","chatObj","conversation","newsPush"])
+    ...mapState(["user","chatObj","conversation","packetPush"])
   },
   watch:{
-    newsPush:function(v){
-      let userId = this.user.operId
-       this.$post('app/conversation/list', {
-        userId
-      }).then(res=>{
-        res.sort(function(a, b){return a.lastOpenTime>b.lastOpenTime});
-        store.commit("setConversation", res)
-      });
+    packetPush:function(v){
+      switch(v.code){
+					case 1:
+					if(v.eventObj==1){
+						// 更新群消息
+						// 更新会话
+						let userId = this.user.operId
+            this.$post('app/conversation/list', {
+              userId
+            }).then(res=>{
+              res.sort(function(a, b){return a.lastOpenTime>b.lastOpenTime});
+              store.commit("setConversation", res)
+            });
+					}
+					break;
+					case 2:
+						console.log(2);
+						break;
+					default:
+				}
     }
   },
   methods: {

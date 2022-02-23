@@ -30,6 +30,7 @@ Vue.prototype.$formData = formData;
 Vue.prototype.$download = download;
 Vue.prototype.$put = put;
 Vue.prototype.$formDataType2 = formDataType2;
+Vue.prototype.$store=store;
 
 Vue.prototype.dateStr = dateStr;
 if (process.env.VUE_APP_MODE === "web") {
