@@ -7,6 +7,11 @@ if (process.env.NODE_ENV === "development") {
   baseUrl = "http://42.193.146.14:9998/";
   socketUrl = "ws://120.27.95.106:9999/chat";
   webUrl = "http://42.193.146.14:8089/";
+}else {
+	// 正式环境
+	baseUrl = "http://42.193.146.14:9998/";
+	socketUrl = "ws://120.27.95.106:9999/chat";
+	webUrl = "http://42.193.146.14:8089/";
 }
 const courtConfig = {
   //微信公众号APPID
