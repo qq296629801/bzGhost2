@@ -36,6 +36,11 @@
 						this.$store.commit("setConversation", res)
 					});
 					break;
+					case 2:
+						uni.showTabBarRedDot({
+							index: 1
+						});
+						break;
 					default:
 				}
 			}

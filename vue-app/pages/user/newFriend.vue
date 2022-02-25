@@ -44,6 +44,9 @@ export default {
 		...mapState(['user'])
 	},
 	onShow() {
+		uni.hideTabBarRedDot({
+			index: 1
+		})
 		this.findFriend()
 	},
 	methods: {
