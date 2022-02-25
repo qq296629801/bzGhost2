@@ -273,7 +273,7 @@ export default {
 
           // 发送消息到服务器转发
           this.$socket.sendMessage(params, res => {
-              if(_t.chatObj.chatType == 0){
+              if(_t.chatObj.chatType == 0 && res.chatType==0){
                 if(res.fromUserId!=_t.user.operId){
                   if(res.content!=''){
                     res.isItMe = false;
@@ -288,7 +288,7 @@ export default {
               }
 
               // 判断是否当前群组
-              if(res.toUserId==_t.chatObj.chatId){
+              if(res.toUserId==_t.chatObj.chatId&& res.chatType==1&& _t.chatObj.chatType==1){
                 // 判断发送人是不是自己
                 if(res.fromUserId!=_t.user.operId){
                   if(res.content!=''){
