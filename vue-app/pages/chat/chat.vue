@@ -447,24 +447,22 @@ export default {
 			// 发送消息到服务器转发
 			_t.$socket.sendMessage(params, res=>{
 				// 私聊
-				if(_t.chatObj.chatType == 0){
+				if(_t.chatObj.chatType == 0 &&res.chatType==0){
 					if(res.fromUserId!=_t.user.operId){
 						if(res.content!=''){
 							res.isItMe = false;
 							_t.messageList.push(res);
 							db.commit(res);
 							_t.mescroll.scrollTo(99999, 0);
-							// uni.showTabBarRedDot({
-							// 	index: 0
-							// });
 						}
 					}
 				}
 				// 判断是否当前群组
-				if(res.toUserId==_t.chatObj.chatId){
+				if(res.toUserId==_t.chatObj.chatId && res.chatType==1){
 					// 判断发送人是不是自己
 					if(res.fromUserId!=_t.user.operId){
 						if(res.content!=''){
+							
 							res.isItMe = false;
 							// 红包广播
 							if(res.contentType == _t.messageType.robPacket){
