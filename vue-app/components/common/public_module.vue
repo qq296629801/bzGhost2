@@ -5,6 +5,8 @@
 
 <script>
 	import { mapState, mapMutations} from 'vuex';
+	import cache from '@/util/cache.js';
+	const postfix = 'msgItem_';
 	export default {
 		computed: {
 			...mapState(['user','packetPush'])
@@ -13,21 +15,27 @@
 		    packetPush: function(v){
 				switch(v.code){
 					case 1:
-					if(v.eventObj==1){
-						// 更新群消息
-						
-						// 更新会话
-						let userId = this.user.operId;
-						this.$http.post('app/conversation/list', {
-							userId
-						}).then(res=>{
-							this.$store.commit("setConversation", res)
-						});
+					let userId = this.user.operId
+					let chatId = v.eventValue
+					let para = {
+						 userId,
+						 chatId,
+						 chatType : v.eventObj,
+						 pageNum : 1,
+						 pageSize : 10,
+						 condition : ''
 					}
+					
+					this.$http.post('/app/msg/list', para).then(res=>{
+						cache.set(postfix+chatId,res.list)
+					});
+					
+					this.$http.post('app/conversation/list', {
+						userId
+					}).then(res=>{
+						this.$store.commit("setConversation", res)
+					});
 					break;
-					case 2:
-						console.log(2);
-						break;
 					default:
 				}
 			}
