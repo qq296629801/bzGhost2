@@ -38,8 +38,9 @@ import Welcome from "../components/welcome.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
 import { mapState} from 'vuex';
-import store from "@/store/index.js";
 import base from "@/utils/baseUrl.js";
+const postfix = 'msgItem_';
+import cache from '@/utils/cache.js'
 export default {
   components: {
     Search,
@@ -60,31 +61,37 @@ export default {
     ...mapState(["user","chatObj","conversation","packetPush"])
   },
   watch:{
-    packetPush:function(v){
-      switch(v.code){
+		    packetPush: function(v){
+				switch(v.code){
 					case 1:
-					if(v.eventObj==1){
-						// 更新群消息
-						// 更新会话
-						let userId = this.user.operId
-            this.$post('app/conversation/list', {
-              userId
-            }).then(res=>{
-              res.sort(function(a, b){return a.lastOpenTime>b.lastOpenTime});
-              store.commit("setConversation", res)
-            });
+					let userId = this.user.operId
+					let chatId = v.eventValue
+					let para = {
+						 userId,
+						 chatId,
+						 chatType : v.eventObj,
+						 pageNum : 1,
+						 pageSize : 10,
+						 condition : ''
 					}
+					
+					this.$post('/app/msg/list', para).then(res=>{
+						cache.set(postfix+chatId,res.list)
+					});
+					
+					this.$post('app/conversation/list', {
+						userId
+					}).then(res=>{
+						this.$store.commit("setConversation", res)
+					});
 					break;
-					case 2:
-						console.log(2);
-						break;
 					default:
 				}
-    }
-  },
+			}
+		},
   methods: {
     showChat: function(chat) {
-      store.commit("setChatObj",chat)
+      this.$store.commit("setChatObj",chat)
       this.first = false;
       // 每次滚动到最底部
       this.$nextTick(() => {
@@ -93,7 +100,7 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-      store.commit("setChatObj",chat)
+      this.$store.commit("setChatObj",chat)
       // 每次滚动到最底部
       self.$nextTick(() => {
         imageLoad("message-box");

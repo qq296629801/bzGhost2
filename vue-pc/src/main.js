@@ -15,6 +15,7 @@ import {
   formData,
   formDataType2
 } from "./utils/request";
+import cache from '@/utils/cache.js'
 import { dateStr, formatDateTime } from "./utils/ChatUtils.js";
 import webim from "./utils/socket/webim";
 import "./utils/directives";
@@ -31,6 +32,7 @@ Vue.prototype.$download = download;
 Vue.prototype.$put = put;
 Vue.prototype.$formDataType2 = formDataType2;
 Vue.prototype.$store=store;
+Vue.prototype.$cache = cache;
 
 Vue.prototype.dateStr = dateStr;
 if (process.env.VUE_APP_MODE === "web") {
