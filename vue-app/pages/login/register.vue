@@ -1,11 +1,6 @@
 <template>
 	<view class="register">
-	
 		<view class="content">
-			<!-- 头部logo -->
-			<view class="header">
-				<image :src="logoImage"></image>
-			</view>
 			<!-- 主体 -->
 			<view class="main">
 				<wInput
