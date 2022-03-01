@@ -1,7 +1,6 @@
 <template>
 	<view class="u-page">
 		
-		
 		<u-transition :show="true" mode="fade">
 		        
 		<u-list
@@ -13,8 +12,11 @@
 				
 			>
 				<u-cell @tap="jumpChatPage(item)"
+					:title="item.chatName"
+					:clickable="true"
 					:label="item.msgType==0?item.content:message[item.msgType]"
 				>
+					<u-badge type="error" slot="right-icon" max="99" :value="item.unreadNumber"></u-badge>
 					<u-avatar
 						slot="icon"
 						shape="square"
@@ -22,9 +24,8 @@
 						:src="webUrl + item.imgUrl"
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
-					 <u-tooltip @tap="test" slot="title" :text="item.chatName" direction="bottom"></u-tooltip>
-					 <u--text format="mm-dd" slot="right-icon" mode="date" :text="item.lastOpenTime"></u--text>
-					 <u-badge type="error" slot="right-icon" max="99" :value="item.unreadNumber"></u-badge>
+					 
+					 <u--text type="info" format="yyyy-mm-dd" slot="right-icon" mode="date" :text="item.lastOpenTime"></u--text>
 				</u-cell>
 			</u-list-item>
 		</u-list>
@@ -56,9 +57,6 @@
 			...mapState(['conversation','user'])
 		},
 		methods: {
-			test(index){
-				console.log(index)
-			},
 			scrolltolower() {
 				let userId = this.user.operId;
 				this.$http.post('app/conversation/list', {

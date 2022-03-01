@@ -8,7 +8,7 @@
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
 					<view>
 						<image class="img" :src="webUrl + item.avatar"></image>
-						<u--text :text="item.groupNickName"></u--text>
+						<u--text color="#6c6c6c" align="center" :text="item.groupNickName"></u--text>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
@@ -35,13 +35,9 @@
 					title="群昵称"
 					:value="group.groupUser.groupNickName"
 				></u-cell>
-				
-		<!-- 		<u-cell @tap="xxShow = true" title="群公告" label="..."></u-cell>
-				 -->
-				
-				<u-cell title="二维码">
+			<!-- 	<u-cell title="二维码">
 					<view slot="right-icon" class="iconfont iconxingzhuangjiehe erweima"></view>
-				</u-cell>
+				</u-cell> -->
 				
 				<u-cell title="全体禁言">
 					<view slot="right-icon">
@@ -236,15 +232,6 @@ export default {
 			background-color: white;
 		}
 		
-		.xx{
-			height: 500rpx;
-			padding: 50rpx;
-			.xx-t{
-				height: 80rpx;
-				line-height: 80rpx;
-				border-bottom: 2rpx solid #ebebeb;
-			}
-		}
 		.btn-red{
 			text-align: center; color: red;
 		}
@@ -254,6 +241,7 @@ export default {
 		}
 		.member{
 			background-color: #FFFFFF;
+			padding-top: 20rpx;
 		}
 		.more{
 			text-align: center;
@@ -278,6 +266,7 @@ export default {
 		.img{
 			width: 80rpx;
 			height: 80rpx;
+			border-radius: 8rpx;
 		}
 		.img-cache{
 			width: 80rpx;

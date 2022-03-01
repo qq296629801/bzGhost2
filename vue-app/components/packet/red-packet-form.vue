@@ -31,7 +31,6 @@
 									></u--input>
 								</u-form-item>
 								<u-form-item
-										label="备注"
 										prop="userInfo.name"
 										borderBottom
 										ref="item1"
@@ -44,7 +43,9 @@
 									
 							</u--form>
 							<u-button type="error"@tap="save">塞钱进红包</u-button>
+							<u-gap height="10"></u-gap>
 							<u-button @tap="cancer">撤退</u-button>
+							<u-gap height="10"></u-gap>
 				</view>
 		</u-popup>
 	</view>
@@ -103,83 +104,8 @@
 </script>
 
 <style lang="scss">
-	.slot-wrap {
-		display: flex;
-		align-items: center;
-	}
-	view{
-		display: flex;
-		flex-wrap: wrap;
-	}
-	.top{
-		height: 300rpx;
-		color: #bd9008;
-		padding: 100rpx;
-		
-	}
 	.content{
-		z-index: 999;
-		height: 550rpx;
-		margin: 20rpx;
-		border-radius: 10rpx;
-		&.normal{
-			.luck{
-				transform: translate3d(-100%,0,0);
-			}
-			.normal{
-				transform: translate3d(0,-100%,0);
-			}
-		}
-		.luck,.normal{
-			transition: all .3s ease-out;
-		}
-		.luck{
-			
-		}
-		.normal{
-			transform: translate3d(100%,-100%,0);
-		}
-		.row,.tis,.blessing,.hand{
-			width: 90%;
-		}
-		.row,.tis,.blessing{
-			border-bottom: #e2e2e2 solid 3upx;
-			border-radius: 10rpx;
-			background-color: #fdfeff;
-		}
-		.row,.blessing{
-			padding: 0 3%;
-		}
-		.row,.blessing,.hand{
-			height: 100upx;
-			align-items: center;
-		}
-		.row{
-			font-size: 25rpx;
-			font-weight: 600;
-			justify-content: space-between;
-			flex-wrap: nowrap;
-			.term{
-				width: 30%;
-			}
-			.input{
-				width: 70%;
-			}
-			.input{
-				flex-shrink: 0;
-				flex-wrap: nowrap;
-				justify-content: flex-end;
-				align-items: center;
-			}
-		}
-		.tis{
-			height: 100upx;
-			padding: 30upx 3%;
-			font-size: 30upx;
-			color: #919191;
-		}
-		.blessing{
-			color: #fff;
-		}	
+		padding: 100rpx;
+		background-color: #bfbfbf;
 	}
 </style>

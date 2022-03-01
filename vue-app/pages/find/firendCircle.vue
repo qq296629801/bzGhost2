@@ -2,9 +2,10 @@
 	<view class="content" id="content">
 		<!-- 公共组件-每个页面必须引入 -->
 		<public-module></public-module>
+		
+		<!-- 脑袋 -->
 		<view class="content-imgbox">
-			<image class="bgimg" src="/static/image/circleBanner/3.jpg" mode="scaleToFill" @tap="showSheet"></image>
-			
+			<image class="bgimg" :src="webUrl + user.avatar" mode="scaleToFill" @tap="showSheet"></image>
 			<image class="headimg" :src="webUrl + user.avatar"></image>
 			<text class="nickname">{{ user.username }}</text>
 		</view>
@@ -44,7 +45,7 @@
 						<view class="time">{{ item.createTime }}</view>
 						<view class="icon-box">
 							<view @tap="clickThumb(item)">
-								<image class="img icon-box-item thumb" :src="item.isPraise ? require('@/static/like-fill.png') : require('@/static/like.png')" mode=""></image>
+								<image class="img icon-box-item thumb" :src="item.isPraise ? require('@/static/like.png') : require('@/static/like-fill.png')" mode=""></image>
 							</view>
 							<view @tap="handleComment(item.circleMegId, null, index)">
 								<image class="img icon-box-item" :src="require('@/static/comment.png')" mode=""></image>
@@ -113,7 +114,7 @@
 						@confirm="sendMsg"
 					/>
 				</view>
-				<button class="btn" type="primary" size="mini" @touchend.prevent="sendMsg">发送</button>
+				<button class="btn" size="mini" @touchend.prevent="sendMsg">发送</button>
 			</view>
 		</view>
 		
@@ -393,6 +394,7 @@ image {
 		.bgimg {
 			width: 100%;
 			height: 560rpx;
+			background-color: #9c9c9c;
 		}
 		.headimg {
 			width: 110rpx;
@@ -574,7 +576,8 @@ image {
 			}
 			.btn {
 				margin-left: 20rpx;
-				background-color: $u-success;
+				background-color: #007AFF;
+				color: #fff;
 				border: none;
 			}
 		}
