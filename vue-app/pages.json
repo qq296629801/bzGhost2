@@ -306,7 +306,7 @@
 		    			"buttons": [{
 		    				"fontSrc": "/static/font/iconfont.ttf",
 		    				"float": "right",
-		    				"text": "\ue628",
+		    				"text": "\ue613",
 		    				"width":"80rpx"
 		    			}]
 		    		}
@@ -323,7 +323,7 @@
 						"buttons": [{
 							"fontSrc": "/static/font/iconfont.ttf",
 							"float": "right",
-							"text": "\ue628",
+							"text": "\ue613",
 							"width":"80rpx"
 						}]
 					}
@@ -341,7 +341,7 @@
 		   			"buttons": [{
 		   				"fontSrc": "/static/font/iconfont.ttf",
 		   				"float": "right",
-		   				"text": "\ue628",
+		   				"text": "\ue613",
 		   				"width":"80rpx"
 		   			}]
 		   		}

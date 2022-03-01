@@ -13,12 +13,12 @@
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="plus">
-						<u-icon name="plus" size="20" color="#cececf"></u-icon>
+						<u-icon name="plus" size="20" color="#6c6c6c"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="plus">
-						<u-icon name="minus" size="20" color="#cececf"></u-icon>
+						<u-icon name="minus" size="20" color="#6c6c6c"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
