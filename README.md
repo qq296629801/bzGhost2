@@ -17,31 +17,11 @@
 
 # 截图
 
-## 1.1电脑版本截图
-
-![](/assets/pc_login_01.png)![](/assets/pc_friend_04.png)![](/assets/pc_group_02.png)![](/assets/pc_chat_03.png)
-
-## 1.2手机截图
-
-![](/assets/login.jpg)
-
-![](/assets/list.jpg)
-
-![](/assets/chat.jpg)
-
-![](/assets/group.jpg)
-
-![](/assets/friend.jpg)
-
-![](/assets/friend2.jpg)
-
-![](/assets/redpacket.jpg)
-
-![](/assets/redpacketdetail.jpg)
-
 ## 1.3管理截图
 
 ![](/assets/admin_login_01.png)![](/assets/admin_group_02.png)
+
+![](/assets/bzGhost.mp4)
 
 # 联系方式
 
