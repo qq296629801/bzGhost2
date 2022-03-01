@@ -58,7 +58,7 @@
 			</u-cell-group>
 		</view>
 		
-		<u-popup :show="show" @close="show = false" @open="show = true" mode="right">
+		<u-popup :show="show" @close="show = false" @open="show = true" mode="bottom">
 			<view class="xx">
 				
 				<u--form
@@ -81,11 +81,11 @@
 						
 						</u--form>
 				
-						<u-button type="success" @tap="tapGroupName">保存</u-button>
+						<u-button type="info" @tap="tapGroupName">保存</u-button>
 			</view>
 		</u-popup>
 		
-		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="right">
+		<u-popup :show="xxxShow" @close="xxxShow = false" @open="xxxShow = true" mode="bottom">
 			<view class="xx">
 				<u--form
 					labelPosition="left"
@@ -106,7 +106,7 @@
 						</u-form-item>
 					
 					</u--form>
-				<u-button type="success" @tap="tapGroupNick">保存</u-button>
+				<u-button type="info" @tap="tapGroupNick">保存</u-button>
 			</view>
 		</u-popup>
 	</view>
@@ -228,6 +228,11 @@ export default {
 
 <style lang="scss">
 	.content{
+		
+		.xx{
+			padding: 30rpx;
+		}
+		
 		.cell-group{
 			background-color: white;
 		}

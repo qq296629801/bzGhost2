@@ -31,7 +31,7 @@
 			<view class="footer">
 				<navigator url="forget" open-type="navigate">找回密码</navigator>
 				<text>|</text>
-				<navigator v-hasPermission="'test:regist'" url="register" open-type="navigate">注册账号</navigator>
+				<navigator url="register" open-type="navigate">注册账号</navigator>
 			</view>
 		</view>
 	</view>
