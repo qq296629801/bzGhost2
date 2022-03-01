@@ -14,7 +14,7 @@
 						<view class="keyword-text" @tap.stop="doSearch(keywordList[index])">
 							<rich-text :nodes="row.htmlStr"></rich-text>
 						</view>
-						<view class="keyword-img" @tap.stop="setKeyword(keywordList[index].keyword)">
+						<view class="keyword-img" @tap.stop="setKeyword(index)">
 							<image src="/static/HM-search/back.png"></image>
 						</view>
 					</view>
@@ -30,7 +30,7 @@
 						</view>
 					</view>
 					<view class="keyword">
-						<view v-for="(keyword,index) in oldKeywordList" @tap="doSearch(keyword)" :key="index">{{keyword}}</view>
+						<view v-for="(key,index) in oldKeywordList" @tap="keyword = key" :key="index">{{key}}</view>
 					</view>
 				</view>
 				<view class="keyword-block">
