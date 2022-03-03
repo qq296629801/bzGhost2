@@ -82,37 +82,36 @@
     </div>
 
     <Drawer
-      title="群"
       :closable="true"
       v-model="modal"
       class="history-message"
       width="30%"
     >
       <div v-if="chatObj.chatType == 0">
-        <UserModal :user="chatObj"></UserModal>
-      </div>
-      <div v-if="chatObj.chatType == 1">
         <div class="group-box">
-          <List item-layout="horizontal">
-            <ListItem>
-              <div class="item">
-                <img width="50" :src="[host + user.avatar]" />
-                <span>admin</span>
-              </div>
-            </ListItem>
-            <ListItem>
-              <div class="item">
-                <img width="50" :src="[host + user.avatar]" />
-                <span>test</span>
-              </div>
-            </ListItem>
-          </List>
+          <div class="item">
+            <div class="avatar">
+              <img width="50" :src="[host + chatObj.avatar]" />
+            </div>
+            <span>{{ chatObj.chatName }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="box" v-if="chatObj.chatType == 1">
+        <Search class="search-box"></Search>
+        <div class="group-box">
+          <div class="item" v-for="item in members" :key="item.chatId">
+            <div class="avatar">
+              <img width="50" :src="[host + item.avatar]" />
+            </div>
+            <span>{{ item.chatName }}</span>
+          </div>
         </div>
 
-        <div>
+        <div class="group-cell">
           <CellGroup>
             <Cell title="群名称" :label="chatObj.chatName" />
-
+            <Cell title="我在本群的昵称" label="admin" />
           </CellGroup>
         </div>
       </div>
@@ -157,13 +156,15 @@ import { mapState } from "vuex";
 import { imageLoad, transform } from "../../../utils/ChatUtils";
 import db from "@/utils/api/message.js";
 import base from "@/utils/baseUrl.js";
+import Search from "../components/search.vue";
 export default {
   components: {
     Faces,
     UserModal,
     HistoryMessage,
     UploadTool,
-    imgView
+    imgView,
+    Search
   },
   name: "UserChat",
   computed: {
@@ -182,6 +183,7 @@ export default {
       showFace: false,
       showHistory: false,
       switchValue: false,
+      dis: false,
       messageType: {
         text: 0,
         video: 1,
@@ -189,10 +191,20 @@ export default {
         image: 3,
         createPacket: 4,
         robPacket: 5
-      }
+      },
+      members: []
     };
   },
   methods: {
+    queryMembers() {
+      let pData = {
+        userId: this.user.operId,
+        groupId: this.chatObj.chatId
+      };
+      this.$post("app/group/member", pData).then(res => {
+        this.members = res.members;
+      });
+    },
     transformFace(content) {
       return transform(content);
     },
@@ -346,11 +358,16 @@ export default {
       });
 
       this.cOpen();
+
+      this.queryMembers();
     }
   },
   watch: {
-    chatObj: function() {
-      this.loadHistory();
+    chatObj: function(v) {
+      console.log(v.chatName)
+      if (v.chatId == this.chatObj.chatId) {
+        this.loadHistory();
+      }
     }
   },
   mounted: function() {
@@ -759,12 +776,31 @@ export default {
   text-align: right;
   margin: 10px;
 }
+.box {
+  padding: 10px;
+  margin-top: 30px;
+}
 
-.group-box{
-  background: #fff;
-  .item{
-    width: 80px;
+.group-cell {
+  border-top: solid 1px #dbdbdb;
+  margin-top: 50px;
+}
+.group-box {
+  //background: #fff;
+  display: flex;
+  .item {
+    width: 70px;
     text-align: center;
+    overflow: hidden;
+    .avatar {
+      width: 70px;
+      height: 70px;
+      padding: 5px;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

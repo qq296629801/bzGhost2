@@ -72,8 +72,11 @@ export default {
     packetPush: function(v) {
       switch (v.code) {
         case 1:
+          // eslint-disable-next-line no-case-declarations
           let userId = this.user.operId;
+          // eslint-disable-next-line no-case-declarations
           let chatId = v.eventValue;
+          // eslint-disable-next-line no-case-declarations
           let para = {
             userId,
             chatId,
@@ -196,6 +199,7 @@ export default {
       text-overflow: ellipsis;
       font-weight: 600;
       top: 0.6rem;
+      height: 1.6em;
     }
 
     p {
