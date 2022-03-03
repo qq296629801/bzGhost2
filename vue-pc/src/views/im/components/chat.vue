@@ -303,6 +303,14 @@ export default {
               }
           });
     },
+    cOpen(){
+			let _t = this
+			_t.$post('app/conversation/open',{
+				chatId: _t.chatObj.chatId,
+				chatType:_t.chatObj.chatType,
+				userId: _t.user.operId,
+			});
+		},
     loadHistory() {
       this.host = base.webUrl;
       // 从本地获取最新历史记录
@@ -317,6 +325,8 @@ export default {
       this.$socket.joinGroup(() =>{
          this.send(null);
       });
+
+      this.cOpen();
     }
   },
   watch: {
