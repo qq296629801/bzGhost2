@@ -194,7 +194,7 @@ export default {
     Top
   },
   mounted() {
-     this.$socket.initSocket();
+    this.$socket.initSocket();
   },
   methods: {
     clickUser: function() {
@@ -230,28 +230,26 @@ export default {
       });
     },
     jumpLogin: function() {
-      this.$get('/login',this.loginParams).then(res=>{
+      this.$get("/login", this.loginParams).then(res => {
+        this.$store.commit("setUser", res.user);
+        this.$store.commit("setToken", res.token);
+        this.$store.commit("setConfig", res.config);
+        this.$store.commit("setRoles", res.roles);
+        this.$store.commit("setPermissions", res.permissions);
 
-          this.$store.commit("setUser",res.user);
-          this.$store.commit("setToken",res.token);
-          this.$store.commit("setConfig",res.config);
-          this.$store.commit("setRoles",res.roles);
-          this.$store.commit("setPermissions",res.permissions);
+        db.download();
+        db2.download();
 
-          db.download();
-          db2.download();
+        this.$socket.login(() => {
+          this.$socket.push(res => {
+            this.$store.commit("setPacketPush", res);
+          }, 6);
 
-          this.$socket.login(data=>{
-
-            this.$socket.push(res=>{
-							this.$store.commit("setPacketPush",res);
-						},6);
-
-            this.$router.push({
-              path: "/index/chatBox",
-              params: {}
-            });
+          this.$router.push({
+            path: "/index/chatBox",
+            params: {}
           });
+        });
       });
     }
   }

@@ -39,9 +39,8 @@
               </div>
 
               <div class="im-chat-img" v-if="item.contentType == 3">
-                 <imgView :images="[webUrl + item.content]"></imgView>
-              </div>   
-              
+                <imgView :images="[webUrl + item.content]"></imgView>
+              </div>
             </li>
           </ul>
         </div>
@@ -80,7 +79,6 @@
           </li>
         </ul>
       </div> -->
-
     </div>
 
     <Drawer
@@ -90,25 +88,35 @@
       class="history-message"
       width="30%"
     >
-
-     <div v-if="chatObj.chatType==0">
+      <div v-if="chatObj.chatType == 0">
         <UserModal :user="chatObj"></UserModal>
       </div>
-      <div v-if="chatObj.chatType==1">
+      <div v-if="chatObj.chatType == 1">
+        <div class="group-box">
+          <List item-layout="horizontal">
+            <ListItem>
+              <div class="item">
+                <img width="50" :src="[host + user.avatar]" />
+                <span>admin</span>
+              </div>
+            </ListItem>
+            <ListItem>
+              <div class="item">
+                <img width="50" :src="[host + user.avatar]" />
+                <span>test</span>
+              </div>
+            </ListItem>
+          </List>
+        </div>
 
+        <div>
+          <CellGroup>
+            <Cell title="群名称" :label="chatObj.chatName" />
 
-         <div>
-               <CellGroup>
-                  <Cell title="群名称" :label="chatObj.chatName" />
-              </CellGroup>
-          </div>
-        
-         
-
-        
+          </CellGroup>
+        </div>
       </div>
     </Drawer>
-
 
     <Modal
       closable
@@ -145,7 +153,7 @@ import UserModal from "./userModal.vue";
 import UploadTool from "./uploadTool.vue";
 import HistoryMessage from "./historyMessage.vue";
 import imgView from "./imgView.vue";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 import { imageLoad, transform } from "../../../utils/ChatUtils";
 import db from "@/utils/api/message.js";
 import base from "@/utils/baseUrl.js";
@@ -159,11 +167,11 @@ export default {
   },
   name: "UserChat",
   computed: {
-    ...mapState(["user","chatObj"])
+    ...mapState(["user", "chatObj"])
   },
   data() {
     return {
-      webUrl:base.webUrl,
+      webUrl: base.webUrl,
       count: 0,
       pageSize: 20,
       modal: false,
@@ -173,20 +181,20 @@ export default {
       messageList: [],
       showFace: false,
       showHistory: false,
-      switchValue:false,
-      messageType:{
-				text:0,
-				video:1,
-				audio:2,
-				image:3,
-				createPacket:4,
-				robPacket:5
-			}
+      switchValue: false,
+      messageType: {
+        text: 0,
+        video: 1,
+        audio: 2,
+        image: 3,
+        createPacket: 4,
+        robPacket: 5
+      }
     };
   },
   methods: {
-    transformFace(content){
-      return transform(content)
+    transformFace(content) {
+      return transform(content);
     },
     history() {
       this.showHistory = !this.showHistory;
@@ -232,98 +240,109 @@ export default {
         }
       }
     },
-    send(data){
-          let _t = this
+    send() {
+      let _t = this;
 
-          const params = {
-            isItMe:true,
-            contentType: _t.messageType.text,
-            content:  _t.messageContent,
-            createTime: Date.now(),
-            hasBeenSentId: Date.now(),
-            fromUserId: _t.user.operId,
-            fromUserName: _t.user.username,
-            fromUserHeadImg: _t.user.avatar,
-            userId: _t.user.operId,
-            toUserId: _t.chatObj.chatId,
-            toUserName: _t.chatObj.chatName,
-            toUserHeadImg:_t.chatObj.avatar,
-            chatType: _t.chatObj.chatType
-          };
+      const params = {
+        isItMe: true,
+        contentType: _t.messageType.text,
+        content: _t.messageContent,
+        createTime: Date.now(),
+        hasBeenSentId: Date.now(),
+        fromUserId: _t.user.operId,
+        fromUserName: _t.user.username,
+        fromUserHeadImg: _t.user.avatar,
+        userId: _t.user.operId,
+        toUserId: _t.chatObj.chatId,
+        toUserName: _t.chatObj.chatName,
+        toUserHeadImg: _t.chatObj.avatar,
+        chatType: _t.chatObj.chatType
+      };
 
-          if(!_t.messageContent==''){
-             _t.messageList.push(params);
-              db.commit(params);
-             _t.$post('app/msg/add',{
-              chatId: _t.chatObj.chatId,
-              chatType:_t.chatObj.chatType,
-              userId: _t.user.operId,
-              message: params.content,
-              msgType: params.contentType
-            });
+      if (!_t.messageContent == "") {
+        _t.messageList.push(params);
+        db.commit(params);
+        _t.$post("app/msg/add", {
+          chatId: _t.chatObj.chatId,
+          chatType: _t.chatObj.chatType,
+          userId: _t.user.operId,
+          message: params.content,
+          msgType: params.contentType
+        });
+      }
+      _t.messageContent = "";
+      this.$nextTick(() => {
+        imageLoad("message-box");
+      });
+
+      this.$socket.push(
+        res => {
+          this.$store.commit("setPacketPush", res);
+        },
+        1,
+        _t.chatObj.chatId,
+        _t.chatObj.chatType
+      );
+
+      // 发送消息到服务器转发
+      this.$socket.sendMessage(params, res => {
+        if (_t.chatObj.chatType == 0 && res.chatType == 0) {
+          if (res.fromUserId != _t.user.operId) {
+            if (res.content != "") {
+              res.isItMe = false;
+              // 本地内存
+              _t.messageList.push(res);
+              // 本地缓存
+              db.commit(res);
+              // 页面置底
+              _t.mescroll.scrollTo(99999, 0);
+            }
           }
-          _t.messageContent = '';
-          this.$nextTick(() => {
-            imageLoad("message-box");
-          });
+        }
 
-          this.$socket.push(res=>{
-            this.$store.commit("setPacketPush",res);
-          },1,_t.chatObj.chatId,_t.chatObj.chatType);
-
-          // 发送消息到服务器转发
-          this.$socket.sendMessage(params, res => {
-              if(_t.chatObj.chatType == 0 && res.chatType==0){
-                if(res.fromUserId!=_t.user.operId){
-                  if(res.content!=''){
-                    res.isItMe = false;
-                    // 本地内存
-                    _t.messageList.push(res);
-                    // 本地缓存
-                    db.commit(res);
-                    // 页面置底
-                    _t.mescroll.scrollTo(99999, 0);
-                  }
-                }
-              }
-
-              // 判断是否当前群组
-              if(res.toUserId==_t.chatObj.chatId&& res.chatType==1&& _t.chatObj.chatType==1){
-                // 判断发送人是不是自己
-                if(res.fromUserId!=_t.user.operId){
-                  if(res.content!=''){
-                    res.isItMe = false;
-                    _t.messageList.push(res);
-                    db.commit(res);
-                    this.$nextTick(() => {
-                      imageLoad("message-box");
-                    });
-                  }
-                }
-              }
-          });
+        // 判断是否当前群组
+        if (
+          res.toUserId == _t.chatObj.chatId &&
+          res.chatType == 1 &&
+          _t.chatObj.chatType == 1
+        ) {
+          // 判断发送人是不是自己
+          if (res.fromUserId != _t.user.operId) {
+            if (res.content != "") {
+              res.isItMe = false;
+              _t.messageList.push(res);
+              db.commit(res);
+              this.$nextTick(() => {
+                imageLoad("message-box");
+              });
+            }
+          }
+        }
+      });
     },
-    cOpen(){
-			let _t = this
-			_t.$post('app/conversation/open',{
-				chatId: _t.chatObj.chatId,
-				chatType:_t.chatObj.chatType,
-				userId: _t.user.operId,
-			});
-		},
+    cOpen() {
+      let _t = this;
+      _t.$post("app/conversation/open", {
+        chatId: _t.chatObj.chatId,
+        chatType: _t.chatObj.chatType,
+        userId: _t.user.operId
+      });
+    },
     loadHistory() {
       this.host = base.webUrl;
       // 从本地获取最新历史记录
-      db.getItem().then(res=>{
-				this.messageList = res.sort(function(a, b){return a.hasBeenSentId-b.hasBeenSentId});
-				this.$nextTick(() => {
-           imageLoad("message-box");
-				});
-			});
+      db.getItem().then(res => {
+        this.messageList = res.sort(function(a, b) {
+          return a.hasBeenSentId - b.hasBeenSentId;
+        });
+        this.$nextTick(() => {
+          imageLoad("message-box");
+        });
+      });
 
       //加入群通道
-      this.$socket.joinGroup(() =>{
-         this.send(null);
+      this.$socket.joinGroup(() => {
+        this.send();
       });
 
       this.cOpen();
@@ -475,34 +494,33 @@ export default {
         padding-left: 60px;
         min-height: 68px;
 
-
         .im-chat-packet {
-            position: relative;
-            line-height: 22px;
-            margin-top: 25px;
-            border-radius: 3px;
-            color: #333;
-            word-break: break-all;
-            display: inline-block;
-            vertical-align: top;
-            font-size: 14px;
-            .packet {
-              height: 80rpx;
-              color: #fff;
-              padding: 20rpx;
-              display: flex;
-              background-color: #F09D47;
-              line-height: 60rpx;
-            }
-            .tag {
-              height: 50rpx;
-              line-height: 50rpx;
-              font-size: 20rpx;
-              background: #F09D47;
-              border-top: 1px solid #f9b56f;
-              padding-left: 20rpx;
-              color: #fff;
-            }
+          position: relative;
+          line-height: 22px;
+          margin-top: 25px;
+          border-radius: 3px;
+          color: #333;
+          word-break: break-all;
+          display: inline-block;
+          vertical-align: top;
+          font-size: 14px;
+          .packet {
+            height: 80rpx;
+            color: #fff;
+            padding: 20rpx;
+            display: flex;
+            background-color: #f09d47;
+            line-height: 60rpx;
+          }
+          .tag {
+            height: 50rpx;
+            line-height: 50rpx;
+            font-size: 20rpx;
+            background: #f09d47;
+            border-top: 1px solid #f9b56f;
+            padding-left: 20rpx;
+            color: #fff;
+          }
         }
 
         .im-chat-img {
@@ -611,7 +629,7 @@ export default {
         max-width: 800px;
         margin-left: 10px;
         text-align: left;
-        background-color: #C6EBFE;
+        background-color: #c6ebfe;
         color: #000;
         display: inline-block;
         vertical-align: top;
@@ -620,7 +638,7 @@ export default {
         &:after {
           left: auto;
           right: -10px;
-          border-top-color: #C6EBFE;
+          border-top-color: #c6ebfe;
         }
       }
 
@@ -740,5 +758,13 @@ export default {
 .model-footer {
   text-align: right;
   margin: 10px;
+}
+
+.group-box{
+  background: #fff;
+  .item{
+    width: 80px;
+    text-align: center;
+  }
 }
 </style>

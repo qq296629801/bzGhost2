@@ -3,8 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index.js";
 import ViewUI from "view-design";
-import 'viewerjs/dist/viewer.css'
-import Viewer from 'v-viewer'
+import "viewerjs/dist/viewer.css";
+import Viewer from "v-viewer";
 import "view-design/dist/styles/iview.css";
 import {
   post,
@@ -15,7 +15,7 @@ import {
   formData,
   formDataType2
 } from "./utils/request";
-import cache from '@/utils/cache.js'
+import cache from "@/utils/cache.js";
 import { dateStr, formatDateTime } from "./utils/ChatUtils.js";
 import webim from "./utils/socket/webim";
 import "./utils/directives";
@@ -31,7 +31,7 @@ Vue.prototype.$formData = formData;
 Vue.prototype.$download = download;
 Vue.prototype.$put = put;
 Vue.prototype.$formDataType2 = formDataType2;
-Vue.prototype.$store=store;
+Vue.prototype.$store = store;
 Vue.prototype.$cache = cache;
 
 Vue.prototype.dateStr = dateStr;

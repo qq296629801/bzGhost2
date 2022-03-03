@@ -1,17 +1,17 @@
 let baseUrl = "";
 let socketUrl = "";
 let projectToken = "bzGhost";
-let webUrl = ""
+let webUrl = "";
 if (process.env.NODE_ENV === "development") {
   // 开发环境
   baseUrl = "http://42.193.146.14:9998/";
   socketUrl = "ws://120.27.95.106:9999/chat";
   webUrl = "http://42.193.146.14:8089/";
-}else {
-	// 正式环境
-	baseUrl = "http://42.193.146.14:9998/";
-	socketUrl = "ws://120.27.95.106:9999/chat";
-	webUrl = "http://42.193.146.14:8089/";
+} else {
+  // 正式环境
+  baseUrl = "http://42.193.146.14:9998/";
+  socketUrl = "ws://120.27.95.106:9999/chat";
+  webUrl = "http://42.193.146.14:8089/";
 }
 const courtConfig = {
   //微信公众号APPID
@@ -19,7 +19,7 @@ const courtConfig = {
   //请求接口
   baseUrl: baseUrl,
   // 静态地址
-	webUrl: webUrl,
+  webUrl: webUrl,
   //webSocket地址
   socketUrl: socketUrl,
   //平台Token

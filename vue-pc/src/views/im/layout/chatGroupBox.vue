@@ -27,7 +27,7 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import base from "@/utils/baseUrl.js";
 import UserChat from "../components/chat.vue";
-import { mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from "vuex";
 import store from "@/store/index.js";
 export default {
   components: {
@@ -37,14 +37,14 @@ export default {
     UserChat
   },
   computed: {
-    ...mapState(["user","group"])
+    ...mapState(["user", "group"])
   },
   data() {
     return {
       list: [],
-      webUrl:base.webUrl,
+      webUrl: base.webUrl,
       first: true,
-      currentChat:{}
+      currentChat: {}
     };
   },
   methods: {
@@ -52,7 +52,7 @@ export default {
     showChat: function(chatGroup) {
       this.first = false;
       this.currentChat = chatGroup;
-      store.commit("setChatObj",chatGroup)
+      store.commit("setChatObj", chatGroup);
     }
   }
 };

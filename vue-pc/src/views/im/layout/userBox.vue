@@ -43,7 +43,7 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserInfo from "../components/userInfo.vue";
 import base from "@/utils/baseUrl.js";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   components: {
     Search,
@@ -55,8 +55,8 @@ export default {
   data() {
     return {
       first: true,
-      webUrl:base.webUrl,
-      user:{}
+      webUrl: base.webUrl,
+      user: {}
     };
   },
   computed: {

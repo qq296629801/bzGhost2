@@ -2,7 +2,12 @@
   <div>
     <div>
       <p class="text-center">
-        <img width="100" height="100" :src="[webUrl + user.imgUrl]" class="img" />
+        <img
+          width="100"
+          height="100"
+          :src="[webUrl + user.imgUrl]"
+          class="img"
+        />
       </p>
       <p class="user-model-item">
         <label>姓名：</label>
@@ -19,21 +24,17 @@ export default {
   props: ["user"],
   data() {
     return {
-      webUrl:base.webUrl
+      webUrl: base.webUrl
     };
   },
-  watch: {
-
-  },
-  mounted() {
-  },
-  methods: {
-  }
+  watch: {},
+  mounted() {},
+  methods: {}
 };
 </script>
 
 <style scoped>
-.img{
+.img {
   width: 100px;
   height: 100px;
 }

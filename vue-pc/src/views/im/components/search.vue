@@ -49,7 +49,7 @@ export default {
       userList: [],
       searchUserList: [],
       showSearchDiv: false,
-      host: ''
+      host: ""
     };
   },
   methods: {

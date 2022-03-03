@@ -68,9 +68,9 @@ export default class Websocket {
   onReceivedMsg(callBack) {
     socket.onmessage = function(event) {
       if (typeof callBack == "function") {
-          callBack(event)
+        callBack(event);
       } else {
-          console.log('参数的类型必须为函数')
+        console.log("参数的类型必须为函数");
       }
     };
   }
@@ -113,7 +113,8 @@ export default class Websocket {
 
   // 重连方法，会根据时间频率越来越慢
   _reConnect(options) {
-    let timer,selft = this;
+    let timer,
+      selft = this;
     console.log(timer);
     if (this._connectNum < 20) {
       timer = setTimeout(() => {
@@ -134,9 +135,9 @@ export default class Websocket {
   }
   // 关闭websocket连接
   closeWebSocket() {
-    socket.onclose = function(){
+    socket.onclose = function() {
       this._isClosed = true;
-    }
+    };
   }
 
   //发送二进制

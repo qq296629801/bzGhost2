@@ -15,7 +15,6 @@ const WEBIM = {
   /*初始化*/
   initSocket: function() {
     return new Promise((resolve, reject) => {
-      
       WEBIM.options = {
         url: WEBIM.serverUrl,
         success(res) {
@@ -39,7 +38,6 @@ const WEBIM = {
 
         eventDispatcher.dispatchEvent(command, toJSON(packet));
         eventDispatcher.removeListener(command, toJSON(packet));
-
       });
 
       WEBIM.server.onSocketClosed(WEBIM.options);
@@ -51,7 +49,7 @@ const WEBIM = {
   isConnect: function() {
     return WEBIM.server._isLogin;
   },
-  login: (res) => {
+  login: res => {
     let requestPacket = {
       userId: store.state.user.operId,
       version: 1,
@@ -107,26 +105,26 @@ const WEBIM = {
     send(requestPacket);
     eventDispatcher.addListener("6", func);
   },
-  push:(func, code)=>{
-		let req  = {
-			version: 1,
-			command: -9,
-			code
-		}
-		send(req);
-		eventDispatcher.addListener('-10', func);
-	},
-	push:(func, code, eventValue, eventObj)=>{
-		let req  = {
-			version: 1,
-			command: -9,
-			code,
-			eventValue,
-			eventObj
-		}
-		send(req);
-		eventDispatcher.addListener('-10', func);
-	}
+  push: (func, code) => {
+    let req = {
+      version: 1,
+      command: -9,
+      code
+    };
+    send(req);
+    eventDispatcher.addListener("-10", func);
+  },
+  push: (func, code, eventValue, eventObj) => {
+    let req = {
+      version: 1,
+      command: -9,
+      code,
+      eventValue,
+      eventObj
+    };
+    send(req);
+    eventDispatcher.addListener("-10", func);
+  }
 };
 
 function toJSON(packet) {

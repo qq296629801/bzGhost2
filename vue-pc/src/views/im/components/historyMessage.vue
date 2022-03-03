@@ -26,7 +26,6 @@
                 v-on:click="openImageProxy($event)"
               ></pre>
             </div>
-
           </li>
         </ul>
       </div>
@@ -44,7 +43,7 @@
 
 <script>
 import base from "@/utils/baseUrl.js";
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "history-message",
   props: {
@@ -62,12 +61,12 @@ export default {
       count: 0,
       pageSize: 10,
       hisMessageList: [],
-      host:''
+      host: ""
     };
   },
-  computed:{
-		...mapState(['user'])
-	},
+  computed: {
+    ...mapState(["user"])
+  },
   watch: {
     showHistory: function(show) {
       this.showHistory = show;
@@ -94,20 +93,19 @@ export default {
       }
     },
     getHistoryMessage(pageNo) {
-			let httpReqData = {
+      let httpReqData = {
         chatType: this.chat.chatType,
-				chatId: this.chat.chatId,
-				userId: this.user.operId,
-				condition:'',
-				pageNum: pageNo,
-				pageSize: this.pageSize
-			}
-			this.$post('app/msg/list', httpReqData).then(res=>{
+        chatId: this.chat.chatId,
+        userId: this.user.operId,
+        condition: "",
+        pageNum: pageNo,
+        pageSize: this.pageSize
+      };
+      this.$post("app/msg/list", httpReqData).then(res => {
         this.count = res.totalSize;
-				this.hisMessageList = res.list;
-			}).catch(e=>{
-			});
-  }
+        this.hisMessageList = res.list;
+      });
+    }
   }
 };
 </script>

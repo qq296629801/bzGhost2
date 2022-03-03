@@ -52,7 +52,7 @@
         <label>账号：</label>
         <span>{{ user.username }}</span>
       </p>
-      
+
       <p>
         <Button type="error" long @click="myLogout">退出</Button>
       </p>
@@ -61,18 +61,18 @@
 </template>
 <script>
 import { logout } from "../utils/ChatUtils";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 import base from "@/utils/baseUrl.js";
 export default {
   data() {
     return {
       modal: false,
-      webUrl:base.webUrl
+      webUrl: base.webUrl
     };
   },
-  computed:{
-		...mapState(['user'])
-	},
+  computed: {
+    ...mapState(["user"])
+  },
   methods: {
     myLogout() {
       let self = this;

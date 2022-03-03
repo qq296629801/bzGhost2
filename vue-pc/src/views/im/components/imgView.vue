@@ -1,8 +1,8 @@
 <template>
   <div>
-       <viewer :images="images">
-         <img  class="img" v-for="src in images" :key="src" :src="src">
-      </viewer>
+    <viewer :images="images">
+      <img class="img" v-for="src in images" :key="src" :src="src" />
+    </viewer>
   </div>
 </template>
 <script>
@@ -11,17 +11,14 @@ export default {
   components: {},
   props: ["images"],
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-    
-  }
+  methods: {}
 };
 </script>
 
 <style scoped lang="scss">
-.img{
+.img {
   width: 100px;
   height: auto;
 }

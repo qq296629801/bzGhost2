@@ -46,12 +46,12 @@ export default {
     showChat: function() {
       let self = this;
       let obj = {
-        chatName:self.user.nickName,
-        chatType:0,
-        chatId:self.user.id,
-        avatar:self.user.avatar
+        chatName: self.user.nickName,
+        chatType: 0,
+        chatId: self.user.id,
+        avatar: self.user.avatar
       };
-      store.commit("setChatObj",obj);
+      store.commit("setChatObj", obj);
 
       self.$router.push({
         path: "/index/chatBox/"

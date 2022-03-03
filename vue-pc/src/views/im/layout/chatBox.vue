@@ -8,16 +8,14 @@
             <a
               href="javascript:"
               @click="showChat(chat)"
-              :class="
-                chatObj && chatObj.chatId === chat.chatId
-                  ? 'active'
-                  : ''
-              "
+              :class="chatObj && chatObj.chatId === chat.chatId ? 'active' : ''"
             >
               <i v-if="chat.unreadNumber > 0">{{ chat.unreadNumber }}</i>
               <img :src="[webUrl + chat.imgUrl]" alt="头像" />
               <b>{{ chat.chatName }}</b>
-              <p>{{ chat.msgType==0?chat.content:message[chat.chatType] }}</p>
+              <p>
+                {{ chat.msgType == 0 ? chat.content : message[chat.chatType] }}
+              </p>
             </a>
             <Icon type="md-close"></Icon>
           </li>
@@ -37,10 +35,10 @@ import Top from "../components/top.vue";
 import Welcome from "../components/welcome.vue";
 import UserChat from "../components/chat.vue";
 import { imageLoad } from "../../../utils/ChatUtils";
-import { mapState} from 'vuex';
+import { mapState } from "vuex";
 import base from "@/utils/baseUrl.js";
-const postfix = 'msgItem_';
-import cache from '@/utils/cache.js'
+const postfix = "msgItem_";
+import cache from "@/utils/cache.js";
 export default {
   components: {
     Search,
@@ -51,47 +49,57 @@ export default {
   data() {
     return {
       chatList: [],
-      message:['文字', '图片', '表情', '语音', '视频',
-				 '签到', '撤销', '发红包', '抢红包','其它'],
-      webUrl:base.webUrl,
-      first:true
+      message: [
+        "文字",
+        "图片",
+        "表情",
+        "语音",
+        "视频",
+        "签到",
+        "撤销",
+        "发红包",
+        "抢红包",
+        "其它"
+      ],
+      webUrl: base.webUrl,
+      first: true
     };
   },
   computed: {
-    ...mapState(["user","chatObj","conversation","packetPush"])
+    ...mapState(["user", "chatObj", "conversation", "packetPush"])
   },
-  watch:{
-		    packetPush: function(v){
-				switch(v.code){
-					case 1:
-					let userId = this.user.operId
-					let chatId = v.eventValue
-					let para = {
-						 userId,
-						 chatId,
-						 chatType : v.eventObj,
-						 pageNum : 1,
-						 pageSize : 10,
-						 condition : ''
-					}
-					
-					this.$post('/app/msg/list', para).then(res=>{
-						cache.set(postfix+chatId,res.list)
-					});
-					
-					this.$post('app/conversation/list', {
-						userId
-					}).then(res=>{
-						this.$store.commit("setConversation", res)
-					});
-					break;
-					default:
-				}
-			}
-		},
+  watch: {
+    packetPush: function(v) {
+      switch (v.code) {
+        case 1:
+          let userId = this.user.operId;
+          let chatId = v.eventValue;
+          let para = {
+            userId,
+            chatId,
+            chatType: v.eventObj,
+            pageNum: 1,
+            pageSize: 10,
+            condition: ""
+          };
+
+          this.$post("/app/msg/list", para).then(res => {
+            cache.set(postfix + chatId, res.list);
+          });
+
+          this.$post("app/conversation/list", {
+            userId
+          }).then(res => {
+            this.$store.commit("setConversation", res);
+          });
+          break;
+        default:
+      }
+    }
+  },
   methods: {
     showChat: function(chat) {
-      this.$store.commit("setChatObj",chat)
+      this.$store.commit("setChatObj", chat);
       this.first = false;
       // 每次滚动到最底部
       this.$nextTick(() => {
@@ -100,7 +108,7 @@ export default {
     },
     showSearchChat: function(chat) {
       let self = this;
-      this.$store.commit("setChatObj",chat)
+      this.$store.commit("setChatObj", chat);
       // 每次滚动到最底部
       self.$nextTick(() => {
         imageLoad("message-box");
@@ -226,7 +234,7 @@ export default {
         position: absolute;
         left: 1rem;
         top: 0;
-        z-index:1;
+        z-index: 1;
       }
 
       p {
