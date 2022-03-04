@@ -33,7 +33,7 @@
 
               <div class="im-chat-text" v-if="item.contentType == 0">
                 <pre
-                  v-html="transformFace(item.content)"
+                  v-html="transformHtml(item.content)"
                   v-on:click="openImageProxy($event)"
                 ></pre>
               </div>
@@ -205,7 +205,7 @@ export default {
         this.members = res.members;
       });
     },
-    transformFace(content) {
+    transformHtml(content) {
       return transform(content);
     },
     history() {

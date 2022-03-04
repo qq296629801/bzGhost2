@@ -1,5 +1,5 @@
 // 格式化时间
-
+import base from '@/util/baseUrl.js';
 export function formatDateTime(date) {
   let y = date.getFullYear();
   let m = date.getMonth() + 1;
@@ -249,6 +249,7 @@ export function transform(content) {
         if (!href) return str;
         return (
           '<a class="message-file" href="' +
+		  base.webUrl+
           href +
           '"><i class="ivu-icon ivu-icon-md-arrow-down"></i>' +
           (text || href) +

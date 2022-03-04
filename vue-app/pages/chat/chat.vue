@@ -20,7 +20,7 @@
 					</view>
 					
 					<!-- contentType = 1 文本 -->
-					<view class="content" v-html="item.content" v-if="item.contentType == messageType.text">
+					<view class="content" v-html="transformHtml(item.content)" v-if="item.contentType == messageType.text">
 					</view>
 					
 					
@@ -226,7 +226,7 @@ export default {
 		// addEmoji(item){
 		// 	this.formData.content = this.formData.content + "face" + item;
 		// },
-		transformFace(content){
+		transformHtml(content){
 			return transform(content)
 		},
 		// 取消发红包
