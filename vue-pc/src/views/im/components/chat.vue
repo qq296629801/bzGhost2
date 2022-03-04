@@ -213,6 +213,7 @@ export default {
     },
     uploadBack(url) {
       this.messageContent += url;
+      this.send(this.messageType.image);
     },
     // 附件和图片点击展开
     openImageProxy: function(event) {
@@ -252,12 +253,12 @@ export default {
         }
       }
     },
-    send() {
+    send(contentType = this.messageType.text) {
       let _t = this;
 
       const params = {
         isItMe: true,
-        contentType: _t.messageType.text,
+        contentType,
         content: _t.messageContent,
         createTime: Date.now(),
         hasBeenSentId: Date.now(),

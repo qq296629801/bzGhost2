@@ -8,7 +8,6 @@
       :show-upload-list="false"
       :headers="headers"
       :max-size="5120"
-      :with-credentials="true"
       :before-upload="beforeUpload"
       :on-progress="handleStart"
       :on-format-error="handleFormatError"
@@ -26,7 +25,6 @@
       :show-upload-list="false"
       :headers="headers"
       :max-size="102400"
-      :with-credentials="true"
       :before-upload="beforeUpload"
       :on-progress="handleStart"
       :on-format-error="handleFormatError"
@@ -75,7 +73,7 @@ export default {
       action: base.baseUrl + "file/upload",
       headers: {
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Origin": "*"
+        "Access-control-Allow-Origin": "*"
       }
     };
   },
@@ -127,8 +125,9 @@ export default {
     },
     handleSuccess(res, file) {
       let self = this;
-      if (res.msg === "success") {
-        let path = res.filePath;
+      console.log(JSON.stringify(res));
+      if (res.success == true) {
+        let path = res.data;
         let fileName = file.name;
         // 文件后缀
         let suffix = fileName.substring(
@@ -144,7 +143,8 @@ export default {
         }
         // 图片
         else {
-          url = "img[" + path + "]";
+          //url = "img[" + path + "]";
+          url = path;
         }
         //给父类传值
         self.$emit("uploadBack", url);
