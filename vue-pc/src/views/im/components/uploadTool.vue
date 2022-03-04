@@ -60,7 +60,10 @@ export default {
         "swf",
         "sql",
         "apk",
-        "psd"
+        "psd",
+        "pdf",
+        "rar",
+        "zip"
       ],
       tokenImg: {
         access_token: "",
@@ -137,17 +140,26 @@ export default {
 
         //上传文件路径
         let url = "";
+        let data;
         // 文件
         if (self.imgFormat.indexOf(suffix) === -1) {
           url = "file(" + path + ")[" + fileName + "]";
+          data = {
+            type: 0,
+            url
+          };
         }
         // 图片
         else {
           //url = "img[" + path + "]";
           url = path;
+          data = {
+            type: 3,
+            url
+          };
         }
         //给父类传值
-        self.$emit("uploadBack", url);
+        self.$emit("uploadBack", data);
 
         this.$Loading.finish();
       } else {

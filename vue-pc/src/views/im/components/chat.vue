@@ -211,9 +211,9 @@ export default {
     history() {
       this.showHistory = !this.showHistory;
     },
-    uploadBack(url) {
-      this.messageContent += url;
-      this.send(this.messageType.image);
+    uploadBack(data) {
+      this.messageContent += data.url;
+      this.send(data.type);
     },
     // 附件和图片点击展开
     openImageProxy: function(event) {
