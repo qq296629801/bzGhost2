@@ -25,7 +25,7 @@
 						customStyle="margin: -3px 5px -3px 0"
 					></u-avatar>
 					 
-					 <u--text type="info" format="yyyy-mm-dd" slot="right-icon" mode="date" :text="item.lastOpenTime"></u--text>
+					 <u--text size="10" type="info" format="yyyy-mm-dd" slot="right-icon" mode="date" :text="item.lastOpenTime"></u--text>
 				</u-cell>
 			</u-list-item>
 		</u-list>
