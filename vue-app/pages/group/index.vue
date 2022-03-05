@@ -162,9 +162,10 @@ export default {
 		},
 		delGroupQuit(){
 			const params = {
-				groupId: this.chatObj.chatId
+				groupId: this.chatObj.chatId,
+				users:[this.user.operId]
 			}
-			this.$http.post('/group/delete', params).then(res => {
+			this.$http.post('/group/removeGroupUsers', params).then(res => {
 				if (res) {
 					
 					this.$socket.push(res=>{
