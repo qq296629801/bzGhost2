@@ -48,6 +48,10 @@
 				_t.$socket.sendMessage(params, res=>{
 					this.msg = res;
 					this.count++;
+					
+					_t.$socket.push(data => {
+						this.$store.commit("setPacketPush",data);
+					}, 1, _t.chatObj.chatId,_t.chatObj.chatType);
 				});
 			}
 		}
