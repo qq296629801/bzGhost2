@@ -5,19 +5,16 @@
 			<public-module></public-module>
 			
 			<u-cell-group>
-				
 				<u-cell size="large" title="关于我们" @click="linkToAccount" :title-style="{ marginLeft: '10rpx' }">
 				</u-cell>
 				<u-cell size="large" :value="version" @tap="upApp" title="检查更新" :title-style="{ marginLeft: '10rpx' }">
 				</u-cell>
-				
+				<u-cell size="large" @tap="testConcurrent" title="测试并发" :title-style="{ marginLeft: '10rpx' }">
+				</u-cell>
 				<u-gap height="10" bgColor="#f6f7f8"></u-gap>
-				
 				<u-cell size="large" :arrow="false" @click="logout">
 					<view slot="label" style="text-align: center;color: red;">退出登录</view>
 				</u-cell>
-				
-						
 			</u-cell-group>
 		</view>
 	</view>
@@ -41,15 +38,16 @@ export default {
 		});
 		// #endif
 	},
-
 	methods: {
-		onAPPUpdate() {
-			APPUpdate(true);
-		},
-		linkToCommon(index){
+		testConcurrent(){
 			this.$u.route({
-				url: 'pages/my/common'
+				url: 'pages/test/test'
 			});
+		},
+		onAPPUpdate() {
+			// #ifdef APP-PLUS
+			APPUpdate(true);
+			// #endif
 		},
 		linkToAccount(){
 			this.$u.route({

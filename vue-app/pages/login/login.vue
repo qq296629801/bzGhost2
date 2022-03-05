@@ -84,12 +84,11 @@
 					
 					uni.setStorageSync('PERMISSIONS', res.permissions)
 					
-					this.$socket.login(b=>{
+					this.$socket.login(()=>{
 						
 						this.$socket.push(res=>{
 							this.$store.commit("setPacketPush",res);
 						},6);
-						
 						
 						commonApi.download();
 						msgApi.download();

@@ -21,10 +21,8 @@ const WEBIM = {
 		 WEBIM.options = {
 		 	url: WEBIM.serverUrl,
 		 	success(res) {
-				
 			},
 		 	fail(err) {
-				store.commit("emptyUser",{});
 			}
 		 }
 		 
@@ -53,8 +51,21 @@ const WEBIM = {
 	isConnect: function() {
 		return WEBIM.server._isLogin;
 	},
-	//绑定用户通道
-	login: (res) => {
+	// 进行重连
+	remind(){
+		WEBIM.server._isLogin = false;
+		if (WEBIM.server._isReconnection) {
+			console.log('网络中断，尝试重连')
+			WEBIM.options = {
+				url: WEBIM.serverUrl,
+				success(res) {},
+				fail(err) {}
+			}
+			WEBIM.server._reConnect(WEBIM.options)
+		}
+		console.log('【websocket】发送失败,尝试手动重连')
+	},
+	login:(res, userId)=>{
 		let requestPacket = {
 			userId:store.state.user.operId,
 			version: 1,
@@ -187,18 +198,7 @@ let send = (p) => {
 	 	data: p,
 	 	success(res) {},
 	 	fail(err) {
-			// 进行重连
-			WEBIM.server._isLogin = false;
-			if (WEBIM.server._isReconnection) {
-				console.log('网络中断，尝试重连')
-				WEBIM.options = {
-					url: WEBIM.serverUrl,
-					success(res) {},
-					fail(err) {}
-				}
-				WEBIM.server._reConnect(WEBIM.options)
-			}
-	 		console.log('【websocket】发送失败,尝试手动重连')
+			WEBIM.remind();
 	 	}
 	 });
 }
