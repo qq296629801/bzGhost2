@@ -39,7 +39,14 @@ export default {
 		};
 	},
 	computed:{
-		...mapState(['group'])
+		...mapState(['group','user'])
+	},
+	onShow() {
+		this.$http.post('app/group/list', {
+			userId:this.user.operId
+		}).then(res=>{
+			this.$store.commit("setGroup", res.data)
+		});
 	},
 	methods: {
 		scrolltolower(){

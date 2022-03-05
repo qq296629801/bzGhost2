@@ -18,10 +18,9 @@
 						:key="index1"
 						:title="item1.nickName"
 						:border="index1 !== item.members.length - 1"
-						@tap="jumpBusinessCard(item1)"
 					>
-						<u-checkbox-group slot="icon">
-							<u-checkbox v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
+						<u-checkbox-group slot="icon" v-if="user.operId != item1.id">
+							<u-checkbox  v-model="item1.checked" :name="item1.id" @change="chechMem(item1)">
 							</u-checkbox>
 						</u-checkbox-group>
 					</u-cell>

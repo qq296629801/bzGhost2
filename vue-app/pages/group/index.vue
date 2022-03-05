@@ -171,11 +171,6 @@ export default {
 						this.$store.commit("setPacketPush",res);
 					}, 4);
 					
-					this.$http.post('app/group/list', {
-						userId:this.user.operId
-					}).then(res=>{
-						this.$store.commit("setGroup", res.data)
-					});
 					
 					this.$http.post('app/conversation/list', {
 						userId:this.user.operId
