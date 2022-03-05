@@ -57,7 +57,7 @@ export default {
 			});
 		},
 		logout(){
-			store.commit("empty",{});
+			 uni.clearStorageSync();
 			this.$u.route({
 				url: 'pages/login/login'
 			});

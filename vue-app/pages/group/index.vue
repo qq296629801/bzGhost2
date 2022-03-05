@@ -41,7 +41,7 @@
 				
 				<u-cell title="全体禁言">
 					<view slot="right-icon">
-						<u-switch v-model="disTalk" active-color="rgb(25, 190, 107)"></u-switch>
+						<u-switch @change="disTalkClick" v-model="disTalk" active-color="rgb(25, 190, 107)"></u-switch>
 					</view>
 				</u-cell>
 			</u-cell-group>
@@ -53,7 +53,7 @@
 					<view slot="label" @tap="emptyGroupMsg" class="btn-red">清空聊天记录</view>
 				</u-cell>
 				<u-cell :arrow="false">
-					<view slot="label" class="btn-red">删除并退出</view>
+					<view slot="label" @tap="delGroupQuit" class="btn-red">删除并退出</view>
 				</u-cell>
 			</u-cell-group>
 		</view>
@@ -149,6 +149,46 @@ export default {
 		};
 	},
 	methods: {
+		disTalkClick(v){
+			const params = {
+				groupId: this.chatObj.chatId,
+				status: v?0:1
+			}
+			this.$http.post('/group/updateGroupUserStatus', params).then(res => {
+				if (res) {
+					this.queryMembers();
+				}
+			})
+		},
+		delGroupQuit(){
+			const params = {
+				groupId: this.chatObj.chatId
+			}
+			this.$http.post('/group/delete', params).then(res => {
+				if (res) {
+					
+					this.$socket.push(res=>{
+						this.$store.commit("setPacketPush",res);
+					}, 4);
+					
+					this.$http.post('app/group/list', {
+						userId:this.user.operId
+					}).then(res=>{
+						this.$store.commit("setGroup", res.data)
+					});
+					
+					this.$http.post('app/conversation/list', {
+						userId:this.user.operId
+					}).then(res=>{
+						this.$store.commit("setConversation", res)
+					});
+					
+					uni.reLaunch({
+						url: '/pages/home/home'
+					});
+				}
+			})
+		},
 		emptyGroupMsg(){
 			db.delMsgByChat(this.group.group.id)
 			uni.showToast({
@@ -159,25 +199,27 @@ export default {
 		tapGroupName(){
 			let reqData = {
 				groupName: this.group.group.groupName,
-				groupId: this.group.group.id
+				groupId: this.chatObj.chatId
 			}
 			this.$http.post("app/group/upGroupName",reqData).then(res=>{
 				uni.showToast({
 					title:'修改成功',
 					icon:'success'
 				})
+				this.show = false
 			});
 		},
 		tapGroupNick(){
 			let reqData = {
 				groupName: this.group.group.groupName,
-				groupId: this.group.group.id
+				groupId: this.chatObj.chatId
 			}
 			this.$http.post("app/group/upGroupName",reqData).then(res=>{
 				uni.showToast({
 					title:'修改成功',
 					icon:'success'
 				})
+				this.xxxShow = false;
 			});
 		},
 		linkMore(){
