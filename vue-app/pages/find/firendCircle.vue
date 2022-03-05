@@ -1,8 +1,5 @@
 <template>
 	<view class="content" id="content">
-		<!-- 公共组件-每个页面必须引入 -->
-		<public-module></public-module>
-		
 		<!-- 脑袋 -->
 		<view class="content-imgbox">
 			<image class="bgimg" :src="webUrl + user.avatar" mode="scaleToFill" @tap="showSheet"></image>
