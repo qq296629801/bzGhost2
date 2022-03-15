@@ -1,9 +1,7 @@
 <template>
 	<view class="content">
 		<view class="u-page">
-			<u-list
-				@scrolltolower="scrolltolower"
-			>
+			<u-list>
 				<u-list-item
 					v-for="(item, index) in list"
 					:key="index"
@@ -48,8 +46,6 @@ export default {
 		this.findFriend()
 	},
 	methods: {
-		scrolltolower(){
-		},
 		accept(item){
 			item.userId = this.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{

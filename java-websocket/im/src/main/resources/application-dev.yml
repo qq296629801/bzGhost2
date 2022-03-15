@@ -1,0 +1,11 @@
+server:
+  port: 9998
+  #
+netty:
+  tcp:
+    port: 8888
+  websocket:
+    path: /chat
+    port: 9999
+    http-object-arggregator:
+      max-content-length: 64 * 1024

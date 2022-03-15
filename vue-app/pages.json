@@ -71,7 +71,6 @@
 					"style": {
 						"navigationBarTitleText": " ",
 						"transparentTitle": "auto",
-						"enablePullDownRefresh": true,
 						"app-plus": {
 							"titleNView": {
 								"type": "transparent",
