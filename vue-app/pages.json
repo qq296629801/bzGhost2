@@ -359,11 +359,10 @@
 		},
 		{
 		    "path" : "pages/chat/detail",
-		    "style" :                                                                                    
-		    {
-		        "enablePullDownRefresh": false,
-				"navigationStyle":"custom"
-		    }
+		   "style": {
+		   	"navigationBarTitleText": " ",
+		   	"transparentTitle": "auto"
+		   }
 		    
 		}
         ,{
