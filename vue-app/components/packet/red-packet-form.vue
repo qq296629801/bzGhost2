@@ -106,6 +106,6 @@
 <style lang="scss">
 	.content{
 		padding: 100rpx;
-		background-color: #bfbfbf;
+		background-color: #fff;
 	}
 </style>
