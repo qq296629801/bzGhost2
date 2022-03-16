@@ -87,7 +87,8 @@
       class="history-message"
       width="30%"
     >
-      <div v-if="chatObj.chatType == 0">
+      <div class="box" v-if="chatObj.chatType == 0">
+        <Search class="search-box"></Search>
         <div class="group-box">
           <div class="item">
             <div class="avatar">
@@ -95,6 +96,12 @@
             </div>
             <span>{{ chatObj.chatName }}</span>
           </div>
+        </div>
+        <div class="group-cell">
+          <CellGroup>
+            <Cell title="名称" :label="chatObj.chatName" />
+            <Cell title="昵称" label="admin" />
+          </CellGroup>
         </div>
       </div>
       <div class="box" v-if="chatObj.chatType == 1">
@@ -788,14 +795,18 @@ export default {
 }
 .group-box {
   //background: #fff;
+  display: -webkit-flex; /* Safari */
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   .item {
-    width: 70px;
+    width: 60px;
     text-align: center;
     overflow: hidden;
     .avatar {
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
+      border-radius: 2px;
       padding: 5px;
     }
     img {
