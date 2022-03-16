@@ -107,10 +107,14 @@
 			</view>
 			
 			<view class="fun-box" :class="{'show-fun-box':showFunBtn}">
-				<u-grid :col="5" style="padding-top: 20rpx;"  hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
+				<u-grid :col="5" hover-class="contentType2-hover-class" :border="false" @tap="clickGrid">
 					<u-grid-item v-for="(item, index) in btns" :index="index" :key="index">
-						<image class="img" :src="item.url"></image>
-						<u--text color="#6c6c6c" align="center" :text="item.title"></u--text>
+						 <u-icon
+								:customStyle="{paddingTop:20+'rpx'}"
+								:name="item.url"
+								:size="50"
+						         ></u-icon>
+						<text class="grid-text">{{ item.title}}</text>
 					</u-grid-item>
 				</u-grid>
 			</view>
@@ -795,5 +799,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.grid-text {
+		font-size: 14px;
+		color: #909399;
+		padding: 10rpx 0 20rpx 0rpx;
+		/* #ifndef APP-PLUS */
+		box-sizing: border-box;
+		/* #endif */
+	}
  @import './index.scss'
 </style>
