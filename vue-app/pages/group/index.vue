@@ -4,21 +4,25 @@
 		<public-module></public-module>
 		
 		<view class="member">
-			<u-grid :col="6" :border="false">
+			<u-grid :col="6">
 				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
 					<view>
-						<image class="img" :src="webUrl + item.avatar"></image>
-						<u--text color="#6c6c6c" align="center" :text="item.groupNickName"></u--text>
+						<u-icon
+								:customStyle="{paddingTop:20+'rpx'}"
+								:name="webUrl + item.avatar"
+								:size="40"
+						         ></u-icon>
+						<text class="grid-text">{{ item.groupNickName}}</text>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkAdd">
 					<view class="plus">
-						<u-icon name="plus" size="20" color="#6c6c6c"></u-icon>
+						<u-icon name="plus" size="20" color="#909399"></u-icon>
 					</view>
 				</u-grid-item>
 				<u-grid-item @click="linkDel">
 					<view class="plus">
-						<u-icon name="minus" size="20" color="#6c6c6c"></u-icon>
+						<u-icon name="minus" size="20" color="#909399"></u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -265,6 +269,14 @@ export default {
 </script>
 
 <style lang="scss">
+	.grid-text {
+		font-size: 14px;
+		color: #909399;
+		padding: 10rpx 0 20rpx 0rpx;
+		/* #ifndef APP-PLUS */
+		box-sizing: border-box;
+		/* #endif */
+	}
 	.content{
 		
 		.xx{

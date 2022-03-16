@@ -6,8 +6,12 @@
 		<view class="head">
 			<u-grid :col="6" :border="false">
 				<u-grid-item>
-					<u-avatar :src="webUrl + chatObj.imgUrl" shape="square"></u-avatar>
-					<u--text :text="chatObj.chatName"></u--text>
+					<u-icon
+							:customStyle="{paddingTop:20+'rpx'}"
+							:name="webUrl + chatObj.imgUrl"
+							:size="40"
+					         ></u-icon>
+					<text class="grid-text">{{ chatObj.chatName}}</text>
 				</u-grid-item>
 			</u-grid>
 		</view>
@@ -44,6 +48,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.grid-text {
+		font-size: 14px;
+		color: #909399;
+		padding: 10rpx 0 20rpx 0rpx;
+		/* #ifndef APP-PLUS */
+		box-sizing: border-box;
+		/* #endif */
+	}
 	.head{
 		background-color: white;
 	}
