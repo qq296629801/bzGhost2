@@ -705,6 +705,15 @@ export default {
 				chatType:_t.chatObj.chatType,
 				userId: _t.user.operId,
 			});
+		},
+		queryMembers() {
+			let pData = {
+				userId: this.user.operId,
+				groupId: this.chatObj.chatId,
+			}
+			this.$http.post('app/group/member', pData).then(res => {
+				this.$store.commit("setGroupMembers",res);
+			});
 		}
 	},
 	//导航栏
@@ -773,6 +782,8 @@ export default {
 		_this.initData();
 		
 		_this.cOpen();
+		
+		//_this.queryMembers();
 		
 		// 绑定通道
 		_this.$socket.joinGroup(a=>{

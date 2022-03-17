@@ -5,7 +5,8 @@
 		
 		<view class="member">
 			<u-grid :col="6">
-				<u-grid-item v-for="(item, index) in group.members" :index="index" :key="item.id" v-if="index<=10" @tap="linkCard(item.id)">
+				
+				<u-grid-item v-for="(item, index) in groupMembers.members" :index="index" :key="item.id" @tap="linkCard(item.id)">
 					<view>
 						<u-icon
 								:customStyle="{paddingTop:20+'rpx'}"
@@ -26,22 +27,20 @@
 					</view>
 				</u-grid-item>
 			</u-grid>
-			<view class="more" @tap="linkMore" v-if="group.members.length>20">查看更多</view>
+			
+			<view class="more" @tap="linkMore"></view>
 		</view>
 		
 		<view class="cell-group">
 			<u-gap height="10" bgColor="#f6f7f8"></u-gap>
 			
 			<u-cell-group :border="false">
-				<u-cell @tap="show = true" title="群名称" :value="group.group.groupName"></u-cell>
+				<u-cell @tap="show = true" title="群名称" :value="groupMembers.group.groupName"></u-cell>
 				
 				<u-cell @tap="xxxShow = true"
 					title="群昵称"
-					:value="group.groupUser.groupNickName"
+					:value="groupMembers.groupUser.groupNickName"
 				></u-cell>
-			<!-- 	<u-cell title="二维码">
-					<view slot="right-icon" class="iconfont iconxingzhuangjiehe erweima"></view>
-				</u-cell> -->
 				
 				<u-cell title="全体禁言">
 					<view slot="right-icon">
@@ -78,7 +77,7 @@
 									ref="item1"
 							>
 								<u--input
-										v-model="group.group.groupName"
+										v-model="groupMembers.group.groupName"
 										border="none"
 								></u--input>
 							</u-form-item>
@@ -93,7 +92,7 @@
 			<view class="xx">
 				<u--form
 					labelPosition="left"
-					:model="group"
+					:model="groupMembers"
 					:rules="rules"
 					ref="form1"
 					>
@@ -104,7 +103,7 @@
 								ref="item1"
 						>
 							<u--input
-									v-model="group.group.gContext"
+									v-model="groupMembers.group.gContext"
 									border="none"
 							></u--input>
 						</u-form-item>
@@ -190,7 +189,7 @@ export default {
 			})
 		},
 		emptyGroupMsg(){
-			db.delMsgByChat(this.group.group.id)
+			db.delMsgByChat(this.groupMembers.group.id)
 			uni.showToast({
 				icon:'none',
 				title:'成功'
@@ -198,7 +197,7 @@ export default {
 		},
 		tapGroupName(){
 			let reqData = {
-				groupName: this.group.group.groupName,
+				groupName: this.groupMembers.group.groupName,
 				groupId: this.chatObj.chatId
 			}
 			this.$http.post("app/group/upGroupName",reqData).then(res=>{
@@ -211,7 +210,7 @@ export default {
 		},
 		tapGroupNick(){
 			let reqData = {
-				groupName: this.group.group.groupName,
+				groupName: this.groupMembers.group.groupName,
 				groupId: this.chatObj.chatId
 			}
 			this.$http.post("app/group/upGroupName",reqData).then(res=>{
@@ -255,7 +254,7 @@ export default {
 				groupId: this.chatObj.chatId,
 			}
 			this.$http.post('app/group/member', pData).then(res => {
-				this.group = res
+				this.$store.commit("setGroupMembers",res);
 			});
 		}
 	},
@@ -263,7 +262,7 @@ export default {
 		this.queryMembers();
 	},
 	computed:{
-		...mapState(['user','chatObj'])
+		...mapState(['user','chatObj','groupMembers'])
 	}
 };
 </script>

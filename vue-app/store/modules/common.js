@@ -19,10 +19,11 @@ export const state = {
   exception:{},
   post:[],
   friend:[],
-  group:[]
+  group:[],
+  groupMembers:[]
 };
 //缓存浏览器的数据名称
-const cacheNameList = ["user","token","config","roles","permissions","post","friend","group","conversation"];
+const cacheNameList = ["groupMembers","user","token","config","roles","permissions","post","friend","group","conversation"];
 let clearTime;
 export const mutations = {
 	setException(state, data){
@@ -33,6 +34,12 @@ export const mutations = {
 	setUserCardData(state, data){
 		if(data){
 			state.userCardData =  data;
+		}
+	},
+	setGroupMembers(state, data){
+		if(data){
+			state.groupMembers =  Object.assign({}, state.groupMembers, data);
+			cache.set("groupMembers",state.groupMembers);
 		}
 	},
 	setPost(state, data){
