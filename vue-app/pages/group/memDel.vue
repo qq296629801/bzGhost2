@@ -98,9 +98,7 @@
 					groupId:this.chatObj.chatId,
 				}
 				this.$http.post('app/group/user/del',data).then(res => {
-					this.$socket.push(res=>{
-						this.$store.commit("setPacketPush",res);
-					},4);
+				
 					uni.navigateBack({
 						delta: 0,
 						animationDuration: 0

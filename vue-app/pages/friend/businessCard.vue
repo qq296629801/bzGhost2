@@ -48,9 +48,6 @@
 				}).then(res=>{
 					uni.navigateBack()
 				});
-				this.$socket.push(res=>{
-					this.$store.commit("setPacketPush",res);
-				},2);
 			},
 			jumpChat(){
 				this.$store.commit("setChatObj",{

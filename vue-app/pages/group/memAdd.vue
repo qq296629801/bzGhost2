@@ -97,9 +97,6 @@
 					userNames: this.userNames
 				}
 				this.$http.post('app/group/user/add',data).then(res => {
-					this.$socket.push(res=>{
-						this.$store.commit("setPacketPush",res);
-					},3);
 					
 					uni.navigateBack({
 						delta: 0,

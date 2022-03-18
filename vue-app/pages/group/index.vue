@@ -170,12 +170,6 @@ export default {
 			}
 			this.$http.post('/group/removeGroupUsers', params).then(res => {
 				if (res) {
-					
-					this.$socket.push(res=>{
-						this.$store.commit("setPacketPush",res);
-					}, 4);
-					
-					
 					this.$http.post('app/conversation/list', {
 						userId:this.user.operId
 					}).then(res=>{
