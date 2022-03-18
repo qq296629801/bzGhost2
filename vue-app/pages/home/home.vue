@@ -43,10 +43,8 @@ export default {
 					this.$store.commit("setConversation", res)
 				});
 				break;
-				case 2:
-					uni.showTabBarRedDot({
-						index: 1
-					});
+				case 6:
+					console.log(JSON.stringify(v));
 					break;
 				default:
 			}

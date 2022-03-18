@@ -105,16 +105,8 @@ const WEBIM = {
     send(requestPacket);
     eventDispatcher.addListener("6", func);
   },
-  push: (func, code) => {
-    let req = {
-      version: 1,
-      command: -9,
-      code
-    };
-    send(req);
-    eventDispatcher.addListener("-10", func);
-  },
-  push: (func, code, eventValue, eventObj) => {
+
+  push: (code, eventValue, eventObj, func) => {
     let req = {
       version: 1,
       command: -9,

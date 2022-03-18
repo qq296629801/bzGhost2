@@ -297,6 +297,11 @@ export default {
 
       // 发送消息到服务器转发
       this.$socket.sendMessage(params, res => {
+        // 推送
+        this.$socket.push(1, _t.chatObj.chatId, _t.chatObj.chatType, res => {
+          this.$store.commit("setPacketPush", res);
+        });
+
         if (_t.chatObj.chatType == 0 && res.chatType == 0) {
           if (res.fromUserId != _t.user.operId) {
             if (res.content != "") {

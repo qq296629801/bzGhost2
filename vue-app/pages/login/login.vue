@@ -86,6 +86,11 @@
 					
 					this.$socket.login(()=>{
 						
+						this.$socket.push(6, null, null,res=>{
+							this.$store.commit("setPacketPush",res)
+						});
+						
+						
 						commonApi.download();
 						msgApi.download();
 						
