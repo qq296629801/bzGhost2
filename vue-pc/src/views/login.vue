@@ -241,10 +241,6 @@ export default {
         db2.download();
 
         this.$socket.login(() => {
-          this.$socket.push(res => {
-            this.$store.commit("setPacketPush", res);
-          }, 6);
-
           this.$router.push({
             path: "/index/chatBox",
             params: {}
