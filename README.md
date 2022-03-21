@@ -19,9 +19,8 @@
 
 ## 1.3管理截图
 
-![](/assets/admin_group_02.png)
-![](/assets/chat.jpg)
-![](/assets/pc_chat_03.png)
+![](/assets/admin_login_01.png)![](/assets/admin_group_02.png)
+
 ![](/assets/bzGhost.mp4)
 
 # 联系方式
@@ -90,9 +89,9 @@
 
 ```js
 let packet = {
-version:1,
-command: 1,
-userId:"5f6d9d98"
+    version:1,
+    command: 1,
+    userId:"5f6d9d98"
 }
 ```
 
@@ -100,10 +99,10 @@ userId:"5f6d9d98"
 
 ```js
 let packet = {
-version : 1,
-command: 2,
-errorMsg:"",
-success: true
+    version : 1,
+    command: 2,
+    errorMsg:"",
+    success: true
 }
 ```
 
@@ -263,15 +262,15 @@ let packet = {
 ```js
 let dataView = new DataView(buffer)
 
-    dataView.setInt32(0, 0x12345678)
+dataView.setInt32(0, 0x12345678)
 
-    dataView.setInt8(4, packet.version)
+dataView.setInt8(4, packet.version)
 
-    dataView.setInt8(5, 1) // 写死1表示json序列化
+dataView.setInt8(5, 1) // 写死1表示json序列化
 
-    dataView.setInt8(6, packet.command)
+dataView.setInt8(6, packet.command)
 
-    dataView.setInt32(7, bytes.length)
+dataView.setInt32(7, bytes.length)
 
 for (let i = 11; i < bytes.length + 11; i++) {
     dataView.setUint8(i, bytes[i - 11])
@@ -347,12 +346,12 @@ WEBIM.server.sendWebSocketMsg({
         if (WEBIM.server._isReconnection) {
             console.log('网络中断，尝试重连')
             WEBIM.options = {
-            url: WEBIM.serverUrl,
-            success(res) {},
+                url: WEBIM.serverUrl,
+                success(res) {},
                 fail(err) {}
             }
             WEBIM.server._reConnect(WEBIM.options)
-         }
+        }
         console.log('【websocket】发送失败,尝试手动重连')
     }
 });
