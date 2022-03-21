@@ -50,6 +50,15 @@ export default {
 			item.userId = this.user.operId
 			this.$http.post('app/friend/accept',item).then(res=>{
 				this.findFriend();
+				this.findAllFrien();
+			});
+		},
+		findAllFrien(){
+			let userId = this.user.operId;
+			this.$http.post('app/friend/list', {
+				userId
+			}).then(res=>{
+				this.$store.commit("setFriend", res)
 			});
 		},
 		findFriend() {
