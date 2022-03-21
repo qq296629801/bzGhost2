@@ -8,7 +8,7 @@
 
 ![](/assets/banner.jpg)
 
-# 官方网站
+# 官方文档
 [http://120.27.95.106/](http://120.27.95.106/)
 
 # 版权信息
@@ -27,11 +27,10 @@
 
 ## 1.3管理截图
 
-![](/assets/admin_login_01.png)
 ![](/assets/admin_group_02.png)
-![](/assets/bzGhost.mp4)
 ![](/assets/chat.jpg)
 ![](/assets/pc_chat_03.png)
+![](/assets/bzGhost.mp4)
 
 # 联系方式
 如有问题联系作者 18767176707
