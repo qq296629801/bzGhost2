@@ -99,10 +99,10 @@ let packet = {
 
 ```js
 let packet = {
-    version : 1,
-    command: 2,
-    errorMsg:"",
-    success: true
+version : 1,
+command: 2,
+errorMsg:"",
+success: true
 }
 ```
 
@@ -262,15 +262,15 @@ let packet = {
 ```js
 let dataView = new DataView(buffer)
 
-dataView.setInt32(0, 0x12345678)
+    dataView.setInt32(0, 0x12345678)
 
-dataView.setInt8(4, packet.version)
+    dataView.setInt8(4, packet.version)
 
-dataView.setInt8(5, 1) // 写死1表示json序列化
+    dataView.setInt8(5, 1) // 写死1表示json序列化
 
-dataView.setInt8(6, packet.command)
+    dataView.setInt8(6, packet.command)
 
-dataView.setInt32(7, bytes.length)
+    dataView.setInt32(7, bytes.length)
 
 for (let i = 11; i < bytes.length + 11; i++) {
     dataView.setUint8(i, bytes[i - 11])
