@@ -22,7 +22,6 @@
 ![](/assets/admin_group_02.png)
 ![](/assets/chat.jpg)
 ![](/assets/pc_chat_03.png)
-![](/assets/redpacket.jpg)
 ![](/assets/bzGhost.mp4)
 
 # 联系方式
