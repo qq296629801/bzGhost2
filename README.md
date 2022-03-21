@@ -26,7 +26,6 @@
 # 截图
 
 ## 1.3管理截图
-
 ![](/assets/admin_group_02.png)
 ![](/assets/chat.jpg)
 ![](/assets/pc_chat_03.png)
