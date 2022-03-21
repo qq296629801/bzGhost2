@@ -19,8 +19,10 @@
 
 ## 1.3管理截图
 
-![](/assets/admin_login_01.png)![](/assets/admin_group_02.png)
-
+![](/assets/admin_group_02.png)
+![](/assets/chat.jpg)
+![](/assets/pc_chat_03.png)
+![](/assets/redpacket.jpg)
 ![](/assets/bzGhost.mp4)
 
 # 联系方式
