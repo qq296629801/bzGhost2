@@ -30,3 +30,10 @@
 * 讨论加群：qq群 [^1]1025293030
 
 
+# 图片展示
+![](/assets/admin_group_02.png)
+![](/assets/chat.jpg)
+![](/assets/redpacket.jpg)
+![](/assets/redpacketdetail.jpg)
+![](/assets/pc_chat_03.png)
+![](/assets/pc_friend_04.png)
